@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-07-27",
+  "generated_at": "2026-07-30",
   "owner": "Bengt 🦉 (data) + Polly (analysis)",
   "currency_note": "Revenue in EUR (store currency). Meta spend in SEK. Blended MER = total Shopify revenue ÷ Meta spend (11.4 SEK/EUR).",
   "gads_alert": {
     "show": true,
-    "title": "Google Ads live sedan 8 juli · 38 konv · 35 795 kr intäkt (19 dagar)",
-    "sub": "7 kampanjer aktiva · ROAS 3.6× totalt (Brand Search + IT drar upp)",
+    "title": "Google Ads · 22 dagar in · 49 konv · 46 490 kr intäkt",
+    "sub": "7 kampanjer aktiva · ROAS 4.1× totalt (Brand Search All 9.1× + Shopping AU 7.6×)",
     "link_gads": "https://ads.google.com/aw/campaigns?__e=7166732500",
     "link_gmc": "https://merchants.google.com"
   },
@@ -24,66 +24,66 @@
   },
   "gads": {
     "live_since": "8 juli",
-    "as_of": "26 juli",
-    "note": "19 dagar in — Shopping US & UK håller 3.1× och AU tog en tredje konvertering. Shopping DE + Brand Search DE har nu bränt 606 kr tillsammans utan en enda konvertering. Daglig ROAS svänger på låg volym; den rullande siffran är den ärliga.",
-    "spend_label": "10 027 kr",
-    "yesterday_label": "754 kr",
+    "as_of": "29 juli",
+    "note": "22 dagar in — Shopping US & UK håller 2.8× och Shopping AU tar fart (7.6×). Brand Search IT 24.5× men på låg volym. Shopping DE + Brand Search DE har bränt 689 kr utan konvertering. Rullande ROAS 4.1× totalt — daglig siffra svänger, det rullande är den ärliga.",
+    "spend_label": "11 382 kr",
+    "yesterday_label": "369 kr",
     "totals": {
-      "spend_sek": 10027,
-      "clicks": 2377,
-      "conversions": 38,
-      "conv_value_sek": 35795,
-      "roas": 3.6
+      "spend_sek": 11382,
+      "clicks": 2778,
+      "conversions": 49,
+      "conv_value_sek": 46490,
+      "roas": 4.1
     },
     "campaigns": [
       {
-        "name": "🏆 Brand Search (alla)",
-        "spend_label": "1 378 kr",
-        "conv": 9,
-        "value_label": "8 866 kr",
-        "roas": 6.4
+        "name": "🏆 Brand Search (alla marknader)",
+        "spend_label": "1 498 kr",
+        "conv": 14,
+        "value_label": "13 698 kr",
+        "roas": 9.1
       },
       {
         "name": "Brand Search IT",
-        "spend_label": "107 kr",
-        "conv": 2,
-        "value_label": "2 142 kr",
-        "roas": 20.1
+        "spend_label": "162 kr",
+        "conv": 4,
+        "value_label": "3 964 kr",
+        "roas": 24.5
       },
       {
-        "name": "Brand Search DE (ny)",
-        "spend_label": "122 kr",
+        "name": "Brand Search DE",
+        "spend_label": "143 kr",
         "conv": 0,
         "value_label": "0 kr",
         "roas": 0.0
       },
       {
         "name": "Shopping US & UK",
-        "spend_label": "7 077 kr",
-        "conv": 24,
-        "value_label": "21 670 kr",
-        "roas": 3.1
+        "spend_label": "7 942 kr",
+        "conv": 25,
+        "value_label": "22 106 kr",
+        "roas": 2.8
       },
       {
-        "name": "Shopping AU (ny)",
-        "spend_label": "615 kr",
-        "conv": 2,
-        "value_label": "2 682 kr",
-        "roas": 4.4
+        "name": "Shopping AU",
+        "spend_label": "824 kr",
+        "conv": 5,
+        "value_label": "6 286 kr",
+        "roas": 7.6
       },
       {
-        "name": "Non-brand Test",
-        "spend_label": "243 kr",
-        "conv": 1,
-        "value_label": "434 kr",
-        "roas": 1.8
-      },
-      {
-        "name": "Shopping DE (ny)",
-        "spend_label": "484 kr",
+        "name": "Shopping DE",
+        "spend_label": "546 kr",
         "conv": 0,
         "value_label": "0 kr",
         "roas": 0.0
+      },
+      {
+        "name": "Non-brand Test",
+        "spend_label": "267 kr",
+        "conv": 1,
+        "value_label": "434 kr",
+        "roas": 1.6
       }
     ]
   },
@@ -396,50 +396,50 @@
     {
       "id": "7d",
       "label": "Last 7 days",
-      "range_start": "2026-07-20",
-      "range_end": "2026-07-27",
+      "range_start": "2026-07-23",
+      "range_end": "2026-07-30",
       "days": 7,
       "kpis": {
-        "sessions": 2719,
-        "conversion_label": "2.80%",
-        "sales_label": "€9,097",
-        "orders": 89
+        "sessions": 2629,
+        "conversion_label": "2.70%",
+        "sales_label": "€8,723",
+        "orders": 84
       },
       "meta": {
-        "spend_label": "37,286 kr",
-        "meta_roas": 1.73,
-        "blended_mer": 2.78
+        "spend_label": "35 130 kr",
+        "meta_roas": 1.74,
+        "blended_mer": 2.83
       },
       "orders_by_country": [
         {
           "name": "USA",
           "flag": "🇺🇸",
-          "orders": 38,
-          "revenue": "€4,122"
+          "orders": 36,
+          "revenue": "€3,981"
         },
         {
           "name": "Italy",
           "flag": "🇮🇹",
-          "orders": 13,
-          "revenue": "€1,145"
-        },
-        {
-          "name": "UK",
-          "flag": "🇬🇧",
-          "orders": 13,
-          "revenue": "€1,125"
+          "orders": 15,
+          "revenue": "€1,404"
         },
         {
           "name": "Australia",
           "flag": "🇦🇺",
-          "orders": 8,
-          "revenue": "€922"
+          "orders": 10,
+          "revenue": "€1,181"
         },
         {
-          "name": "Sweden",
-          "flag": "🇸🇪",
-          "orders": 5,
-          "revenue": "€323"
+          "name": "UK",
+          "flag": "🇬🇧",
+          "orders": 7,
+          "revenue": "€735"
+        },
+        {
+          "name": "Germany",
+          "flag": "🇩🇪",
+          "orders": 4,
+          "revenue": "€439"
         },
         {
           "name": "France",
@@ -448,28 +448,28 @@
           "revenue": "€258"
         },
         {
-          "name": "Germany",
-          "flag": "🇩🇪",
+          "name": "Sweden",
+          "flag": "🇸🇪",
           "orders": 3,
-          "revenue": "€480"
+          "revenue": "€100"
         },
         {
           "name": "Netherlands",
           "flag": "🇳🇱",
           "orders": 2,
-          "revenue": "€275"
+          "revenue": "€270"
+        },
+        {
+          "name": "Belgium",
+          "flag": "🇧🇪",
+          "orders": 2,
+          "revenue": "€169"
         },
         {
           "name": "Denmark",
           "flag": "🇩🇰",
           "orders": 1,
           "revenue": "€138"
-        },
-        {
-          "name": "Belgium",
-          "flag": "🇧🇪",
-          "orders": 1,
-          "revenue": "€137"
         }
       ],
       "landing_pages": [
@@ -515,80 +515,80 @@
     {
       "id": "30d",
       "label": "Last 30 days",
-      "range_start": "2026-06-27",
-      "range_end": "2026-07-27",
+      "range_start": "2026-06-30",
+      "range_end": "2026-07-30",
       "days": 30,
       "kpis": {
-        "sessions": 9470,
-        "conversion_label": "4.11%",
-        "sales_label": "€47,570",
-        "orders": 453
+        "sessions": 9648,
+        "conversion_label": "4.02%",
+        "sales_label": "€47,101",
+        "orders": 448
       },
       "meta": {
-        "spend_label": "163,386 kr",
-        "meta_roas": 2.4,
-        "blended_mer": 3.32
+        "spend_label": "160 514 kr",
+        "meta_roas": 2.41,
+        "blended_mer": 3.35
       },
       "orders_by_country": [
         {
           "name": "USA",
           "flag": "🇺🇸",
-          "orders": 206,
-          "revenue": "€23,734"
+          "orders": 204,
+          "revenue": "€23,646"
         },
         {
           "name": "UK",
           "flag": "🇬🇧",
           "orders": 65,
-          "revenue": "€6,512"
+          "revenue": "€6,577"
         },
         {
           "name": "Italy",
           "flag": "🇮🇹",
           "orders": 58,
-          "revenue": "€5,767"
+          "revenue": "€5,834"
         },
         {
           "name": "Australia",
           "flag": "🇦🇺",
-          "orders": 38,
-          "revenue": "€4,052"
+          "orders": 39,
+          "revenue": "€4,146"
         },
         {
           "name": "Germany",
           "flag": "🇩🇪",
-          "orders": 30,
-          "revenue": "€2,502"
+          "orders": 29,
+          "revenue": "€2,368"
+        },
+        {
+          "name": "Netherlands",
+          "flag": "🇳🇱",
+          "orders": 12,
+          "revenue": "€1,183"
         },
         {
           "name": "Sweden",
           "flag": "🇸🇪",
           "orders": 12,
-          "revenue": "€1,008"
-        },
-        {
-          "name": "Netherlands",
-          "flag": "🇳🇱",
-          "orders": 11,
-          "revenue": "€1,048"
+          "revenue": "€908"
         },
         {
           "name": "France",
           "flag": "🇫🇷",
-          "orders": 9,
-          "revenue": "€665"
-        },
-        {
-          "name": "Belgium",
-          "flag": "🇧🇪",
-          "orders": 7,
-          "revenue": "€614"
+          "orders": 8,
+          "revenue": "€618"
         },
         {
           "name": "Denmark",
           "flag": "🇩🇰",
           "orders": 7,
           "revenue": "€603"
+        },
+        {
+          "name": "Belgium",
+          "flag": "🇧🇪",
+          "orders": 6,
+          "revenue": "€439"
         }
       ],
       "landing_pages": [
@@ -653,63 +653,63 @@
     },
     {
       "id": "thismonth",
-      "label": "This month (Jul 1–27)",
+      "label": "This month (Jul 1–30)",
       "range_start": "2026-07-01",
-      "range_end": "2026-07-27",
-      "days": 27,
+      "range_end": "2026-07-30",
+      "days": 30,
       "kpis": {
-        "sessions": 8744,
-        "conversion_label": "3.96%",
-        "sales_label": "€42,186",
-        "orders": 399
+        "sessions": 9395,
+        "conversion_label": "3.91%",
+        "sales_label": "€44,702",
+        "orders": 424
       },
       "meta": {
-        "spend_label": "145,640 kr",
-        "meta_roas": 2.42,
-        "blended_mer": 3.3
+        "spend_label": "156 168 kr",
+        "meta_roas": 2.37,
+        "blended_mer": 3.26
       },
       "orders_by_country": [
         {
           "name": "USA",
           "flag": "🇺🇸",
-          "orders": 184,
-          "revenue": "€21,312"
+          "orders": 196,
+          "revenue": "€22,596"
         },
         {
           "name": "UK",
           "flag": "🇬🇧",
-          "orders": 62,
-          "revenue": "€6,198"
+          "orders": 63,
+          "revenue": "€6,403"
         },
         {
           "name": "Italy",
           "flag": "🇮🇹",
-          "orders": 48,
-          "revenue": "€4,701"
+          "orders": 52,
+          "revenue": "€5,047"
         },
         {
           "name": "Australia",
           "flag": "🇦🇺",
-          "orders": 36,
-          "revenue": "€3,757"
+          "orders": 39,
+          "revenue": "€4,146"
         },
         {
           "name": "Germany",
           "flag": "🇩🇪",
-          "orders": 26,
-          "revenue": "€2,206"
+          "orders": 28,
+          "revenue": "€2,300"
         },
         {
           "name": "Netherlands",
           "flag": "🇳🇱",
-          "orders": 11,
-          "revenue": "€1,048"
+          "orders": 12,
+          "revenue": "€1,183"
         },
         {
           "name": "Sweden",
           "flag": "🇸🇪",
-          "orders": 11,
-          "revenue": "€877"
+          "orders": 12,
+          "revenue": "€908"
         },
         {
           "name": "France",
@@ -722,6 +722,12 @@
           "flag": "🇩🇰",
           "orders": 5,
           "revenue": "€533"
+        },
+        {
+          "name": "Belgium",
+          "flag": "🇧🇪",
+          "orders": 4,
+          "revenue": "€378"
         }
       ],
       "landing_pages": [
@@ -756,68 +762,68 @@
     {
       "id": "90d",
       "label": "Last 90 days",
-      "range_start": "2026-04-28",
-      "range_end": "2026-07-27",
+      "range_start": "2026-05-01",
+      "range_end": "2026-07-30",
       "days": 90,
       "kpis": {
-        "sessions": 29911,
+        "sessions": 30366,
         "conversion_label": "2.90%",
-        "sales_label": "€114,749",
-        "orders": 1063
+        "sales_label": "€116,612",
+        "orders": 1082
       },
       "meta": {
-        "spend_label": "432,454 kr",
+        "spend_label": "441 605 kr",
         "meta_roas": 2.05,
-        "blended_mer": 3.02
+        "blended_mer": 3.01
       },
       "orders_by_country": [
         {
           "name": "USA",
           "flag": "🇺🇸",
-          "orders": 340,
-          "revenue": "€39,432"
+          "orders": 351,
+          "revenue": "€40,588"
         },
         {
           "name": "UK",
           "flag": "🇬🇧",
-          "orders": 190,
-          "revenue": "€19,184"
+          "orders": 191,
+          "revenue": "€19,402"
         },
         {
           "name": "Italy",
           "flag": "🇮🇹",
-          "orders": 160,
-          "revenue": "€15,253"
+          "orders": 162,
+          "revenue": "€15,310"
         },
         {
           "name": "Germany",
           "flag": "🇩🇪",
-          "orders": 88,
-          "revenue": "€8,175"
+          "orders": 90,
+          "revenue": "€8,269"
         },
         {
           "name": "Australia",
           "flag": "🇦🇺",
-          "orders": 64,
-          "revenue": "€7,224"
+          "orders": 67,
+          "revenue": "€7,613"
         },
         {
           "name": "France",
           "flag": "🇫🇷",
-          "orders": 52,
-          "revenue": "€5,640"
+          "orders": 50,
+          "revenue": "€5,410"
         },
         {
           "name": "Belgium",
           "flag": "🇧🇪",
-          "orders": 41,
-          "revenue": "€5,181"
+          "orders": 42,
+          "revenue": "€5,212"
         },
         {
           "name": "Netherlands",
           "flag": "🇳🇱",
-          "orders": 38,
-          "revenue": "€4,568"
+          "orders": 39,
+          "revenue": "€4,703"
         },
         {
           "name": "Denmark",
@@ -894,7 +900,7 @@
     }
   ],
   "inventory_data": {
-    "updated_at": "2026-07-27",
+    "updated_at": "2026-07-30",
     "velocity_window_days": 30,
     "filter_note": "Add-On Box + Upgrade Box exkluderade per Lucas 2026-07-24 (irrelevanta produkter)",
     "warehouses": [
@@ -926,13 +932,13 @@
         "variant": "English",
         "velocity": 7.0,
         "stock": {
-          "bridge": 241,
-          "armarlo": 133,
-          "meeples": 241,
-          "zatu": -1,
-          "total": 614
+          "bridge": 233,
+          "armarlo": 129,
+          "meeples": 240,
+          "zatu": -2,
+          "total": 600
         },
-        "days": 87,
+        "days": 85,
         "status": "ok",
         "warehouse_scope": [
           "bridge",
@@ -948,11 +954,11 @@
         "stock": {
           "bridge": 2,
           "armarlo": 0,
-          "meeples": 7,
+          "meeples": 5,
           "zatu": 2,
-          "total": 11
+          "total": 9
         },
-        "days": 12,
+        "days": 10,
         "status": "critical",
         "warehouse_scope": [
           "meeples"
@@ -969,7 +975,7 @@
           "zatu": 3,
           "total": 275
         },
-        "days": 825,
+        "days": 999,
         "status": "ok",
         "warehouse_scope": [
           "meeples"
@@ -1012,15 +1018,15 @@
       {
         "title": "Base Game",
         "variant": "English",
-        "velocity": 2.8,
+        "velocity": 2.7,
         "stock": {
-          "bridge": 1209,
+          "bridge": 1206,
           "armarlo": 70,
           "meeples": 0,
           "zatu": 0,
-          "total": 1279
+          "total": 1276
         },
-        "days": 457,
+        "days": 467,
         "status": "ok",
         "warehouse_scope": [
           "bridge",
@@ -1032,15 +1038,15 @@
       {
         "title": "Base Game",
         "variant": "Italian",
-        "velocity": 0.5,
+        "velocity": 0.6,
         "stock": {
           "bridge": 0,
           "armarlo": 0,
-          "meeples": 26,
+          "meeples": 25,
           "zatu": 0,
-          "total": 26
+          "total": 25
         },
-        "days": 49,
+        "days": 44,
         "status": "watch",
         "warehouse_scope": [
           "meeples"
@@ -1053,9 +1059,9 @@
         "stock": {
           "bridge": 0,
           "armarlo": 0,
-          "meeples": 198,
+          "meeples": 196,
           "zatu": 0,
-          "total": 198
+          "total": 196
         },
         "days": 594,
         "status": "ok",
@@ -1100,13 +1106,13 @@
       {
         "title": "Kraken Mini-Expansion",
         "variant": "Default",
-        "velocity": 5.4,
+        "velocity": 5.3,
         "stock": {
           "bridge": -7,
           "armarlo": 0,
-          "meeples": 54,
-          "zatu": 49,
-          "total": 96
+          "meeples": 52,
+          "zatu": 48,
+          "total": 93
         },
         "days": 18,
         "status": "low",
@@ -1128,7 +1134,7 @@
           "zatu": 27,
           "total": 346
         },
-        "days": 432,
+        "days": 433,
         "status": "ok",
         "warehouse_scope": [
           "bridge",
@@ -1140,15 +1146,15 @@
       {
         "title": "Custom Insert",
         "variant": "Default",
-        "velocity": 2.4,
+        "velocity": 2.3,
         "stock": {
           "bridge": 0,
           "armarlo": 0,
           "meeples": 37,
-          "zatu": 78,
-          "total": 115
+          "zatu": 77,
+          "total": 114
         },
-        "days": 48,
+        "days": 49,
         "status": "watch",
         "warehouse_scope": [
           "bridge",
@@ -1164,11 +1170,11 @@
         "stock": {
           "bridge": -22,
           "armarlo": 0,
-          "meeples": 29,
-          "zatu": 4,
-          "total": 11
+          "meeples": 27,
+          "zatu": 3,
+          "total": 8
         },
-        "days": 3,
+        "days": 2,
         "status": "critical",
         "warehouse_scope": [
           "bridge",
@@ -1211,5 +1217,5 @@
       }
     ]
   },
-  "_n": 0
+  "_n": 1
 }
