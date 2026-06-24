@@ -2,6 +2,7 @@
   "services": {
     "web": {
       "type": "backend",
+      "path": ".",
       "command": "bun run server.ts",
       "runtime": "bun",
       "domains": ["marketing.nordicpirates.com"]
