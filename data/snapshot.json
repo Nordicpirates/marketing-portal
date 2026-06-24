@@ -32,5 +32,15 @@
   },
   "flags": [
     { "level": "warning", "title": "🚩 Flagga: Italien blöder", "body": "Näst högsta spenden (5 521 kr) men bara 6 ordrar och 0,36% klick-till-köp. Meta visar ROAS 0,27 — Shopify har €426 faktiska IT-sales (≈0,88 blended). <b>Både tracking OCH funnel är svaga.</b>", "sub": "Åtgärd väntar tills trackingen är pålitlig — rör inga annonser förrän vi vet vad som FAKTISKT presterar." }
-  ]
+  ],
+  "landing_pages": [
+    { "name": "nordicpirates.com (huvud)", "url": "https://www.nordicpirates.com", "sessions": null, "conv_pct": null, "bounce_pct": null, "note": "Polly analyserar — data kommer måndag" },
+    { "name": "tap10game.com", "url": "https://tap10game.com", "sessions": null, "conv_pct": null, "bounce_pct": null, "note": "Mål: email-signup. Polly analyserar — data kommer måndag" }
+  ],
+  "tools": {
+    "clarity_np": { "status": "pending", "label": "Microsoft Clarity", "site": "nordicpirates.com", "note": "Väntar på Clarity project ID från Lucas" },
+    "clarity_tap10": { "status": "pending", "label": "Microsoft Clarity", "site": "tap10game.com", "note": "Väntar på Clarity project ID från Lucas" },
+    "ga4_np": { "status": "active", "label": "GA4", "site": "nordicpirates.com", "note": "Aktiv" },
+    "ga4_tap10": { "status": "active", "label": "GA4 (G-Y3HYPEG938)", "site": "tap10game.com", "note": "Aktiv med consent mode v2" }
+  }
 }

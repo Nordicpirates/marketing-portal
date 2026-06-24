@@ -84,6 +84,17 @@
   footer b{color:var(--ink-soft)}
   .skeleton{background:linear-gradient(90deg,var(--cream-2) 25%,var(--paper-2) 50%,var(--cream-2) 75%);background-size:400% 100%;animation:shimmer 1.4s infinite;border-radius:6px;height:1em;display:inline-block;min-width:80px}
   @keyframes shimmer{0%{background-position:100%}100%{background-position:-100%}}
+  /* landing pages */
+  .lp-row{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:16px 18px;display:flex;flex-direction:column;gap:8px;box-shadow:var(--shadow);margin-bottom:10px}
+  .lp-name{font-weight:600;font-size:14px}
+  .lp-link{color:var(--ink);text-decoration:none}.lp-link:hover{color:var(--terra);text-decoration:underline}
+  .lp-metrics{display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+  .lp-stat{display:flex;flex-direction:column;gap:2px;text-align:center}
+  .lp-stat b{font-family:'Asul',serif;font-size:20px;color:var(--terra)}
+  .lp-stat.good b{color:var(--green)}.lp-stat.bad b{color:var(--red)}
+  .lp-stat small{font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+  .lp-pending{font-size:13px;color:var(--muted);font-style:italic}
+  .lp-polly{font-size:13px;color:var(--ink-soft);background:rgba(207,154,46,.10);border-left:3px solid var(--gold);padding:6px 10px;border-radius:0 6px 6px 0}
 </style>
 </head>
 <body>
@@ -129,6 +140,16 @@
   <section id="flags-section">
     <h2><span class="dot"></span>Flaggor</h2>
     <div id="flags-wrap"></div>
+  </section>
+
+  <section id="lp-section">
+    <h2><span class="dot"></span>Landningssidor</h2>
+    <div id="lp-panel"></div>
+  </section>
+
+  <section>
+    <h2><span class="dot"></span>Analysverktyg</h2>
+    <div class="health" id="tools-wrap"></div>
   </section>
 
   <section>
@@ -218,6 +239,40 @@ async function load() {
         <h3>${f.title}</h3>
         <p>${f.body}</p>
         ${f.sub ? `<p>${f.sub}</p>` : ''}
+      </div>`).join('');
+  }
+
+  // Landing pages
+  const lpSection = document.getElementById('lp-section');
+  const lps = d.landing_pages || [];
+  if (lps.length > 0) {
+    const lpPanel = document.getElementById('lp-panel');
+    lpPanel.innerHTML = lps.map(lp => {
+      const hasData = lp.sessions !== null;
+      return `<div class="lp-row">
+        <div class="lp-name"><a href="${lp.url}" target="_blank" class="lp-link">${lp.name}</a></div>
+        <div class="lp-metrics">
+          ${hasData ? `
+            <span class="lp-stat"><b>${lp.sessions?.toLocaleString('sv')}</b><small>sessioner</small></span>
+            <span class="lp-stat ${lp.conv_pct > 2 ? 'good' : lp.conv_pct > 1 ? '' : 'bad'}"><b>${lp.conv_pct}%</b><small>konv.</small></span>
+            <span class="lp-stat ${lp.bounce_pct < 50 ? 'good' : lp.bounce_pct < 70 ? '' : 'bad'}"><b>${lp.bounce_pct}%</b><small>bounce</small></span>
+          ` : `<span class="lp-pending">${lp.note}</span>`}
+        </div>
+        ${lp.polly_note ? `<div class="lp-polly">💡 ${lp.polly_note}</div>` : ''}
+      </div>`;
+    }).join('');
+  } else { lpSection.style.display = 'none'; }
+
+  // Tools / verktyg
+  const toolsWrap = document.getElementById('tools-wrap');
+  const tools = d.tools || {};
+  const toolList = Object.values(tools);
+  if (toolList.length > 0) {
+    toolsWrap.innerHTML = toolList.map(t => `
+      <div class="pill ${t.status === 'active' ? 'ok' : 'wait'}">
+        <div class="lbl">${t.site}</div>
+        <div class="val">${t.label} <span class="tag ${t.status === 'active' ? 'ok' : 'wait'}">${t.status === 'active' ? 'AKTIV' : 'VÄNTAR'}</span></div>
+        <div class="note">${t.note}</div>
       </div>`).join('');
   }
 }
