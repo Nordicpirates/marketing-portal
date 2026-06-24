@@ -1,0 +1,10 @@
+{
+  "services": {
+    "web": {
+      "type": "backend",
+      "command": "bun run server.ts",
+      "runtime": "bun",
+      "domains": ["marketing.nordicpirates.com"]
+    }
+  }
+}

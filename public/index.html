@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nordic Pirates — Performance Marketing HQ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Asul:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#f2ede4;--cream-2:#ece4d6;--paper:#fffdf8;--paper-2:#fbf6ec;
+    --ink:#171717;--ink-soft:#3a352e;--muted:#8a8073;
+    --terra:#c96a3d;--terra-deep:#a8512a;--gold:#cf9a2e;--gold-soft:#e7b94b;
+    --green:#2f8f4e;--red:#cf4234;
+    --line:rgba(23,23,23,.09);--shadow:0 1px 2px rgba(23,23,23,.04),0 8px 24px rgba(23,23,23,.05);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Inter',sans-serif;color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased;
+    background:radial-gradient(900px 460px at 88% -8%,rgba(201,106,61,.10),transparent 60%),
+               radial-gradient(760px 420px at -6% 4%,rgba(207,154,46,.12),transparent 58%),
+               var(--cream);
+    padding:0 0 70px}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+  header.top{padding:26px 0 24px;margin-bottom:30px;border-bottom:1px solid var(--line)}
+  .brandrow{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:14px}
+  .logochip{background:var(--ink);border-radius:13px;padding:11px 13px;display:flex;align-items:center;box-shadow:var(--shadow)}
+  .logochip img{height:26px;display:block}
+  h1{font-family:'Asul',serif;font-size:27px;font-weight:700;letter-spacing:.2px;line-height:1.15}
+  .sub{color:var(--muted);font-size:13.5px;margin-top:3px}
+  .header-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+  .stamp{font-size:12px;color:var(--muted);text-align:right;line-height:1.7}
+  .stamp b{color:var(--ink-soft)}
+  .logout{font-size:12px;color:var(--muted);text-decoration:none;padding:5px 12px;border:1px solid var(--line);border-radius:20px;background:var(--paper);transition:.15s}
+  .logout:hover{border-color:var(--terra);color:var(--terra)}
+  h2{font-family:'Asul',serif;font-size:19px;font-weight:700;margin:0 0 14px;display:flex;align-items:center;gap:9px;color:var(--ink)}
+  h2 .dot{width:9px;height:9px;border-radius:50%;background:var(--terra)}
+  section{margin-bottom:34px}
+  .health{display:grid;grid-template-columns:repeat(auto-fit,minmax(232px,1fr));gap:13px}
+  .pill{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:16px 18px 15px;
+    display:flex;flex-direction:column;gap:6px;position:relative;overflow:hidden;box-shadow:var(--shadow)}
+  .pill::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px}
+  .pill.ok::before{background:var(--green)}.pill.wait::before{background:var(--gold-soft)}.pill.bad::before{background:var(--terra)}
+  .pill .lbl{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.7px;font-weight:600}
+  .pill .val{font-size:15px;font-weight:600;display:flex;align-items:center;gap:8px;flex-wrap:wrap;color:var(--ink)}
+  .pill .note{font-size:12.5px;color:var(--ink-soft);opacity:.8}
+  .tag{font-size:10.5px;font-weight:700;padding:3px 9px;border-radius:20px;letter-spacing:.3px}
+  .tag.ok{background:rgba(47,143,78,.14);color:var(--green)}.tag.wait{background:rgba(207,154,46,.18);color:#9a7416}
+  .tag.bad{background:rgba(201,106,61,.16);color:var(--terra-deep)}
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:13px}
+  .stat{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:18px 20px;box-shadow:var(--shadow)}
+  .stat .n{font-family:'Asul',serif;font-size:27px;font-weight:700;color:var(--terra)}
+  .stat.gold .n{color:var(--gold)}.stat.ink .n{color:var(--ink)}
+  .stat .k{font-size:11.5px;color:var(--muted);margin-top:5px;text-transform:uppercase;letter-spacing:.5px;font-weight:600}
+  .panel{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:6px 8px;box-shadow:var(--shadow);overflow:hidden}
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th,td{text-align:right;padding:12px 18px}
+  th:first-child,td:first-child{text-align:left;font-weight:600}
+  thead th{font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;border-bottom:1px solid var(--line);font-weight:700}
+  tbody tr{border-bottom:1px solid rgba(23,23,23,.05)}tbody tr:last-child{border-bottom:none}
+  tbody tr:hover{background:var(--paper-2)}
+  td .bad{color:var(--red);font-weight:700}td .good{color:var(--green);font-weight:600}td .ph{color:var(--muted);font-style:italic}
+  .flag{font-size:11px;font-weight:700;color:var(--terra)}
+  .bars{display:flex;flex-direction:column;gap:13px}
+  .bar{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:16px 19px;box-shadow:var(--shadow)}
+  .bar .head{display:flex;justify-content:space-between;align-items:baseline;font-size:14px;margin-bottom:11px}
+  .bar .head b{font-weight:600}.bar .head .r{color:var(--terra);font-weight:700}
+  .track{height:11px;background:var(--cream-2);border-radius:8px;overflow:hidden}
+  .fill{height:100%;border-radius:8px;transition:width .4s ease}
+  .fill.video{background:linear-gradient(90deg,var(--terra),var(--terra-deep))}
+  .fill.static{background:linear-gradient(90deg,var(--gold-soft),var(--gold))}
+  .bar .meta{font-size:12.5px;color:var(--ink-soft);opacity:.85;margin-top:9px}
+  .callout{background:linear-gradient(180deg,rgba(201,106,61,.09),var(--paper));border:1px solid rgba(201,106,61,.28);border-radius:18px;padding:20px 22px;box-shadow:var(--shadow);margin-bottom:13px}
+  .callout h3{font-family:'Asul',serif;font-size:16px;margin-bottom:8px;color:var(--terra-deep)}
+  .callout p{font-size:14px;color:var(--ink-soft)}.callout p+p{margin-top:8px;color:var(--muted)}
+  .links{display:grid;grid-template-columns:repeat(auto-fit,minmax(232px,1fr));gap:13px}
+  a.link{display:flex;align-items:center;gap:14px;text-decoration:none;color:var(--ink);
+    background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:16px 18px;transition:.16s ease;box-shadow:var(--shadow)}
+  a.link:hover{border-color:var(--terra);transform:translateY(-2px);box-shadow:0 10px 26px rgba(201,106,61,.16)}
+  a.link .ic{font-size:21px}
+  a.link .t{font-weight:600;font-size:14px}a.link .d{font-size:12px;color:var(--muted)}
+  footer{border-top:1px solid var(--line);margin-top:42px;padding-top:22px;font-size:12px;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+  footer b{color:var(--ink-soft)}
+  .skeleton{background:linear-gradient(90deg,var(--cream-2) 25%,var(--paper-2) 50%,var(--cream-2) 75%);background-size:400% 100%;animation:shimmer 1.4s infinite;border-radius:6px;height:1em;display:inline-block;min-width:80px}
+  @keyframes shimmer{0%{background-position:100%}100%{background-position:-100%}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap brandrow">
+  <div class="brand">
+    <span class="logochip"><img src="https://www.nordicpirates.com/cdn/shop/files/LP_LOGO_vit_e2ed4c01-c782-4abb-8a90-b5cab974fd0a.png?width=120" alt="Lying Pirates"></span>
+    <div>
+      <h1>Performance Marketing HQ</h1>
+      <div class="sub">Nordic Pirates · annonser, tracking & UGC på ett ställe</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="stamp">Vecka <b id="week-label">…</b><br>uppdaterad <b id="snap-date">…</b> · Bengt 🦉</div>
+    <a class="logout" href="/logout">Logga ut</a>
+  </div>
+</div></header>
+
+<div class="wrap">
+
+  <section>
+    <h2><span class="dot"></span>Tracking-hälsa</h2>
+    <div class="health" id="tracking-grid"></div>
+  </section>
+
+  <section>
+    <h2><span class="dot"></span>Veckan i siffror</h2>
+    <div class="stats" id="stats-grid"></div>
+  </section>
+
+  <section>
+    <h2><span class="dot"></span>Länder</h2>
+    <div class="panel"><table>
+      <thead><tr><th>Land</th><th>Meta spend</th><th>Meta-ROAS</th><th>Shopify intäkt</th><th>Ordrar</th></tr></thead>
+      <tbody id="countries-body"></tbody>
+    </table></div>
+  </section>
+
+  <section>
+    <h2><span class="dot"></span>Creative — static vs video</h2>
+    <div class="bars" id="creative-bars"></div>
+  </section>
+
+  <section id="flags-section">
+    <h2><span class="dot"></span>Flaggor</h2>
+    <div id="flags-wrap"></div>
+  </section>
+
+  <section>
+    <h2><span class="dot"></span>Snabblänkar</h2>
+    <div class="links">
+      <a class="link" href="https://admin.shopify.com/store/2b988c-3" target="_blank"><span class="ic">🛒</span><span><div class="t">Shopify Admin</div><div class="d">Ordrar, sales, analytics</div></span></a>
+      <a class="link" href="https://adsmanager.facebook.com/adsmanager/manage/campaigns?act=314601282522803" target="_blank"><span class="ic">📣</span><span><div class="t">Meta Ads Manager</div><div class="d">Nordic Pirate Games-kontot</div></span></a>
+      <a class="link" href="https://drive.google.com/drive/folders/1NkEtLIr4HXCETYny5M9Jr_OsLiWNM7sT" target="_blank"><span class="ic">🎨</span><span><div class="t">Media Kit (Drive)</div><div class="d">Bilder, video, assets</div></span></a>
+      <a class="link" href="https://app.notion.com/p/627b4d10506441fc8a4e52dbdbff3a37" target="_blank"><span class="ic">📚</span><span><div class="t">UGC Library (Notion)</div><div class="d">Creator Content Library</div></span></a>
+    </div>
+  </section>
+
+  <footer>
+    <div>🏴‍☠️ <b>Nordic Pirates Performance HQ</b> · v2 · för teamet + byrån</div>
+    <div>Data: Meta Ads + Shopify · <span id="footer-week"></span> · auto-pull varje måndag</div>
+  </footer>
+</div>
+
+<script>
+async function load() {
+  let d;
+  try {
+    const r = await fetch('/api/data');
+    if (r.status === 401) { location.href = '/login'; return; }
+    d = await r.json();
+  } catch(e) { console.error(e); return; }
+
+  // Header
+  document.getElementById('week-label').textContent = d.week_label || '';
+  document.getElementById('snap-date').textContent = d.snapshot_date || '';
+  document.getElementById('footer-week').textContent = d.week_label || '';
+
+  // Tracking
+  const tg = document.getElementById('tracking-grid');
+  tg.innerHTML = (d.tracking || []).map(t => `
+    <div class="pill ${t.status}">
+      <div class="lbl">${t.label}</div>
+      <div class="val">${t.val} <span class="tag ${t.status}">${t.tag}</span></div>
+      <div class="note">${t.note}</div>
+    </div>`).join('');
+
+  // Stats
+  const s = d.stats || {};
+  const statsGrid = document.getElementById('stats-grid');
+  statsGrid.innerHTML = `
+    <div class="stat"><div class="n">${s.revenue_label||''}</div><div class="k">Intäkt (Shopify)</div></div>
+    <div class="stat ink"><div class="n">${s.spend_label||''}</div><div class="k">Meta ad spend</div></div>
+    <div class="stat gold"><div class="n">${String(s.meta_roas||'').replace('.',',')}</div><div class="k">Meta-ROAS</div></div>
+    <div class="stat gold"><div class="n">${String(s.blended_mer||'').replace('.',',')}</div><div class="k">Blended MER</div></div>
+    <div class="stat ink"><div class="n">${s.orders||''}</div><div class="k">Ordrar</div></div>`;
+
+  // Countries
+  const tbody = document.getElementById('countries-body');
+  tbody.innerHTML = (d.countries || []).map(c => `
+    <tr>
+      <td>${c.flag} ${c.name}${c.flag_alert ? ' <span class="flag">🚩</span>' : ''}</td>
+      <td>${c.spend}</td>
+      <td><span class="${c.roas_class}">${c.roas_label}</span></td>
+      <td>${c.revenue}</td>
+      <td>${c.orders}</td>
+    </tr>`).join('');
+
+  // Creative bars
+  const cv = d.creatives || {};
+  const bars = document.getElementById('creative-bars');
+  if (cv.video && cv.static) {
+    bars.innerHTML = `
+      <div class="bar">
+        <div class="head"><b>🎬 Video</b><span class="r">${cv.video.roas_label}</span></div>
+        <div class="track"><div class="fill video" style="width:${cv.video.pct}%"></div></div>
+        <div class="meta">${cv.video.note}</div>
+      </div>
+      <div class="bar">
+        <div class="head"><b>🖼️ Static (bild)</b><span class="r">${cv.static.roas_label}</span></div>
+        <div class="track"><div class="fill static" style="width:${cv.static.pct}%"></div></div>
+        <div class="meta">${cv.static.note}</div>
+      </div>`;
+  }
+
+  // Flags
+  const fw = document.getElementById('flags-wrap');
+  const flagsSection = document.getElementById('flags-section');
+  if ((d.flags || []).length === 0) { flagsSection.style.display = 'none'; }
+  else {
+    fw.innerHTML = (d.flags || []).map(f => `
+      <div class="callout">
+        <h3>${f.title}</h3>
+        <p>${f.body}</p>
+        ${f.sub ? `<p>${f.sub}</p>` : ''}
+      </div>`).join('');
+  }
+}
+
+load();
+</script>
+</body>
+</html>
