@@ -5,7 +5,7 @@
       "path": ".",
       "command": "bun run server.ts",
       "runtime": "bun",
-      "domains": ["marketing.nordicpirates.com"]
+      "domains": ["marketing.nordicpirate.com"]
     }
   }
 }
