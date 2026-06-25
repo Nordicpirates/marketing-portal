@@ -1,10 +1,39 @@
-import { readFileSync, existsSync } from "fs";
+import { readFileSync, existsSync, writeFileSync, mkdirSync } from "fs";
 import { join } from "path";
 import { createHash } from "crypto";
 
 const AUTH_PASSWORD = (process.env.AUTH_PASSWORD || "pirates2024").trim();
 const PORT = parseInt(process.env.PORT || "3000");
 const DIR = import.meta.dir;
+
+// Persistent state dir (volume-mounted in prod) for mutable checklist state.
+const STATE_DIR = process.env.STATE_DIR || join(DIR, "state");
+try { mkdirSync(STATE_DIR, { recursive: true }); } catch {}
+const TASKS_FILE = join(STATE_DIR, "tasks.json");
+const TASKS_SEED = join(DIR, "data", "tasks.json");
+
+function readTasks(): any {
+  // Seed from committed default on first run; merge new seed tasks on later deploys.
+  let seed: any = { agency_tasks: [] };
+  if (existsSync(TASKS_SEED)) { try { seed = JSON.parse(readFileSync(TASKS_SEED, "utf8")); } catch {} }
+  if (!existsSync(TASKS_FILE)) { try { writeFileSync(TASKS_FILE, JSON.stringify(seed, null, 2)); } catch {} return seed; }
+  let cur: any = { agency_tasks: [] };
+  try { cur = JSON.parse(readFileSync(TASKS_FILE, "utf8")); } catch {}
+  // Merge: keep done-state for existing ids, add any new seed tasks.
+  const doneMap = new Map((cur.agency_tasks || []).map((t: any) => [t.id, t.done]));
+  const merged = (seed.agency_tasks || []).map((t: any) => ({ ...t, done: doneMap.get(t.id) ?? t.done ?? false }));
+  const out = { ...seed, agency_tasks: merged };
+  try { writeFileSync(TASKS_FILE, JSON.stringify(out, null, 2)); } catch {}
+  return out;
+}
+
+function setTask(id: string, done: boolean): any {
+  const t = readTasks();
+  const task = (t.agency_tasks || []).find((x: any) => x.id === id);
+  if (task) task.done = done;
+  try { writeFileSync(TASKS_FILE, JSON.stringify(t, null, 2)); } catch {}
+  return t;
+}
 
 // Stateless auth token: hash of the password. Survives restarts/redeploys,
 // no in-memory session state to lose.
@@ -112,6 +141,16 @@ const server = Bun.serve({
       return new Response(readFileSync(p), {
         headers: { "Content-Type": "application/json", "Cache-Control": "no-cache" },
       });
+    }
+
+    if (path === "/api/tasks") {
+      if (req.method === "POST") {
+        const body = await req.json().catch(() => ({}));
+        if (!body.id || typeof body.done !== "boolean")
+          return Response.json({ error: "need id + done" }, { status: 400 });
+        return Response.json(setTask(body.id, body.done));
+      }
+      return Response.json(readTasks(), { headers: { "Cache-Control": "no-cache" } });
     }
 
     const html = join(DIR, "public", "index.html");

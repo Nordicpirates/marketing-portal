@@ -5,6 +5,7 @@
       "path": ".",
       "command": "bun run server.ts",
       "runtime": "bun",
+      "volumes": ["./state:/app/state:rw"],
       "domains": ["marketing.nordicpirate.com"]
     }
   }
