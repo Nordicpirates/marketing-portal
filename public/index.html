@@ -220,6 +220,16 @@
     <div id="lp-panel"></div>
   </section>
 
+  <!-- REAL ORDERS BY COUNTRY -->
+  <section id="orders-country-section">
+    <h2><span class="dot"></span>Real orders by country</h2>
+    <p class="h2sub" id="oc-period">Actual Shopify orders (billing country) — the ground truth behind the funnel.</p>
+    <div class="panel"><table>
+      <thead><tr><th>Country</th><th>Orders</th><th>Revenue</th></tr></thead>
+      <tbody id="oc-body"></tbody>
+    </table></div>
+  </section>
+
   <!-- A/B EXPERIMENTS -->
   <section id="exp-section">
     <h2><span class="dot"></span>Landing-page experiments (A/B) — by Polly</h2>
@@ -365,8 +375,8 @@ function renderPeriod(i) {
   const rangeStr = `${p.range_start} → ${p.range_end}`;
   document.getElementById('range-caption').innerHTML = `Showing <b>${p.label}</b> · ${rangeStr} · ${p.days} days`;
   const note = `${p.label} · ${rangeStr}`;
-  ['kpi-period','meta-period','lp-period','countries-period','creative-period'].forEach(id=>{
-    const el=document.getElementById(id); if(el) el.textContent = id==='lp-period' ? `${note} · ranked by sessions` : note;
+  ['kpi-period','meta-period','lp-period','countries-period','creative-period','oc-period'].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.textContent = id==='lp-period' ? `${note} · ranked by sessions` : id==='oc-period' ? `Actual Shopify orders · ${note}` : note;
   });
 
   // KPI top row (Shopify)
@@ -405,6 +415,15 @@ function renderPeriod(i) {
         </div>
       </div>`;
     }).join('');
+  }
+
+  // Real orders by country
+  const ocSec = document.getElementById('orders-country-section');
+  const oc = p.orders_by_country||[];
+  if (!oc.length){ ocSec.style.display='none'; }
+  else { ocSec.style.display='';
+    document.getElementById('oc-body').innerHTML = oc.map(c=>`
+      <tr><td>${c.flag} ${c.name}</td><td>${fmtInt(c.orders)}</td><td>${c.revenue}</td></tr>`).join('');
   }
 
   // Flags

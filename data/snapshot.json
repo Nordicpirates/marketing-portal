@@ -43,6 +43,18 @@
       "days": 7,
       "kpis": { "sessions": 1588, "conversion_label": "5.48%", "sales_label": "€12,135", "orders": 107 },
       "meta": { "spend_label": "42,053 kr", "meta_roas": 2.15, "blended_mer": 3.29 },
+      "orders_by_country": [
+        { "name": "USA", "flag": "🇺🇸", "orders": 57, "revenue": "€7,361" },
+        { "name": "UK", "flag": "🇬🇧", "orders": 19, "revenue": "€1,797" },
+        { "name": "Italy", "flag": "🇮🇹", "orders": 11, "revenue": "€845" },
+        { "name": "France", "flag": "🇫🇷", "orders": 5, "revenue": "€619" },
+        { "name": "Germany", "flag": "🇩🇪", "orders": 5, "revenue": "€481" },
+        { "name": "Australia", "flag": "🇦🇺", "orders": 5, "revenue": "€458" },
+        { "name": "Denmark", "flag": "🇩🇰", "orders": 3, "revenue": "€488" },
+        { "name": "Belgium", "flag": "🇧🇪", "orders": 3, "revenue": "€342" },
+        { "name": "Netherlands", "flag": "🇳🇱", "orders": 1, "revenue": "€167" },
+        { "name": "Austria", "flag": "🇦🇹", "orders": 1, "revenue": "€52" }
+      ],
       "landing_pages": [
         { "name": "Big Box (product)", "path": "/products/lying-pirates-big-box", "sessions": 431, "conv_pct": 7.89 },
         { "name": "Homepage", "path": "/", "sessions": 681, "conv_pct": 4.26 },
@@ -76,6 +88,18 @@
       "days": 30,
       "kpis": { "sessions": 8723, "conversion_label": "3.28%", "sales_label": "€40,546", "orders": 370 },
       "meta": { "spend_label": "167,071 kr", "meta_roas": 1.75, "blended_mer": 2.77 },
+      "orders_by_country": [
+        { "name": "USA", "flag": "🇺🇸", "orders": 108, "revenue": "€13,574" },
+        { "name": "Italy", "flag": "🇮🇹", "orders": 67, "revenue": "€6,288" },
+        { "name": "UK", "flag": "🇬🇧", "orders": 59, "revenue": "€5,731" },
+        { "name": "Germany", "flag": "🇩🇪", "orders": 40, "revenue": "€3,775" },
+        { "name": "France", "flag": "🇫🇷", "orders": 24, "revenue": "€2,897" },
+        { "name": "Belgium", "flag": "🇧🇪", "orders": 18, "revenue": "€2,397" },
+        { "name": "Australia", "flag": "🇦🇺", "orders": 18, "revenue": "€1,912" },
+        { "name": "Denmark", "flag": "🇩🇰", "orders": 15, "revenue": "€2,134" },
+        { "name": "Netherlands", "flag": "🇳🇱", "orders": 11, "revenue": "€1,192" },
+        { "name": "Austria", "flag": "🇦🇹", "orders": 6, "revenue": "€548" }
+      ],
       "landing_pages": [
         { "name": "Big Box (product)", "path": "/products/lying-pirates-big-box", "sessions": 3652, "conv_pct": 3.15 },
         { "name": "Homepage", "path": "/", "sessions": 2307, "conv_pct": 3.42 },
@@ -98,6 +122,18 @@
       "days": 25,
       "kpis": { "sessions": 5361, "conversion_label": "4.50%", "sales_label": "€34,438", "orders": 307 },
       "meta": { "spend_label": "144,416 kr", "meta_roas": 1.72, "blended_mer": 2.72 },
+      "orders_by_country": [
+        { "name": "USA", "flag": "🇺🇸", "orders": 106, "revenue": "€13,263" },
+        { "name": "UK", "flag": "🇬🇧", "orders": 51, "revenue": "€5,197" },
+        { "name": "Italy", "flag": "🇮🇹", "orders": 43, "revenue": "€3,832" },
+        { "name": "France", "flag": "🇫🇷", "orders": 21, "revenue": "€2,550" },
+        { "name": "Germany", "flag": "🇩🇪", "orders": 21, "revenue": "€2,078" },
+        { "name": "Australia", "flag": "🇦🇺", "orders": 18, "revenue": "€1,912" },
+        { "name": "Belgium", "flag": "🇧🇪", "orders": 16, "revenue": "€2,127" },
+        { "name": "Denmark", "flag": "🇩🇰", "orders": 13, "revenue": "€1,864" },
+        { "name": "Netherlands", "flag": "🇳🇱", "orders": 9, "revenue": "€1,012" },
+        { "name": "Austria", "flag": "🇦🇹", "orders": 5, "revenue": "€504" }
+      ],
       "landing_pages": [
         { "name": "Homepage", "path": "/", "sessions": 1910, "conv_pct": 3.66 },
         { "name": "Big Box (product)", "path": "/products/lying-pirates-big-box", "sessions": 1700, "conv_pct": 5.71 },
@@ -118,6 +154,18 @@
       "days": 90,
       "kpis": { "sessions": 25630, "conversion_label": "2.03%", "sales_label": "€72,521", "orders": 650 },
       "meta": { "spend_label": "275,528 kr", "meta_roas": 1.91, "blended_mer": 3.00 },
+      "orders_by_country": [
+        { "name": "USA", "flag": "🇺🇸", "orders": 161, "revenue": "€19,947" },
+        { "name": "UK", "flag": "🇬🇧", "orders": 120, "revenue": "€12,119" },
+        { "name": "Italy", "flag": "🇮🇹", "orders": 97, "revenue": "€9,028" },
+        { "name": "Germany", "flag": "🇩🇪", "orders": 58, "revenue": "€5,329" },
+        { "name": "France", "flag": "🇫🇷", "orders": 44, "revenue": "€5,069" },
+        { "name": "Australia", "flag": "🇦🇺", "orders": 41, "revenue": "€5,024" },
+        { "name": "Belgium", "flag": "🇧🇪", "orders": 33, "revenue": "€4,550" },
+        { "name": "Denmark", "flag": "🇩🇰", "orders": 26, "revenue": "€3,761" },
+        { "name": "Netherlands", "flag": "🇳🇱", "orders": 29, "revenue": "€3,476" },
+        { "name": "Austria", "flag": "🇦🇹", "orders": 17, "revenue": "€2,001" }
+      ],
       "landing_pages": [
         { "name": "Big Box (product)", "path": "/products/lying-pirates-big-box", "sessions": 13937, "conv_pct": 1.64 },
         { "name": "Homepage", "path": "/", "sessions": 6462, "conv_pct": 2.31 },
