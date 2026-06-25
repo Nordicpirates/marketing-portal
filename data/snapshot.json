@@ -1,6 +1,7 @@
 {
   "generated_at": "2026-06-25",
   "owner": "Bengt 🦉 (data) + Polly (analysis)",
+  "currency_note": "Revenue in EUR (store currency). Meta spend in SEK. Blended MER converts spend at ~11.4 SEK/EUR.",
   "tracking_ids": {
     "ad_account": { "label": "Meta Ad Account", "value": "314601282522803", "name": "Nordic Pirate Games" },
     "nordicpirates": {
@@ -31,22 +32,25 @@
     { "id": "aem", "label": "Aggregated Event Measurement", "val": "Needs reconfig", "status": "wait", "tag": "AGENCY", "note": "Purchase #1 (NP), Lead #1 (Tap10). See action list." },
     { "id": "utm", "label": "UTM tags on ads", "val": "Missing", "status": "bad", "tag": "AGENCY", "note": "Why only €35 is attributed to social. See action list." }
   ],
+  "default_period": "7d",
   "periods": [
     {
-      "id": "2026-W25",
-      "label": "Jun 17–23, 2026",
-      "range_start": "2026-06-17",
-      "range_end": "2026-06-23",
+      "id": "7d",
+      "label": "Last 7 days",
+      "range_start": "2026-06-18",
+      "range_end": "2026-06-24",
       "days": 7,
-      "stats": {
-        "revenue_eur": 10675,
-        "revenue_label": "€10,675",
-        "spend_sek": 44167,
-        "spend_label": "44,167 kr",
-        "meta_roas": 1.82,
-        "blended_mer": 2.75,
-        "orders": 95
-      },
+      "kpis": { "sessions": 1588, "conversion_label": "5.48%", "sales_label": "€12,135", "orders": 107 },
+      "meta": { "spend_label": "42,053 kr", "meta_roas": 2.15, "blended_mer": 3.29 },
+      "landing_pages": [
+        { "name": "Big Box (product)", "path": "/products/lying-pirates-big-box", "sessions": 431, "conv_pct": 7.89 },
+        { "name": "Homepage", "path": "/", "sessions": 681, "conv_pct": 4.26 },
+        { "name": "Base Game (product)", "path": "/products/lying-pirates-base-game", "sessions": 198, "conv_pct": 4.04 },
+        { "name": "Cities of Greed", "path": "/products/cities-of-greed", "sessions": 42, "conv_pct": 4.76 },
+        { "name": "Custom Insert", "path": "/products/lying-pirates-custom-insert", "sessions": 22, "conv_pct": 4.55 },
+        { "name": "8-Player Components", "path": "/products/8-player-components-copy", "sessions": 15, "conv_pct": 6.67 },
+        { "name": "DE homepage", "path": "/de", "sessions": 14, "conv_pct": 0.0 }
+      ],
       "countries": [
         { "name": "USA", "flag": "🇺🇸", "spend": "21,692 kr", "roas": 2.57, "roas_label": "2.57", "revenue": "€6,518", "orders": 52, "roas_class": "good" },
         { "name": "UK", "flag": "🇬🇧", "spend": "3,442 kr", "roas": 2.57, "roas_label": "2.57", "revenue": "€1,725", "orders": 17, "roas_class": "good" },
@@ -60,11 +64,71 @@
         "static": { "pct": 9, "roas_label": "ROAS ~4.8–8.6", "note": "Only 9% of budget but far more efficient. <i>collector_combinedbox</i> 12.83 · <i>story_style_testimonial</i> 9.88. Candidate to scale — once tracking is trustworthy." }
       },
       "flags": [
-        { "level": "warning", "title": "🚩 Flag: Italy is bleeding", "body": "Second-highest spend (5,521 kr) but only 6 orders and 0.36% click-to-purchase. Meta shows ROAS 0.27 — Shopify has €426 of actual IT sales (≈0.88 blended). <b>Both tracking AND funnel are weak.</b>", "sub": "Holding action until tracking is trustworthy — don't touch any ads until we know what's ACTUALLY performing." }
-      ],
+        { "level": "warning", "title": "🚩 Italy is bleeding", "body": "Second-highest spend (5,521 kr) but only 6 orders and 0.36% click-to-purchase. Meta shows ROAS 0.27 — Shopify has €426 of actual IT sales (≈0.88 blended). <b>Both tracking AND funnel are weak.</b>", "sub": "Holding action until tracking is trustworthy — don't touch any ads until we know what's ACTUALLY performing." }
+      ]
+    },
+    {
+      "id": "30d",
+      "label": "Last 30 days",
+      "range_start": "2026-05-26",
+      "range_end": "2026-06-24",
+      "days": 30,
+      "kpis": { "sessions": 8723, "conversion_label": "3.28%", "sales_label": "€40,546", "orders": 370 },
+      "meta": { "spend_label": "167,071 kr", "meta_roas": 1.75, "blended_mer": 2.77 },
       "landing_pages": [
-        { "name": "nordicpirates.com (main)", "url": "https://www.nordicpirates.com", "sessions": null, "conv_pct": null, "bounce_pct": null, "note": "Polly analyzing — Clarity data incoming Monday" },
-        { "name": "tap10game.com", "url": "https://tap10game.com", "sessions": null, "conv_pct": null, "bounce_pct": null, "note": "Goal: email signup. Polly analyzing — data incoming Monday" }
+        { "name": "Big Box (product)", "path": "/products/lying-pirates-big-box", "sessions": 3652, "conv_pct": 3.15 },
+        { "name": "Homepage", "path": "/", "sessions": 2307, "conv_pct": 3.42 },
+        { "name": "Base Game (product)", "path": "/products/lying-pirates-base-game", "sessions": 983, "conv_pct": 3.46 },
+        { "name": "FR — Grande Boîte", "path": "/fr/products/menteurs-pirates-grand-boite", "sessions": 558, "conv_pct": 0.54, "alert": true },
+        { "name": "Cities of Greed", "path": "/products/cities-of-greed", "sessions": 185, "conv_pct": 2.70 },
+        { "name": "Custom Insert", "path": "/products/lying-pirates-custom-insert", "sessions": 110, "conv_pct": 1.82 },
+        { "name": "8-Player Components", "path": "/products/8-player-components-copy", "sessions": 70, "conv_pct": 4.29 },
+        { "name": "Add-on Box", "path": "/products/add-on-box", "sessions": 61, "conv_pct": 1.64 }
+      ],
+      "flags": [
+        { "level": "warning", "title": "🚩 French landing page is leaking traffic", "body": "<b>/fr/products/menteurs-pirates-grand-boite</b> pulled 558 sessions but converts at <b>0.54%</b> — vs 3.1–3.5% for the English equivalents. That's paid traffic landing on a page that barely sells.", "sub": "Action for Polly + agency: audit the French page (translation, price display, shipping copy, checkout language) before we spend more on FR/IT." }
+      ]
+    },
+    {
+      "id": "thismonth",
+      "label": "This month (Jun 1–25)",
+      "range_start": "2026-06-01",
+      "range_end": "2026-06-25",
+      "days": 25,
+      "kpis": { "sessions": 5361, "conversion_label": "4.50%", "sales_label": "€34,438", "orders": 307 },
+      "meta": { "spend_label": "144,416 kr", "meta_roas": 1.72, "blended_mer": 2.72 },
+      "landing_pages": [
+        { "name": "Homepage", "path": "/", "sessions": 1910, "conv_pct": 3.66 },
+        { "name": "Big Box (product)", "path": "/products/lying-pirates-big-box", "sessions": 1700, "conv_pct": 5.71 },
+        { "name": "Base Game (product)", "path": "/products/lying-pirates-base-game", "sessions": 702, "conv_pct": 3.70 },
+        { "name": "Cities of Greed", "path": "/products/cities-of-greed", "sessions": 174, "conv_pct": 2.87 },
+        { "name": "Custom Insert", "path": "/products/lying-pirates-custom-insert", "sessions": 89, "conv_pct": 2.25 },
+        { "name": "FR — Grande Boîte", "path": "/fr/products/menteurs-pirates-grand-boite", "sessions": 62, "conv_pct": 3.23 },
+        { "name": "Add-on Box", "path": "/products/add-on-box", "sessions": 61, "conv_pct": 1.64 },
+        { "name": "8-Player Components", "path": "/products/8-player-components-copy", "sessions": 58, "conv_pct": 5.17 }
+      ],
+      "flags": []
+    },
+    {
+      "id": "90d",
+      "label": "Last 90 days",
+      "range_start": "2026-03-27",
+      "range_end": "2026-06-24",
+      "days": 90,
+      "kpis": { "sessions": 25630, "conversion_label": "2.03%", "sales_label": "€72,521", "orders": 650 },
+      "meta": { "spend_label": "275,528 kr", "meta_roas": 1.91, "blended_mer": 3.00 },
+      "landing_pages": [
+        { "name": "Big Box (product)", "path": "/products/lying-pirates-big-box", "sessions": 13937, "conv_pct": 1.64 },
+        { "name": "Homepage", "path": "/", "sessions": 6462, "conv_pct": 2.31 },
+        { "name": "Base Game (product)", "path": "/products/lying-pirates-base-game", "sessions": 1849, "conv_pct": 2.65 },
+        { "name": "FR — Grande Boîte", "path": "/fr/products/menteurs-pirates-grand-boite", "sessions": 1085, "conv_pct": 0.28, "alert": true },
+        { "name": "Cities of Greed", "path": "/products/cities-of-greed", "sessions": 247, "conv_pct": 3.24 },
+        { "name": "FR — Base Jeu", "path": "/fr/products/menteurs-pirates-base-jeu", "sessions": 239, "conv_pct": 1.67 },
+        { "name": "Custom Insert", "path": "/products/lying-pirates-custom-insert", "sessions": 151, "conv_pct": 1.99 },
+        { "name": "All collection", "path": "/collections/all", "sessions": 115, "conv_pct": 2.61 }
+      ],
+      "flags": [
+        { "level": "warning", "title": "🚩 French pages chronically underperform", "body": "Over 90 days the French Grande Boîte page took <b>1,085 sessions at 0.28% conversion</b>. The English Big Box at the same time did 1.64%+ on far more traffic. French is a structural leak, not a one-week blip.", "sub": "Worth a dedicated fix sprint: localized pricing, FR checkout, shipping clarity — or pause FR paid traffic until the page is fixed." }
       ]
     }
   ]
