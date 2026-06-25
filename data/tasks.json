@@ -9,10 +9,10 @@
       "done": false
     },
     {
-      "id": "fr-page",
+      "id": "lp-attribution",
       "priority": "high",
-      "title": "Fix or pause the French landing page",
-      "detail": "<b>This is the real lever.</b> /fr/menteurs-pirates-grand-boite converts at 0.28–0.54% vs 3%+ for English — over 90 days that's 1,085 sessions of mostly paid traffic barely selling. Audit translation, pricing, shipping copy, FR checkout. Decide: fix or pause FR/IT spend until fixed.",
+      "title": "Fix conversion tracking on the localized landing pages — do NOT pause spend",
+      "detail": "<b>Reality check from Shopify orders (90d): Italy = 97 orders / €9,028 (our 3rd biggest market), Germany 58, France 44.</b> The non-EN LPs show ~0% conversion in GA4 but the markets clearly convert (IT session conv 1.72%, DE 2.86%, FR 1.73%). So the LP-level conversion tracking is undercounting non-EN purchases — likely the GA4 currency bug or LP→checkout attribution drop. Fix the measurement; the funnel itself works.",
       "done": false
     },
     {
