@@ -1,9 +1,9 @@
 {
   "updated": "2026-06-22",
   "owner": "Polly",
-  "source": "GA4 property 250338585, last 7 days, utm_content split (lp_a/lp_b)",
+  "source": "GA4 property 250338585 (last 7d, utm_content split) + Shopify orders (90d, by country)",
   "analyst": "Polly",
-  "note": "A/B landing-page experiments. Performance refreshed weekly by Polly. UI reads top-level `experiments`; extra metadata (aggregate_7d, built_not_yet_live) is preserved for future UI surfaces.",
+  "note": "A/B landing-page experiments. Performance refreshed weekly by Polly. UI reads top-level `experiments`; extra fields (aggregate_7d, real_sales_90d, ga4_country_28d_crosscheck, built_not_yet_live) are preserved for future UI surfaces.",
   "experiments": [
     {
       "name": "Big Box LP — Headline & Hero (EN)",
@@ -32,12 +32,12 @@
         "lp_a": { "sessions": 2861, "conv_pct": 0.38, "txn": 11 },
         "lp_b": { "sessions": 2912, "conv_pct": 0.65, "txn": 19 }
       },
-      "polly_note": "B leads this week (0.65% vs 0.38% on all-language aggregate; 19 vs 11 transactions). BUT the prior 7d window had A ahead — the swing means we are NOT yet at statistical significance (need ~100 conversions/variant; we have 11-19). KEEP RUNNING 2-3 more weeks before declaring a winner. No action to change variants yet."
+      "polly_note": "B leads this week (0.65% vs 0.38% on all-language aggregate; 19 vs 11 transactions). BUT the prior 7d window had A ahead — the swing means we are NOT yet at statistical significance (need ~100 conversions/variant; we have 11-19). KEEP RUNNING 2-3 more weeks before declaring a winner. No action to change variants yet. NOTE: GA4 conv% here understates true conversion because LP->checkout attribution is lossy (see localized experiment) — treat A-vs-B as relative, not absolute."
     },
     {
       "name": "Localized LP variants (IT / FR / DE)",
       "url": "https://nordicpirates.com/lp/play-it | play-fr | play-de",
-      "status": "paused-recommended",
+      "status": "tracking-issue",
       "hypothesis": "Translated A/B variants would convert non-EN paid traffic at rates comparable to EN.",
       "variants": [
         { "name": "IT-A", "url": "https://nordicpirates.com/lp/lying-pirates-cities-of-greed-big-box-it/", "sessions": 714, "bounce_pct": 19.3, "conv_pct": 0.00, "winner": false },
@@ -47,14 +47,25 @@
         { "name": "DE-A", "url": "https://nordicpirates.com/lp/lying-pirates-cities-of-greed-big-box-de/", "sessions": 212, "bounce_pct": 20.8, "conv_pct": 0.00, "winner": false },
         { "name": "DE-B", "url": "https://nordicpirates.com/lp/lying-pirates-cities-of-greed-big-box-b-de/", "sessions": 183, "bounce_pct": 19.1, "conv_pct": 0.00, "winner": false }
       ],
-      "polly_note": "RED FLAG. IT is the single biggest traffic source (~1,430 sessions/wk, 41% of LP traffic) yet converts at ~0.07%. FR and DE also near-zero. EN converts ~0.65%. The failure is consistent across ALL non-EN locales regardless of A/B copy — that rules out the landing-page copy as the cause. Root cause is structural, not creative: most likely (a) checkout/currency/shipping friction in those locales, (b) low-intent or low-quality paid traffic from the IT/FR/DE ad sets, or (c) the GA4 currency bug masking real non-EN purchases. RECOMMENDATION: do NOT iterate on translations yet. First diagnose checkout in IT/FR/DE (place a test order each), then audit ad-set quality (CTR, audience) in Meta. If checkout is fine and traffic is junk, PAUSE IT/FR/DE paid spend — it is bleeding budget at ~0% return."
+      "real_sales_90d": {
+        "note": "These markets DO convert and sell. The ~0% on the LP rows above is a MEASUREMENT artifact, not a funnel failure.",
+        "IT": { "orders": 97, "revenue_eur": 9028, "shopify_session_conv_pct": 1.72, "rank": "3rd-largest market" },
+        "DE": { "orders": 58, "revenue_eur": 5329, "shopify_session_conv_pct": 2.86 },
+        "FR": { "orders": 44, "revenue_eur": 5069, "shopify_session_conv_pct": 1.73 }
+      },
+      "ga4_country_28d_crosscheck": {
+        "Italy": { "sessions": 8084, "txn": 34 },
+        "France": { "sessions": 3281, "txn": 13 },
+        "Germany": { "sessions": 2797, "txn": 18 }
+      },
+      "polly_note": "CORRECTED (was 'paused-recommended'). Root cause is the LP->checkout CONVERSION MEASUREMENT, not the funnel. Cross-checked three ways: (1) Shopify orders 90d — IT 97 orders/€9,028 (our 3rd-largest market), DE 58/€5,329, FR 44/€5,069; (2) Shopify session conv — IT 1.72%, FR 1.73%, DE 2.86% (all normal); (3) GA4 by-country 28d — IT 34 txn, FR 13, DE 18 (purchases clearly exist). The localized LP rows read ~0% only because LP->checkout attribution is lost (GA4 currency/attribution bug surfaced earlier). DO NOT PAUSE IT/FR/DE — that would kill our 3rd-largest market. ACTION: fix the attribution so LP-level conv reflects reality (align GA4 purchase currency + ensure same GA4 property fires through checkout); until then, judge localized LP performance by engagement (bounce, scroll) + market-level Shopify orders, not LP conv%."
     }
   ],
   "built_not_yet_live": [
     {
       "name": "V3 (bundle widget + UGC reel + FB comment proof)",
       "mockup": "https://mockup.gate1.dev/lyingpirates-polly/lying-pirates-v3.html",
-      "note": "Ready to promote to a live A/B vs B once current test concludes. Tests bundle-driven AOV hypothesis — distinct from current copy test."
+      "note": "Ready to promote to a live A/B vs B once current test concludes."
     },
     {
       "name": "Try the Game (interactive 3-phase playable demo)",
