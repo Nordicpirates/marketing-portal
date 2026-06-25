@@ -2,52 +2,38 @@
   "updated": "2026-06-25",
   "agency_tasks": [
     {
-      "id": "aem-np",
-      "priority": "high",
-      "title": "Reconfigure Aggregated Event Measurement for nordicpirates.com",
-      "detail": "Domain is now verified. Set the 8 prioritized web events with <b>Purchase as event #1</b>. This is what unblocks iOS/ATT attribution on our main store. Pixel 832599113757136.",
-      "done": false
-    },
-    {
-      "id": "aem-tap10",
-      "priority": "high",
-      "title": "Configure AEM for tap10game.com",
-      "detail": "Goal here is signups, NOT purchase. Set <b>Lead / CompleteRegistration as event #1</b>. Purchases happen on Kickstarter + nordicpirates.com, not on tap10. Pixel 26904702632559365.",
-      "done": false
-    },
-    {
       "id": "utm",
       "priority": "high",
-      "title": "Add UTM parameters to ALL active Meta ads",
-      "detail": "Use the URL parameters field at ad level: <code>utm_source=facebook&utm_medium=paid&utm_campaign={{campaign.name}}&utm_content={{ad.name}}</code> — right now only €35 of €10.7k revenue is attributed to social because this is missing.",
+      "title": "Add UTM parameters to all active Meta ads",
+      "detail": "Agency confirmed they're adding this today (Jun 25). Use at ad level: <code>utm_source=facebook&utm_medium=paid&utm_campaign={{campaign.name}}&utm_content={{ad.name}}</code> — gives clean source/medium in GA4 + Shopify reporting.",
       "done": false
     },
     {
-      "id": "emq",
+      "id": "fr-page",
       "priority": "high",
-      "title": "Verify Event Match Quality + event_id deduplication",
-      "detail": "In Events Manager for pixel 832599113757136, confirm browser Pixel and server-side CAPI events share an <code>event_id</code> so they dedupe. Report the EMQ score for Purchase — we want 7.0+.",
+      "title": "Fix or pause the French landing page",
+      "detail": "<b>This is the real lever.</b> /fr/menteurs-pirates-grand-boite converts at 0.28–0.54% vs 3%+ for English — over 90 days that's 1,085 sessions of mostly paid traffic barely selling. Audit translation, pricing, shipping copy, FR checkout. Decide: fix or pause FR/IT spend until fixed.",
       "done": false
     },
     {
-      "id": "tap10-lead",
+      "id": "tap10-capi",
       "priority": "medium",
-      "title": "Confirm Lead event fires on tap10game.com email signup",
-      "detail": "Test the email capture form end-to-end and confirm a Lead event lands in Events Manager (browser + CAPI). Send us a screenshot of the test event.",
-      "done": false
-    },
-    {
-      "id": "retargeting",
-      "priority": "medium",
-      "title": "Audit retargeting audiences",
-      "detail": "Website-visitor and purchaser custom audiences currently hold only ~20 members each — they should be in the thousands. Confirm they begin refilling once AEM + UTM fixes are live, and rebuild any that are broken.",
+      "title": "Add Conversions API (CAPI) to tap10game.com",
+      "detail": "Agency confirmed the Lead event fires, but flagged tap10 is a <b>manual browser-pixel only — no server-side CAPI</b>. For a paid-traffic lead page that's worth closing. Bengt can wire server-side Lead events (the page is ours, not Shopify).",
       "done": false
     },
     {
       "id": "clarity-tap10",
-      "priority": "low",
+      "priority": "medium",
       "title": "Provide Microsoft Clarity project for tap10game.com",
-      "detail": "We have Clarity live on nordicpirates.com (ID wuzvreap5g). Create / share the Clarity project ID for tap10game.com and we'll wire the (consent-gated) snippet.",
+      "detail": "Clarity is live on nordicpirates.com (ID wuzvreap5g). Create / share a Clarity project ID for tap10game.com and we'll wire the (consent-gated) snippet to watch signup behaviour.",
+      "done": false
+    },
+    {
+      "id": "retargeting",
+      "priority": "low",
+      "title": "Confirm retargeting audiences are populating",
+      "detail": "Tracking is healthy (Purchase EMQ 8.6), so website-visitor / purchaser audiences should be filling. Quick confirm they're at expected size and being used in the funnel.",
       "done": false
     },
     {

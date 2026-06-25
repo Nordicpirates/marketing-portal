@@ -25,12 +25,13 @@
     }
   },
   "tracking": [
-    { "id": "np_domain", "label": "Domain verification", "val": "nordicpirates.com", "status": "ok", "tag": "VERIFIED", "note": "Fixed Jun 24 — the root cause behind broken attribution." },
-    { "id": "tap10_domain", "label": "Domain verification", "val": "tap10game.com", "status": "ok", "tag": "VERIFIED", "note": "Lead goal (signups), not purchase." },
-    { "id": "capi", "label": "CAPI · Shopify → Meta", "val": "Maximum", "status": "ok", "tag": "ON", "note": "Server-side events confirmed firing (last: today)." },
-    { "id": "clarity", "label": "Microsoft Clarity", "val": "nordicpirates.com", "status": "ok", "tag": "LIVE", "note": "Heatmaps + session recordings via Shopify app." },
-    { "id": "aem", "label": "Aggregated Event Measurement", "val": "Needs reconfig", "status": "wait", "tag": "AGENCY", "note": "Purchase #1 (NP), Lead #1 (Tap10). See action list." },
-    { "id": "utm", "label": "UTM tags on ads", "val": "Missing", "status": "bad", "tag": "AGENCY", "note": "Why only €35 is attributed to social. See action list." }
+    { "id": "emq", "label": "Event Match Quality (Purchase)", "val": "8.6 / 10", "status": "ok", "tag": "HEALTHY", "note": "Verified in Events Manager. Email/external_id 100%, phone 96%. Target is 7+. Tracking is solid." },
+    { "id": "capi", "label": "CAPI · Shopify → Meta", "val": "Real-time", "status": "ok", "tag": "ON", "note": "Server + browser events both firing; dedup handled by native Shopify×Meta integration." },
+    { "id": "np_domain", "label": "Domain verification", "val": "nordicpirates.com", "status": "ok", "tag": "VERIFIED", "note": "Done Jun 24. Good hygiene (no longer required for AEM since Meta automated it)." },
+    { "id": "clarity", "label": "Microsoft Clarity", "val": "nordicpirates.com", "status": "ok", "tag": "LIVE", "note": "Heatmaps + session recordings via Shopify app (ID wuzvreap5g)." },
+    { "id": "aem", "label": "Aggregated Event Measurement", "val": "Auto (Meta)", "status": "ok", "tag": "AUTOMATED", "note": "Meta removed manual AEM config Jun 2025 — events are aggregated automatically. Nothing to set." },
+    { "id": "utm", "label": "UTM tags on ads", "val": "Being added", "status": "wait", "tag": "AGENCY", "note": "Agency adding today. For clean GA4/Shopify source reporting — Meta tracking itself is unaffected." },
+    { "id": "tap10_capi", "label": "CAPI · tap10game.com", "val": "Browser only", "status": "wait", "tag": "GAP", "note": "Lead event fires client-side; no server-side CAPI yet. On the action list." }
   ],
   "default_period": "7d",
   "periods": [
