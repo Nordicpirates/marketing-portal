@@ -1,30 +1,65 @@
 {
-  "updated": "2026-06-25",
+  "updated": "2026-06-22",
   "owner": "Polly",
-  "note": "A/B landing-page experiments built by Polly. Performance refreshed weekly. Empty fields = awaiting Polly's data pull.",
+  "source": "GA4 property 250338585, last 7 days, utm_content split (lp_a/lp_b)",
+  "analyst": "Polly",
+  "note": "A/B landing-page experiments. Performance refreshed weekly by Polly. UI reads top-level `experiments`; extra metadata (aggregate_7d, built_not_yet_live) is preserved for future UI surfaces.",
   "experiments": [
     {
-      "name": "Board Game Sale — dedicated LP",
-      "url": "https://lp.nordicpirates.gate1.dev/board-game-sale",
-      "status": "live",
-      "hypothesis": "A focused single-product sale page converts paid traffic better than the Shopify product page.",
+      "name": "Big Box LP — Headline & Hero (EN)",
+      "url": "https://nordicpirates.com/lp/play",
+      "status": "testing",
+      "hypothesis": "Variant B (price-anchored CTA 'Get Your Box · From €39.95', single Big Box hero, prominent stats, scrolling reviews, FAQ) converts better than Variant A (carousel of all 3 products, 'Choose Your Adventure' CTA).",
       "variants": [
-        { "name": "Control — Shopify Big Box page", "url": "https://www.nordicpirates.com/products/lying-pirates-big-box", "sessions": null, "conv_pct": null, "winner": false },
-        { "name": "Variant — dedicated sale LP", "url": "https://lp.nordicpirates.gate1.dev/board-game-sale", "sessions": null, "conv_pct": null, "winner": false }
+        {
+          "name": "Control (A)",
+          "url": "https://nordicpirates.com/lp/lying-pirates-cities-of-greed-big-box/",
+          "sessions": 1875,
+          "bounce_pct": 13.4,
+          "conv_pct": 0.64,
+          "winner": false
+        },
+        {
+          "name": "Variant B",
+          "url": "https://nordicpirates.com/lp/lying-pirates-cities-of-greed-big-box-b/",
+          "sessions": 2033,
+          "bounce_pct": 16.3,
+          "conv_pct": 0.69,
+          "winner": true
+        }
       ],
-      "polly_note": "Awaiting traffic + conversion split from Polly (GA4 / experiment data)."
+      "aggregate_7d": {
+        "lp_a": { "sessions": 2861, "conv_pct": 0.38, "txn": 11 },
+        "lp_b": { "sessions": 2912, "conv_pct": 0.65, "txn": 19 }
+      },
+      "polly_note": "B leads this week (0.65% vs 0.38% on all-language aggregate; 19 vs 11 transactions). BUT the prior 7d window had A ahead — the swing means we are NOT yet at statistical significance (need ~100 conversions/variant; we have 11-19). KEEP RUNNING 2-3 more weeks before declaring a winner. No action to change variants yet."
     },
     {
-      "name": "Multilingual variants (EN / FR / DE / IT)",
-      "url": "https://www.nordicpirates.com",
-      "status": "testing",
-      "hypothesis": "Localized landing pages lift conversion in non-English markets vs the English page with auto-translate.",
+      "name": "Localized LP variants (IT / FR / DE)",
+      "url": "https://nordicpirates.com/lp/play-it | play-fr | play-de",
+      "status": "paused-recommended",
+      "hypothesis": "Translated A/B variants would convert non-EN paid traffic at rates comparable to EN.",
       "variants": [
-        { "name": "EN (control)", "url": "https://www.nordicpirates.com/products/lying-pirates-big-box", "sessions": null, "conv_pct": null, "winner": false },
-        { "name": "FR", "url": "https://www.nordicpirates.com/fr/products/menteurs-pirates-grand-boite", "sessions": null, "conv_pct": null, "winner": false },
-        { "name": "DE", "url": "https://www.nordicpirates.com/de", "sessions": null, "conv_pct": null, "winner": false }
+        { "name": "IT-A", "url": "https://nordicpirates.com/lp/lying-pirates-cities-of-greed-big-box-it/", "sessions": 714, "bounce_pct": 19.3, "conv_pct": 0.00, "winner": false },
+        { "name": "IT-B", "url": "https://nordicpirates.com/lp/lying-pirates-cities-of-greed-big-box-b-it/", "sessions": 713, "bounce_pct": 25.5, "conv_pct": 0.14, "winner": false },
+        { "name": "FR-A", "url": "https://nordicpirates.com/lp/lying-pirates-cities-of-greed-big-box-fr/", "sessions": 302, "bounce_pct": 20.2, "conv_pct": 0.00, "winner": false },
+        { "name": "FR-B", "url": "https://nordicpirates.com/lp/lying-pirates-cities-of-greed-big-box-b-fr/", "sessions": 284, "bounce_pct": 24.3, "conv_pct": 0.35, "winner": false },
+        { "name": "DE-A", "url": "https://nordicpirates.com/lp/lying-pirates-cities-of-greed-big-box-de/", "sessions": 212, "bounce_pct": 20.8, "conv_pct": 0.00, "winner": false },
+        { "name": "DE-B", "url": "https://nordicpirates.com/lp/lying-pirates-cities-of-greed-big-box-b-de/", "sessions": 183, "bounce_pct": 19.1, "conv_pct": 0.00, "winner": false }
       ],
-      "polly_note": "Note from Bengt's data: FR page is at 0.28–0.54% conversion vs 3%+ EN. Polly to confirm variant split + recommend fix or pause."
+      "polly_note": "RED FLAG. IT is the single biggest traffic source (~1,430 sessions/wk, 41% of LP traffic) yet converts at ~0.07%. FR and DE also near-zero. EN converts ~0.65%. The failure is consistent across ALL non-EN locales regardless of A/B copy — that rules out the landing-page copy as the cause. Root cause is structural, not creative: most likely (a) checkout/currency/shipping friction in those locales, (b) low-intent or low-quality paid traffic from the IT/FR/DE ad sets, or (c) the GA4 currency bug masking real non-EN purchases. RECOMMENDATION: do NOT iterate on translations yet. First diagnose checkout in IT/FR/DE (place a test order each), then audit ad-set quality (CTR, audience) in Meta. If checkout is fine and traffic is junk, PAUSE IT/FR/DE paid spend — it is bleeding budget at ~0% return."
+    }
+  ],
+  "built_not_yet_live": [
+    {
+      "name": "V3 (bundle widget + UGC reel + FB comment proof)",
+      "mockup": "https://mockup.gate1.dev/lyingpirates-polly/lying-pirates-v3.html",
+      "note": "Ready to promote to a live A/B vs B once current test concludes. Tests bundle-driven AOV hypothesis — distinct from current copy test."
+    },
+    {
+      "name": "Try the Game (interactive 3-phase playable demo)",
+      "mockup": "https://mockup.gate1.dev/lyingpirates-polly/try-the-game.html",
+      "note": "Play-before-you-pay hook. Candidate for its own dedicated LP + Meta test."
     }
   ]
 }
