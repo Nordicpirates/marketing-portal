@@ -1,16 +1,19 @@
 import { readFileSync, existsSync } from "fs";
 import { join } from "path";
+import { createHash } from "crypto";
 
-const AUTH_PASSWORD = process.env.AUTH_PASSWORD || "pirates2024";
+const AUTH_PASSWORD = (process.env.AUTH_PASSWORD || "pirates2024").trim();
 const PORT = parseInt(process.env.PORT || "3000");
 const DIR = import.meta.dir;
 
-const sessions = new Set<string>();
+// Stateless auth token: hash of the password. Survives restarts/redeploys,
+// no in-memory session state to lose.
+const AUTH_TOKEN = createHash("sha256").update("np-hq-" + AUTH_PASSWORD).digest("hex");
 
 function checkAuth(req: Request): boolean {
   const cookie = req.headers.get("cookie") || "";
-  const match = cookie.match(/session=([a-f0-9-]{36})/);
-  return match ? sessions.has(match[1]) : false;
+  const match = cookie.match(/auth=([a-f0-9]{64})/);
+  return match ? match[1] === AUTH_TOKEN : false;
 }
 
 function serveLogin(error = false): Response {
@@ -52,7 +55,7 @@ function serveLogin(error = false): Response {
     ${error ? '<div class="error">Fel lösenord — försök igen.</div>' : ""}
     <form method="POST" action="/login">
       <label for="pw">Lösenord</label>
-      <input type="password" name="password" id="pw" placeholder="••••••••" autofocus autocomplete="current-password">
+      <input type="password" name="password" id="pw" placeholder="••••••••" autofocus autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false">
       <button type="submit">Logga in →</button>
     </form>
   </div>
@@ -75,15 +78,14 @@ const server = Bun.serve({
     if (path === "/login") {
       if (req.method === "POST") {
         const form = await req.formData();
-        const pw = form.get("password")?.toString() || "";
-        if (pw === AUTH_PASSWORD) {
-          const token = crypto.randomUUID();
-          sessions.add(token);
+        // Trim whitespace and ignore case so phone/Mac autocaps can't lock people out.
+        const pw = (form.get("password")?.toString() || "").trim();
+        if (pw.toLowerCase() === AUTH_PASSWORD.toLowerCase()) {
           return new Response("", {
             status: 302,
             headers: {
               Location: "/",
-              "Set-Cookie": `session=${token}; HttpOnly; Secure; SameSite=Lax; Max-Age=604800; Path=/`,
+              "Set-Cookie": `auth=${AUTH_TOKEN}; HttpOnly; Secure; SameSite=Lax; Max-Age=2592000; Path=/`,
             },
           });
         }
@@ -98,12 +100,9 @@ const server = Bun.serve({
     }
 
     if (path === "/logout") {
-      const cookie = req.headers.get("cookie") || "";
-      const match = cookie.match(/session=([a-f0-9-]{36})/);
-      if (match) sessions.delete(match[1]);
       return new Response("", {
         status: 302,
-        headers: { Location: "/login", "Set-Cookie": "session=; Max-Age=0; Path=/" },
+        headers: { Location: "/login", "Set-Cookie": "auth=; Max-Age=0; Path=/" },
       });
     }
 
