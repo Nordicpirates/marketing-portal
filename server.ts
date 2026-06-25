@@ -143,6 +143,14 @@ const server = Bun.serve({
       });
     }
 
+    if (path === "/api/experiments") {
+      const p = join(DIR, "data", "experiments.json");
+      if (!existsSync(p)) return Response.json({ experiments: [] });
+      return new Response(readFileSync(p), {
+        headers: { "Content-Type": "application/json", "Cache-Control": "no-cache" },
+      });
+    }
+
     if (path === "/api/tasks") {
       if (req.method === "POST") {
         const body = await req.json().catch(() => ({}));

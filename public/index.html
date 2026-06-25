@@ -131,6 +131,30 @@
   .lp-stat.sess b{color:var(--ink)}
   .lp-stat.conv b{color:var(--terra)}.lp-stat.conv.good b{color:var(--green)}.lp-stat.conv.bad b{color:var(--red)}
   .lp-stat small{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+  /* A/B experiments */
+  .exp{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:18px 20px;box-shadow:var(--shadow);margin-bottom:13px}
+  .exp-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:4px}
+  .exp-name{font-family:'Asul',serif;font-size:16px;font-weight:700}
+  .exp-status{font-size:10px;font-weight:700;padding:3px 9px;border-radius:20px;letter-spacing:.4px;text-transform:uppercase}
+  .exp-status.live{background:rgba(47,143,78,.15);color:var(--green)}
+  .exp-status.testing{background:rgba(207,154,46,.18);color:#9a7416}
+  .exp-status.paused{background:rgba(138,128,115,.18);color:var(--muted)}
+  .exp-status.winner{background:rgba(201,106,61,.16);color:var(--terra-deep)}
+  .exp-hyp{font-size:12.5px;color:var(--muted);margin-bottom:13px;font-style:italic}
+  .var-row{display:flex;align-items:center;gap:14px;padding:11px 13px;border-radius:11px;background:var(--paper-2);border:1px solid var(--line);margin-bottom:8px}
+  .var-row.win{border-color:var(--green);background:rgba(47,143,78,.06)}
+  .var-info{flex:1;min-width:0}
+  .var-name{font-weight:600;font-size:13.5px;display:flex;align-items:center;gap:7px}
+  .win-badge{font-size:9.5px;font-weight:700;background:var(--green);color:#fff;padding:2px 7px;border-radius:20px;letter-spacing:.4px}
+  .var-url{font-size:11px;color:var(--muted);font-family:ui-monospace,SFMono-Regular,Menlo,monospace;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .var-url a{color:var(--muted);text-decoration:none}.var-url a:hover{color:var(--terra)}
+  .var-metrics{display:flex;gap:20px;flex-shrink:0}
+  .var-stat{text-align:right}
+  .var-stat b{font-family:'Asul',serif;font-size:17px;display:block;color:var(--ink)}
+  .var-stat.c b{color:var(--terra)}
+  .var-stat small{font-size:9.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+  .var-pending{font-size:12px;color:var(--muted);font-style:italic}
+  .exp-note{font-size:12.5px;color:var(--ink-soft);background:rgba(207,154,46,.10);border-left:3px solid var(--gold);padding:8px 12px;border-radius:0 7px 7px 0;margin-top:11px}
   /* tracking IDs */
   .id-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}
   .id-card{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:18px 20px;box-shadow:var(--shadow)}
@@ -194,6 +218,13 @@
     <h2><span class="dot"></span>Landing pages — traffic & conversion</h2>
     <p class="h2sub" id="lp-period">Ranked by sessions. Conversion rate from Shopify.</p>
     <div id="lp-panel"></div>
+  </section>
+
+  <!-- A/B EXPERIMENTS -->
+  <section id="exp-section">
+    <h2><span class="dot"></span>Landing-page experiments (A/B) — by Polly</h2>
+    <p class="h2sub">Variants Polly built and is testing. Winner highlighted once there's a clear result.</p>
+    <div id="exp-wrap"></div>
   </section>
 
   <!-- FLAGS -->
@@ -287,9 +318,41 @@ async function load() {
   renderTracking();
   renderIds();
   await renderTasks();
+  await renderExperiments();
 
   let def = (DATA.periods||[]).findIndex(p=>p.id===DATA.default_period);
   renderPeriod(def>=0?def:0);
+}
+
+async function renderExperiments() {
+  let e;
+  try { e = await (await fetch('/api/experiments')).json(); } catch(err){ return; }
+  const exps = e.experiments||[];
+  const sec = document.getElementById('exp-section');
+  if (!exps.length){ sec.style.display='none'; return; }
+  sec.style.display='';
+  document.getElementById('exp-wrap').innerHTML = exps.map(x=>`
+    <div class="exp">
+      <div class="exp-head">
+        <span class="exp-name">${x.name}</span>
+        <span class="exp-status ${x.status||'testing'}">${x.status||'testing'}</span>
+      </div>
+      ${x.hypothesis?`<div class="exp-hyp">${x.hypothesis}</div>`:''}
+      ${(x.variants||[]).map(v=>{
+        const has = v.sessions!==null && v.sessions!==undefined;
+        return `<div class="var-row ${v.winner?'win':''}">
+          <div class="var-info">
+            <div class="var-name">${v.name}${v.winner?'<span class="win-badge">WINNER</span>':''}</div>
+            <div class="var-url"><a href="${v.url}" target="_blank">${v.url}</a></div>
+          </div>
+          <div class="var-metrics">${has?`
+            <div class="var-stat"><b>${Number(v.sessions).toLocaleString('en-US')}</b><small>sessions</small></div>
+            <div class="var-stat c"><b>${v.conv_pct}%</b><small>conv.</small></div>
+          `:`<span class="var-pending">awaiting data</span>`}</div>
+        </div>`;
+      }).join('')}
+      ${x.polly_note?`<div class="exp-note">💡 ${x.polly_note}</div>`:''}
+    </div>`).join('');
 }
 
 function renderPeriod(i) {

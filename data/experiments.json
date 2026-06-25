@@ -1,0 +1,30 @@
+{
+  "updated": "2026-06-25",
+  "owner": "Polly",
+  "note": "A/B landing-page experiments built by Polly. Performance refreshed weekly. Empty fields = awaiting Polly's data pull.",
+  "experiments": [
+    {
+      "name": "Board Game Sale — dedicated LP",
+      "url": "https://lp.nordicpirates.gate1.dev/board-game-sale",
+      "status": "live",
+      "hypothesis": "A focused single-product sale page converts paid traffic better than the Shopify product page.",
+      "variants": [
+        { "name": "Control — Shopify Big Box page", "url": "https://www.nordicpirates.com/products/lying-pirates-big-box", "sessions": null, "conv_pct": null, "winner": false },
+        { "name": "Variant — dedicated sale LP", "url": "https://lp.nordicpirates.gate1.dev/board-game-sale", "sessions": null, "conv_pct": null, "winner": false }
+      ],
+      "polly_note": "Awaiting traffic + conversion split from Polly (GA4 / experiment data)."
+    },
+    {
+      "name": "Multilingual variants (EN / FR / DE / IT)",
+      "url": "https://www.nordicpirates.com",
+      "status": "testing",
+      "hypothesis": "Localized landing pages lift conversion in non-English markets vs the English page with auto-translate.",
+      "variants": [
+        { "name": "EN (control)", "url": "https://www.nordicpirates.com/products/lying-pirates-big-box", "sessions": null, "conv_pct": null, "winner": false },
+        { "name": "FR", "url": "https://www.nordicpirates.com/fr/products/menteurs-pirates-grand-boite", "sessions": null, "conv_pct": null, "winner": false },
+        { "name": "DE", "url": "https://www.nordicpirates.com/de", "sessions": null, "conv_pct": null, "winner": false }
+      ],
+      "polly_note": "Note from Bengt's data: FR page is at 0.28–0.54% conversion vs 3%+ EN. Polly to confirm variant split + recommend fix or pause."
+    }
+  ]
+}
