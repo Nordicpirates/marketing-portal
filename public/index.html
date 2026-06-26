@@ -32,8 +32,12 @@
   .header-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
   .stamp{font-size:12px;color:var(--muted);text-align:right;line-height:1.7}
   .stamp b{color:var(--ink-soft)}
+  .hr-btns{display:flex;gap:8px;align-items:center}
   .logout{font-size:12px;color:var(--muted);text-decoration:none;padding:5px 12px;border:1px solid var(--line);border-radius:20px;background:var(--paper);transition:.15s}
   .logout:hover{border-color:var(--terra);color:var(--terra)}
+  .refresh-btn{font-family:'Inter',sans-serif;font-size:12px;font-weight:600;color:#fff;background:var(--ink);border:1px solid var(--ink);border-radius:20px;padding:5px 14px;cursor:pointer;transition:.15s}
+  .refresh-btn:hover{background:var(--terra);border-color:var(--terra)}
+  .refresh-btn:disabled{opacity:.6;cursor:default}
   /* preset date range */
   .rangebar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:14px}
   .preset{font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:var(--ink-soft);background:var(--paper);border:1.5px solid var(--line);border-radius:22px;padding:8px 16px;cursor:pointer;transition:.15s}
@@ -188,8 +192,11 @@
     </div>
   </div>
   <div class="header-right">
-    <div class="stamp">Updated <b id="snap-date">…</b><br><span id="owner">…</span></div>
-    <a class="logout" href="/logout">Log out</a>
+    <div class="stamp">Data as of <b id="snap-date">…</b> · <span id="last-checked">…</span><br><span id="owner">…</span></div>
+    <div class="hr-btns">
+      <button class="refresh-btn" id="refresh-btn" onclick="doRefresh()">↻ Refresh</button>
+      <a class="logout" href="/logout">Log out</a>
+    </div>
   </div>
 </div></header>
 
@@ -319,6 +326,7 @@ async function load() {
 
   document.getElementById('snap-date').textContent = DATA.generated_at || '';
   document.getElementById('owner').textContent = DATA.owner || '';
+  document.getElementById('last-checked').textContent = 'view loaded ' + new Date().toLocaleTimeString('sv-SE',{hour:'2-digit',minute:'2-digit'});
 
   // Preset buttons
   const rb = document.getElementById('rangebar');
@@ -332,6 +340,15 @@ async function load() {
 
   let def = (DATA.periods||[]).findIndex(p=>p.id===DATA.default_period);
   renderPeriod(def>=0?def:0);
+}
+
+async function doRefresh(){
+  const btn=document.getElementById('refresh-btn'); const saved=CUR;
+  btn.textContent='↻ …'; btn.disabled=true;
+  try { await load(); if(DATA && DATA.periods[saved]) renderPeriod(saved); }
+  catch(e){ console.error(e); }
+  document.getElementById('last-checked').textContent='checked '+new Date().toLocaleTimeString('sv-SE',{hour:'2-digit',minute:'2-digit'});
+  btn.textContent='↻ Refresh'; btn.disabled=false;
 }
 
 async function renderExperiments() {
