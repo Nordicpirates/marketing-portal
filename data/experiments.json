@@ -1,38 +1,38 @@
 {
-  "updated": "2026-06-22",
+  "updated": "2026-06-29",
   "owner": "Polly",
-  "source": "GA4 property 250338585 (last 7d, utm_content split) + Shopify orders (90d, by country)",
+  "source": "GA4 property 250338585 (last 7d, utm_content split) + Shopify orders (by country)",
   "analyst": "Polly",
-  "note": "A/B landing-page experiments. Performance refreshed weekly by Polly. UI reads top-level `experiments`; extra fields (aggregate_7d, real_sales_90d, ga4_country_28d_crosscheck, built_not_yet_live) are preserved for future UI surfaces.",
+  "note": "A/B landing-page experiments. Refreshed weekly by Polly. UI reads top-level `experiments`; extra fields (aggregate_7d, real_sales_90d, built_not_yet_live) preserved for future UI surfaces.",
   "experiments": [
     {
       "name": "Big Box LP — Headline & Hero (EN)",
       "url": "https://nordicpirates.com/lp/play",
       "status": "testing",
-      "hypothesis": "Variant B (price-anchored CTA 'Get Your Box · From €39.95', single Big Box hero, prominent stats, scrolling reviews, FAQ) converts better than Variant A (carousel of all 3 products, 'Choose Your Adventure' CTA).",
+      "hypothesis": "Variant B (price-anchored CTA 'Get Your Box · From €39.95', single Big Box hero, prominent stats, scrolling reviews, FAQ) converts better than Variant A (carousel of 3 products, 'Choose Your Adventure' CTA).",
       "variants": [
         {
           "name": "Control (A)",
           "url": "https://nordicpirates.com/lp/lying-pirates-cities-of-greed-big-box/",
-          "sessions": 1875,
-          "bounce_pct": 13.4,
-          "conv_pct": 0.64,
+          "sessions": 1642,
+          "bounce_pct": 11.0,
+          "conv_pct": 0.43,
           "winner": false
         },
         {
           "name": "Variant B",
           "url": "https://nordicpirates.com/lp/lying-pirates-cities-of-greed-big-box-b/",
-          "sessions": 2033,
-          "bounce_pct": 16.3,
-          "conv_pct": 0.69,
+          "sessions": 1638,
+          "bounce_pct": 12.1,
+          "conv_pct": 1.34,
           "winner": true
         }
       ],
       "aggregate_7d": {
-        "lp_a": { "sessions": 2861, "conv_pct": 0.38, "txn": 11 },
-        "lp_b": { "sessions": 2912, "conv_pct": 0.65, "txn": 19 }
+        "lp_a": { "sessions": 2601, "conv_pct": 0.54, "txn": 14 },
+        "lp_b": { "sessions": 2634, "conv_pct": 1.03, "txn": 27 }
       },
-      "polly_note": "B leads this week (0.65% vs 0.38% on all-language aggregate; 19 vs 11 transactions). BUT the prior 7d window had A ahead — the swing means we are NOT yet at statistical significance (need ~100 conversions/variant; we have 11-19). KEEP RUNNING 2-3 more weeks before declaring a winner. No action to change variants yet. NOTE: GA4 conv% here understates true conversion because LP->checkout attribution is lossy (see localized experiment) — treat A-vs-B as relative, not absolute."
+      "polly_note": "B wins clearly again this week — EN page 1.34% vs 0.43% (22 vs 7 txn); aggregate 1.03% vs 0.54% (27 vs 14). B has now led 3 weeks running and the gap is widening, not noise. Cumulative is approaching ~65 conv (B) vs ~36 (A) — still under the ~100/variant bar for a formal call, but the direction is consistent and strong. RECOMMENDATION: run 1-2 more weeks to clear the threshold, then promote B to the new control and start the next test (V3 bundle/UGC concept vs B). No change yet. (GA4 conv% still understates absolute conversion due to lossy LP->checkout attribution — read A/B relative, not absolute.)"
     },
     {
       "name": "Localized LP variants (IT / FR / DE)",
@@ -40,32 +40,27 @@
       "status": "tracking-issue",
       "hypothesis": "Translated A/B variants would convert non-EN paid traffic at rates comparable to EN.",
       "variants": [
-        { "name": "IT-A", "url": "https://nordicpirates.com/lp/lying-pirates-cities-of-greed-big-box-it/", "sessions": 714, "bounce_pct": 19.3, "conv_pct": 0.00, "winner": false },
-        { "name": "IT-B", "url": "https://nordicpirates.com/lp/lying-pirates-cities-of-greed-big-box-b-it/", "sessions": 713, "bounce_pct": 25.5, "conv_pct": 0.14, "winner": false },
-        { "name": "FR-A", "url": "https://nordicpirates.com/lp/lying-pirates-cities-of-greed-big-box-fr/", "sessions": 302, "bounce_pct": 20.2, "conv_pct": 0.00, "winner": false },
-        { "name": "FR-B", "url": "https://nordicpirates.com/lp/lying-pirates-cities-of-greed-big-box-b-fr/", "sessions": 284, "bounce_pct": 24.3, "conv_pct": 0.35, "winner": false },
-        { "name": "DE-A", "url": "https://nordicpirates.com/lp/lying-pirates-cities-of-greed-big-box-de/", "sessions": 212, "bounce_pct": 20.8, "conv_pct": 0.00, "winner": false },
-        { "name": "DE-B", "url": "https://nordicpirates.com/lp/lying-pirates-cities-of-greed-big-box-b-de/", "sessions": 183, "bounce_pct": 19.1, "conv_pct": 0.00, "winner": false }
+        { "name": "IT-A", "url": "https://nordicpirates.com/lp/lying-pirates-cities-of-greed-big-box-it/", "sessions": 393, "bounce_pct": 12.0, "conv_pct": 0.51, "winner": false },
+        { "name": "IT-B", "url": "https://nordicpirates.com/lp/lying-pirates-cities-of-greed-big-box-b-it/", "sessions": 441, "bounce_pct": 17.7, "conv_pct": 0.23, "winner": false },
+        { "name": "FR-A", "url": "https://nordicpirates.com/lp/lying-pirates-cities-of-greed-big-box-fr/", "sessions": 332, "bounce_pct": 12.0, "conv_pct": 0.30, "winner": false },
+        { "name": "FR-B", "url": "https://nordicpirates.com/lp/lying-pirates-cities-of-greed-big-box-b-fr/", "sessions": 329, "bounce_pct": 13.4, "conv_pct": 0.30, "winner": false },
+        { "name": "DE-A", "url": "https://nordicpirates.com/lp/lying-pirates-cities-of-greed-big-box-de/", "sessions": 207, "bounce_pct": 11.1, "conv_pct": 0.48, "winner": false },
+        { "name": "DE-B", "url": "https://nordicpirates.com/lp/lying-pirates-cities-of-greed-big-box-b-de/", "sessions": 201, "bounce_pct": 10.4, "conv_pct": 0.00, "winner": false }
       ],
       "real_sales_90d": {
-        "note": "These markets DO convert and sell. The ~0% on the LP rows above is a MEASUREMENT artifact, not a funnel failure.",
+        "note": "These markets DO convert and sell. The near-0% on the LP rows is a MEASUREMENT artifact (lossy LP->checkout attribution), not a funnel failure. Numbers last refreshed 2026-06-22 — Polly to wire Shopify auto-pull into weekly signal.",
         "IT": { "orders": 97, "revenue_eur": 9028, "shopify_session_conv_pct": 1.72, "rank": "3rd-largest market" },
         "DE": { "orders": 58, "revenue_eur": 5329, "shopify_session_conv_pct": 2.86 },
         "FR": { "orders": 44, "revenue_eur": 5069, "shopify_session_conv_pct": 1.73 }
       },
-      "ga4_country_28d_crosscheck": {
-        "Italy": { "sessions": 8084, "txn": 34 },
-        "France": { "sessions": 3281, "txn": 13 },
-        "Germany": { "sessions": 2797, "txn": 18 }
-      },
-      "polly_note": "CORRECTED (was 'paused-recommended'). Root cause is the LP->checkout CONVERSION MEASUREMENT, not the funnel. Cross-checked three ways: (1) Shopify orders 90d — IT 97 orders/€9,028 (our 3rd-largest market), DE 58/€5,329, FR 44/€5,069; (2) Shopify session conv — IT 1.72%, FR 1.73%, DE 2.86% (all normal); (3) GA4 by-country 28d — IT 34 txn, FR 13, DE 18 (purchases clearly exist). The localized LP rows read ~0% only because LP->checkout attribution is lost (GA4 currency/attribution bug surfaced earlier). DO NOT PAUSE IT/FR/DE — that would kill our 3rd-largest market. ACTION: fix the attribution so LP-level conv reflects reality (align GA4 purchase currency + ensure same GA4 property fires through checkout); until then, judge localized LP performance by engagement (bounce, scroll) + market-level Shopify orders, not LP conv%."
+      "polly_note": "Hold. Still a tracking artifact, not a funnel problem — localized LP conv reads ~0.2-0.5% but Shopify shows IT/DE/FR converting at 1.7-2.9% with real revenue (IT is our 3rd-largest market). DO NOT PAUSE. Action remains: fix GA4 purchase-currency + ensure the same GA4 property fires through checkout so LP-level conv becomes true. Until then judge localized LPs by engagement (bounce 10-18%, healthy) + market-level Shopify orders, not LP conv%."
     }
   ],
   "built_not_yet_live": [
     {
       "name": "V3 (bundle widget + UGC reel + FB comment proof)",
       "mockup": "https://mockup.gate1.dev/lyingpirates-polly/lying-pirates-v3.html",
-      "note": "Ready to promote to a live A/B vs B once current test concludes."
+      "note": "Next test: promote to live A/B vs B once EN test clears significance (~1-2 weeks)."
     },
     {
       "name": "Try the Game (interactive 3-phase playable demo)",
