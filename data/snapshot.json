@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-01",
+  "generated_at": "2026-07-02",
   "owner": "Bengt 🦉 (data) + Polly (analysis)",
   "currency_note": "Revenue in EUR (store currency). Meta spend in SEK. Blended MER converts spend at ~11.4 SEK/EUR.",
   "tracking_ids": {
@@ -38,21 +38,21 @@
     {
       "id": "7d",
       "label": "Last 7 days",
-      "range_start": "2026-06-25",
-      "range_end": "2026-07-01",
+      "range_start": "2026-06-26",
+      "range_end": "2026-07-02",
       "days": 7,
-      "kpis": { "sessions": 1952, "conversion_label": "5.38%", "sales_label": "€12,939", "orders": 130 },
-      "meta": { "spend_label": "39,865 kr", "meta_roas": 2.53, "blended_mer": 3.70 },
+      "kpis": { "sessions": 1886, "conversion_label": "5.73%", "sales_label": "€13,126", "orders": 131 },
+      "meta": { "spend_label": "40,276 kr", "meta_roas": 2.64, "blended_mer": 3.72 },
       "orders_by_country": [
-        { "name": "USA", "flag": "🇺🇸", "orders": 47, "revenue": "€5,136" },
-        { "name": "Italy", "flag": "🇮🇹", "orders": 25, "revenue": "€2,171" },
-        { "name": "UK", "flag": "🇬🇧", "orders": 14, "revenue": "€1,449" },
-        { "name": "Germany", "flag": "🇩🇪", "orders": 10, "revenue": "€1,085" },
-        { "name": "Australia", "flag": "🇦🇺", "orders": 8, "revenue": "€822" },
-        { "name": "Belgium", "flag": "🇧🇪", "orders": 6, "revenue": "€420" },
-        { "name": "France", "flag": "🇫🇷", "orders": 6, "revenue": "€387" },
-        { "name": "Sweden", "flag": "🇸🇪", "orders": 4, "revenue": "€381" },
-        { "name": "New Zealand", "flag": "🇳🇿", "orders": 2, "revenue": "€302" }
+        { "name": "USA", "flag": "🇺🇸", "orders": 51, "revenue": "€5,313" },
+        { "name": "Italy", "flag": "🇮🇹", "orders": 22, "revenue": "€1,931" },
+        { "name": "UK", "flag": "🇬🇧", "orders": 13, "revenue": "€1,612" },
+        { "name": "Australia", "flag": "🇦🇺", "orders": 10, "revenue": "€1,007" },
+        { "name": "Germany", "flag": "🇩🇪", "orders": 10, "revenue": "€1,182" },
+        { "name": "Belgium", "flag": "🇧🇪", "orders": 6, "revenue": "€355" },
+        { "name": "Sweden", "flag": "🇸🇪", "orders": 5, "revenue": "€517" },
+        { "name": "France", "flag": "🇫🇷", "orders": 4, "revenue": "€225" },
+        { "name": "Denmark", "flag": "🇩🇰", "orders": 2, "revenue": "€70" }
       ],
       "landing_pages": [
         { "name": "Big Box (product)", "path": "/products/lying-pirates-big-box", "sessions": 431, "conv_pct": 7.89 },
@@ -72,22 +72,21 @@
     {
       "id": "30d",
       "label": "Last 30 days",
-      "range_start": "2026-06-01",
-      "range_end": "2026-07-01",
+      "range_start": "2026-06-02",
+      "range_end": "2026-07-02",
       "days": 30,
-      "kpis": { "sessions": 7048, "conversion_label": "4.78%", "sales_label": "€45,917", "orders": 425 },
-      "meta": { "spend_label": "179,781 kr", "meta_roas": 1.89, "blended_mer": 2.91 },
+      "kpis": { "sessions": 7113, "conversion_label": "4.89%", "sales_label": "€46,908", "orders": 435 },
+      "meta": { "spend_label": "183,037 kr", "meta_roas": 1.95, "blended_mer": 2.92 },
       "orders_by_country": [
-        { "name": "USA", "flag": "🇺🇸", "orders": 151, "revenue": "€17,944" },
-        { "name": "UK", "flag": "🇬🇧", "orders": 63, "revenue": "€6,422" },
-        { "name": "Italy", "flag": "🇮🇹", "orders": 60, "revenue": "€5,280" },
-        { "name": "Germany", "flag": "🇩🇪", "orders": 27, "revenue": "€2,652" },
+        { "name": "USA", "flag": "🇺🇸", "orders": 159, "revenue": "€18,694" },
+        { "name": "UK", "flag": "🇬🇧", "orders": 64, "revenue": "€6,774" },
+        { "name": "Italy", "flag": "🇮🇹", "orders": 60, "revenue": "€5,134" },
+        { "name": "Australia", "flag": "🇦🇺", "orders": 27, "revenue": "€2,769" },
         { "name": "France", "flag": "🇫🇷", "orders": 27, "revenue": "€2,937" },
-        { "name": "Australia", "flag": "🇦🇺", "orders": 26, "revenue": "€2,734" },
-        { "name": "Belgium", "flag": "🇧🇪", "orders": 21, "revenue": "€2,412" },
+        { "name": "Germany", "flag": "🇩🇪", "orders": 27, "revenue": "€2,758" },
+        { "name": "Belgium", "flag": "🇧🇪", "orders": 20, "revenue": "€2,180" },
         { "name": "Denmark", "flag": "🇩🇰", "orders": 15, "revenue": "€1,934" },
-        { "name": "Netherlands", "flag": "🇳🇱", "orders": 10, "revenue": "€1,159" },
-        { "name": "Austria", "flag": "🇦🇹", "orders": 7, "revenue": "€678" }
+        { "name": "Netherlands", "flag": "🇳🇱", "orders": 10, "revenue": "€1,159" }
       ],
       "landing_pages": [
         { "name": "Big Box (product)", "path": "/products/lying-pirates-big-box", "sessions": 3652, "conv_pct": 3.15 },
@@ -105,47 +104,48 @@
     },
     {
       "id": "thismonth",
-      "label": "This month (Jul 1)",
+      "label": "This month (Jul 1–2)",
       "range_start": "2026-07-01",
-      "range_end": "2026-07-01",
-      "days": 1,
-      "kpis": { "sessions": 294, "conversion_label": "6.12%", "sales_label": "€1,678", "orders": 20 },
-      "meta": { "spend_label": "5,907 kr", "meta_roas": 2.92, "blended_mer": 3.24 },
+      "range_end": "2026-07-02",
+      "days": 2,
+      "kpis": { "sessions": 530, "conversion_label": "6.79%", "sales_label": "€3,899", "orders": 40 },
+      "meta": { "spend_label": "11,330 kr", "meta_roas": 3.18, "blended_mer": 3.92 },
       "orders_by_country": [
-        { "name": "USA", "flag": "🇺🇸", "orders": 5, "revenue": "€669" },
-        { "name": "Italy", "flag": "🇮🇹", "orders": 4, "revenue": "€122" },
-        { "name": "Australia", "flag": "🇦🇺", "orders": 4, "revenue": "€233" },
-        { "name": "Sweden", "flag": "🇸🇪", "orders": 3, "revenue": "€249" },
-        { "name": "UK", "flag": "🇬🇧", "orders": 2, "revenue": "€245" },
-        { "name": "France", "flag": "🇫🇷", "orders": 1, "revenue": "€25" },
-        { "name": "Germany", "flag": "🇩🇪", "orders": 1, "revenue": "€135" }
+        { "name": "USA", "flag": "🇺🇸", "orders": 13, "revenue": "€1,419" },
+        { "name": "Italy", "flag": "🇮🇹", "orders": 7, "revenue": "€381" },
+        { "name": "Australia", "flag": "🇦🇺", "orders": 6, "revenue": "€418" },
+        { "name": "Sweden", "flag": "🇸🇪", "orders": 4, "revenue": "€385" },
+        { "name": "UK", "flag": "🇬🇧", "orders": 4, "revenue": "€651" },
+        { "name": "Germany", "flag": "🇩🇪", "orders": 3, "revenue": "€501" },
+        { "name": "Belgium", "flag": "🇧🇪", "orders": 1, "revenue": "€71" },
+        { "name": "France", "flag": "🇫🇷", "orders": 1, "revenue": "€25" }
       ],
       "landing_pages": [
-        { "name": "Homepage", "path": "/", "sessions": 96, "conv_pct": 5.21 },
-        { "name": "Big Box (product)", "path": "/products/lying-pirates-big-box", "sessions": 78, "conv_pct": 8.97 },
-        { "name": "Base Game (product)", "path": "/products/lying-pirates-base-game", "sessions": 31, "conv_pct": 6.45 }
+        { "name": "Homepage", "path": "/", "sessions": 178, "conv_pct": 5.62 },
+        { "name": "Big Box (product)", "path": "/products/lying-pirates-big-box", "sessions": 142, "conv_pct": 9.15 },
+        { "name": "Base Game (product)", "path": "/products/lying-pirates-base-game", "sessions": 56, "conv_pct": 5.36 }
       ],
       "flags": [
-        { "level": "info", "title": "🌱 New month just started", "body": "This is day 1 of July — only 20 orders and 294 sessions so far. Numbers will fill in as the month runs. Use the 7-day and 30-day windows for a stable read.", "sub": "" }
+        { "level": "info", "title": "🌱 New month, still early", "body": "Only 2 days into July — 40 orders, 530 sessions so far. Numbers fill in as the month runs. Use the 7-day and 30-day windows for a stable read.", "sub": "" }
       ]
     },
     {
       "id": "90d",
       "label": "Last 90 days",
-      "range_start": "2026-04-02",
-      "range_end": "2026-07-01",
+      "range_start": "2026-04-03",
+      "range_end": "2026-07-02",
       "days": 90,
-      "kpis": { "sessions": 26534, "conversion_label": "2.31%", "sales_label": "€83,023", "orders": 763 },
-      "meta": { "spend_label": "312,281 kr", "meta_roas": 1.98, "blended_mer": 3.03 },
+      "kpis": { "sessions": 26613, "conversion_label": "2.36%", "sales_label": "€84,901", "orders": 780 },
+      "meta": { "spend_label": "317,368 kr", "meta_roas": 1.99, "blended_mer": 3.05 },
       "orders_by_country": [
-        { "name": "USA", "flag": "🇺🇸", "orders": 206, "revenue": "€24,627" },
-        { "name": "UK", "flag": "🇬🇧", "orders": 133, "revenue": "€13,482" },
-        { "name": "Italy", "flag": "🇮🇹", "orders": 118, "revenue": "€10,859" },
-        { "name": "Germany", "flag": "🇩🇪", "orders": 67, "revenue": "€6,279" },
+        { "name": "USA", "flag": "🇺🇸", "orders": 214, "revenue": "€25,377" },
+        { "name": "UK", "flag": "🇬🇧", "orders": 135, "revenue": "€13,888" },
+        { "name": "Italy", "flag": "🇮🇹", "orders": 121, "revenue": "€11,118" },
+        { "name": "Germany", "flag": "🇩🇪", "orders": 69, "revenue": "€6,645" },
         { "name": "France", "flag": "🇫🇷", "orders": 49, "revenue": "€5,444" },
-        { "name": "Australia", "flag": "🇦🇺", "orders": 42, "revenue": "€4,875" },
-        { "name": "Belgium", "flag": "🇧🇪", "orders": 38, "revenue": "€4,835" },
-        { "name": "Netherlands", "flag": "🇳🇱", "orders": 30, "revenue": "€3,623" },
+        { "name": "Australia", "flag": "🇦🇺", "orders": 42, "revenue": "€4,753" },
+        { "name": "Belgium", "flag": "🇧🇪", "orders": 39, "revenue": "€4,905" },
+        { "name": "Netherlands", "flag": "🇳🇱", "orders": 29, "revenue": "€3,587" },
         { "name": "Denmark", "flag": "🇩🇰", "orders": 28, "revenue": "€3,832" },
         { "name": "Austria", "flag": "🇦🇹", "orders": 19, "revenue": "€2,175" }
       ],
