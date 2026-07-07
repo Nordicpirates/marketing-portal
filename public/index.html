@@ -38,6 +38,11 @@
   .refresh-btn{font-family:'Inter',sans-serif;font-size:12px;font-weight:600;color:#fff;background:var(--ink);border:1px solid var(--ink);border-radius:20px;padding:5px 14px;cursor:pointer;transition:.15s}
   .refresh-btn:hover{background:var(--terra);border-color:var(--terra)}
   .refresh-btn:disabled{opacity:.6;cursor:default}
+  /* View toggle (Marketing/Growth) */
+  .view-toggle{display:inline-flex;background:var(--paper);border:1.5px solid var(--line);border-radius:24px;padding:4px;margin-top:16px;box-shadow:var(--shadow)}
+  .view-toggle a{font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:var(--muted);text-decoration:none;padding:8px 22px;border-radius:20px;transition:.15s}
+  .view-toggle a:hover{color:var(--ink)}
+  .view-toggle a.active{background:var(--ink);color:#fff}
   /* preset date range */
   .rangebar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:14px}
   .preset{font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:var(--ink-soft);background:var(--paper);border:1.5px solid var(--line);border-radius:22px;padding:8px 16px;cursor:pointer;transition:.15s}
@@ -189,6 +194,10 @@
     <div>
       <h1>Performance Marketing HQ</h1>
       <div class="sub">Nordic Pirates · ads, tracking, landing pages & agency actions</div>
+      <div class="view-toggle">
+        <a href="/" class="active">Marketing HQ</a>
+        <a href="/growth">Growth</a>
+      </div>
     </div>
   </div>
   <div class="header-right">

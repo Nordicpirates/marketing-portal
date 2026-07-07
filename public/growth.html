@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nordic Pirates — Growth Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Asul:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#f2ede4;--cream-2:#ece4d6;--paper:#fffdf8;--paper-2:#fbf6ec;
+    --ink:#171717;--ink-soft:#3a352e;--muted:#8a8073;
+    --terra:#c96a3d;--terra-deep:#a8512a;--gold:#cf9a2e;--gold-soft:#e7b94b;
+    --green:#2f8f4e;--red:#cf4234;
+    --line:rgba(23,23,23,.09);--shadow:0 1px 2px rgba(23,23,23,.04),0 8px 24px rgba(23,23,23,.05);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Inter',sans-serif;color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased;
+    background:radial-gradient(900px 460px at 88% -8%,rgba(201,106,61,.10),transparent 60%),
+               radial-gradient(760px 420px at -6% 4%,rgba(207,154,46,.12),transparent 58%),
+               var(--cream);
+    padding:0 0 70px}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+  header.top{padding:26px 0 22px;margin-bottom:22px;border-bottom:1px solid var(--line)}
+  .brandrow{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:14px}
+  .logochip{background:var(--ink);border-radius:13px;padding:11px 13px;display:flex;align-items:center;box-shadow:var(--shadow)}
+  .logochip img{height:26px;display:block}
+  h1{font-family:'Asul',serif;font-size:27px;font-weight:700;letter-spacing:.2px;line-height:1.15}
+  .sub{color:var(--muted);font-size:13.5px;margin-top:3px}
+  .header-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+  .stamp{font-size:12px;color:var(--muted);text-align:right;line-height:1.7}
+  .stamp b{color:var(--ink-soft)}
+  .hr-btns{display:flex;gap:8px;align-items:center}
+  .logout{font-size:12px;color:var(--muted);text-decoration:none;padding:5px 12px;border:1px solid var(--line);border-radius:20px;background:var(--paper);transition:.15s}
+  .logout:hover{border-color:var(--terra);color:var(--terra)}
+  /* View toggle (Marketing/Growth) */
+  .view-toggle{display:inline-flex;background:var(--paper);border:1.5px solid var(--line);border-radius:24px;padding:4px;margin-top:16px;box-shadow:var(--shadow)}
+  .view-toggle a{font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:var(--muted);text-decoration:none;padding:8px 22px;border-radius:20px;transition:.15s}
+  .view-toggle a:hover{color:var(--ink)}
+  .view-toggle a.active{background:var(--ink);color:#fff}
+  h2{font-family:'Asul',serif;font-size:19px;font-weight:700;margin:0 0 5px;display:flex;align-items:center;gap:9px;color:var(--ink)}
+  h2 .dot{width:9px;height:9px;border-radius:50%;background:var(--terra)}
+  .h2sub{font-size:12.5px;color:var(--muted);margin:0 0 14px 18px}
+  section{margin-bottom:34px}
+  /* Sprint strip */
+  .sprint-strip{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:22px}
+  @media(max-width:720px){.sprint-strip{grid-template-columns:repeat(3,1fr)}}
+  @media(max-width:420px){.sprint-strip{grid-template-columns:repeat(2,1fr)}}
+  .sprint{background:var(--paper);border:1.5px solid var(--line);border-radius:14px;padding:14px 16px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+  .sprint::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--muted)}
+  .sprint.done::before{background:var(--green)}
+  .sprint.active::before{background:var(--terra)}
+  .sprint .sn{font-family:'Asul',serif;font-size:16px;font-weight:700;color:var(--ink)}
+  .sprint .st{font-size:11px;color:var(--muted);margin-top:3px;line-height:1.35}
+  .sprint .badge{display:inline-block;font-size:9.5px;font-weight:700;padding:2px 8px;border-radius:20px;margin-top:8px;letter-spacing:.4px}
+  .sprint .badge.done{background:rgba(47,143,78,.14);color:var(--green)}
+  .sprint .badge.active{background:rgba(201,106,61,.16);color:var(--terra-deep)}
+  .sprint .badge.wait{background:rgba(138,128,115,.18);color:var(--muted)}
+  /* KPI grid */
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:13px;margin-bottom:8px}
+  .kpi{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:17px 19px;box-shadow:var(--shadow)}
+  .kpi .n{font-family:'Asul',serif;font-size:25px;font-weight:700;color:var(--ink)}
+  .kpi.terra .n{color:var(--terra)}.kpi.gold .n{color:var(--gold)}.kpi.green .n{color:var(--green)}
+  .kpi .k{font-size:11px;color:var(--muted);margin-top:5px;text-transform:uppercase;letter-spacing:.5px;font-weight:600}
+  .kpi .d{font-size:12px;color:var(--muted);margin-top:8px}
+  /* Fix log */
+  .fixlist{display:flex;flex-direction:column;gap:10px}
+  .fix{display:flex;gap:14px;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:14px 17px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+  .fix::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--green)}
+  .fix.pending::before{background:var(--gold-soft)}
+  .fix.blocked::before{background:var(--terra)}
+  .fix-icon{flex-shrink:0;width:26px;height:26px;border-radius:8px;background:rgba(47,143,78,.14);color:var(--green);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px}
+  .fix.pending .fix-icon{background:rgba(207,154,46,.18);color:#9a7416}
+  .fix.blocked .fix-icon{background:rgba(201,106,61,.16);color:var(--terra-deep)}
+  .fix-body{flex:1;min-width:0}
+  .fix-top{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:3px}
+  .fix-title{font-weight:600;font-size:14.5px}
+  .fix-tag{font-size:9.5px;font-weight:700;padding:2px 8px;border-radius:20px;letter-spacing:.5px;text-transform:uppercase;background:var(--cream-2);color:var(--ink-soft)}
+  .fix-detail{font-size:12.5px;color:var(--ink-soft);opacity:.9;line-height:1.55}
+  .fix-detail code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11.5px;background:var(--cream-2);padding:2px 6px;border-radius:5px;color:var(--terra-deep)}
+  .fix-meta{font-size:11px;color:var(--muted);margin-top:5px}
+  /* Next-up */
+  .nextup{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:20px 24px;box-shadow:var(--shadow)}
+  .nextup h3{font-family:'Asul',serif;font-size:16px;font-weight:700;color:var(--ink);margin-bottom:11px}
+  .nextup ul{list-style:none;padding:0}
+  .nextup li{display:flex;align-items:flex-start;gap:10px;padding:8px 0;font-size:13.5px;color:var(--ink-soft);border-bottom:1px solid rgba(23,23,23,.05)}
+  .nextup li:last-child{border-bottom:none}
+  .nextup li .prio-dot{flex-shrink:0;width:8px;height:8px;border-radius:50%;background:var(--terra);margin-top:7px}
+  .nextup li .prio-dot.med{background:var(--gold)}
+  .nextup li .prio-dot.low{background:var(--muted)}
+  .nextup li b{color:var(--ink)}
+  footer{border-top:1px solid var(--line);margin-top:42px;padding-top:22px;font-size:12px;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+  footer b{color:var(--ink-soft)}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap brandrow">
+  <div class="brand">
+    <span class="logochip"><img src="https://www.nordicpirates.com/cdn/shop/files/LP_LOGO_vit_e2ed4c01-c782-4abb-8a90-b5cab974fd0a.png?width=120" alt="Nordic Pirates"></span>
+    <div>
+      <h1>Growth Hub</h1>
+      <div class="sub">Nordic Pirates · sprints, conversion fixes & shipped weekly progress</div>
+      <div class="view-toggle">
+        <a href="/">Marketing HQ</a>
+        <a href="/growth" class="active">Growth</a>
+      </div>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="stamp">Updated <b id="last-updated">2026-07-07</b><br><span>Owner · Bengt 🦉</span></div>
+    <div class="hr-btns">
+      <a class="logout" href="/logout">Log out</a>
+    </div>
+  </div>
+</div></header>
+
+<div class="wrap">
+
+  <!-- SPRINT STATUS STRIP -->
+  <section>
+    <h2><span class="dot"></span>Sprint plan · 6 stycken</h2>
+    <p class="h2sub">6-veckors growth-program för Nordic Pirates. Klick på "Marketing HQ" ovan för Meta-annonser & tracking.</p>
+    <div class="sprint-strip">
+      <div class="sprint active">
+        <div class="sn">S1</div>
+        <div class="st">Diagnos + Quick Wins</div>
+        <span class="badge active">Igång · 60%</span>
+      </div>
+      <div class="sprint">
+        <div class="sn">S2</div>
+        <div class="st">Checkout Conversion</div>
+        <span class="badge wait">Väntar</span>
+      </div>
+      <div class="sprint">
+        <div class="sn">S3</div>
+        <div class="st">Performance / LP-tid</div>
+        <span class="badge wait">Väntar</span>
+      </div>
+      <div class="sprint">
+        <div class="sn">S4</div>
+        <div class="st">Marknads-specifik (US/IT/SE)</div>
+        <span class="badge wait">Väntar</span>
+      </div>
+      <div class="sprint">
+        <div class="sn">S5</div>
+        <div class="st">Retention & LTV</div>
+        <span class="badge wait">Väntar</span>
+      </div>
+      <div class="sprint">
+        <div class="sn">S6</div>
+        <div class="st">SEO + Slutrapport</div>
+        <span class="badge wait">Väntar</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- KPI DELTA -->
+  <section>
+    <h2><span class="dot"></span>Vecka 1 · shippat</h2>
+    <p class="h2sub">Vad som gjorts sedan Sprint 1 startade (2026-07-07).</p>
+    <div class="kpis">
+      <div class="kpi green">
+        <div class="n">11</div>
+        <div class="k">Alt-texts · SEO</div>
+        <div class="d">Bilder utan alt-text nu beskrivna</div>
+      </div>
+      <div class="kpi terra">
+        <div class="n">3</div>
+        <div class="k">URL-handles</div>
+        <div class="d">gold-coins-20-pcs, 8-player-components, kraken-mini-expansion</div>
+      </div>
+      <div class="kpi gold">
+        <div class="n">3</div>
+        <div class="k">URL-redirects</div>
+        <div class="d">Alla gamla länkar → nya, HTTP 200</div>
+      </div>
+      <div class="kpi">
+        <div class="n">1</div>
+        <div class="k">og:image fix</div>
+        <div class="d">http→https · delnings-kort funkar överallt</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FIX LOG -->
+  <section>
+    <h2><span class="dot"></span>Fix-log · vecka 1</h2>
+    <p class="h2sub">Detaljerat vad som skeppats till Shopify. Transparens för Lucas + investerare.</p>
+    <div class="fixlist">
+      <div class="fix">
+        <div class="fix-icon">✓</div>
+        <div class="fix-body">
+          <div class="fix-top">
+            <span class="fix-title">Base Game — 3 bilder fick SEO-alt-text</span>
+            <span class="fix-tag">Live</span>
+          </div>
+          <div class="fix-detail">Alla PDP-bilder som saknade alt-text nu beskrivna för Google Images + skärmläsare.</div>
+          <div class="fix-meta">Shipped 2026-07-07 · Product ID 8189435871459</div>
+        </div>
+      </div>
+      <div class="fix">
+        <div class="fix-icon">✓</div>
+        <div class="fix-body">
+          <div class="fix-top">
+            <span class="fix-title">Big Box — 8 bilder fick SEO-alt-text</span>
+            <span class="fix-tag">Live</span>
+          </div>
+          <div class="fix-detail">Största produkten. Alla åtta gallery-bilder beskrivna. Ger Google Images-trafik + accessibility.</div>
+          <div class="fix-meta">Shipped 2026-07-07</div>
+        </div>
+      </div>
+      <div class="fix">
+        <div class="fix-icon">✓</div>
+        <div class="fix-body">
+          <div class="fix-top">
+            <span class="fix-title">3 produkt-URLs städade</span>
+            <span class="fix-tag">Live</span>
+          </div>
+          <div class="fix-detail">
+            <code>gold-coins-20-pcs</code>, <code>8-player-components</code>, <code>kraken-mini-expansion</code> — kortare, tydligare, minns lätt.
+            Gamla URLs 301-redirectar för att inte tappa SEO.
+          </div>
+          <div class="fix-meta">Shipped 2026-07-07 · verifierat HTTP 200</div>
+        </div>
+      </div>
+      <div class="fix">
+        <div class="fix-icon">✓</div>
+        <div class="fix-body">
+          <div class="fix-top">
+            <span class="fix-title">og:image protokoll-fix (http → https)</span>
+            <span class="fix-tag">I nytt tema</span>
+          </div>
+          <div class="fix-detail">
+            När någon delar nordicpirates.com i Slack/Discord/iMessage — bilden ladddade förut inte pga osäkert HTTP.
+            Fixad i "Sprint 1 - Bengt Growth Workspace"-temat (unpublished). Publicerbar när Lucas granskat.
+          </div>
+          <div class="fix-meta">Shipped 2026-07-07 · Theme 198520701275</div>
+        </div>
+      </div>
+      <div class="fix pending">
+        <div class="fix-icon">◐</div>
+        <div class="fix-body">
+          <div class="fix-top">
+            <span class="fix-title">Homepage title-tag uppgraderas</span>
+            <span class="fix-tag">Väntar OK</span>
+          </div>
+          <div class="fix-detail">
+            Idag "Lying Pirates - Shop" i Google-resultat. Föreslagen: <code>Lying Pirates — Bluffing Dice Game (7.3 BGG · 16 000+ sold)</code>.
+            Ger fler keywords + social proof direkt i sökresultatet.
+          </div>
+          <div class="fix-meta">Väntar Lucas OK</div>
+        </div>
+      </div>
+      <div class="fix pending">
+        <div class="fix-icon">◐</div>
+        <div class="fix-body">
+          <div class="fix-top">
+            <span class="fix-title">JSON-LD rich snippets</span>
+            <span class="fix-tag">Bygger</span>
+          </div>
+          <div class="fix-detail">
+            Organization + Product + FAQPage schemas. Ger stjärnor + pris + FAQ direkt i Google-resultatet.
+            Injiceras i Sprint 1-tema när title-fixen godkänns.
+          </div>
+          <div class="fix-meta">Väntar Lucas OK på titel</div>
+        </div>
+      </div>
+      <div class="fix pending">
+        <div class="fix-icon">◐</div>
+        <div class="fix-body">
+          <div class="fix-top">
+            <span class="fix-title">"Notify me"-widget för slutsålda</span>
+            <span class="fix-tag">Bygger</span>
+          </div>
+          <div class="fix-detail">
+            Meeples NL, Surfin' FR = 0 st just nu. Widget som fångar e-post inför Sept-restock → aktiverar 500+ SEK/mån åter i intäkt när lagret kommer in.
+          </div>
+          <div class="fix-meta">Aktiveras i Sprint 1-temat</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NEXT UP -->
+  <section>
+    <h2><span class="dot"></span>Nästa steg · vecka 2</h2>
+    <p class="h2sub">Vad som händer när Sprint 1 är godkänd + publiserad.</p>
+    <div class="nextup">
+      <h3>Sprint 2 · Checkout Conversion Program</h3>
+      <ul>
+        <li><span class="prio-dot"></span><div><b>Cart-drawer reviews</b> — visa 4.2★ + 300+ recensioner i drawern innan checkout (currentcart type: DRAWER).</div></li>
+        <li><span class="prio-dot"></span><div><b>Exit-intent popup</b> — 10% rabatt vid page-leave, e-post-capture till Brevo.</div></li>
+        <li><span class="prio-dot med"></span><div><b>Trust badges</b> — free shipping over €X, secure checkout, 14-day returns synligt vid Add to Cart.</div></li>
+        <li><span class="prio-dot med"></span><div><b>Volume discount tier</b> — "köp 2, spara 10%" på Base Game + Big Box-buntar.</div></li>
+        <li><span class="prio-dot low"></span><div><b>Cart abandonment mät-baseline</b> — behöver Brevo cart-abandonment-flow aktiveras + 7d-baseline innan A/B-testar.</div></li>
+      </ul>
+    </div>
+  </section>
+
+</div>
+
+<footer><div class="wrap" style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;width:100%">
+  <div>Growth Hub · <b>Bengt 🦉</b> · uppdaterat manuellt vid sprint-avslut</div>
+  <div>Sprint 1 startade <b>2026-07-07</b> · nästa uppdatering <b>söndag</b></div>
+</div></footer>
+
+</body>
+</html>

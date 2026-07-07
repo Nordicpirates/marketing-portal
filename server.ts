@@ -161,6 +161,15 @@ const server = Bun.serve({
       return Response.json(readTasks(), { headers: { "Cache-Control": "no-cache" } });
     }
 
+    if (path === "/growth") {
+      const growthHtml = join(DIR, "public", "growth.html");
+      if (existsSync(growthHtml)) {
+        return new Response(readFileSync(growthHtml), {
+          headers: { "Content-Type": "text/html; charset=utf-8" },
+        });
+      }
+    }
+
     const html = join(DIR, "public", "index.html");
     if (existsSync(html)) {
       return new Response(readFileSync(html), {
