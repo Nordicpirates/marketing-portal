@@ -161,10 +161,10 @@
   <div class="wh-tabs" id="whTabs">
     <button class="wh-tab active" data-wh="total" onclick="selectWh('total',this)">Alla lager (total)</button>
     <button class="wh-tab" data-wh="bridge" onclick="selectWh('bridge',this)">Bridge (USA)</button>
-    <button class="wh-tab" data-wh="armarlo" onclick="selectWh('armarlo',this)">Armarlo (EU)</button>
+    <button class="wh-tab" data-wh="armarlo" onclick="selectWh('armarlo',this)">Armarlo (AU)</button>
     <button class="wh-tab" data-wh="meeples" onclick="selectWh('meeples',this)">Meeples (EU)</button>
     <button class="wh-tab" data-wh="zatu" onclick="selectWh('zatu',this)">Zatu (UK)</button>
-    <span class="wh-note" id="whNote">Per-lager-vy visar lagervolym per lager · velocity är global</span>
+    <span class="wh-note" id="whNote">Bridge/Armarlo/Zatu = Engelska produkter · Meeples = alla språk</span>
   </div>
 
   <!-- TABLE -->
@@ -193,7 +193,8 @@
 
   <div class="footer-note">
     <strong>Hur prognosen räknas:</strong> Dagar kvar = Lager ÷ Daglig säljtakt (snitt 30 dagar, alla lager sammantaget).
-    Per-lager-vy visar det specifika lagrets volym men använder samma globala velocity — prognosen är indikativ, inte per-lager-specifik.
+    <strong>Lagerstruktur:</strong> Bridge (USA) och Armarlo (AU) säljer enbart engelska produkter. Zatu (UK) säljer enbart engelska produkter. Meeples (EU) säljer alla språkvarianter.
+    Per-lager-vy filtrerar på relevant sortiment och använder global velocity — prognosen är indikativ.
     Lager uppdateras dagligen. <strong>Gränsvärden:</strong> 🔴 Kritisk &lt;14 dagar · ⚠️ Lågt 14–30 dagar · 👁 Bevaka 30–60 dagar · ✅ OK &gt;60 dagar.
   </div>
 </div>
@@ -257,7 +258,17 @@ function stockClass(n) {
 const statusOrder = { oversold: 0, critical: 1, low: 2, watch: 3, ok: 4 };
 
 function render(inv, wh) {
-  const prods = [...inv.products];
+  // Filter products to only those sold from this warehouse
+  // Bridge/Armarlo/Zatu = English/Default only; Meeples = all variants; total = all
+  let prods;
+  if (wh === 'total' || wh === 'meeples') {
+    prods = [...inv.products];
+  } else {
+    // bridge, armarlo, zatu → English + Default only
+    prods = inv.products.filter(p =>
+      !p.warehouse_scope || p.warehouse_scope.includes(wh)
+    );
+  }
 
   // Sort by computed status for this wh
   prods.sort((a,b) => {
@@ -269,7 +280,7 @@ function render(inv, wh) {
   });
 
   // Table header update
-  const warehouseLabels = { total: 'Totalt lager', bridge: 'Bridge (USA)', armarlo: 'Armarlo (EU)', meeples: 'Meeples (EU)', zatu: 'Zatu (UK)' };
+  const warehouseLabels = { total: 'Totalt lager', bridge: 'Bridge (USA)', armarlo: 'Armarlo (AU)', meeples: 'Meeples (EU)', zatu: 'Zatu (UK)' };
   document.getElementById('thStock').textContent = warehouseLabels[wh] || 'Lager';
 
   // Summary counts

@@ -853,7 +853,7 @@
       },
       {
         "id": "armarlo",
-        "label": "Armarlo (EU)"
+        "label": "Armarlo (AU)"
       },
       {
         "id": "meeples",
@@ -882,7 +882,13 @@
           "total": 751
         },
         "days": 103,
-        "status": "ok"
+        "status": "ok",
+        "warehouse_scope": [
+          "bridge",
+          "armarlo",
+          "meeples",
+          "zatu"
+        ]
       },
       {
         "title": "BIG BOX",
@@ -896,7 +902,10 @@
           "total": 27
         },
         "days": 35,
-        "status": "low"
+        "status": "low",
+        "warehouse_scope": [
+          "meeples"
+        ]
       },
       {
         "title": "BIG BOX",
@@ -910,7 +919,10 @@
           "total": 279
         },
         "days": 594,
-        "status": "ok"
+        "status": "ok",
+        "warehouse_scope": [
+          "meeples"
+        ]
       },
       {
         "title": "BIG BOX",
@@ -924,7 +936,10 @@
           "total": 136
         },
         "days": 316,
-        "status": "ok"
+        "status": "ok",
+        "warehouse_scope": [
+          "meeples"
+        ]
       },
       {
         "title": "BIG BOX",
@@ -938,7 +953,10 @@
           "total": 33
         },
         "days": 330,
-        "status": "ok"
+        "status": "ok",
+        "warehouse_scope": [
+          "meeples"
+        ]
       },
       {
         "title": "Base Game",
@@ -952,7 +970,13 @@
           "total": 1335
         },
         "days": 472,
-        "status": "ok"
+        "status": "ok",
+        "warehouse_scope": [
+          "bridge",
+          "armarlo",
+          "meeples",
+          "zatu"
+        ]
       },
       {
         "title": "Base Game",
@@ -966,7 +990,10 @@
           "total": 6
         },
         "days": 14,
-        "status": "critical"
+        "status": "critical",
+        "warehouse_scope": [
+          "meeples"
+        ]
       },
       {
         "title": "Base Game",
@@ -980,7 +1007,10 @@
           "total": 6
         },
         "days": 11,
-        "status": "critical"
+        "status": "critical",
+        "warehouse_scope": [
+          "meeples"
+        ]
       },
       {
         "title": "Base Game",
@@ -994,7 +1024,10 @@
           "total": 6
         },
         "days": 30,
-        "status": "low"
+        "status": "low",
+        "warehouse_scope": [
+          "meeples"
+        ]
       },
       {
         "title": "Base Game",
@@ -1008,7 +1041,10 @@
           "total": 42
         },
         "days": 1400,
-        "status": "ok"
+        "status": "ok",
+        "warehouse_scope": [
+          "meeples"
+        ]
       },
       {
         "title": "Add-On Box",
@@ -1022,7 +1058,13 @@
           "total": 9
         },
         "days": 53,
-        "status": "watch"
+        "status": "watch",
+        "warehouse_scope": [
+          "bridge",
+          "armarlo",
+          "meeples",
+          "zatu"
+        ]
       },
       {
         "title": "Add-On Box",
@@ -1036,7 +1078,10 @@
           "total": -20
         },
         "days": -1,
-        "status": "oversold"
+        "status": "oversold",
+        "warehouse_scope": [
+          "meeples"
+        ]
       },
       {
         "title": "Add-On Box",
@@ -1050,7 +1095,10 @@
           "total": 0
         },
         "days": 0,
-        "status": "critical"
+        "status": "critical",
+        "warehouse_scope": [
+          "meeples"
+        ]
       },
       {
         "title": "Add-On Box",
@@ -1064,7 +1112,10 @@
           "total": 2
         },
         "days": 12,
-        "status": "critical"
+        "status": "critical",
+        "warehouse_scope": [
+          "meeples"
+        ]
       },
       {
         "title": "Upgrade Box",
@@ -1078,7 +1129,13 @@
           "total": -36
         },
         "days": -1,
-        "status": "oversold"
+        "status": "oversold",
+        "warehouse_scope": [
+          "bridge",
+          "armarlo",
+          "meeples",
+          "zatu"
+        ]
       },
       {
         "title": "Upgrade Box",
@@ -1092,7 +1149,10 @@
           "total": 0
         },
         "days": 0,
-        "status": "critical"
+        "status": "critical",
+        "warehouse_scope": [
+          "meeples"
+        ]
       },
       {
         "title": "Upgrade Box",
@@ -1106,7 +1166,10 @@
           "total": 0
         },
         "days": 0,
-        "status": "critical"
+        "status": "critical",
+        "warehouse_scope": [
+          "meeples"
+        ]
       },
       {
         "title": "Kraken Mini-Expansion",
@@ -1120,7 +1183,13 @@
           "total": 238
         },
         "days": 50,
-        "status": "watch"
+        "status": "watch",
+        "warehouse_scope": [
+          "bridge",
+          "armarlo",
+          "meeples",
+          "zatu"
+        ]
       },
       {
         "title": "Cities of Greed",
@@ -1134,7 +1203,13 @@
           "total": 359
         },
         "days": 326,
-        "status": "ok"
+        "status": "ok",
+        "warehouse_scope": [
+          "bridge",
+          "armarlo",
+          "meeples",
+          "zatu"
+        ]
       },
       {
         "title": "Custom Insert",
@@ -1148,7 +1223,13 @@
           "total": 91
         },
         "days": 33,
-        "status": "low"
+        "status": "low",
+        "warehouse_scope": [
+          "bridge",
+          "armarlo",
+          "meeples",
+          "zatu"
+        ]
       },
       {
         "title": "8-Player Components",
@@ -1162,7 +1243,13 @@
           "total": 108
         },
         "days": 47,
-        "status": "watch"
+        "status": "watch",
+        "warehouse_scope": [
+          "bridge",
+          "armarlo",
+          "meeples",
+          "zatu"
+        ]
       }
     ]
   }
