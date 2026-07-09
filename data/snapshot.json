@@ -44,7 +44,7 @@
   "dashboard_status": [
     {"icon": "🔧", "title": "Google Ads API-token", "desc": "DEVELOPER_TOKEN_PROHIBITED (GCP-projekt 174512496329 matchar inte token). Issue #7064. Victor är informerad.", "who": "Victor/Composio fixar", "status": "blocked"},
     {"icon": "📦", "title": "170 underkända produkter i Google Merchant Center", "desc": "Sannolikt saknade GTIN/barcodes. GMC-audit i kö.", "who": "Bengt — planerat", "status": "queue"},
-    {"icon": "✅", "title": "GTM-container publicerad (v2 "Bengt Json")", "desc": "Conversion Linker + Remarketing-tag live · nordicpirates.com · All Pages trigger", "who": "Klart", "status": "done"},
+    {"icon": "✅", "title": "GTM-container publicerad (v2 'Bengt Json')", "desc": "Conversion Linker + Remarketing-tag live · nordicpirates.com · All Pages trigger", "who": "Klart", "status": "done"},
     {"icon": "✅", "title": "Marketing dashboard live med daglig uppdatering", "desc": "marketing.nordicpirate.com · Signal #601 varje dag kl 00:30 CEST", "who": "Klart", "status": "done"}
   ],
   "tracking_ids": {
