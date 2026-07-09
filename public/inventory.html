@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Lagerstatus · Nordic Pirates Marketing HQ</title>
+  <link href="https://fonts.googleapis.com/css2?family=Asul:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --cream:#f2ede4;--cream-card:#fffdf8;--ink:#171717;--ink-muted:#8a8073;
+      --terra:#c96a3d;--terra-light:rgba(201,106,61,.12);
+      --gold:#cf9a2e;--gold-light:rgba(207,154,46,.12);
+      --green:#2f8f4e;--green-light:rgba(47,143,78,.12);
+      --red:#c0392b;--red-light:rgba(192,57,43,.12);
+      --amber:#d97706;--amber-light:rgba(217,119,6,.12);
+      --border:rgba(23,23,23,.09);
+    }
+    body{background:radial-gradient(900px 460px at 88% -8%,rgba(201,106,61,.10),transparent 60%),radial-gradient(760px 420px at -6% 4%,rgba(207,154,46,.12),transparent 58%),var(--cream);font-family:'Inter',sans-serif;color:var(--ink);min-height:100vh}
+
+    /* --- NAV --- */
+    .topbar{display:flex;align-items:center;justify-content:space-between;padding:20px 28px 0;max-width:1280px;margin:0 auto}
+    .logo-wrap{display:flex;align-items:center;gap:10px}
+    .logo-chip{background:var(--ink);border-radius:11px;padding:9px 11px;display:flex;align-items:center}
+    .logo-chip img{height:20px;display:block}
+    .logo-text{font-family:'Asul',serif;font-size:13px;font-weight:700;color:var(--ink);line-height:1.3}
+    .viewnav{display:flex;gap:6px;align-items:center}
+    .viewnav a{font-size:13px;font-weight:500;color:var(--ink-muted);text-decoration:none;padding:7px 14px;border-radius:8px;transition:all .15s;white-space:nowrap}
+    .viewnav a:hover{color:var(--ink);background:rgba(23,23,23,.06)}
+    .viewnav a.active{color:var(--ink);background:rgba(23,23,23,.09);font-weight:600}
+    .topbar-right{display:flex;gap:8px;align-items:center}
+    .upd-badge{font-size:12px;color:var(--ink-muted);background:rgba(23,23,23,.05);padding:5px 10px;border-radius:20px}
+    .logout-btn{font-size:12px;color:var(--ink-muted);text-decoration:none;padding:5px 10px;border-radius:6px;background:rgba(23,23,23,.06)}
+    .logout-btn:hover{background:rgba(23,23,23,.10);color:var(--ink)}
+
+    /* --- WRAPPER --- */
+    .wrap{max-width:1280px;margin:0 auto;padding:28px 28px 60px}
+
+    /* --- HEADER --- */
+    .page-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:24px;gap:16px;flex-wrap:wrap}
+    .page-header h1{font-family:'Asul',serif;font-size:24px;font-weight:700;color:var(--ink)}
+    .page-header h1 span{color:var(--terra)}
+    .header-meta{font-size:13px;color:var(--ink-muted);line-height:1.6;text-align:right}
+
+    /* --- ALERTS --- */
+    .alert-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-bottom:28px}
+    .alert-card{background:var(--cream-card);border:1.5px solid;border-radius:14px;padding:16px 18px}
+    .alert-card.oversold{border-color:rgba(192,57,43,.4);background:var(--red-light)}
+    .alert-card.critical{border-color:rgba(192,57,43,.25);background:rgba(192,57,43,.06)}
+    .alert-card.low{border-color:rgba(217,119,6,.3);background:var(--amber-light)}
+    .alert-card .a-badge{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border-radius:20px;display:inline-block;margin-bottom:8px}
+    .alert-card.oversold .a-badge{background:var(--red);color:#fff}
+    .alert-card.critical .a-badge{background:var(--red);color:#fff}
+    .alert-card.low .a-badge{background:var(--amber);color:#fff}
+    .alert-card .a-title{font-size:14px;font-weight:600;color:var(--ink);margin-bottom:3px}
+    .alert-card .a-sub{font-size:12px;color:var(--ink-muted)}
+    .alert-card .a-days{font-size:22px;font-weight:700;margin-top:6px}
+    .alert-card.oversold .a-days{color:var(--red)}
+    .alert-card.critical .a-days{color:var(--red)}
+    .alert-card.low .a-days{color:var(--amber)}
+
+    /* --- SUMMARY STATS --- */
+    .summary-row{display:flex;gap:12px;margin-bottom:24px;flex-wrap:wrap}
+    .stat-pill{display:flex;align-items:center;gap:8px;background:var(--cream-card);border:1px solid var(--border);border-radius:40px;padding:8px 16px;font-size:13px;font-weight:500}
+    .stat-pill .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+    .stat-pill.s-red .dot{background:var(--red)}
+    .stat-pill.s-amber .dot{background:var(--amber)}
+    .stat-pill.s-yellow .dot{background:#ca8a04}
+    .stat-pill.s-green .dot{background:var(--green)}
+
+    /* --- WAREHOUSE TABS --- */
+    .wh-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px}
+    .wh-tab{font-size:13px;font-weight:500;color:var(--ink-muted);border:1.5px solid var(--border);border-radius:8px;padding:7px 14px;cursor:pointer;background:var(--cream-card);transition:all .15s;white-space:nowrap}
+    .wh-tab:hover{border-color:rgba(201,106,61,.4);color:var(--ink)}
+    .wh-tab.active{border-color:var(--terra);color:var(--terra);background:var(--terra-light);font-weight:600}
+    .wh-note{font-size:12px;color:var(--ink-muted);margin-left:auto;display:flex;align-items:center}
+
+    /* --- TABLE --- */
+    .tbl-wrap{background:var(--cream-card);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:24px}
+    .tbl-header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px 12px;border-bottom:1px solid var(--border)}
+    .tbl-header h2{font-family:'Asul',serif;font-size:15px;color:var(--ink)}
+    .tbl-header .tbl-meta{font-size:12px;color:var(--ink-muted)}
+    table{width:100%;border-collapse:collapse}
+    thead th{font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-muted);padding:10px 16px;text-align:left;border-bottom:1px solid var(--border);background:rgba(23,23,23,.02)}
+    thead th.right{text-align:right}
+    tbody tr{border-bottom:1px solid rgba(23,23,23,.05);transition:background .1s}
+    tbody tr:hover{background:rgba(23,23,23,.025)}
+    tbody tr:last-child{border-bottom:none}
+    tbody td{padding:11px 16px;font-size:13px;vertical-align:middle}
+    tbody td.right{text-align:right}
+    .prod-name{font-weight:600;color:var(--ink)}
+    .prod-variant{font-size:12px;color:var(--ink-muted);margin-top:1px}
+    .stock-num{font-variant-numeric:tabular-nums;font-weight:500}
+    .stock-num.neg{color:var(--red);font-weight:700}
+    .stock-num.zero{color:var(--red)}
+    .stock-num.low-num{color:var(--amber)}
+    .vel{color:var(--ink-muted);font-size:12px;font-variant-numeric:tabular-nums}
+
+    /* status badge */
+    .badge{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border-radius:20px;white-space:nowrap;display:inline-block}
+    .badge.oversold{background:var(--red);color:#fff}
+    .badge.critical{background:rgba(192,57,43,.15);color:var(--red)}
+    .badge.low{background:rgba(217,119,6,.15);color:var(--amber)}
+    .badge.watch{background:rgba(207,154,46,.15);color:#9a6f00}
+    .badge.ok{background:rgba(47,143,78,.12);color:var(--green)}
+
+    /* days cell */
+    .days-cell{font-weight:700;font-variant-numeric:tabular-nums;font-size:14px}
+    .days-cell.oversold-d{color:var(--red)}
+    .days-cell.critical-d{color:var(--red)}
+    .days-cell.low-d{color:var(--amber)}
+    .days-cell.watch-d{color:#9a6f00}
+    .days-cell.ok-d{color:var(--ink-muted)}
+
+    /* --- FOOTER NOTE --- */
+    .footer-note{font-size:12px;color:var(--ink-muted);line-height:1.7;background:rgba(23,23,23,.03);border:1px solid var(--border);border-radius:12px;padding:14px 18px;margin-top:8px}
+    .footer-note strong{color:var(--ink)}
+
+    @media(max-width:860px){
+      .topbar{padding:14px 16px 0}
+      .wrap{padding:20px 16px 48px}
+      .col-hide{display:none}
+      .wh-note{display:none}
+    }
+  </style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="logo-wrap">
+    <div class="logo-chip">
+      <img src="https://www.nordicpirates.com/cdn/shop/files/LP_LOGO_vit_e2ed4c01-c782-4abb-8a90-b5cab974fd0a.png?width=120" alt="LP">
+    </div>
+    <div class="logo-text">Nordic Pirates<br>Marketing HQ</div>
+  </div>
+  <nav class="viewnav">
+    <a href="/">Marketing HQ</a>
+    <a href="/dashboard">Dashboard</a>
+    <a href="/inventory" class="active">Lager</a>
+    <a href="/growth">Growth</a>
+  </nav>
+  <div class="topbar-right">
+    <span class="upd-badge" id="updBadge">Hämtar...</span>
+    <a href="/logout" class="logout-btn">Logga ut</a>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="page-header">
+    <h1>Lagerstatus <span>&</span> Prognos</h1>
+    <div class="header-meta" id="headerMeta">Velocity baserat på 30d försäljning · 4 lager</div>
+  </div>
+
+  <!-- ALERTS -->
+  <div class="alert-grid" id="alertGrid"></div>
+
+  <!-- SUMMARY -->
+  <div class="summary-row" id="summaryRow"></div>
+
+  <!-- WAREHOUSE TABS -->
+  <div class="wh-tabs" id="whTabs">
+    <button class="wh-tab active" data-wh="total" onclick="selectWh('total',this)">Alla lager (total)</button>
+    <button class="wh-tab" data-wh="bridge" onclick="selectWh('bridge',this)">Bridge (USA)</button>
+    <button class="wh-tab" data-wh="armarlo" onclick="selectWh('armarlo',this)">Armarlo (EU)</button>
+    <button class="wh-tab" data-wh="meeples" onclick="selectWh('meeples',this)">Meeples (EU)</button>
+    <button class="wh-tab" data-wh="zatu" onclick="selectWh('zatu',this)">Zatu (UK)</button>
+    <span class="wh-note" id="whNote">Per-lager-vy visar lagervolym per lager · velocity är global</span>
+  </div>
+
+  <!-- TABLE -->
+  <div class="tbl-wrap">
+    <div class="tbl-header">
+      <h2>Alla produkter</h2>
+      <span class="tbl-meta" id="tblMeta"></span>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Produkt</th>
+          <th class="right" id="thStock">Totalt lager</th>
+          <th class="right col-hide">Bridge</th>
+          <th class="right col-hide">Armarlo</th>
+          <th class="right col-hide">Meeples</th>
+          <th class="right col-hide">Zatu</th>
+          <th class="right">/ dag</th>
+          <th class="right">Prognos</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="prodRows"></tbody>
+    </table>
+  </div>
+
+  <div class="footer-note">
+    <strong>Hur prognosen räknas:</strong> Dagar kvar = Lager ÷ Daglig säljtakt (snitt 30 dagar, alla lager sammantaget).
+    Per-lager-vy visar det specifika lagrets volym men använder samma globala velocity — prognosen är indikativ, inte per-lager-specifik.
+    Lager uppdateras dagligen. <strong>Gränsvärden:</strong> 🔴 Kritisk &lt;14 dagar · ⚠️ Lågt 14–30 dagar · 👁 Bevaka 30–60 dagar · ✅ OK &gt;60 dagar.
+  </div>
+</div>
+
+<script>
+let DATA = null;
+let currentWh = 'total';
+
+fetch('/api/data').then(r=>r.json()).then(d=>{
+  DATA = d;
+  if (!d.inventory_data) { document.getElementById('prodRows').innerHTML='<tr><td colspan="9" style="padding:32px;text-align:center;color:#8a8073">Inventory data saknas — kontakta Bengt.</td></tr>'; return; }
+  const inv = d.inventory_data;
+
+  // Updated badge
+  document.getElementById('updBadge').textContent = 'Uppdaterad ' + inv.updated_at;
+  document.getElementById('headerMeta').textContent = 'Velocity baserat på ' + inv.velocity_window_days + 'd försäljning · ' + inv.warehouses.length + ' lager';
+
+  render(inv, 'total');
+}).catch(e=>{ console.error(e); });
+
+function getStatus(p, wh) {
+  if (wh === 'total') return p.status;
+  const stock = p.stock[wh] || 0;
+  if (stock < 0) return 'oversold';
+  if (stock === 0) return 'critical';
+  const days = p.velocity > 0 ? Math.round(stock / p.velocity) : 9999;
+  if (days <= 14) return 'critical';
+  if (days <= 30) return 'low';
+  if (days <= 60) return 'watch';
+  return 'ok';
+}
+
+function getDays(p, wh) {
+  if (wh === 'total') return p.days;
+  const stock = p.stock[wh] || 0;
+  if (stock < 0) return -1;
+  if (p.velocity <= 0) return 9999;
+  return Math.round(stock / p.velocity);
+}
+
+function daysLabel(d, status) {
+  if (status === 'oversold') return 'ÖVERSÅLD';
+  if (d === 0) return 'SLUT';
+  if (d >= 9999) return '∞';
+  if (d > 999) return '>2,5 år';
+  return d + ' dagar';
+}
+
+function badgeHtml(status) {
+  const labels = { oversold:'ÖVERSÅLD', critical:'KRITISK', low:'LÅGT', watch:'BEVAKA', ok:'OK' };
+  return `<span class="badge ${status}">${labels[status]||status}</span>`;
+}
+
+function stockClass(n) {
+  if (n < 0) return 'neg';
+  if (n === 0) return 'zero';
+  if (n <= 6) return 'low-num';
+  return '';
+}
+
+const statusOrder = { oversold: 0, critical: 1, low: 2, watch: 3, ok: 4 };
+
+function render(inv, wh) {
+  const prods = [...inv.products];
+
+  // Sort by computed status for this wh
+  prods.sort((a,b) => {
+    const sa = getStatus(a, wh), sb = getStatus(b, wh);
+    const oa = statusOrder[sa]??5, ob = statusOrder[sb]??5;
+    if (oa !== ob) return oa - ob;
+    // within same status: sort by days ascending
+    return getDays(a, wh) - getDays(b, wh);
+  });
+
+  // Table header update
+  const warehouseLabels = { total: 'Totalt lager', bridge: 'Bridge (USA)', armarlo: 'Armarlo (EU)', meeples: 'Meeples (EU)', zatu: 'Zatu (UK)' };
+  document.getElementById('thStock').textContent = warehouseLabels[wh] || 'Lager';
+
+  // Summary counts
+  const counts = { oversold: 0, critical: 0, low: 0, watch: 0, ok: 0 };
+  prods.forEach(p => { const s = getStatus(p, wh); if (counts[s]!==undefined) counts[s]++; });
+
+  const summaryRow = document.getElementById('summaryRow');
+  summaryRow.innerHTML = `
+    <div class="stat-pill s-red"><div class="dot"></div><span>${counts.oversold + counts.critical} kritisk${counts.oversold+counts.critical!==1?'a':''}</span></div>
+    <div class="stat-pill s-amber"><div class="dot"></div><span>${counts.low} lågt</span></div>
+    <div class="stat-pill s-yellow"><div class="dot"></div><span>${counts.watch} bevaka</span></div>
+    <div class="stat-pill s-green"><div class="dot"></div><span>${counts.ok} OK</span></div>
+  `;
+
+  // Alert grid (only critical/oversold/low for selected wh)
+  const alerts = prods.filter(p => ['oversold','critical','low'].includes(getStatus(p,wh)));
+  const alertGrid = document.getElementById('alertGrid');
+  if (alerts.length === 0) {
+    alertGrid.innerHTML = '';
+  } else {
+    alertGrid.innerHTML = alerts.map(p => {
+      const st = getStatus(p, wh);
+      const d = getDays(p, wh);
+      const stock = wh === 'total' ? p.stock.total : (p.stock[wh]||0);
+      const labels = { oversold: 'ÖVERSÅLD', critical: 'KRITISK', low: 'LÅGT LAGER' };
+      const dStr = daysLabel(d, st);
+      return `<div class="alert-card ${st}">
+        <div class="a-badge">${labels[st]||st}</div>
+        <div class="a-title">${p.title} · ${p.variant}</div>
+        <div class="a-sub">${stock < 0 ? Math.abs(stock)+' övers. · ' : stock+' i lager · '}${p.velocity}/dag</div>
+        <div class="a-days">${dStr}</div>
+      </div>`;
+    }).join('');
+  }
+
+  // Rows
+  const tbody = document.getElementById('prodRows');
+  const rows = prods.map(p => {
+    const st = getStatus(p, wh);
+    const d = getDays(p, wh);
+    const mainStock = wh === 'total' ? p.stock.total : (p.stock[wh] || 0);
+    const dClass = st === 'oversold' ? 'oversold-d' : st === 'critical' ? 'critical-d' : st === 'low' ? 'low-d' : st === 'watch' ? 'watch-d' : 'ok-d';
+    return `<tr>
+      <td>
+        <div class="prod-name">${p.title}</div>
+        <div class="prod-variant">${p.variant}</div>
+      </td>
+      <td class="right"><span class="stock-num ${stockClass(mainStock)}">${mainStock}</span></td>
+      <td class="right col-hide"><span class="stock-num ${stockClass(p.stock.bridge)}">${p.stock.bridge}</span></td>
+      <td class="right col-hide"><span class="stock-num ${stockClass(p.stock.armarlo)}">${p.stock.armarlo}</span></td>
+      <td class="right col-hide"><span class="stock-num ${stockClass(p.stock.meeples)}">${p.stock.meeples}</span></td>
+      <td class="right col-hide"><span class="stock-num ${stockClass(p.stock.zatu)}">${p.stock.zatu}</span></td>
+      <td class="right"><span class="vel">${p.velocity.toFixed(1)}</span></td>
+      <td class="right"><span class="days-cell ${dClass}">${daysLabel(d,st)}</span></td>
+      <td>${badgeHtml(st)}</td>
+    </tr>`;
+  }).join('');
+  tbody.innerHTML = rows;
+
+  // Table meta
+  document.getElementById('tblMeta').textContent = prods.length + ' produkter · sorterat efter prioritet';
+
+  // Show/hide per-warehouse columns (only show when wh=total)
+  const colCells = document.querySelectorAll('.col-hide');
+  colCells.forEach(el => {
+    el.style.display = (wh === 'total') ? '' : 'none';
+  });
+}
+
+function selectWh(wh, btn) {
+  currentWh = wh;
+  document.querySelectorAll('.wh-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  if (DATA && DATA.inventory_data) render(DATA.inventory_data, wh);
+}
+</script>
+</body>
+</html>

@@ -6,7 +6,7 @@
       "priority": "high",
       "title": "Add UTM parameters to all active Meta ads",
       "detail": "Agency confirmed they're adding this today (Jun 25). Use at ad level: <code>utm_source=facebook&utm_medium=paid&utm_campaign={{campaign.name}}&utm_content={{ad.name}}</code> — gives clean source/medium in GA4 + Shopify reporting.",
-      "done": false
+      "done": true
     },
     {
       "id": "lp-attribution",

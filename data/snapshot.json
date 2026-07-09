@@ -3,9 +3,9 @@
   "owner": "Bengt 🦉 (data) + Polly (analysis)",
   "currency_note": "Revenue in EUR (store currency). Meta spend in SEK. Blended MER converts spend at ~11.4 SEK/EUR.",
   "gads_alert": {
-    "show": true,
-    "title": "Google Ads ej live — token-fix pågår (Victor/Composio)",
-    "sub": "Konto: AW-10987612665 · Budget: €50/dag · Standard Shopping · Issue #7064",
+    "show": false,
+    "title": "Google Ads Shopping live sedan 8 juli",
+    "sub": "Konto: AW-10987612665 · Budget: €50/dag · Standard Shopping · Aktiverades 2026-07-08",
     "link_gads": "https://ads.google.com",
     "link_gmc": "https://merchants.google.com"
   },
@@ -21,62 +21,313 @@
   },
   "chart_data": {
     "orders_9d": {
-      "labels": ["30/6","1/7","2/7","3/7","4/7","5/7","6/7","7/7","8/7","9/7*"],
-      "revenue": [2204, 1522, 1975, 1828, 1597, 950, 1092, 1612, 1667, 505],
-      "orders": [24, 20, 19, 24, 16, 12, 11, 16, 15, 5]
+      "labels": [
+        "30/6",
+        "1/7",
+        "2/7",
+        "3/7",
+        "4/7",
+        "5/7",
+        "6/7",
+        "7/7",
+        "8/7",
+        "9/7*"
+      ],
+      "revenue": [
+        2204,
+        1522,
+        1975,
+        1828,
+        1597,
+        950,
+        1092,
+        1612,
+        1667,
+        505
+      ],
+      "orders": [
+        24,
+        20,
+        19,
+        24,
+        16,
+        12,
+        11,
+        16,
+        15,
+        5
+      ]
     },
     "organic_14d": {
-      "labels": ["25/6","26/6","27/6","28/6","29/6","30/6","1/7","2/7","3/7","4/7","5/7","6/7","7/7","8/7"],
-      "sessions": [50, 55, 46, 55, 59, 44, 57, 63, 64, 83, 59, 61, 41, 29],
-      "conversions": [3, 2, 3, 1, 1, 3, 5, 2, 2, 4, 2, 1, 0, 0]
+      "labels": [
+        "25/6",
+        "26/6",
+        "27/6",
+        "28/6",
+        "29/6",
+        "30/6",
+        "1/7",
+        "2/7",
+        "3/7",
+        "4/7",
+        "5/7",
+        "6/7",
+        "7/7",
+        "8/7"
+      ],
+      "sessions": [
+        50,
+        55,
+        46,
+        55,
+        59,
+        44,
+        57,
+        63,
+        64,
+        83,
+        59,
+        61,
+        41,
+        29
+      ],
+      "conversions": [
+        3,
+        2,
+        3,
+        1,
+        1,
+        3,
+        5,
+        2,
+        2,
+        4,
+        2,
+        1,
+        0,
+        0
+      ]
     }
   },
   "channels_30d": [
-    {"name": "Paid Social (Meta)", "dot": "#4a90e2", "sessions": 23177, "conversions": 182, "cvr": 0.79, "revenue_sek": 204749},
-    {"name": "Organic Search", "dot": "#2f8f4e", "sessions": 1456, "conversions": 63, "cvr": 4.33, "revenue_sek": 67700, "cvr_good": true},
-    {"name": "Direct", "dot": "#8b5cf6", "sessions": 1233, "conversions": 53, "cvr": 4.30, "revenue_sek": 58320, "cvr_good": true},
-    {"name": "Referral", "dot": "#cf9a2e", "sessions": 367, "conversions": 21, "cvr": 5.72, "revenue_sek": 21581, "cvr_good": true},
-    {"name": "Organic Social", "dot": "#14b8a6", "sessions": 456, "conversions": 8, "cvr": 1.75, "revenue_sek": 8396},
-    {"name": "Unassigned", "dot": "#8a8073", "sessions": 379, "conversions": 13, "cvr": 3.43, "revenue_sek": 13891},
-    {"name": "Organic Shopping", "dot": "#c96a3d", "sessions": 119, "conversions": 4, "cvr": 3.36, "revenue_sek": 2836},
-    {"name": "Google Ads Shopping (planerat)", "dot": "#4a90e2", "sessions": null, "conversions": null, "cvr": null, "revenue_sek": null, "placeholder": true}
+    {
+      "name": "Paid Social (Meta)",
+      "dot": "#4a90e2",
+      "sessions": 23177,
+      "conversions": 182,
+      "cvr": 0.79,
+      "revenue_sek": 204749
+    },
+    {
+      "name": "Organic Search",
+      "dot": "#2f8f4e",
+      "sessions": 1456,
+      "conversions": 63,
+      "cvr": 4.33,
+      "revenue_sek": 67700,
+      "cvr_good": true
+    },
+    {
+      "name": "Direct",
+      "dot": "#8b5cf6",
+      "sessions": 1233,
+      "conversions": 53,
+      "cvr": 4.3,
+      "revenue_sek": 58320,
+      "cvr_good": true
+    },
+    {
+      "name": "Referral",
+      "dot": "#cf9a2e",
+      "sessions": 367,
+      "conversions": 21,
+      "cvr": 5.72,
+      "revenue_sek": 21581,
+      "cvr_good": true
+    },
+    {
+      "name": "Organic Social",
+      "dot": "#14b8a6",
+      "sessions": 456,
+      "conversions": 8,
+      "cvr": 1.75,
+      "revenue_sek": 8396
+    },
+    {
+      "name": "Unassigned",
+      "dot": "#8a8073",
+      "sessions": 379,
+      "conversions": 13,
+      "cvr": 3.43,
+      "revenue_sek": 13891
+    },
+    {
+      "name": "Organic Shopping",
+      "dot": "#c96a3d",
+      "sessions": 119,
+      "conversions": 4,
+      "cvr": 3.36,
+      "revenue_sek": 2836
+    },
+    {
+      "name": "Google Ads Shopping (live 8 juli)",
+      "dot": "#4a90e2",
+      "sessions": null,
+      "conversions": null,
+      "cvr": null,
+      "revenue_sek": null,
+      "placeholder": true
+    }
   ],
   "dashboard_status": [
-    {"icon": "🔧", "title": "Google Ads API-token", "desc": "DEVELOPER_TOKEN_PROHIBITED (GCP-projekt 174512496329 matchar inte token). Issue #7064. Victor är informerad.", "who": "Victor/Composio fixar", "status": "blocked"},
-    {"icon": "📦", "title": "170 underkända produkter i Google Merchant Center", "desc": "Sannolikt saknade GTIN/barcodes. GMC-audit i kö.", "who": "Bengt — planerat", "status": "queue"},
-    {"icon": "✅", "title": "GTM-container publicerad (v2 'Bengt Json')", "desc": "Conversion Linker + Remarketing-tag live · nordicpirates.com · All Pages trigger", "who": "Klart", "status": "done"},
-    {"icon": "✅", "title": "Marketing dashboard live med daglig uppdatering", "desc": "marketing.nordicpirate.com · Signal #601 varje dag kl 00:30 CEST", "who": "Klart", "status": "done"}
+    {
+      "icon": "✅",
+      "title": "Google Ads Shopping live",
+      "desc": "Kampanj aktiverad 8 juli · AW-10987612665 · €50/dag · Standard Shopping.",
+      "who": "Klart",
+      "status": "done"
+    },
+    {
+      "icon": "📦",
+      "title": "170 underkända produkter i Google Merchant Center",
+      "desc": "Sannolikt saknade GTIN/barcodes. GMC-audit i kö.",
+      "who": "Bengt — planerat",
+      "status": "queue"
+    },
+    {
+      "icon": "✅",
+      "title": "GTM-container publicerad (v2 'Bengt Json')",
+      "desc": "Conversion Linker + Remarketing-tag live · nordicpirates.com · All Pages trigger",
+      "who": "Klart",
+      "status": "done"
+    },
+    {
+      "icon": "✅",
+      "title": "Marketing dashboard live med daglig uppdatering",
+      "desc": "marketing.nordicpirate.com · Signal #601 varje dag kl 00:30 CEST",
+      "who": "Klart",
+      "status": "done"
+    }
   ],
   "tracking_ids": {
-    "ad_account": { "label": "Meta Ad Account", "value": "314601282522803", "name": "Nordic Pirate Games" },
+    "ad_account": {
+      "label": "Meta Ad Account",
+      "value": "314601282522803",
+      "name": "Nordic Pirate Games"
+    },
     "nordicpirates": {
       "site": "nordicpirates.com",
       "ids": [
-        { "label": "Meta Pixel / Dataset", "value": "832599113757136", "note": "CAPI server-side active ✅ (named 'lyingpirates.com' from migration)" },
-        { "label": "GA4", "value": "G-LYH6PJYVMZ", "note": "Active" },
-        { "label": "Google Ads", "value": "AW-10987612665", "note": "Active" },
-        { "label": "Microsoft Clarity", "value": "wuzvreap5g", "note": "Live via Shopify app" },
-        { "label": "Meta domain verification", "value": "fj386p4mfhx3vsr75bwu3isf3fnsgq", "note": "Verified ✅" }
+        {
+          "label": "Meta Pixel / Dataset",
+          "value": "832599113757136",
+          "note": "CAPI server-side active ✅ (named 'lyingpirates.com' from migration)"
+        },
+        {
+          "label": "GA4",
+          "value": "G-LYH6PJYVMZ",
+          "note": "Active"
+        },
+        {
+          "label": "Google Ads",
+          "value": "AW-10987612665",
+          "note": "Active"
+        },
+        {
+          "label": "Microsoft Clarity",
+          "value": "wuzvreap5g",
+          "note": "Live via Shopify app"
+        },
+        {
+          "label": "Meta domain verification",
+          "value": "fj386p4mfhx3vsr75bwu3isf3fnsgq",
+          "note": "Verified ✅"
+        }
       ]
     },
     "tap10": {
       "site": "tap10game.com",
       "ids": [
-        { "label": "Meta Pixel / Dataset", "value": "26904702632559365", "note": "Goal = Lead, not Purchase" },
-        { "label": "GA4", "value": "G-Y3HYPEG938", "note": "Active w/ Consent Mode v2" },
-        { "label": "Microsoft Clarity", "value": "—", "note": "Pending project ID from agency" },
-        { "label": "Meta domain verification", "value": "chw91c7ue5qggqy4lre0f1bazzdvdr", "note": "Verified ✅" }
+        {
+          "label": "Meta Pixel / Dataset",
+          "value": "26904702632559365",
+          "note": "Goal = Lead, not Purchase"
+        },
+        {
+          "label": "GA4",
+          "value": "G-Y3HYPEG938",
+          "note": "Active w/ Consent Mode v2"
+        },
+        {
+          "label": "Microsoft Clarity",
+          "value": "—",
+          "note": "Pending project ID from agency"
+        },
+        {
+          "label": "Meta domain verification",
+          "value": "chw91c7ue5qggqy4lre0f1bazzdvdr",
+          "note": "Verified ✅"
+        }
       ]
     }
   },
   "tracking": [
-    { "id": "emq", "label": "Event Match Quality (Purchase)", "val": "8.6 / 10", "status": "ok", "tag": "HEALTHY", "note": "Verified in Events Manager. Email/external_id 100%, phone 96%. Target is 7+. Tracking is solid." },
-    { "id": "capi", "label": "CAPI · Shopify → Meta", "val": "Real-time", "status": "ok", "tag": "ON", "note": "Server + browser events both firing; dedup handled by native Shopify×Meta integration." },
-    { "id": "np_domain", "label": "Domain verification", "val": "nordicpirates.com", "status": "ok", "tag": "VERIFIED", "note": "Done Jun 24. Good hygiene (no longer required for AEM since Meta automated it)." },
-    { "id": "clarity", "label": "Microsoft Clarity", "val": "nordicpirates.com", "status": "ok", "tag": "LIVE", "note": "Heatmaps + session recordings via Shopify app (ID wuzvreap5g)." },
-    { "id": "aem", "label": "Aggregated Event Measurement", "val": "Auto (Meta)", "status": "ok", "tag": "AUTOMATED", "note": "Meta removed manual AEM config Jun 2025 — events are aggregated automatically. Nothing to set." },
-    { "id": "utm", "label": "UTM tags on ads", "val": "Being added", "status": "wait", "tag": "AGENCY", "note": "Agency adding. For clean GA4/Shopify source reporting — Meta tracking itself is unaffected." },
-    { "id": "tap10_capi", "label": "CAPI · tap10game.com", "val": "Browser only", "status": "wait", "tag": "GAP", "note": "Lead event fires client-side; no server-side CAPI yet. On the action list." }
+    {
+      "id": "emq",
+      "label": "Event Match Quality (Purchase)",
+      "val": "8.6 / 10",
+      "status": "ok",
+      "tag": "HEALTHY",
+      "note": "Verified in Events Manager. Email/external_id 100%, phone 96%. Target is 7+. Tracking is solid."
+    },
+    {
+      "id": "capi",
+      "label": "CAPI · Shopify → Meta",
+      "val": "Real-time",
+      "status": "ok",
+      "tag": "ON",
+      "note": "Server + browser events both firing; dedup handled by native Shopify×Meta integration."
+    },
+    {
+      "id": "np_domain",
+      "label": "Domain verification",
+      "val": "nordicpirates.com",
+      "status": "ok",
+      "tag": "VERIFIED",
+      "note": "Done Jun 24. Good hygiene (no longer required for AEM since Meta automated it)."
+    },
+    {
+      "id": "clarity",
+      "label": "Microsoft Clarity",
+      "val": "nordicpirates.com",
+      "status": "ok",
+      "tag": "LIVE",
+      "note": "Heatmaps + session recordings via Shopify app (ID wuzvreap5g)."
+    },
+    {
+      "id": "aem",
+      "label": "Aggregated Event Measurement",
+      "val": "Auto (Meta)",
+      "status": "ok",
+      "tag": "AUTOMATED",
+      "note": "Meta removed manual AEM config Jun 2025 — events are aggregated automatically. Nothing to set."
+    },
+    {
+      "id": "utm",
+      "label": "UTM tags on ads",
+      "val": "Aktiverat",
+      "status": "ok",
+      "tag": "DONE",
+      "note": "UTM-taggar aktiva på alla Meta-annonser. Ren source/medium i GA4 och Shopify källrapportering."
+    },
+    {
+      "id": "tap10_capi",
+      "label": "CAPI · tap10game.com",
+      "val": "Browser only",
+      "status": "wait",
+      "tag": "GAP",
+      "note": "Lead event fires client-side; no server-side CAPI yet. On the action list."
+    }
   ],
   "default_period": "7d",
   "periods": [
@@ -86,31 +337,128 @@
       "range_start": "2026-07-02",
       "range_end": "2026-07-08",
       "days": 7,
-      "kpis": { "sessions": 1844, "conversion_label": "5.31%", "sales_label": "€11,738", "orders": 113 },
-      "meta": { "spend_label": "38,437 kr", "meta_roas": 2.64, "blended_mer": 3.48 },
+      "kpis": {
+        "sessions": 1844,
+        "conversion_label": "5.31%",
+        "sales_label": "€11,738",
+        "orders": 113
+      },
+      "meta": {
+        "spend_label": "38,437 kr",
+        "meta_roas": 2.64,
+        "blended_mer": 3.48
+      },
       "orders_by_country": [
-        { "name": "USA", "flag": "🇺🇸", "orders": 50, "revenue": "€5,204" },
-        { "name": "UK", "flag": "🇬🇧", "orders": 14, "revenue": "€1,923" },
-        { "name": "Italy", "flag": "🇮🇹", "orders": 13, "revenue": "€1,238" },
-        { "name": "Australia", "flag": "🇦🇺", "orders": 12, "revenue": "€1,262" },
-        { "name": "Germany", "flag": "🇩🇪", "orders": 11, "revenue": "€1,033" },
-        { "name": "Netherlands", "flag": "🇳🇱", "orders": 5, "revenue": "€335" },
-        { "name": "Belgium", "flag": "🇧🇪", "orders": 2, "revenue": "€209" },
-        { "name": "Sweden", "flag": "🇸🇪", "orders": 2, "revenue": "€182" },
-        { "name": "France", "flag": "🇫🇷", "orders": 1, "revenue": "€47" }
+        {
+          "name": "USA",
+          "flag": "🇺🇸",
+          "orders": 50,
+          "revenue": "€5,204"
+        },
+        {
+          "name": "UK",
+          "flag": "🇬🇧",
+          "orders": 14,
+          "revenue": "€1,923"
+        },
+        {
+          "name": "Italy",
+          "flag": "🇮🇹",
+          "orders": 13,
+          "revenue": "€1,238"
+        },
+        {
+          "name": "Australia",
+          "flag": "🇦🇺",
+          "orders": 12,
+          "revenue": "€1,262"
+        },
+        {
+          "name": "Germany",
+          "flag": "🇩🇪",
+          "orders": 11,
+          "revenue": "€1,033"
+        },
+        {
+          "name": "Netherlands",
+          "flag": "🇳🇱",
+          "orders": 5,
+          "revenue": "€335"
+        },
+        {
+          "name": "Belgium",
+          "flag": "🇧🇪",
+          "orders": 2,
+          "revenue": "€209"
+        },
+        {
+          "name": "Sweden",
+          "flag": "🇸🇪",
+          "orders": 2,
+          "revenue": "€182"
+        },
+        {
+          "name": "France",
+          "flag": "🇫🇷",
+          "orders": 1,
+          "revenue": "€47"
+        }
       ],
       "landing_pages": [
-        { "name": "Big Box (product)", "path": "/products/lying-pirates-big-box", "sessions": 431, "conv_pct": 7.89 },
-        { "name": "Homepage", "path": "/", "sessions": 681, "conv_pct": 4.26 },
-        { "name": "Base Game (product)", "path": "/products/lying-pirates-base-game", "sessions": 198, "conv_pct": 4.04 },
-        { "name": "Cities of Greed", "path": "/products/cities-of-greed", "sessions": 42, "conv_pct": 4.76 },
-        { "name": "Custom Insert", "path": "/products/lying-pirates-custom-insert", "sessions": 22, "conv_pct": 4.55 },
-        { "name": "8-Player Components", "path": "/products/8-player-components-copy", "sessions": 15, "conv_pct": 6.67 },
-        { "name": "DE homepage", "path": "/de", "sessions": 14, "conv_pct": 0.0 }
+        {
+          "name": "Big Box (product)",
+          "path": "/products/lying-pirates-big-box",
+          "sessions": 431,
+          "conv_pct": 7.89
+        },
+        {
+          "name": "Homepage",
+          "path": "/",
+          "sessions": 681,
+          "conv_pct": 4.26
+        },
+        {
+          "name": "Base Game (product)",
+          "path": "/products/lying-pirates-base-game",
+          "sessions": 198,
+          "conv_pct": 4.04
+        },
+        {
+          "name": "Cities of Greed",
+          "path": "/products/cities-of-greed",
+          "sessions": 42,
+          "conv_pct": 4.76
+        },
+        {
+          "name": "Custom Insert",
+          "path": "/products/lying-pirates-custom-insert",
+          "sessions": 22,
+          "conv_pct": 4.55
+        },
+        {
+          "name": "8-Player Components",
+          "path": "/products/8-player-components-copy",
+          "sessions": 15,
+          "conv_pct": 6.67
+        },
+        {
+          "name": "DE homepage",
+          "path": "/de",
+          "sessions": 14,
+          "conv_pct": 0.0
+        }
       ],
       "creatives": {
-        "video": { "pct": 91, "roas_label": "ROAS ~1.6", "note": "91% of budget. Best: <i>anyone_socialgame</i> 2.29 · <i>quackalope_testimonial</i> 2.88. Several losers at 0.48–0.64." },
-        "static": { "pct": 9, "roas_label": "ROAS ~4.8–8.6", "note": "Only 9% of budget but far more efficient. <i>collector_combinedbox</i> 12.83 · <i>story_style_testimonial</i> 9.88. Candidate to scale — once tracking is trustworthy." }
+        "video": {
+          "pct": 91,
+          "roas_label": "ROAS ~1.6",
+          "note": "91% of budget. Best: <i>anyone_socialgame</i> 2.29 · <i>quackalope_testimonial</i> 2.88. Several losers at 0.48–0.64."
+        },
+        "static": {
+          "pct": 9,
+          "roas_label": "ROAS ~4.8–8.6",
+          "note": "Only 9% of budget but far more efficient. <i>collector_combinedbox</i> 12.83 · <i>story_style_testimonial</i> 9.88. Candidate to scale — once tracking is trustworthy."
+        }
       },
       "flags": []
     },
@@ -120,32 +468,137 @@
       "range_start": "2026-06-08",
       "range_end": "2026-07-08",
       "days": 30,
-      "kpis": { "sessions": 7529, "conversion_label": "5.17%", "sales_label": "€49,915", "orders": 469 },
-      "meta": { "spend_label": "186,462 kr", "meta_roas": 2.16, "blended_mer": 3.05 },
+      "kpis": {
+        "sessions": 7529,
+        "conversion_label": "5.17%",
+        "sales_label": "€49,915",
+        "orders": 469
+      },
+      "meta": {
+        "spend_label": "186,462 kr",
+        "meta_roas": 2.16,
+        "blended_mer": 3.05
+      },
       "orders_by_country": [
-        { "name": "USA", "flag": "🇺🇸", "orders": 201, "revenue": "€23,147" },
-        { "name": "Italy", "flag": "🇮🇹", "orders": 61, "revenue": "€5,332" },
-        { "name": "UK", "flag": "🇬🇧", "orders": 60, "revenue": "€6,604" },
-        { "name": "Australia", "flag": "🇦🇺", "orders": 35, "revenue": "€3,690" },
-        { "name": "Germany", "flag": "🇩🇪", "orders": 32, "revenue": "€3,140" },
-        { "name": "France", "flag": "🇫🇷", "orders": 21, "revenue": "€2,091" },
-        { "name": "Belgium", "flag": "🇧🇪", "orders": 15, "revenue": "€1,371" },
-        { "name": "Netherlands", "flag": "🇳🇱", "orders": 11, "revenue": "€1,042" },
-        { "name": "Denmark", "flag": "🇩🇰", "orders": 8, "revenue": "€976" },
-        { "name": "Sweden", "flag": "🇸🇪", "orders": 8, "revenue": "€681" }
+        {
+          "name": "USA",
+          "flag": "🇺🇸",
+          "orders": 201,
+          "revenue": "€23,147"
+        },
+        {
+          "name": "Italy",
+          "flag": "🇮🇹",
+          "orders": 61,
+          "revenue": "€5,332"
+        },
+        {
+          "name": "UK",
+          "flag": "🇬🇧",
+          "orders": 60,
+          "revenue": "€6,604"
+        },
+        {
+          "name": "Australia",
+          "flag": "🇦🇺",
+          "orders": 35,
+          "revenue": "€3,690"
+        },
+        {
+          "name": "Germany",
+          "flag": "🇩🇪",
+          "orders": 32,
+          "revenue": "€3,140"
+        },
+        {
+          "name": "France",
+          "flag": "🇫🇷",
+          "orders": 21,
+          "revenue": "€2,091"
+        },
+        {
+          "name": "Belgium",
+          "flag": "🇧🇪",
+          "orders": 15,
+          "revenue": "€1,371"
+        },
+        {
+          "name": "Netherlands",
+          "flag": "🇳🇱",
+          "orders": 11,
+          "revenue": "€1,042"
+        },
+        {
+          "name": "Denmark",
+          "flag": "🇩🇰",
+          "orders": 8,
+          "revenue": "€976"
+        },
+        {
+          "name": "Sweden",
+          "flag": "🇸🇪",
+          "orders": 8,
+          "revenue": "€681"
+        }
       ],
       "landing_pages": [
-        { "name": "Big Box (product)", "path": "/products/lying-pirates-big-box", "sessions": 3652, "conv_pct": 3.15 },
-        { "name": "Homepage", "path": "/", "sessions": 2307, "conv_pct": 3.42 },
-        { "name": "Base Game (product)", "path": "/products/lying-pirates-base-game", "sessions": 983, "conv_pct": 3.46 },
-        { "name": "FR — Grande Boîte", "path": "/fr/products/menteurs-pirates-grand-boite", "sessions": 558, "conv_pct": 0.54, "alert": true },
-        { "name": "Cities of Greed", "path": "/products/cities-of-greed", "sessions": 185, "conv_pct": 2.70 },
-        { "name": "Custom Insert", "path": "/products/lying-pirates-custom-insert", "sessions": 110, "conv_pct": 1.82 },
-        { "name": "8-Player Components", "path": "/products/8-player-components-copy", "sessions": 70, "conv_pct": 4.29 },
-        { "name": "Add-on Box", "path": "/products/add-on-box", "sessions": 61, "conv_pct": 1.64 }
+        {
+          "name": "Big Box (product)",
+          "path": "/products/lying-pirates-big-box",
+          "sessions": 3652,
+          "conv_pct": 3.15
+        },
+        {
+          "name": "Homepage",
+          "path": "/",
+          "sessions": 2307,
+          "conv_pct": 3.42
+        },
+        {
+          "name": "Base Game (product)",
+          "path": "/products/lying-pirates-base-game",
+          "sessions": 983,
+          "conv_pct": 3.46
+        },
+        {
+          "name": "FR — Grande Boîte",
+          "path": "/fr/products/menteurs-pirates-grand-boite",
+          "sessions": 558,
+          "conv_pct": 0.54,
+          "alert": true
+        },
+        {
+          "name": "Cities of Greed",
+          "path": "/products/cities-of-greed",
+          "sessions": 185,
+          "conv_pct": 2.7
+        },
+        {
+          "name": "Custom Insert",
+          "path": "/products/lying-pirates-custom-insert",
+          "sessions": 110,
+          "conv_pct": 1.82
+        },
+        {
+          "name": "8-Player Components",
+          "path": "/products/8-player-components-copy",
+          "sessions": 70,
+          "conv_pct": 4.29
+        },
+        {
+          "name": "Add-on Box",
+          "path": "/products/add-on-box",
+          "sessions": 61,
+          "conv_pct": 1.64
+        }
       ],
       "flags": [
-        { "level": "warning", "title": "🚩 French landing page is leaking traffic", "body": "<b>/fr/products/menteurs-pirates-grand-boite</b> pulled 558 sessions but converts at <b>0.54%</b> — vs 3.1–3.5% for the English equivalents. That's paid traffic landing on a page that barely sells.", "sub": "Action for Polly + agency: audit the French page (translation, price display, shipping copy, checkout language) before we spend more on FR/IT." }
+        {
+          "level": "warning",
+          "title": "🚩 French landing page is leaking traffic",
+          "body": "<b>/fr/products/menteurs-pirates-grand-boite</b> pulled 558 sessions but converts at <b>0.54%</b> — vs 3.1–3.5% for the English equivalents. That's paid traffic landing on a page that barely sells.",
+          "sub": "Action for Polly + agency: audit the French page (translation, price display, shipping copy, checkout language) before we spend more on FR/IT."
+        }
       ]
     },
     {
@@ -154,26 +607,100 @@
       "range_start": "2026-07-01",
       "range_end": "2026-07-08",
       "days": 8,
-      "kpis": { "sessions": 2131, "conversion_label": "5.44%", "sales_label": "€13,416", "orders": 133 },
-      "meta": { "spend_label": "44,318 kr", "meta_roas": 2.68, "blended_mer": 3.45 },
+      "kpis": {
+        "sessions": 2131,
+        "conversion_label": "5.44%",
+        "sales_label": "€13,416",
+        "orders": 133
+      },
+      "meta": {
+        "spend_label": "44,318 kr",
+        "meta_roas": 2.68,
+        "blended_mer": 3.45
+      },
       "orders_by_country": [
-        { "name": "USA", "flag": "🇺🇸", "orders": 55, "revenue": "€5,873" },
-        { "name": "Italy", "flag": "🇮🇹", "orders": 17, "revenue": "€1,361" },
-        { "name": "UK", "flag": "🇬🇧", "orders": 16, "revenue": "€2,168" },
-        { "name": "Australia", "flag": "🇦🇺", "orders": 16, "revenue": "€1,495" },
-        { "name": "Germany", "flag": "🇩🇪", "orders": 12, "revenue": "€1,168" },
-        { "name": "Sweden", "flag": "🇸🇪", "orders": 5, "revenue": "€431" },
-        { "name": "Netherlands", "flag": "🇳🇱", "orders": 5, "revenue": "€335" },
-        { "name": "France", "flag": "🇫🇷", "orders": 2, "revenue": "€72" },
-        { "name": "Belgium", "flag": "🇧🇪", "orders": 2, "revenue": "€209" }
+        {
+          "name": "USA",
+          "flag": "🇺🇸",
+          "orders": 55,
+          "revenue": "€5,873"
+        },
+        {
+          "name": "Italy",
+          "flag": "🇮🇹",
+          "orders": 17,
+          "revenue": "€1,361"
+        },
+        {
+          "name": "UK",
+          "flag": "🇬🇧",
+          "orders": 16,
+          "revenue": "€2,168"
+        },
+        {
+          "name": "Australia",
+          "flag": "🇦🇺",
+          "orders": 16,
+          "revenue": "€1,495"
+        },
+        {
+          "name": "Germany",
+          "flag": "🇩🇪",
+          "orders": 12,
+          "revenue": "€1,168"
+        },
+        {
+          "name": "Sweden",
+          "flag": "🇸🇪",
+          "orders": 5,
+          "revenue": "€431"
+        },
+        {
+          "name": "Netherlands",
+          "flag": "🇳🇱",
+          "orders": 5,
+          "revenue": "€335"
+        },
+        {
+          "name": "France",
+          "flag": "🇫🇷",
+          "orders": 2,
+          "revenue": "€72"
+        },
+        {
+          "name": "Belgium",
+          "flag": "🇧🇪",
+          "orders": 2,
+          "revenue": "€209"
+        }
       ],
       "landing_pages": [
-        { "name": "Homepage", "path": "/", "sessions": 712, "conv_pct": 5.34 },
-        { "name": "Big Box (product)", "path": "/products/lying-pirates-big-box", "sessions": 570, "conv_pct": 9.30 },
-        { "name": "Base Game (product)", "path": "/products/lying-pirates-base-game", "sessions": 226, "conv_pct": 5.75 }
+        {
+          "name": "Homepage",
+          "path": "/",
+          "sessions": 712,
+          "conv_pct": 5.34
+        },
+        {
+          "name": "Big Box (product)",
+          "path": "/products/lying-pirates-big-box",
+          "sessions": 570,
+          "conv_pct": 9.3
+        },
+        {
+          "name": "Base Game (product)",
+          "path": "/products/lying-pirates-base-game",
+          "sessions": 226,
+          "conv_pct": 5.75
+        }
       ],
       "flags": [
-        { "level": "info", "title": "🌱 Strong start to July", "body": "8 days in — 133 orders, €13,416, 2,131 sessions, ROAS 2.68. Pacing toward a €45K+ month if the rhythm holds. Use the 7-day and 30-day windows for a stable read.", "sub": "" }
+        {
+          "level": "info",
+          "title": "🌱 Strong start to July",
+          "body": "8 days in — 133 orders, €13,416, 2,131 sessions, ROAS 2.68. Pacing toward a €45K+ month if the rhythm holds. Use the 7-day and 30-day windows for a stable read.",
+          "sub": ""
+        }
       ]
     },
     {
@@ -182,33 +709,461 @@
       "range_start": "2026-04-09",
       "range_end": "2026-07-08",
       "days": 90,
-      "kpis": { "sessions": 27375, "conversion_label": "2.55%", "sales_label": "€93,612", "orders": 862 },
-      "meta": { "spend_label": "347,592 kr", "meta_roas": 2.04, "blended_mer": 3.07 },
+      "kpis": {
+        "sessions": 27375,
+        "conversion_label": "2.55%",
+        "sales_label": "€93,612",
+        "orders": 862
+      },
+      "meta": {
+        "spend_label": "347,592 kr",
+        "meta_roas": 2.04,
+        "blended_mer": 3.07
+      },
       "orders_by_country": [
-        { "name": "USA", "flag": "🇺🇸", "orders": 255, "revenue": "€29,696" },
-        { "name": "UK", "flag": "🇬🇧", "orders": 147, "revenue": "€15,405" },
-        { "name": "Italy", "flag": "🇮🇹", "orders": 130, "revenue": "€12,058" },
-        { "name": "Germany", "flag": "🇩🇪", "orders": 78, "revenue": "€7,312" },
-        { "name": "France", "flag": "🇫🇷", "orders": 50, "revenue": "€5,490" },
-        { "name": "Australia", "flag": "🇦🇺", "orders": 48, "revenue": "€5,481" },
-        { "name": "Belgium", "flag": "🇧🇪", "orders": 40, "revenue": "€5,044" },
-        { "name": "Netherlands", "flag": "🇳🇱", "orders": 33, "revenue": "€3,867" },
-        { "name": "Denmark", "flag": "🇩🇰", "orders": 28, "revenue": "€3,832" },
-        { "name": "Austria", "flag": "🇦🇹", "orders": 19, "revenue": "€2,175" }
+        {
+          "name": "USA",
+          "flag": "🇺🇸",
+          "orders": 255,
+          "revenue": "€29,696"
+        },
+        {
+          "name": "UK",
+          "flag": "🇬🇧",
+          "orders": 147,
+          "revenue": "€15,405"
+        },
+        {
+          "name": "Italy",
+          "flag": "🇮🇹",
+          "orders": 130,
+          "revenue": "€12,058"
+        },
+        {
+          "name": "Germany",
+          "flag": "🇩🇪",
+          "orders": 78,
+          "revenue": "€7,312"
+        },
+        {
+          "name": "France",
+          "flag": "🇫🇷",
+          "orders": 50,
+          "revenue": "€5,490"
+        },
+        {
+          "name": "Australia",
+          "flag": "🇦🇺",
+          "orders": 48,
+          "revenue": "€5,481"
+        },
+        {
+          "name": "Belgium",
+          "flag": "🇧🇪",
+          "orders": 40,
+          "revenue": "€5,044"
+        },
+        {
+          "name": "Netherlands",
+          "flag": "🇳🇱",
+          "orders": 33,
+          "revenue": "€3,867"
+        },
+        {
+          "name": "Denmark",
+          "flag": "🇩🇰",
+          "orders": 28,
+          "revenue": "€3,832"
+        },
+        {
+          "name": "Austria",
+          "flag": "🇦🇹",
+          "orders": 19,
+          "revenue": "€2,175"
+        }
       ],
       "landing_pages": [
-        { "name": "Big Box (product)", "path": "/products/lying-pirates-big-box", "sessions": 13937, "conv_pct": 1.64 },
-        { "name": "Homepage", "path": "/", "sessions": 6462, "conv_pct": 2.31 },
-        { "name": "Base Game (product)", "path": "/products/lying-pirates-base-game", "sessions": 1849, "conv_pct": 2.65 },
-        { "name": "FR — Grande Boîte", "path": "/fr/products/menteurs-pirates-grand-boite", "sessions": 1085, "conv_pct": 0.28, "alert": true },
-        { "name": "Cities of Greed", "path": "/products/cities-of-greed", "sessions": 247, "conv_pct": 3.24 },
-        { "name": "FR — Base Jeu", "path": "/fr/products/menteurs-pirates-base-jeu", "sessions": 239, "conv_pct": 1.67 },
-        { "name": "Custom Insert", "path": "/products/lying-pirates-custom-insert", "sessions": 151, "conv_pct": 1.99 },
-        { "name": "All collection", "path": "/collections/all", "sessions": 115, "conv_pct": 2.61 }
+        {
+          "name": "Big Box (product)",
+          "path": "/products/lying-pirates-big-box",
+          "sessions": 13937,
+          "conv_pct": 1.64
+        },
+        {
+          "name": "Homepage",
+          "path": "/",
+          "sessions": 6462,
+          "conv_pct": 2.31
+        },
+        {
+          "name": "Base Game (product)",
+          "path": "/products/lying-pirates-base-game",
+          "sessions": 1849,
+          "conv_pct": 2.65
+        },
+        {
+          "name": "FR — Grande Boîte",
+          "path": "/fr/products/menteurs-pirates-grand-boite",
+          "sessions": 1085,
+          "conv_pct": 0.28,
+          "alert": true
+        },
+        {
+          "name": "Cities of Greed",
+          "path": "/products/cities-of-greed",
+          "sessions": 247,
+          "conv_pct": 3.24
+        },
+        {
+          "name": "FR — Base Jeu",
+          "path": "/fr/products/menteurs-pirates-base-jeu",
+          "sessions": 239,
+          "conv_pct": 1.67
+        },
+        {
+          "name": "Custom Insert",
+          "path": "/products/lying-pirates-custom-insert",
+          "sessions": 151,
+          "conv_pct": 1.99
+        },
+        {
+          "name": "All collection",
+          "path": "/collections/all",
+          "sessions": 115,
+          "conv_pct": 2.61
+        }
       ],
       "flags": [
-        { "level": "warning", "title": "🚩 French pages chronically underperform", "body": "Over 90 days the French Grande Boîte page took <b>1,085 sessions at 0.28% conversion</b>. The English Big Box at the same time did 1.64%+ on far more traffic. French is a structural leak, not a one-week blip.", "sub": "Worth a dedicated fix sprint: localized pricing, FR checkout, shipping clarity — or pause FR paid traffic until the page is fixed." }
+        {
+          "level": "warning",
+          "title": "🚩 French pages chronically underperform",
+          "body": "Over 90 days the French Grande Boîte page took <b>1,085 sessions at 0.28% conversion</b>. The English Big Box at the same time did 1.64%+ on far more traffic. French is a structural leak, not a one-week blip.",
+          "sub": "Worth a dedicated fix sprint: localized pricing, FR checkout, shipping clarity — or pause FR paid traffic until the page is fixed."
+        }
       ]
     }
-  ]
+  ],
+  "inventory_data": {
+    "updated_at": "2026-07-09",
+    "velocity_window_days": 30,
+    "warehouses": [
+      {
+        "id": "bridge",
+        "label": "Bridge (USA)"
+      },
+      {
+        "id": "armarlo",
+        "label": "Armarlo (EU)"
+      },
+      {
+        "id": "meeples",
+        "label": "Meeples (EU)"
+      },
+      {
+        "id": "zatu",
+        "label": "Zatu (UK)"
+      }
+    ],
+    "thresholds": {
+      "critical": 14,
+      "low": 30,
+      "watch": 60
+    },
+    "products": [
+      {
+        "title": "BIG BOX",
+        "variant": "English",
+        "velocity": 7.3,
+        "stock": {
+          "bridge": 336,
+          "armarlo": 147,
+          "meeples": 252,
+          "zatu": 16,
+          "total": 751
+        },
+        "days": 103,
+        "status": "ok"
+      },
+      {
+        "title": "BIG BOX",
+        "variant": "Italian",
+        "velocity": 0.77,
+        "stock": {
+          "bridge": 2,
+          "armarlo": 0,
+          "meeples": 23,
+          "zatu": 2,
+          "total": 27
+        },
+        "days": 35,
+        "status": "low"
+      },
+      {
+        "title": "BIG BOX",
+        "variant": "German",
+        "velocity": 0.47,
+        "stock": {
+          "bridge": 0,
+          "armarlo": 0,
+          "meeples": 276,
+          "zatu": 3,
+          "total": 279
+        },
+        "days": 594,
+        "status": "ok"
+      },
+      {
+        "title": "BIG BOX",
+        "variant": "French",
+        "velocity": 0.43,
+        "stock": {
+          "bridge": 1,
+          "armarlo": 0,
+          "meeples": 132,
+          "zatu": 3,
+          "total": 136
+        },
+        "days": 316,
+        "status": "ok"
+      },
+      {
+        "title": "BIG BOX",
+        "variant": "Spanish",
+        "velocity": 0.1,
+        "stock": {
+          "bridge": 4,
+          "armarlo": 0,
+          "meeples": 27,
+          "zatu": 2,
+          "total": 33
+        },
+        "days": 330,
+        "status": "ok"
+      },
+      {
+        "title": "Base Game",
+        "variant": "English",
+        "velocity": 2.83,
+        "stock": {
+          "bridge": 1238,
+          "armarlo": 74,
+          "meeples": 0,
+          "zatu": 23,
+          "total": 1335
+        },
+        "days": 472,
+        "status": "ok"
+      },
+      {
+        "title": "Base Game",
+        "variant": "German",
+        "velocity": 0.43,
+        "stock": {
+          "bridge": 0,
+          "armarlo": 0,
+          "meeples": 6,
+          "zatu": 0,
+          "total": 6
+        },
+        "days": 14,
+        "status": "critical"
+      },
+      {
+        "title": "Base Game",
+        "variant": "Italian",
+        "velocity": 0.53,
+        "stock": {
+          "bridge": 0,
+          "armarlo": 0,
+          "meeples": 6,
+          "zatu": 0,
+          "total": 6
+        },
+        "days": 11,
+        "status": "critical"
+      },
+      {
+        "title": "Base Game",
+        "variant": "French",
+        "velocity": 0.2,
+        "stock": {
+          "bridge": 0,
+          "armarlo": 0,
+          "meeples": 6,
+          "zatu": 0,
+          "total": 6
+        },
+        "days": 30,
+        "status": "low"
+      },
+      {
+        "title": "Base Game",
+        "variant": "Spanish",
+        "velocity": 0.03,
+        "stock": {
+          "bridge": 12,
+          "armarlo": 0,
+          "meeples": 6,
+          "zatu": 24,
+          "total": 42
+        },
+        "days": 1400,
+        "status": "ok"
+      },
+      {
+        "title": "Add-On Box",
+        "variant": "English",
+        "velocity": 0.17,
+        "stock": {
+          "bridge": 7,
+          "armarlo": 0,
+          "meeples": 0,
+          "zatu": 2,
+          "total": 9
+        },
+        "days": 53,
+        "status": "watch"
+      },
+      {
+        "title": "Add-On Box",
+        "variant": "Spanish",
+        "velocity": 0.17,
+        "stock": {
+          "bridge": -22,
+          "armarlo": 0,
+          "meeples": 0,
+          "zatu": 2,
+          "total": -20
+        },
+        "days": -1,
+        "status": "oversold"
+      },
+      {
+        "title": "Add-On Box",
+        "variant": "German",
+        "velocity": 0.1,
+        "stock": {
+          "bridge": 0,
+          "armarlo": 0,
+          "meeples": 0,
+          "zatu": 0,
+          "total": 0
+        },
+        "days": 0,
+        "status": "critical"
+      },
+      {
+        "title": "Add-On Box",
+        "variant": "Italian",
+        "velocity": 0.17,
+        "stock": {
+          "bridge": 0,
+          "armarlo": 0,
+          "meeples": 0,
+          "zatu": 2,
+          "total": 2
+        },
+        "days": 12,
+        "status": "critical"
+      },
+      {
+        "title": "Upgrade Box",
+        "variant": "English",
+        "velocity": 0.03,
+        "stock": {
+          "bridge": -36,
+          "armarlo": 0,
+          "meeples": 0,
+          "zatu": 0,
+          "total": -36
+        },
+        "days": -1,
+        "status": "oversold"
+      },
+      {
+        "title": "Upgrade Box",
+        "variant": "German",
+        "velocity": 0.13,
+        "stock": {
+          "bridge": 0,
+          "armarlo": 0,
+          "meeples": 0,
+          "zatu": 0,
+          "total": 0
+        },
+        "days": 0,
+        "status": "critical"
+      },
+      {
+        "title": "Upgrade Box",
+        "variant": "Italian",
+        "velocity": 0.03,
+        "stock": {
+          "bridge": 0,
+          "armarlo": 0,
+          "meeples": 0,
+          "zatu": 0,
+          "total": 0
+        },
+        "days": 0,
+        "status": "critical"
+      },
+      {
+        "title": "Kraken Mini-Expansion",
+        "variant": "Default",
+        "velocity": 4.8,
+        "stock": {
+          "bridge": 65,
+          "armarlo": 0,
+          "meeples": 115,
+          "zatu": 58,
+          "total": 238
+        },
+        "days": 50,
+        "status": "watch"
+      },
+      {
+        "title": "Cities of Greed",
+        "variant": "Default",
+        "velocity": 1.1,
+        "stock": {
+          "bridge": 161,
+          "armarlo": 148,
+          "meeples": 21,
+          "zatu": 29,
+          "total": 359
+        },
+        "days": 326,
+        "status": "ok"
+      },
+      {
+        "title": "Custom Insert",
+        "variant": "Default",
+        "velocity": 2.73,
+        "stock": {
+          "bridge": 23,
+          "armarlo": 0,
+          "meeples": 49,
+          "zatu": 19,
+          "total": 91
+        },
+        "days": 33,
+        "status": "low"
+      },
+      {
+        "title": "8-Player Components",
+        "variant": "Default",
+        "velocity": 2.3,
+        "stock": {
+          "bridge": 5,
+          "armarlo": 0,
+          "meeples": 91,
+          "zatu": 12,
+          "total": 108
+        },
+        "days": 47,
+        "status": "watch"
+      }
+    ]
+  }
 }

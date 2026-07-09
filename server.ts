@@ -179,6 +179,15 @@ const server = Bun.serve({
       }
     }
 
+    if (path === "/inventory") {
+      const invHtml = join(DIR, "public", "inventory.html");
+      if (existsSync(invHtml)) {
+        return new Response(readFileSync(invHtml), {
+          headers: { "Content-Type": "text/html; charset=utf-8" },
+        });
+      }
+    }
+
     const html = join(DIR, "public", "index.html");
     if (existsSync(html)) {
       return new Response(readFileSync(html), {
