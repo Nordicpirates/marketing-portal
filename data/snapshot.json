@@ -2,6 +2,51 @@
   "generated_at": "2026-07-08",
   "owner": "Bengt 🦉 (data) + Polly (analysis)",
   "currency_note": "Revenue in EUR (store currency). Meta spend in SEK. Blended MER converts spend at ~11.4 SEK/EUR.",
+  "gads_alert": {
+    "show": true,
+    "title": "Google Ads ej live — token-fix pågår (Victor/Composio)",
+    "sub": "Konto: AW-10987612665 · Budget: €50/dag · Standard Shopping · Issue #7064",
+    "link_gads": "https://ads.google.com",
+    "link_gmc": "https://merchants.google.com"
+  },
+  "yesterday": {
+    "date": "2026-07-08",
+    "orders": 15,
+    "revenue_eur": 1667,
+    "revenue_sek": 10462,
+    "sessions": 774,
+    "conversions": 10,
+    "gads_spend": null,
+    "gads_roas": null
+  },
+  "chart_data": {
+    "orders_9d": {
+      "labels": ["30/6","1/7","2/7","3/7","4/7","5/7","6/7","7/7","8/7","9/7*"],
+      "revenue": [2204, 1522, 1975, 1828, 1597, 950, 1092, 1612, 1667, 505],
+      "orders": [24, 20, 19, 24, 16, 12, 11, 16, 15, 5]
+    },
+    "organic_14d": {
+      "labels": ["25/6","26/6","27/6","28/6","29/6","30/6","1/7","2/7","3/7","4/7","5/7","6/7","7/7","8/7"],
+      "sessions": [50, 55, 46, 55, 59, 44, 57, 63, 64, 83, 59, 61, 41, 29],
+      "conversions": [3, 2, 3, 1, 1, 3, 5, 2, 2, 4, 2, 1, 0, 0]
+    }
+  },
+  "channels_30d": [
+    {"name": "Paid Social (Meta)", "dot": "#4a90e2", "sessions": 23177, "conversions": 182, "cvr": 0.79, "revenue_sek": 204749},
+    {"name": "Organic Search", "dot": "#2f8f4e", "sessions": 1456, "conversions": 63, "cvr": 4.33, "revenue_sek": 67700, "cvr_good": true},
+    {"name": "Direct", "dot": "#8b5cf6", "sessions": 1233, "conversions": 53, "cvr": 4.30, "revenue_sek": 58320, "cvr_good": true},
+    {"name": "Referral", "dot": "#cf9a2e", "sessions": 367, "conversions": 21, "cvr": 5.72, "revenue_sek": 21581, "cvr_good": true},
+    {"name": "Organic Social", "dot": "#14b8a6", "sessions": 456, "conversions": 8, "cvr": 1.75, "revenue_sek": 8396},
+    {"name": "Unassigned", "dot": "#8a8073", "sessions": 379, "conversions": 13, "cvr": 3.43, "revenue_sek": 13891},
+    {"name": "Organic Shopping", "dot": "#c96a3d", "sessions": 119, "conversions": 4, "cvr": 3.36, "revenue_sek": 2836},
+    {"name": "Google Ads Shopping (planerat)", "dot": "#4a90e2", "sessions": null, "conversions": null, "cvr": null, "revenue_sek": null, "placeholder": true}
+  ],
+  "dashboard_status": [
+    {"icon": "🔧", "title": "Google Ads API-token", "desc": "DEVELOPER_TOKEN_PROHIBITED (GCP-projekt 174512496329 matchar inte token). Issue #7064. Victor är informerad.", "who": "Victor/Composio fixar", "status": "blocked"},
+    {"icon": "📦", "title": "170 underkända produkter i Google Merchant Center", "desc": "Sannolikt saknade GTIN/barcodes. GMC-audit i kö.", "who": "Bengt — planerat", "status": "queue"},
+    {"icon": "✅", "title": "GTM-container publicerad (v2 "Bengt Json")", "desc": "Conversion Linker + Remarketing-tag live · nordicpirates.com · All Pages trigger", "who": "Klart", "status": "done"},
+    {"icon": "✅", "title": "Marketing dashboard live med daglig uppdatering", "desc": "marketing.nordicpirate.com · Signal #601 varje dag kl 00:30 CEST", "who": "Klart", "status": "done"}
+  ],
   "tracking_ids": {
     "ad_account": { "label": "Meta Ad Account", "value": "314601282522803", "name": "Nordic Pirate Games" },
     "nordicpirates": {

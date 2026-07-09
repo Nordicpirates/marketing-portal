@@ -170,6 +170,15 @@ const server = Bun.serve({
       }
     }
 
+    if (path === "/dashboard") {
+      const dashHtml = join(DIR, "public", "dashboard.html");
+      if (existsSync(dashHtml)) {
+        return new Response(readFileSync(dashHtml), {
+          headers: { "Content-Type": "text/html; charset=utf-8" },
+        });
+      }
+    }
+
     const html = join(DIR, "public", "index.html");
     if (existsSync(html)) {
       return new Response(readFileSync(html), {
