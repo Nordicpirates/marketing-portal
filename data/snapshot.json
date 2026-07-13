@@ -4,9 +4,9 @@
   "currency_note": "Revenue in EUR (store currency). Meta spend in SEK. Blended MER = total Shopify revenue ÷ Meta spend (11.4 SEK/EUR).",
   "gads_alert": {
     "show": true,
-    "title": "Google Ads Shopping live sedan 8 juli",
-    "sub": "Konto: AW-10987612665 · Budget: €50/dag · Standard Shopping · Data hämtas löpandes",
-    "link_gads": "https://ads.google.com",
+    "title": "Google Shopping live sedan 8 juli · 10 ordrar på 5 dagar",
+    "sub": "Standard Shopping · Budget €50/dag · Shopify visar Google-trafik (organisk + betald) samlat",
+    "link_gads": "https://ads.google.com/aw/campaigns?__e=7166732500",
     "link_gmc": "https://merchants.google.com"
   },
   "yesterday": {
@@ -157,14 +157,14 @@
       "source": "shopify"
     },
     {
-      "name": "Google Ads Shopping (live 8 juli)",
+      "name": "Google Sökning + Shopping (8–13 jul)",
       "dot": "#ea4335",
-      "sessions": null,
-      "conversions": null,
-      "cvr": null,
-      "revenue_sek": null,
-      "placeholder": true,
-      "note": "Kopplingen till Google Ads behöver förnyas — data hämtas när koppling är aktiv."
+      "sessions": 461,
+      "conversions": 10,
+      "cvr": 2.17,
+      "revenue_sek": 10723,
+      "note": "Shopify slår ihop organisk Google + Shopping. Spend-data via Google Ads API.",
+      "cvr_good": true
     }
   ],
   "channels_note": "Rad 1 = Meta Ads Manager-data (7d-klick/1d-visning). Övriga rader = Shopify referrer-tracking (30d). Direkt inkluderar Meta-trafik som tappat referrer.",

@@ -232,7 +232,7 @@ async function load() {
     // Header badge
     const badge = document.getElementById('gads-header-badge');
     badge.style.display = 'inline-flex';
-    badge.textContent = 'Google Ads: Ej live';
+    badge.textContent = '🎯 Google Shopping live';
   }
 
   // Yesterday KPIs
@@ -261,14 +261,14 @@ async function load() {
       <div class="d">≈ €${fmt(y.revenue_eur)}</div>
     </div>
     <div class="kpi ph">
-      <div class="n">${y.gads_spend !== null && y.gads_spend !== undefined ? '€'+fmt(y.gads_spend) : '— ej live'}</div>
+      <div class="n">${y.gads_spend !== null && y.gads_spend !== undefined ? '€'+fmt(y.gads_spend) : '—'}</div>
       <div class="k">Google Ads Spend</div>
-      <div class="d">Mål €50/dag</div>
+      <div class="d">${y.gads_spend !== null && y.gads_spend !== undefined ? 'Mål €50/dag' : 'Data synkas'}</div>
     </div>
     <div class="kpi ph">
-      <div class="n">${y.gads_roas !== null && y.gads_roas !== undefined ? y.gads_roas+'×' : '— ej live'}</div>
+      <div class="n">${y.gads_roas !== null && y.gads_roas !== undefined ? y.gads_roas+'×' : '—'}</div>
       <div class="k">Google Ads ROAS</div>
-      <div class="d">Mål >400%</div>
+      <div class="d">${y.gads_roas !== null && y.gads_roas !== undefined ? 'Mål >400%' : 'Data synkas'}</div>
     </div>`;
 
   // Charts
@@ -281,11 +281,11 @@ async function load() {
   const maxCvr = Math.max(...ch.filter(c=>c.cvr).map(c=>c.cvr));
   document.getElementById('channels-body').innerHTML = ch.map(c => {
     if (c.placeholder) {
-      return `<tr style="opacity:.55">
-        <td class="ch-name"><span class="ch-dot" style="background:${c.dot||'#ccc'}"></span>🎯 ${c.name}</td>
+      return `<tr style="opacity:.7">
+        <td class="ch-name"><span class="ch-dot" style="background:${c.dot||'#ea4335'}"></span>🎯 ${c.name}</td>
         <td class="ph" style="text-align:right">—</td>
         <td class="ph" style="text-align:right">—</td>
-        <td class="ph" style="text-align:right">Ej live</td>
+        <td class="ph" style="text-align:right;font-style:italic">Synkas</td>
         <td class="ph" style="text-align:right">—</td>
       </tr>`;
     }
