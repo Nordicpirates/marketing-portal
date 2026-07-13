@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-12",
+  "generated_at": "2026-07-13",
   "owner": "Bengt 🦉 (data) + Polly (analysis)",
   "currency_note": "Revenue in EUR (store currency). Meta spend in SEK. Blended MER converts spend at ~11.4 SEK/EUR.",
   "gads_alert": {
@@ -10,17 +10,52 @@
     "link_gmc": "https://merchants.google.com"
   },
   "yesterday": {
-    "date": "2026-07-08",
-    "orders": 15,
-    "revenue_eur": 1667,
-    "revenue_sek": 10462,
-    "sessions": 774,
-    "conversions": 10,
+    "date": "2026-07-12",
+    "orders": 17,
+    "revenue_eur": 1941,
+    "revenue_sek": 22127,
+    "sessions": 375,
+    "conversions": 15,
     "gads_spend": null,
     "gads_roas": null
   },
   "chart_data": {
     "orders_9d": {
+      "labels": [
+        "5/7",
+        "6/7",
+        "7/7",
+        "8/7",
+        "9/7",
+        "10/7",
+        "11/7",
+        "12/7",
+        "13/7*"
+      ],
+      "revenue": [
+        950,
+        1092,
+        1612,
+        1667,
+        1806,
+        1209,
+        1478,
+        1941,
+        1040
+      ],
+      "orders": [
+        12,
+        11,
+        16,
+        15,
+        19,
+        11,
+        15,
+        17,
+        10
+      ]
+    },
+    "organic_14d": {
       "labels": [
         "30/6",
         "1/7",
@@ -31,81 +66,43 @@
         "6/7",
         "7/7",
         "8/7",
-        "9/7*"
-      ],
-      "revenue": [
-        2204,
-        1522,
-        1975,
-        1828,
-        1597,
-        950,
-        1092,
-        1612,
-        1667,
-        505
-      ],
-      "orders": [
-        24,
-        20,
-        19,
-        24,
-        16,
-        12,
-        11,
-        16,
-        15,
-        5
-      ]
-    },
-    "organic_14d": {
-      "labels": [
-        "25/6",
-        "26/6",
-        "27/6",
-        "28/6",
-        "29/6",
-        "30/6",
-        "1/7",
-        "2/7",
-        "3/7",
-        "4/7",
-        "5/7",
-        "6/7",
-        "7/7",
-        "8/7"
+        "9/7",
+        "10/7",
+        "11/7",
+        "12/7",
+        "13/7*"
       ],
       "sessions": [
-        50,
-        55,
-        46,
-        55,
-        59,
-        44,
-        57,
-        63,
-        64,
-        83,
-        59,
-        61,
-        41,
-        29
+        253,
+        287,
+        238,
+        304,
+        289,
+        281,
+        249,
+        226,
+        250,
+        271,
+        250,
+        275,
+        375,
+        135
       ],
       "conversions": [
-        3,
-        2,
-        3,
-        1,
-        1,
-        3,
-        5,
-        2,
-        2,
-        4,
-        2,
-        1,
-        0,
-        0
+        21,
+        18,
+        17,
+        22,
+        14,
+        10,
+        10,
+        13,
+        12,
+        16,
+        7,
+        13,
+        15,
+        10
       ]
     }
   },
@@ -334,74 +331,74 @@
     {
       "id": "7d",
       "label": "Last 7 days",
-      "range_start": "2026-07-06",
-      "range_end": "2026-07-12",
+      "range_start": "2026-07-07",
+      "range_end": "2026-07-13",
       "days": 7,
       "kpis": {
-        "sessions": 1904,
-        "conversion_label": "4.57%",
-        "sales_label": "€11,902",
-        "orders": 105
+        "sessions": 1782,
+        "conversion_label": "6.40%",
+        "sales_label": "€11,845",
+        "orders": 114
       },
       "meta": {
-        "spend_label": "37,515 kr",
+        "spend_label": "37,555 kr",
         "meta_roas": 2.72,
-        "blended_mer": 3.62
+        "blended_mer": 3.6
       },
       "orders_by_country": [
         {
           "name": "USA",
           "flag": "🇺🇸",
-          "orders": 52,
-          "revenue": "€6,477"
+          "orders": 55,
+          "revenue": "€6,630"
         },
         {
           "name": "Italy",
           "flag": "🇮🇹",
-          "orders": 14,
-          "revenue": "€1,658"
+          "orders": 16,
+          "revenue": "€1,482"
         },
         {
           "name": "UK",
           "flag": "🇬🇧",
-          "orders": 12,
-          "revenue": "€1,257"
+          "orders": 14,
+          "revenue": "€1,333"
+        },
+        {
+          "name": "Australia",
+          "flag": "🇦🇺",
+          "orders": 8,
+          "revenue": "€836"
         },
         {
           "name": "Germany",
           "flag": "🇩🇪",
           "orders": 7,
-          "revenue": "€568"
-        },
-        {
-          "name": "Australia",
-          "flag": "🇦🇺",
-          "orders": 6,
-          "revenue": "€629"
+          "revenue": "€479"
         },
         {
           "name": "Netherlands",
           "flag": "🇳🇱",
           "orders": 5,
-          "revenue": "€232"
+          "revenue": "€185"
         },
         {
           "name": "Denmark",
           "flag": "🇩🇰",
           "orders": 3,
-          "revenue": "€371"
+          "revenue": "€290"
         },
         {
           "name": "France",
           "flag": "🇫🇷",
           "orders": 2,
-          "revenue": "€182"
+          "revenue": "€137"
         },
         {
           "name": "New Zealand",
           "flag": "🇳🇿",
           "orders": 2,
-          "revenue": "€264"
+          "revenue": "€255"
         }
       ],
       "landing_pages": [
@@ -452,12 +449,12 @@
         "video": {
           "pct": 91,
           "roas_label": "ROAS ~1.6",
-          "note": "91% of budget. Best: <i>anyone_socialgame</i> 2.29 · <i>quackalope_testimonial</i> 2.88. Several losers at 0.48–0.64."
+          "note": "91% av budget. Bäst: <i>anyone_socialgame</i> 2.29 · <i>quackalope_testimonial</i> 2.88. Flera förlorare på 0.48–0.64."
         },
         "static": {
           "pct": 9,
           "roas_label": "ROAS ~4.8–8.6",
-          "note": "Only 9% of budget but far more efficient. <i>collector_combinedbox</i> 12.83 · <i>story_style_testimonial</i> 9.88. Candidate to scale — once tracking is trustworthy."
+          "note": "Bara 9% av budget men betydligt mer effektivt. <i>collector_combinedbox</i> 12.83 · <i>story_style_testimonial</i> 9.88. Kandidat att skala upp."
         }
       },
       "flags": []
@@ -465,80 +462,80 @@
     {
       "id": "30d",
       "label": "Last 30 days",
-      "range_start": "2026-06-12",
+      "range_start": "2026-06-13",
       "range_end": "2026-07-12",
       "days": 30,
       "kpis": {
-        "sessions": 7786,
-        "conversion_label": "4.98%",
-        "sales_label": "€49,868",
-        "orders": 469
+        "sessions": 7913,
+        "conversion_label": "6.04%",
+        "sales_label": "€46,702",
+        "orders": 478
       },
       "meta": {
-        "spend_label": "180,576 kr",
+        "spend_label": "180,616 kr",
         "meta_roas": 2.22,
-        "blended_mer": 3.15
+        "blended_mer": 2.95
       },
       "orders_by_country": [
         {
           "name": "USA",
           "flag": "🇺🇸",
-          "orders": 212,
-          "revenue": "€24,563"
+          "orders": 215,
+          "revenue": "€24,212"
         },
         {
           "name": "Italy",
           "flag": "🇮🇹",
-          "orders": 67,
-          "revenue": "€6,068"
+          "orders": 69,
+          "revenue": "€5,007"
         },
         {
           "name": "UK",
           "flag": "🇬🇧",
-          "orders": 60,
-          "revenue": "€6,411"
+          "orders": 62,
+          "revenue": "€6,576"
         },
         {
           "name": "Australia",
           "flag": "🇦🇺",
-          "orders": 30,
-          "revenue": "€3,091"
+          "orders": 32,
+          "revenue": "€3,133"
         },
         {
           "name": "Germany",
           "flag": "🇩🇪",
           "orders": 30,
-          "revenue": "€2,759"
+          "revenue": "€2,223"
         },
         {
           "name": "France",
           "flag": "🇫🇷",
           "orders": 17,
-          "revenue": "€1,640"
+          "revenue": "€1,267"
         },
         {
           "name": "Denmark",
           "flag": "🇩🇰",
           "orders": 11,
-          "revenue": "€1,347"
+          "revenue": "€1,045"
         },
         {
           "name": "Netherlands",
           "flag": "🇳🇱",
           "orders": 11,
-          "revenue": "€992"
+          "revenue": "€781"
         },
         {
           "name": "Belgium",
           "flag": "🇧🇪",
           "orders": 10,
-          "revenue": "€835"
+          "revenue": "€656"
         },
         {
           "name": "Sweden",
           "flag": "🇸🇪",
           "orders": 7,
-          "revenue": "€622"
+          "revenue": "€492"
         }
       ],
       "landing_pages": [
@@ -603,45 +600,45 @@
     },
     {
       "id": "thismonth",
-      "label": "This month (Jul 1–12)",
+      "label": "This month (Jul 1–13)",
       "range_start": "2026-07-01",
-      "range_end": "2026-07-12",
-      "days": 12,
+      "range_end": "2026-07-13",
+      "days": 13,
       "kpis": {
-        "sessions": 3303,
-        "conversion_label": "5.09%",
-        "sales_label": "€20,607",
-        "orders": 196
+        "sessions": 3430,
+        "conversion_label": "5.98%",
+        "sales_label": "€19,717",
+        "orders": 205
       },
       "meta": {
-        "spend_label": "66,205 kr",
-        "meta_roas": 2.71,
-        "blended_mer": 3.55
+        "spend_label": "67,892 kr",
+        "meta_roas": 2.79,
+        "blended_mer": 3.31
       },
       "orders_by_country": [
         {
           "name": "USA",
           "flag": "🇺🇸",
-          "orders": 90,
-          "revenue": "€10,163"
+          "orders": 92,
+          "revenue": "€10,500"
         },
         {
           "name": "Italy",
           "flag": "🇮🇹",
-          "orders": 28,
-          "revenue": "€2,688"
+          "orders": 29,
+          "revenue": "€2,750"
         },
         {
           "name": "UK",
           "flag": "🇬🇧",
-          "orders": 24,
-          "revenue": "€2,938"
+          "orders": 25,
+          "revenue": "€2,980"
         },
         {
           "name": "Australia",
           "flag": "🇦🇺",
-          "orders": 17,
-          "revenue": "€1,547"
+          "orders": 18,
+          "revenue": "€1,590"
         },
         {
           "name": "Germany",
@@ -664,41 +661,41 @@
         {
           "name": "France",
           "flag": "🇫🇷",
-          "orders": 3,
-          "revenue": "€207"
+          "orders": 4,
+          "revenue": "€255"
         },
         {
           "name": "Denmark",
           "flag": "🇩🇰",
           "orders": 3,
-          "revenue": "€371"
+          "revenue": "€290"
         }
       ],
       "landing_pages": [
         {
           "name": "Homepage",
           "path": "/",
-          "sessions": 712,
+          "sessions": 730,
           "conv_pct": 5.34
         },
         {
           "name": "Big Box (product)",
           "path": "/products/lying-pirates-big-box",
-          "sessions": 570,
+          "sessions": 590,
           "conv_pct": 9.3
         },
         {
           "name": "Base Game (product)",
           "path": "/products/lying-pirates-base-game",
-          "sessions": 226,
+          "sessions": 235,
           "conv_pct": 5.75
         }
       ],
       "flags": [
         {
           "level": "info",
-          "title": "🌱 Strong start to July",
-          "body": "12 days in — 196 orders, €20,607, 3,303 sessions, ROAS 2.71. Pacing toward a €50K+ month if the rhythm holds. Use the 7-day and 30-day windows for a stable read.",
+          "title": "🌱 Stark julstart",
+          "body": "13 dagar in — 205 ordrar, €19,717, 3 430 sessioner, ROAS 2.79. Takten pekar mot ~€46K för månaden om rytmen håller. April→Juli 4,6× tillväxt.",
           "sub": ""
         }
       ]
@@ -706,19 +703,19 @@
     {
       "id": "90d",
       "label": "Last 90 days",
-      "range_start": "2026-04-13",
+      "range_start": "2026-04-14",
       "range_end": "2026-07-12",
       "days": 90,
       "kpis": {
         "sessions": 28046,
-        "conversion_label": "2.65%",
-        "sales_label": "€100,016",
-        "orders": 918
+        "conversion_label": "3.31%",
+        "sales_label": "€89,838",
+        "orders": 927
       },
       "meta": {
-        "spend_label": "367,750 kr",
+        "spend_label": "367,790 kr",
         "meta_roas": 2.08,
-        "blended_mer": 3.10
+        "blended_mer": 2.78
       },
       "orders_by_country": [
         {
