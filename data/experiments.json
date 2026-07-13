@@ -1,38 +1,48 @@
 {
-  "updated": "2026-06-29",
+  "updated": "2026-07-13",
   "owner": "Polly",
-  "source": "GA4 property 250338585 (last 7d, utm_content split) + Shopify orders (by country)",
+  "source": "GA4 property 250338585 (last 7d: 2026-07-06..07-12, landingPage + sessionManualAdContent split; + cumulative 2026-06-01..07-12 for significance) + Shopify orders/sessions (last 90d, by country)",
   "analyst": "Polly",
-  "note": "A/B landing-page experiments. Refreshed weekly by Polly. UI reads top-level `experiments`; extra fields (aggregate_7d, real_sales_90d, built_not_yet_live) preserved for future UI surfaces.",
+  "note": "A/B landing-page experiments. Refreshed daily by Polly (data); pause/promote verdicts on Mondays. UI reads top-level `experiments`; extra fields (aggregate_7d, real_sales_90d, built_not_yet_live) preserved for future UI surfaces.",
+  "polly_note": "MONDAY VERDICT (2026-07-13). EN A/B: NO SIGNIFICANT WINNER — conclude the test. Cumulative 6wk (06-01..07-12): A 0.80% (71 conv / 8,929 sess) vs B 0.84% (76 conv / 8,999 sess), two-proportion z = -0.37 (not significant), and neither variant has reached the ~100 conv/variant threshold. B's early lead was small-sample noise and has fully regressed. RECOMMENDATION: stop waiting on this A/B (traffic is too low + LP->checkout attribution too lossy to ever resolve a ~0.04pp gap); ship the shared staged improvements (18k copies-sold + enlarged hero stats + 'buy 3 get 10%' bundle offer) to BOTH A & B, and launch V3 as a genuinely different challenger. No variant paused (both healthy). Localized IT/FR/DE: HOLD, do not pause (tracking artifact, real Shopify demand).",
   "experiments": [
     {
       "name": "Big Box LP — Headline & Hero (EN)",
       "url": "https://nordicpirates.com/lp/play",
-      "status": "testing",
+      "status": "concluded — no significant winner",
       "hypothesis": "Variant B (price-anchored CTA 'Get Your Box · From €39.95', single Big Box hero, prominent stats, scrolling reviews, FAQ) converts better than Variant A (carousel of 3 products, 'Choose Your Adventure' CTA).",
       "variants": [
         {
           "name": "Control (A)",
           "url": "https://nordicpirates.com/lp/lying-pirates-cities-of-greed-big-box/",
-          "sessions": 1642,
-          "bounce_pct": 11.0,
-          "conv_pct": 0.43,
+          "sessions": 1440,
+          "bounce_pct": 11.5,
+          "conv_pct": 1.18,
           "winner": false
         },
         {
           "name": "Variant B",
           "url": "https://nordicpirates.com/lp/lying-pirates-cities-of-greed-big-box-b/",
-          "sessions": 1638,
-          "bounce_pct": 12.1,
-          "conv_pct": 1.34,
-          "winner": true
+          "sessions": 1401,
+          "bounce_pct": 11.7,
+          "conv_pct": 1.00,
+          "winner": false
         }
       ],
       "aggregate_7d": {
-        "lp_a": { "sessions": 2601, "conv_pct": 0.54, "txn": 14 },
-        "lp_b": { "sessions": 2634, "conv_pct": 1.03, "txn": 27 }
+        "lp_a": { "sessions": 2081, "bounce_pct": 13.6, "conv_pct": 0.96, "txn": 20 },
+        "lp_b": { "sessions": 2024, "bounce_pct": 13.0, "conv_pct": 0.89, "txn": 18 }
       },
-      "polly_note": "B wins clearly again this week — EN page 1.34% vs 0.43% (22 vs 7 txn); aggregate 1.03% vs 0.54% (27 vs 14). B has now led 3 weeks running and the gap is widening, not noise. Cumulative is approaching ~65 conv (B) vs ~36 (A) — still under the ~100/variant bar for a formal call, but the direction is consistent and strong. RECOMMENDATION: run 1-2 more weeks to clear the threshold, then promote B to the new control and start the next test (V3 bundle/UGC concept vs B). No change yet. (GA4 conv% still understates absolute conversion due to lossy LP->checkout attribution — read A/B relative, not absolute.)"
+      "significance": {
+        "window": "2026-06-01..07-12 (cumulative)",
+        "a": { "sessions": 8929, "conv": 71, "conv_pct": 0.80 },
+        "b": { "sessions": 8999, "conv": 76, "conv_pct": 0.84 },
+        "z": -0.37,
+        "significant": false,
+        "threshold_conv_per_variant": 100,
+        "threshold_met": false
+      },
+      "polly_note": "VERDICT: no significant winner, test concluded. This week A 1.18% (17 txn) vs B 1.00% (14 txn) by page; lp_a 0.96% vs lp_b 0.89% by ad-content. Cumulative z=-0.37, both variants under 100 conv. Ship shared improvements to A & B and move to V3."
     },
     {
       "name": "Localized LP variants (IT / FR / DE)",
@@ -40,27 +50,35 @@
       "status": "tracking-issue",
       "hypothesis": "Translated A/B variants would convert non-EN paid traffic at rates comparable to EN.",
       "variants": [
-        { "name": "IT-A", "url": "https://nordicpirates.com/lp/lying-pirates-cities-of-greed-big-box-it/", "sessions": 393, "bounce_pct": 12.0, "conv_pct": 0.51, "winner": false },
-        { "name": "IT-B", "url": "https://nordicpirates.com/lp/lying-pirates-cities-of-greed-big-box-b-it/", "sessions": 441, "bounce_pct": 17.7, "conv_pct": 0.23, "winner": false },
-        { "name": "FR-A", "url": "https://nordicpirates.com/lp/lying-pirates-cities-of-greed-big-box-fr/", "sessions": 332, "bounce_pct": 12.0, "conv_pct": 0.30, "winner": false },
-        { "name": "FR-B", "url": "https://nordicpirates.com/lp/lying-pirates-cities-of-greed-big-box-b-fr/", "sessions": 329, "bounce_pct": 13.4, "conv_pct": 0.30, "winner": false },
-        { "name": "DE-A", "url": "https://nordicpirates.com/lp/lying-pirates-cities-of-greed-big-box-de/", "sessions": 207, "bounce_pct": 11.1, "conv_pct": 0.48, "winner": false },
-        { "name": "DE-B", "url": "https://nordicpirates.com/lp/lying-pirates-cities-of-greed-big-box-b-de/", "sessions": 201, "bounce_pct": 10.4, "conv_pct": 0.00, "winner": false }
+        { "name": "IT-A", "url": "https://nordicpirates.com/lp/lying-pirates-cities-of-greed-big-box-it/", "sessions": 426, "bounce_pct": 14.8, "conv_pct": 0.23, "winner": false },
+        { "name": "IT-B", "url": "https://nordicpirates.com/lp/lying-pirates-cities-of-greed-big-box-b-it/", "sessions": 415, "bounce_pct": 11.1, "conv_pct": 0.48, "winner": false },
+        { "name": "FR-A", "url": "https://nordicpirates.com/lp/lying-pirates-cities-of-greed-big-box-fr/", "sessions": 60, "bounce_pct": 26.7, "conv_pct": 0.00, "winner": false },
+        { "name": "FR-B", "url": "https://nordicpirates.com/lp/lying-pirates-cities-of-greed-big-box-b-fr/", "sessions": 59, "bounce_pct": 13.6, "conv_pct": 0.00, "winner": false },
+        { "name": "DE-A", "url": "https://nordicpirates.com/lp/lying-pirates-cities-of-greed-big-box-de/", "sessions": 128, "bounce_pct": 14.8, "conv_pct": 0.78, "winner": false },
+        { "name": "DE-B", "url": "https://nordicpirates.com/lp/lying-pirates-cities-of-greed-big-box-b-de/", "sessions": 126, "bounce_pct": 16.7, "conv_pct": 1.59, "winner": false }
       ],
       "real_sales_90d": {
-        "note": "These markets DO convert and sell. The near-0% on the LP rows is a MEASUREMENT artifact (lossy LP->checkout attribution), not a funnel failure. Numbers last refreshed 2026-06-22 — Polly to wire Shopify auto-pull into weekly signal.",
-        "IT": { "orders": 97, "revenue_eur": 9028, "shopify_session_conv_pct": 1.72, "rank": "3rd-largest market" },
-        "DE": { "orders": 58, "revenue_eur": 5329, "shopify_session_conv_pct": 2.86 },
-        "FR": { "orders": 44, "revenue_eur": 5069, "shopify_session_conv_pct": 1.73 }
+        "note": "Refreshed 2026-07-13 via live Shopify pull (orders by shipping_country, revenue = net_sales EUR; conv = sessions_that_completed_checkout / sessions by session_country, 90d). Confirms the near-0% LP conv is a MEASUREMENT artifact (lossy LP->checkout attribution), not a funnel failure.",
+        "US": { "orders": 291, "revenue_eur": 30721, "shopify_session_conv_pct": 3.59 },
+        "UK": { "orders": 154, "revenue_eur": 14372, "shopify_session_conv_pct": 2.73 },
+        "IT": { "orders": 143, "revenue_eur": 10153, "shopify_session_conv_pct": 2.18, "rank": "3rd-largest market" },
+        "DE": { "orders": 80, "revenue_eur": 5679, "shopify_session_conv_pct": 3.59 },
+        "AU": { "orders": 48, "revenue_eur": 5030, "shopify_session_conv_pct": 3.41 },
+        "FR": { "orders": 51, "revenue_eur": 4275, "shopify_session_conv_pct": 1.90 }
       },
-      "polly_note": "Hold. Still a tracking artifact, not a funnel problem — localized LP conv reads ~0.2-0.5% but Shopify shows IT/DE/FR converting at 1.7-2.9% with real revenue (IT is our 3rd-largest market). DO NOT PAUSE. Action remains: fix GA4 purchase-currency + ensure the same GA4 property fires through checkout so LP-level conv becomes true. Until then judge localized LPs by engagement (bounce 10-18%, healthy) + market-level Shopify orders, not LP conv%."
+      "polly_note": "VERDICT: HOLD, do not pause. Localized LP conv reads 0-1.6% but Shopify shows IT/DE/FR converting at 1.9-3.6% with real revenue (IT remains 3rd-largest market, 143 orders / €10,153 in 90d). Action unchanged: fix GA4 purchase-currency + fire the same GA4 property through checkout so LP-level conv becomes true."
     }
   ],
   "built_not_yet_live": [
     {
+      "name": "Enlarged hero stats + 'Buy 3 products, get 10% off' bundle offer (all live LPs; offer on A & B)",
+      "mockup": "https://share.gate1.dev/mockups/lyingpirates-polly/lp-bigbox-hero-preview.html",
+      "note": "Reference built + previewed; pending Lucas design sign-off, then sweep 21 pages. Live LPs still show 16,000+ — 18k update NOT deployed yet. Now the recommended next move per Monday verdict: ship to both A & B in one deploy with the 16,000->18,000 update, once the lp deploy path is confirmed with Bengt."
+    },
+    {
       "name": "V3 (bundle widget + UGC reel + FB comment proof)",
       "mockup": "https://mockup.gate1.dev/lyingpirates-polly/lying-pirates-v3.html",
-      "note": "Next test: promote to live A/B vs B once EN test clears significance (~1-2 weeks)."
+      "note": "Promoted to PRIORITY next test per Monday verdict — the EN A/B concluded with no winner, so a genuinely different challenger (V3) is the right next experiment vs the shared-improved control."
     },
     {
       "name": "Try the Game (interactive 3-phase playable demo)",
