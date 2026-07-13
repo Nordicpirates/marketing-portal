@@ -108,21 +108,25 @@
   },
   "channels_30d": [
     {
+      "name": "Paid Social · Meta",
+      "dot": "#4a90e2",
+      "sessions": 30565,
+      "conversions": 387,
+      "cvr": 1.27,
+      "revenue_sek": 401168,
+      "source": "meta",
+      "note": "Meta Ads Manager · 7d-klick / 1d-visning-attribution. Spend 180 616 kr, ROAS 2.22."
+    },
+    {
       "name": "Direkt",
       "dot": "#8b5cf6",
       "sessions": 4517,
       "conversions": 280,
       "cvr": 6.2,
       "revenue_sek": 459603,
-      "cvr_good": true
-    },
-    {
-      "name": "Social (Meta + organisk)",
-      "dot": "#4a90e2",
-      "sessions": 1525,
-      "conversions": 37,
-      "cvr": 2.43,
-      "revenue_sek": 19562
+      "source": "shopify",
+      "cvr_good": true,
+      "note": "Shopify referrer. Inkluderar Meta-klick där referrer tappades (vanligt på mobil/iOS)."
     },
     {
       "name": "Sökning (organisk + betald)",
@@ -131,7 +135,17 @@
       "conversions": 65,
       "cvr": 4.31,
       "revenue_sek": 87221,
+      "source": "shopify",
       "cvr_good": true
+    },
+    {
+      "name": "Social (organisk)",
+      "dot": "#14b8a6",
+      "sessions": 1525,
+      "conversions": 37,
+      "cvr": 2.43,
+      "revenue_sek": 19562,
+      "source": "shopify"
     },
     {
       "name": "Okänd",
@@ -139,28 +153,21 @@
       "sessions": 207,
       "conversions": 4,
       "cvr": 1.93,
-      "revenue_sek": null
-    },
-    {
-      "name": "E-post",
-      "dot": "#cf9a2e",
-      "sessions": 20,
-      "conversions": 1,
-      "cvr": 5.0,
       "revenue_sek": null,
-      "cvr_good": true
+      "source": "shopify"
     },
     {
       "name": "Google Ads Shopping (live 8 juli)",
-      "dot": "#4a90e2",
+      "dot": "#ea4335",
       "sessions": null,
       "conversions": null,
       "cvr": null,
       "revenue_sek": null,
-      "placeholder": true
+      "placeholder": true,
+      "note": "Kopplingen till Google Ads behöver förnyas — data hämtas när koppling är aktiv."
     }
   ],
-  "channels_note": "Källa: Shopify referrer-data (30d). Meta UTMs hamnar ofta under Direkt i Shopify — se Meta Ads Manager för kanal-split.",
+  "channels_note": "Rad 1 = Meta Ads Manager-data (7d-klick/1d-visning). Övriga rader = Shopify referrer-tracking (30d). Direkt inkluderar Meta-trafik som tappat referrer.",
   "dashboard_status": [
     {
       "icon": "✅",
@@ -433,15 +440,24 @@
         }
       ],
       "creatives": {
+        "meta_30d": {
+          "clicks": 30565,
+          "spend_sek": 180616,
+          "roas": 2.22,
+          "cpc_sek": 5.91,
+          "ctr_pct": 1.47,
+          "impressions": 2078746,
+          "reach": 774900
+        },
         "video": {
           "pct": 91,
           "roas_label": "ROAS ~1.6",
-          "note": "91% av budget. Bäst: <i>anyone_socialgame</i> 2.29 · <i>quackalope_testimonial</i> 2.88. Flera förlorare på 0.48–0.64."
+          "note": "91% av budget. Bäst: <i>anyone_socialgame</i> 2.29 · <i>quackalope_testimonial</i> 2.88. Flera förlorare 0.48–0.64."
         },
         "static": {
           "pct": 9,
           "roas_label": "ROAS ~4.8–8.6",
-          "note": "Bara 9% av budget men betydligt mer effektivt. <i>collector_combinedbox</i> 12.83 · <i>story_style_testimonial</i> 9.88. Kandidat att skala upp."
+          "note": "Bara 9% av budget men betydligt mer effektivt. <i>collector_combinedbox</i> 12.83 · <i>story_style_testimonial</i> 9.88."
         }
       },
       "flags": []
