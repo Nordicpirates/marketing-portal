@@ -231,6 +231,18 @@
     <div class="stats" id="meta-grid"></div>
   </section>
 
+  <!-- GOOGLE ADS -->
+  <section id="gads-section">
+    <h2><span class="dot"></span>Paid (Google Ads)</h2>
+    <p class="h2sub" id="gads-sub">…</p>
+    <div class="stats" id="gads-grid"></div>
+    <div class="panel" id="gads-panel" style="margin-top:14px"><table>
+      <thead><tr><th>Kampanj</th><th>Spend</th><th>Köp</th><th>Värde</th><th>ROAS</th></tr></thead>
+      <tbody id="gads-body"></tbody>
+    </table></div>
+    <p class="h2sub" id="gads-note" style="margin-top:10px;font-style:italic"></p>
+  </section>
+
   <!-- LANDING PAGES -->
   <section id="lp-section">
     <h2><span class="dot"></span>Landing pages — traffic & conversion</h2>
@@ -345,6 +357,7 @@ async function load() {
   rb.querySelectorAll('.preset').forEach(b=>b.onclick=()=>renderPeriod(parseInt(b.dataset.i)));
 
   renderTracking();
+  renderGads();
   renderIds();
   await renderTasks();
   await renderExperiments();
@@ -484,6 +497,25 @@ function renderPeriod(i) {
         <div class="track"><div class="fill static" style="width:${cv.static.pct}%"></div></div>
         <div class="meta">${cv.static.note}</div></div>`;
   }
+}
+
+function renderGads() {
+  const g = DATA.gads;
+  const sec = document.getElementById('gads-section');
+  if (!sec) return;
+  if (!g) { sec.style.display='none'; return; }
+  sec.style.display='';
+  document.getElementById('gads-sub').textContent = `Live sedan ${g.live_since} · t.o.m. ${g.as_of}`;
+  const t = g.totals||{};
+  document.getElementById('gads-grid').innerHTML = `
+    <div class="stat ink"><div class="n">${g.spend_label||'—'}</div><div class="k">Spend (5 dgr)</div></div>
+    <div class="stat gold"><div class="n">${String(t.roas??'—').replace('.',',')}×</div><div class="k">ROAS rullande</div></div>
+    <div class="stat"><div class="n">${t.conversions??'—'}</div><div class="k">Köp spårade</div></div>
+    <div class="stat ink"><div class="n">${g.yesterday_label||'—'}</div><div class="k">Spend igår</div></div>`;
+  document.getElementById('gads-body').innerHTML = (g.campaigns||[]).map(c=>`
+    <tr><td>${c.name}</td><td>${c.spend_label}</td><td>${c.conv}</td><td>${c.value_label}</td>
+    <td><b>${String(c.roas).replace('.',',')}×</b></td></tr>`).join('');
+  document.getElementById('gads-note').textContent = g.note||'';
 }
 
 function renderTracking() {

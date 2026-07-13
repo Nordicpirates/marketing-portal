@@ -21,6 +21,19 @@
     "gads_spend_sek": 761,
     "gads_conv": 2
   },
+  "gads": {
+    "live_since": "8 juli",
+    "as_of": "12 juli",
+    "note": "5 dagar in — daglig ROAS svänger kraftigt på låg volym; den rullande siffran är den ärliga.",
+    "spend_label": "1 459 kr",
+    "yesterday_label": "761 kr",
+    "totals": { "spend_sek": 1459, "clicks": 289, "conversions": 5, "conv_value_sek": 5468, "roas": 3.7 },
+    "campaigns": [
+      { "name": "🏆 Brand Search", "spend_label": "226 kr", "conv": 3, "value_label": "3 297 kr", "roas": 14.6 },
+      { "name": "Shopping US & UK", "spend_label": "1 188 kr", "conv": 2, "value_label": "2 171 kr", "roas": 1.8 },
+      { "name": "Non-brand Test", "spend_label": "45 kr", "conv": 0, "value_label": "0 kr", "roas": 0.0 }
+    ]
+  },
   "chart_data": {
     "orders_9d": {
       "labels": [
