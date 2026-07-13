@@ -1,19 +1,19 @@
 {
   "generated_at": "2026-07-13",
   "owner": "Bengt 🦉 (data) + Polly (analysis)",
-  "currency_note": "Revenue in EUR (store currency). Meta spend in SEK. Blended MER converts spend at ~11.4 SEK/EUR.",
+  "currency_note": "Revenue in EUR (store currency). Meta spend in SEK. Blended MER = total Shopify revenue ÷ Meta spend (11.4 SEK/EUR).",
   "gads_alert": {
-    "show": false,
+    "show": true,
     "title": "Google Ads Shopping live sedan 8 juli",
-    "sub": "Konto: AW-10987612665 · Budget: €50/dag · Standard Shopping · Aktiverades 2026-07-08",
+    "sub": "Konto: AW-10987612665 · Budget: €50/dag · Standard Shopping · Data hämtas löpandes",
     "link_gads": "https://ads.google.com",
     "link_gmc": "https://merchants.google.com"
   },
   "yesterday": {
     "date": "2026-07-12",
     "orders": 17,
-    "revenue_eur": 1941,
-    "revenue_sek": 22127,
+    "revenue_eur": 2112,
+    "revenue_sek": 24077,
     "sessions": 375,
     "conversions": 15,
     "gads_spend": null,
@@ -33,15 +33,15 @@
         "13/7*"
       ],
       "revenue": [
-        950,
-        1092,
-        1612,
-        1667,
-        1806,
-        1209,
-        1478,
-        1941,
-        1040
+        1060,
+        1232,
+        1701,
+        1778,
+        2036,
+        1268,
+        1590,
+        2112,
+        1141
       ],
       "orders": [
         12,
@@ -108,63 +108,47 @@
   },
   "channels_30d": [
     {
-      "name": "Paid Social (Meta)",
-      "dot": "#4a90e2",
-      "sessions": 23177,
-      "conversions": 182,
-      "cvr": 0.79,
-      "revenue_sek": 204749
-    },
-    {
-      "name": "Organic Search",
-      "dot": "#2f8f4e",
-      "sessions": 1456,
-      "conversions": 63,
-      "cvr": 4.33,
-      "revenue_sek": 67700,
-      "cvr_good": true
-    },
-    {
-      "name": "Direct",
+      "name": "Direkt",
       "dot": "#8b5cf6",
-      "sessions": 1233,
-      "conversions": 53,
-      "cvr": 4.3,
-      "revenue_sek": 58320,
+      "sessions": 4517,
+      "conversions": 280,
+      "cvr": 6.2,
+      "revenue_sek": 459603,
       "cvr_good": true
     },
     {
-      "name": "Referral",
-      "dot": "#cf9a2e",
-      "sessions": 367,
-      "conversions": 21,
-      "cvr": 5.72,
-      "revenue_sek": 21581,
+      "name": "Social (Meta + organisk)",
+      "dot": "#4a90e2",
+      "sessions": 1525,
+      "conversions": 37,
+      "cvr": 2.43,
+      "revenue_sek": 19562
+    },
+    {
+      "name": "Sökning (organisk + betald)",
+      "dot": "#2f8f4e",
+      "sessions": 1509,
+      "conversions": 65,
+      "cvr": 4.31,
+      "revenue_sek": 87221,
       "cvr_good": true
     },
     {
-      "name": "Organic Social",
-      "dot": "#14b8a6",
-      "sessions": 456,
-      "conversions": 8,
-      "cvr": 1.75,
-      "revenue_sek": 8396
-    },
-    {
-      "name": "Unassigned",
+      "name": "Okänd",
       "dot": "#8a8073",
-      "sessions": 379,
-      "conversions": 13,
-      "cvr": 3.43,
-      "revenue_sek": 13891
+      "sessions": 207,
+      "conversions": 4,
+      "cvr": 1.93,
+      "revenue_sek": null
     },
     {
-      "name": "Organic Shopping",
-      "dot": "#c96a3d",
-      "sessions": 119,
-      "conversions": 4,
-      "cvr": 3.36,
-      "revenue_sek": 2836
+      "name": "E-post",
+      "dot": "#cf9a2e",
+      "sessions": 20,
+      "conversions": 1,
+      "cvr": 5.0,
+      "revenue_sek": null,
+      "cvr_good": true
     },
     {
       "name": "Google Ads Shopping (live 8 juli)",
@@ -176,6 +160,7 @@
       "placeholder": true
     }
   ],
+  "channels_note": "Källa: Shopify referrer-data (30d). Meta UTMs hamnar ofta under Direkt i Shopify — se Meta Ads Manager för kanal-split.",
   "dashboard_status": [
     {
       "icon": "✅",
@@ -228,7 +213,7 @@
         {
           "label": "Google Ads",
           "value": "AW-10987612665",
-          "note": "Active"
+          "note": "Active — Shopping live sedan 8 juli"
         },
         {
           "label": "Microsoft Clarity",
@@ -318,6 +303,14 @@
       "note": "UTM-taggar aktiva på alla Meta-annonser. Ren source/medium i GA4 och Shopify källrapportering."
     },
     {
+      "id": "gads_shopping",
+      "label": "Google Ads Shopping",
+      "val": "Live 8 juli",
+      "status": "ok",
+      "tag": "LIVE",
+      "note": "Standard Shopping · AW-10987612665 · €50/dag budget. Performance-data tillgänglig i Google Ads-konsolen."
+    },
+    {
       "id": "tap10_capi",
       "label": "CAPI · tap10game.com",
       "val": "Browser only",
@@ -335,15 +328,15 @@
       "range_end": "2026-07-13",
       "days": 7,
       "kpis": {
-        "sessions": 1782,
-        "conversion_label": "6.40%",
-        "sales_label": "€11,845",
-        "orders": 114
+        "sessions": 1784,
+        "conversion_label": "5.78%",
+        "sales_label": "€11,626",
+        "orders": 103
       },
       "meta": {
         "spend_label": "37,555 kr",
         "meta_roas": 2.72,
-        "blended_mer": 3.6
+        "blended_mer": 3.53
       },
       "orders_by_country": [
         {
@@ -437,12 +430,6 @@
           "path": "/products/8-player-components-copy",
           "sessions": 15,
           "conv_pct": 6.67
-        },
-        {
-          "name": "DE homepage",
-          "path": "/de",
-          "sessions": 14,
-          "conv_pct": 0.0
         }
       ],
       "creatives": {
@@ -466,15 +453,15 @@
       "range_end": "2026-07-12",
       "days": 30,
       "kpis": {
-        "sessions": 7913,
-        "conversion_label": "6.04%",
-        "sales_label": "€46,702",
-        "orders": 478
+        "sessions": 7778,
+        "conversion_label": "6.02%",
+        "sales_label": "€49,683",
+        "orders": 468
       },
       "meta": {
         "spend_label": "180,616 kr",
         "meta_roas": 2.22,
-        "blended_mer": 2.95
+        "blended_mer": 3.13
       },
       "orders_by_country": [
         {
@@ -605,15 +592,15 @@
       "range_end": "2026-07-13",
       "days": 13,
       "kpis": {
-        "sessions": 3430,
-        "conversion_label": "5.98%",
-        "sales_label": "€19,717",
+        "sessions": 3425,
+        "conversion_label": "5.99%",
+        "sales_label": "€21,564",
         "orders": 205
       },
       "meta": {
         "spend_label": "67,892 kr",
         "meta_roas": 2.79,
-        "blended_mer": 3.31
+        "blended_mer": 3.62
       },
       "orders_by_country": [
         {
@@ -695,7 +682,7 @@
         {
           "level": "info",
           "title": "🌱 Stark julstart",
-          "body": "13 dagar in — 205 ordrar, €19,717, 3 430 sessioner, ROAS 2.79. Takten pekar mot ~€46K för månaden om rytmen håller. April→Juli 4,6× tillväxt.",
+          "body": "13 dagar in — 205 ordrar, €21,564, 3 425 sessioner, ROAS 2.79. Takten pekar mot ~€50K+ för månaden om rytmen håller. April→Juli 4,6× tillväxt.",
           "sub": ""
         }
       ]
@@ -708,14 +695,14 @@
       "days": 90,
       "kpis": {
         "sessions": 28046,
-        "conversion_label": "3.31%",
-        "sales_label": "€89,838",
-        "orders": 927
+        "conversion_label": "3.27%",
+        "sales_label": "€99,831",
+        "orders": 917
       },
       "meta": {
         "spend_label": "367,790 kr",
         "meta_roas": 2.08,
-        "blended_mer": 2.78
+        "blended_mer": 3.09
       },
       "orders_by_country": [
         {
