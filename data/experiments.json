@@ -1,10 +1,10 @@
 {
-  "updated": "2026-07-23",
+  "updated": "2026-07-24",
   "owner": "Polly",
-  "source": "GA4 property 250338585 (last 7d: 2026-07-16..07-22, landingPage + sessionManualAdContent split) + Shopify live pull (net_sales EUR + orders, last 90d, by billing_country). Significance/verdict block carried from last Monday (2026-07-13); recomputed Mondays only.",
+  "source": "GA4 property 250338585 (last 7d: 2026-07-17..07-23, landingPage + sessionManualAdContent split) + Shopify live pull (net_sales EUR + orders, last 90d, by billing_country). Significance/verdict block carried from last Monday (2026-07-13); recomputed Mondays only.",
   "analyst": "Polly",
   "note": "A/B landing-page experiments. Refreshed daily by Polly (data); pause/promote verdicts on Mondays. UI reads top-level `experiments`; extra fields (aggregate_7d, real_sales_90d, built_not_yet_live) preserved for future UI surfaces.",
-  "polly_note": "DATA-ONLY REFRESH (Thursday 2026-07-23). No pause/promote verdicts today - decision review: Mondays. EN A/B: control A still ahead - by page A 0.95% (17 txn / 1783 sess) vs B 0.78% (14 txn / 1798 sess); by ad-content lp_a 0.90% (16 txn / 1776 sess) vs lp_b 0.75% (14 txn / 1877 sess). Gap consistent with yesterday, still under threshold - no verdict. WATCH: EN bounce roughly doubled wk/wk (A 11.7%->23.0%, B 12.5%->21.2%) - flagging as an observation, not a verdict; will confirm whether it's a real shift or last week's unusually-low read normalizing. LOCALIZED RECOVERY ACCELERATING (Bengt's 07-21 routing fix): lying-pirates-it 36->155 sess wk/wk, lying-pirates-de 15->40; old big-box-*-<lang> URLs decaying (it 16, de 5). Still 0 LP-level txn (lossy LP->checkout attribution) but session recovery is clear and strong. Shopify 90d stable & growing: US/UK/IT top 3 unchanged (IT 150 orders / EUR10,686, 3rd-largest market).",
+  "polly_note": "DATA-ONLY REFRESH (Friday 2026-07-24). No pause/promote verdicts today - decision review: Mondays. EN A/B now DEAD EVEN: by page A 0.85% (15 txn / 1761 sess) vs B 0.85% (15 txn / 1775 sess); by ad-content lp_a 0.79% (14 txn / 1767 sess) vs lp_b 0.79% (15 txn / 1889 sess). No separation - definitely no verdict. EN BOUNCE STILL IN TRANSITION (~30% blended): the 7d window 07-17..23 mixes PRE-dedupe days (07-17..20, artifact-low ~5-8%) and POST-dedupe days (07-21..23, true ~78%). The double-page_view artifact was removed by my 07-21 dedupe (commit b175123) - so bounce is normalizing UPWARD as the low-artifact days age out; it will settle at the true rate once the window is fully post-07-21 (by Monday). Do NOT read the wk/wk bounce move as a behavior change. LOCALIZED RECOVERY CONTINUES + FIRST REVENUE: lying-pirates-it 155->248 sess wk/wk AND its first 3 LP-attributed transactions (1.21% conv); lying-pirates-de 40->63; retired big-box-*-<lang> decaying. Shopify 90d stable & growing: US/UK/IT top 3 (IT 154 orders / EUR11,162, 3rd-largest, still climbing); AU now edges DE on revenue.",
   "experiments": [
     {
       "name": "Big Box LP - Headline & Hero (EN)",
@@ -15,23 +15,23 @@
         {
           "name": "Control (A)",
           "url": "https://nordicpirates.com/lp/lying-pirates-cities-of-greed-big-box/",
-          "sessions": 1783,
-          "bounce_pct": 22.99,
-          "conv_pct": 0.95,
+          "sessions": 1761,
+          "bounce_pct": 30.95,
+          "conv_pct": 0.85,
           "winner": false
         },
         {
           "name": "Variant B",
           "url": "https://nordicpirates.com/lp/lying-pirates-cities-of-greed-big-box-b/",
-          "sessions": 1798,
-          "bounce_pct": 21.19,
-          "conv_pct": 0.78,
+          "sessions": 1775,
+          "bounce_pct": 29.24,
+          "conv_pct": 0.85,
           "winner": false
         }
       ],
       "aggregate_7d": {
-        "lp_a": { "sessions": 1776, "bounce_pct": 22.86, "conv_pct": 0.90, "txn": 16 },
-        "lp_b": { "sessions": 1877, "bounce_pct": 24.67, "conv_pct": 0.75, "txn": 14 }
+        "lp_a": { "sessions": 1767, "bounce_pct": 31.52, "conv_pct": 0.79, "txn": 14 },
+        "lp_b": { "sessions": 1889, "bounce_pct": 33.62, "conv_pct": 0.79, "txn": 15 }
       },
       "significance": {
         "window": "2026-06-01..07-12 (cumulative) - carried from last Monday verdict, recomputed Mondays",
@@ -43,43 +43,41 @@
         "threshold_conv_per_variant": 100,
         "threshold_met": false
       },
-      "polly_note": "DATA-ONLY (Thu). By page this week A 0.95% (17 txn / 1783 sess) vs B 0.78% (14 txn / 1798 sess); by ad-content lp_a 0.90% (16 txn / 1776 sess) vs lp_b 0.75% (14 txn / 1877 sess). Control A holds a small lead for a 2nd day; cumulative conv still short of the ~100-per-variant threshold - no verdict today, significance recomputed Mondays. Note: EN bounce ~doubled wk/wk (A 23.0%, B 21.2%) - watching. Standing recommendation holds: ship shared improvements to A & B and launch V3 as a genuinely different challenger."
+      "polly_note": "DATA-ONLY (Fri). Dead even this week: by page A 0.85% (15 txn / 1761 sess) vs B 0.85% (15 txn / 1775 sess); by ad-content both 0.79%. No separation, cumulative conv still short of the ~100-per-variant threshold - no verdict today, significance recomputed Mondays. Bounce (~30%) is mid-transition after the 07-21 double-page_view dedupe - ignore the wk/wk bounce swing, it's a tracking correction not behavior. Standing recommendation holds: ship shared improvements to A & B and launch V3 as a genuinely different challenger."
     },
     {
       "name": "Localized LP variants (IT / DE / FR / ES)",
       "url": "https://nordicpirates.com/lp/play-it | play-de | play-es | play-fr",
-      "status": "fixed - recovery accelerating, monitoring",
+      "status": "fixed - recovery continuing, first revenue on IT",
       "hypothesis": "Translated LPs convert non-EN paid traffic at rates comparable to EN, once ad clicks actually land on a live localized page.",
       "variants": [
-        { "name": "IT (live)", "url": "https://nordicpirates.com/lp/lying-pirates-it/", "sessions": 155, "bounce_pct": 79.35, "conv_pct": 0.00, "winner": false },
-        { "name": "DE (live)", "url": "https://nordicpirates.com/lp/lying-pirates-de/", "sessions": 40, "bounce_pct": 65.00, "conv_pct": 0.00, "winner": false },
+        { "name": "IT (live)", "url": "https://nordicpirates.com/lp/lying-pirates-it/", "sessions": 248, "bounce_pct": 79.44, "conv_pct": 1.21, "winner": false },
+        { "name": "DE (live)", "url": "https://nordicpirates.com/lp/lying-pirates-de/", "sessions": 63, "bounce_pct": 63.49, "conv_pct": 0.00, "winner": false },
         { "name": "FR (paused)", "url": "https://nordicpirates.com/lp/lying-pirates-fr/", "sessions": 2, "bounce_pct": 0.00, "conv_pct": 0.00, "winner": false },
         { "name": "ES (paused)", "url": "https://nordicpirates.com/lp/lying-pirates-es/", "sessions": 0, "bounce_pct": 0.00, "conv_pct": 0.00, "winner": false }
       ],
       "retired_urls_residual_7d": {
         "note": "Old rotator A/B targets, retired 07-21 when the worker was repointed. Small tails are residual/cached traffic, decaying as expected.",
-        "lying-pirates-cities-of-greed-big-box-it": 16,
-        "lying-pirates-cities-of-greed-big-box-de": 5,
-        "lying-pirates-cities-of-greed-big-box-b-it": 3,
-        "lying-pirates-cities-of-greed-big-box-b-fr": 1
+        "lying-pirates-cities-of-greed-big-box-it": 12,
+        "lying-pirates-cities-of-greed-big-box-de": 2
       },
       "real_sales_90d": {
-        "note": "Refreshed 2026-07-23 via live Shopify pull (orders by billing_country, revenue = net_sales EUR, last 90d). Confirms localized markets keep buying in real volume even while GA LP-level conv still reads ~0 (lossy LP->checkout attribution; recovery window still only partial).",
-        "US": { "orders": 318, "revenue_eur": 33791 },
+        "note": "Refreshed 2026-07-24 via live Shopify pull (orders by billing_country, revenue = net_sales EUR, last 90d). Confirms localized markets keep buying in real volume; IT now also showing its first LP-attributed conversions in GA (3 txn this week).",
+        "US": { "orders": 322, "revenue_eur": 34048 },
         "UK": { "orders": 184, "revenue_eur": 16536 },
-        "IT": { "orders": 150, "revenue_eur": 10686, "rank": "3rd-largest market" },
-        "DE": { "orders": 88, "revenue_eur": 6104 },
-        "AU": { "orders": 57, "revenue_eur": 5943 },
+        "IT": { "orders": 154, "revenue_eur": 11162, "rank": "3rd-largest market" },
+        "AU": { "orders": 59, "revenue_eur": 6187 },
+        "DE": { "orders": 87, "revenue_eur": 6062 },
         "FR": { "orders": 49, "revenue_eur": 4105 }
       },
-      "polly_note": "DATA-ONLY (Thu), no verdict. Recovery from the 07-21 routing fix is ACCELERATING: lying-pirates-it 36->155 sess wk/wk, lying-pirates-de 15->40; retired big-box-*-<lang> URLs decaying (it 16, de 5). Still 0 LP-level txn (attribution loss LP->checkout) but the session rebound is unambiguous. Real demand always intact: IT 3rd-largest market (150 orders / EUR10,686 in 90d). MONITOR: next Monday will be the first full 7d window entirely post-fix - that's when a conv verdict becomes meaningful."
+      "polly_note": "DATA-ONLY (Fri), no verdict. Recovery from the 07-21 routing fix keeps climbing: lying-pirates-it 155->248 sess wk/wk AND its FIRST 3 LP-attributed transactions (1.21% conv) - revenue attribution now landing on the localized page, not just checkout. lying-pirates-de 40->63; retired big-box-*-<lang> decaying (it 12, de 2). Real demand intact & growing: IT 154 orders / EUR11,162 in 90d (3rd-largest, climbing). MONITOR: Monday is the first full 7d window entirely post-fix - first meaningful localized conv verdict."
     }
   ],
   "built_not_yet_live": [
     {
-      "name": "SHIPPED 2026-07-21: localized ad-routing fix + ViewContent on it/de",
+      "name": "SHIPPED 2026-07-21: localized ad-routing fix + source page_view dedupe",
       "mockup": "https://nordicpirates.com/lp/play-it",
-      "note": "LIVE + verified. Bengt repointed the CF Worker rotator (nordicpirates-ab): play-it/de/es/fr -> live lying-pirates-<lang> (were 404ing to retired big-box-*-<lang> = the GA collapse). Polly added ViewContent to it/de LPs + PageView dedupe. Recovery visible & accelerating (it 155 sess this wk). ES/FR still paused - add ViewContent there if reactivated."
+      "note": "LIVE + verified. (1) Bengt repointed the CF Worker rotator (nordicpirates-ab): play-it/de/es/fr -> live lying-pirates-<lang> (were 404ing to retired big-box-*-<lang> = the GA collapse). (2) Polly commit b175123 deduped the double Meta/GA page_view across the remaining 10 EN/es/fr/v1/v2 pages (it/de done earlier in eff5a11). Live now fires single GA4 page_view + single Meta PageView on all trafficked pages (verified via live curl). Recovery visible & accelerating (it 248 sess, first 3 txn this wk)."
     },
     {
       "name": "'Buy 3 products, get 10% off' bundle offer (all live LPs; offer on A & B)",
@@ -89,7 +87,7 @@
     {
       "name": "V3 proof-first (video hero + live BGG reviews + real prices)",
       "mockup": "https://share.gate1.dev/mockups/lyingpirates-polly/lp-v3-proof-first.html",
-      "note": "Proof-first challenger: video hero -> live BGG rating + real reviews -> gameplay clips -> 3-phase rules -> Big Box offer + working currency switch -> bundle nudge (draft) -> FAQ. Genuinely different angle from A & B. Awaiting Lucas reaction; top candidate for the next real test vs shared-improved control. Once approved, point the rotator target at it."
+      "note": "Proof-first challenger: video hero -> live BGG rating + real reviews -> gameplay clips -> 3-phase rules -> Big Box offer + working currency switch -> bundle nudge (draft) -> FAQ. Genuinely different angle from A & B. Awaiting Lucas reaction; top candidate for the next real test vs shared-improved control. Once approved, point the rotator target at it. (Timely now that A & B are dead even - a real challenger is what will move the needle.)"
     },
     {
       "name": "SHIPPED 2026-07-19/20: BGG rating 7.2 + Fitty_City review swap",
