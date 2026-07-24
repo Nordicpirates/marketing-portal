@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-23",
+  "generated_at": "2026-07-24",
   "owner": "Bengt 🦉 (data) + Polly (analysis)",
   "currency_note": "Revenue in EUR (store currency). Meta spend in SEK. Blended MER = total Shopify revenue ÷ Meta spend (11.4 SEK/EUR).",
   "gads_alert": {
@@ -10,17 +10,17 @@
     "link_gmc": "https://merchants.google.com"
   },
   "yesterday": {
-    "date": "2026-07-19",
-    "orders": 18,
-    "revenue_eur": 1621,
-    "revenue_sek": 18484,
-    "sessions": null,
+    "date": "2026-07-23",
+    "orders": 10,
+    "revenue_eur": 1083,
+    "revenue_sek": 12344,
+    "sessions": 406,
     "conversions": null,
-    "gads_spend": 45,
-    "gads_spend_sek": 508,
+    "gads_spend": null,
+    "gads_spend_sek": null,
     "gads_roas": null,
     "gads_conv": null,
-    "meta_spend_sek": 5912
+    "meta_spend_sek": null
   },
   "gads": {
     "live_since": "8 juli",
@@ -76,31 +76,34 @@
   "chart_data": {
     "orders_9d": {
       "labels": [
-        "13/7",
-        "14/7",
-        "15/7",
         "16/7",
         "17/7",
         "18/7",
-        "19/7"
+        "19/7",
+        "20/7",
+        "21/7",
+        "22/7",
+        "23/7"
       ],
       "revenue": [
-        1737,
-        1860,
-        1132,
         1076,
         1731,
         1811,
-        1621
+        1621,
+        1699,
+        1663,
+        1227,
+        1083
       ],
       "orders": [
+        13,
+        13,
+        16,
+        18,
         15,
-        16,
-        9,
-        13,
-        13,
-        16,
-        18
+        15,
+        15,
+        10
       ]
     },
     "organic_14d": {
