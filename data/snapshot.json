@@ -871,8 +871,9 @@
     }
   ],
   "inventory_data": {
-    "updated_at": "2026-07-09",
+    "updated_at": "2026-07-24",
     "velocity_window_days": 30,
+    "filter_note": "Add-On Box + Upgrade Box exkluderade per Lucas 2026-07-24 (irrelevanta produkter)",
     "warehouses": [
       {
         "id": "bridge",
@@ -902,13 +903,13 @@
         "variant": "English",
         "velocity": 7.3,
         "stock": {
-          "bridge": 336,
-          "armarlo": 147,
-          "meeples": 252,
-          "zatu": 16,
-          "total": 751
+          "bridge": 257,
+          "armarlo": 136,
+          "meeples": 243,
+          "zatu": 2,
+          "total": 638
         },
-        "days": 103,
+        "days": 87,
         "status": "ok",
         "warehouse_scope": [
           "bridge",
@@ -920,16 +921,16 @@
       {
         "title": "BIG BOX",
         "variant": "Italian",
-        "velocity": 0.77,
+        "velocity": 1.03,
         "stock": {
           "bridge": 2,
           "armarlo": 0,
-          "meeples": 23,
+          "meeples": 8,
           "zatu": 2,
-          "total": 27
+          "total": 12
         },
-        "days": 35,
-        "status": "low",
+        "days": 12,
+        "status": "critical",
         "warehouse_scope": [
           "meeples"
         ]
@@ -937,15 +938,15 @@
       {
         "title": "BIG BOX",
         "variant": "German",
-        "velocity": 0.47,
+        "velocity": 0.37,
         "stock": {
           "bridge": 0,
           "armarlo": 0,
-          "meeples": 276,
+          "meeples": 274,
           "zatu": 3,
-          "total": 279
+          "total": 277
         },
-        "days": 594,
+        "days": 749,
         "status": "ok",
         "warehouse_scope": [
           "meeples"
@@ -954,15 +955,15 @@
       {
         "title": "BIG BOX",
         "variant": "French",
-        "velocity": 0.43,
+        "velocity": 0.1,
         "stock": {
           "bridge": 1,
           "armarlo": 0,
-          "meeples": 132,
+          "meeples": 131,
           "zatu": 3,
-          "total": 136
+          "total": 135
         },
-        "days": 316,
+        "days": 999,
         "status": "ok",
         "warehouse_scope": [
           "meeples"
@@ -971,7 +972,7 @@
       {
         "title": "BIG BOX",
         "variant": "Spanish",
-        "velocity": 0.1,
+        "velocity": 0.0,
         "stock": {
           "bridge": 4,
           "armarlo": 0,
@@ -979,7 +980,7 @@
           "zatu": 2,
           "total": 33
         },
-        "days": 330,
+        "days": 999,
         "status": "ok",
         "warehouse_scope": [
           "meeples"
@@ -988,15 +989,15 @@
       {
         "title": "Base Game",
         "variant": "English",
-        "velocity": 2.83,
+        "velocity": 3.0,
         "stock": {
-          "bridge": 1238,
-          "armarlo": 74,
+          "bridge": 1212,
+          "armarlo": 72,
           "meeples": 0,
-          "zatu": 23,
-          "total": 1335
+          "zatu": 0,
+          "total": 1284
         },
-        "days": 472,
+        "days": 428,
         "status": "ok",
         "warehouse_scope": [
           "bridge",
@@ -1008,16 +1009,16 @@
       {
         "title": "Base Game",
         "variant": "German",
-        "velocity": 0.43,
+        "velocity": 0.4,
         "stock": {
           "bridge": 0,
           "armarlo": 0,
-          "meeples": 6,
+          "meeples": 198,
           "zatu": 0,
-          "total": 6
+          "total": 198
         },
-        "days": 14,
-        "status": "critical",
+        "days": 495,
+        "status": "ok",
         "warehouse_scope": [
           "meeples"
         ]
@@ -1025,16 +1026,16 @@
       {
         "title": "Base Game",
         "variant": "Italian",
-        "velocity": 0.53,
+        "velocity": 0.43,
         "stock": {
           "bridge": 0,
           "armarlo": 0,
-          "meeples": 6,
+          "meeples": 31,
           "zatu": 0,
-          "total": 6
+          "total": 31
         },
-        "days": 11,
-        "status": "critical",
+        "days": 72,
+        "status": "ok",
         "warehouse_scope": [
           "meeples"
         ]
@@ -1042,16 +1043,16 @@
       {
         "title": "Base Game",
         "variant": "French",
-        "velocity": 0.2,
+        "velocity": 0.07,
         "stock": {
           "bridge": 0,
           "armarlo": 0,
-          "meeples": 6,
+          "meeples": 222,
           "zatu": 0,
-          "total": 6
+          "total": 222
         },
-        "days": 30,
-        "status": "low",
+        "days": 999,
+        "status": "ok",
         "warehouse_scope": [
           "meeples"
         ]
@@ -1063,137 +1064,12 @@
         "stock": {
           "bridge": 12,
           "armarlo": 0,
-          "meeples": 6,
+          "meeples": 143,
           "zatu": 24,
-          "total": 42
+          "total": 179
         },
-        "days": 1400,
+        "days": 999,
         "status": "ok",
-        "warehouse_scope": [
-          "meeples"
-        ]
-      },
-      {
-        "title": "Add-On Box",
-        "variant": "English",
-        "velocity": 0.17,
-        "stock": {
-          "bridge": 7,
-          "armarlo": 0,
-          "meeples": 0,
-          "zatu": 2,
-          "total": 9
-        },
-        "days": 53,
-        "status": "watch",
-        "warehouse_scope": [
-          "bridge",
-          "armarlo",
-          "meeples",
-          "zatu"
-        ]
-      },
-      {
-        "title": "Add-On Box",
-        "variant": "Spanish",
-        "velocity": 0.17,
-        "stock": {
-          "bridge": -22,
-          "armarlo": 0,
-          "meeples": 0,
-          "zatu": 2,
-          "total": -20
-        },
-        "days": -1,
-        "status": "oversold",
-        "warehouse_scope": [
-          "meeples"
-        ]
-      },
-      {
-        "title": "Add-On Box",
-        "variant": "German",
-        "velocity": 0.1,
-        "stock": {
-          "bridge": 0,
-          "armarlo": 0,
-          "meeples": 0,
-          "zatu": 0,
-          "total": 0
-        },
-        "days": 0,
-        "status": "critical",
-        "warehouse_scope": [
-          "meeples"
-        ]
-      },
-      {
-        "title": "Add-On Box",
-        "variant": "Italian",
-        "velocity": 0.17,
-        "stock": {
-          "bridge": 0,
-          "armarlo": 0,
-          "meeples": 0,
-          "zatu": 2,
-          "total": 2
-        },
-        "days": 12,
-        "status": "critical",
-        "warehouse_scope": [
-          "meeples"
-        ]
-      },
-      {
-        "title": "Upgrade Box",
-        "variant": "English",
-        "velocity": 0.03,
-        "stock": {
-          "bridge": -36,
-          "armarlo": 0,
-          "meeples": 0,
-          "zatu": 0,
-          "total": -36
-        },
-        "days": -1,
-        "status": "oversold",
-        "warehouse_scope": [
-          "bridge",
-          "armarlo",
-          "meeples",
-          "zatu"
-        ]
-      },
-      {
-        "title": "Upgrade Box",
-        "variant": "German",
-        "velocity": 0.13,
-        "stock": {
-          "bridge": 0,
-          "armarlo": 0,
-          "meeples": 0,
-          "zatu": 0,
-          "total": 0
-        },
-        "days": 0,
-        "status": "critical",
-        "warehouse_scope": [
-          "meeples"
-        ]
-      },
-      {
-        "title": "Upgrade Box",
-        "variant": "Italian",
-        "velocity": 0.03,
-        "stock": {
-          "bridge": 0,
-          "armarlo": 0,
-          "meeples": 0,
-          "zatu": 0,
-          "total": 0
-        },
-        "days": 0,
-        "status": "critical",
         "warehouse_scope": [
           "meeples"
         ]
@@ -1201,16 +1077,16 @@
       {
         "title": "Kraken Mini-Expansion",
         "variant": "Default",
-        "velocity": 4.8,
+        "velocity": 5.53,
         "stock": {
-          "bridge": 65,
+          "bridge": -1,
           "armarlo": 0,
-          "meeples": 115,
-          "zatu": 58,
-          "total": 238
+          "meeples": 62,
+          "zatu": 51,
+          "total": 112
         },
-        "days": 50,
-        "status": "watch",
+        "days": 20,
+        "status": "low",
         "warehouse_scope": [
           "bridge",
           "armarlo",
@@ -1221,15 +1097,15 @@
       {
         "title": "Cities of Greed",
         "variant": "Default",
-        "velocity": 1.1,
+        "velocity": 0.8,
         "stock": {
-          "bridge": 161,
+          "bridge": 154,
           "armarlo": 148,
-          "meeples": 21,
-          "zatu": 29,
-          "total": 359
+          "meeples": 19,
+          "zatu": 28,
+          "total": 349
         },
-        "days": 326,
+        "days": 436,
         "status": "ok",
         "warehouse_scope": [
           "bridge",
@@ -1241,16 +1117,16 @@
       {
         "title": "Custom Insert",
         "variant": "Default",
-        "velocity": 2.73,
+        "velocity": 2.9,
         "stock": {
-          "bridge": 23,
+          "bridge": 0,
           "armarlo": 0,
-          "meeples": 49,
-          "zatu": 19,
-          "total": 91
+          "meeples": 39,
+          "zatu": 78,
+          "total": 117
         },
-        "days": 33,
-        "status": "low",
+        "days": 40,
+        "status": "watch",
         "warehouse_scope": [
           "bridge",
           "armarlo",
@@ -1261,16 +1137,16 @@
       {
         "title": "8-Player Components",
         "variant": "Default",
-        "velocity": 2.3,
+        "velocity": 3.83,
         "stock": {
-          "bridge": 5,
+          "bridge": -22,
           "armarlo": 0,
-          "meeples": 91,
-          "zatu": 12,
-          "total": 108
+          "meeples": 35,
+          "zatu": 5,
+          "total": 18
         },
-        "days": 47,
-        "status": "watch",
+        "days": 5,
+        "status": "critical",
         "warehouse_scope": [
           "bridge",
           "armarlo",
