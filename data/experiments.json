@@ -1,10 +1,10 @@
 {
-  "updated": "2026-07-29",
+  "updated": "2026-07-30",
   "owner": "Polly",
-  "source": "GA4 property 250338585 (last 7d: 2026-07-22..07-28, landingPage + sessionManualAdContent) + post-fix cumulative 2026-07-21..28, both pulled live by Polly and reproducible. real_sales_90d is NOT live-pulled and its origin is UNCONFIRMED: see real_sales_90d.provenance before using it.",
+  "source": "GA4 property 250338585 (last 7d: 2026-07-23..07-29, landingPage + sessionManualAdContent) plus post-fix cumulative 2026-07-21..29, all pulled live by Polly and reproducible. real_sales_90d was NOT refreshed today: Shopify access is still broken and its origin remains unconfirmed. See real_sales_90d.provenance.",
   "analyst": "Polly",
   "note": "A/B landing-page experiments. Refreshed daily by Polly (data); pause/promote verdicts on Mondays.",
-  "polly_note": "DATA-ONLY REFRESH (Wednesday 2026-07-29). Decision review: Mondays. No new verdicts today. The EN A/B test remains CONCLUDED from the 07-28 catch-up review (dead heat, promote neither) and that standing conclusion is unchanged, not re-litigated. THREE THINGS TO CARRY INTO MONDAY, all observations rather than decisions. (1) THE SHOPIFY FIGURES IN THIS FILE HAVE UNCONFIRMED ORIGIN AND THIS FILE HAS BEEN CORRECTED ONCE ALREADY. The first version published today credited real_sales_90d to a live pull on Bengt's Shopify key. That was wrong. Bengt has confirmed he had no successful Shopify read at any point today and did not pull these numbers, and Polly cannot re-pull them because both delegated connections reject the access token. Nobody has named the source. The numbers do pass an internal-consistency check and behave like a real export, so they are retained as indicative context, but no decision should rest on them until someone with Shopify authority confirms where they came from. See real_sales_90d.provenance. (2) AVERAGE ORDER VALUE SPREAD IS MUCH NARROWER THAN PREVIOUSLY REPORTED, SUBJECT TO THAT SAME CAVEAT. On the consistent new basis: DK 130, BE 126, NL 121, US 117, AU 113, FR 108, AT 109, GB 104, IT 95, DE 95. The earlier read (US ~106 vs DE/IT ~70) overstated the gap because it compared two different metrics. DE and IT are still the lowest of the majors, but by roughly 20 EUR, not 35, and the highest-AOV markets are actually the Nordics and Benelux, not the US. This materially softens the 'Germany and Italy buy cheap' framing given to Lucas on 07-28 and I have corrected it with him directly. IMPORTANT SECOND-ORDER POINT: that correction was itself computed from the unconfirmed figures above, so it is not safe ground either. The honest position is that the original 07-28 claim is NOT supported and the replacement numbers are NOT confirmed, so the correct regional AOV picture is currently unknown rather than merely revised. Nothing regional should be decided until Shopify access is restored and the figures are re-pulled. (3) BOUNCE ROSE SHARPLY ACROSS BOTH EN VARIANTS: 70.6/71.8 last week to 79.2/81.5 this week, roughly +9pp on both. Both variants moved together, which points at traffic mix rather than a page regression (the unattributed bucket grew 1986 to 2391). Flagging as a watch item for Monday, deliberately not diagnosing it today. PRODUCT MIX RAISES A QUESTION ABOUT THE GERMAN MOCKUP: Big Box sold 625 units in 90d against Base Game's 292, so the premium box outsells the entry box better than two to one GLOBALLY. The German mockup published today leads with the Base Game on the thesis that Germany needs a lower-risk entry. That thesis is not yet supported or refuted by data, because these unit figures are worldwide and not split by country. I have asked Bengt for a country-by-product split for DE and IT before Lucas acts on that mockup. KRAKEN: no copy, creative, or campaign planning against the 'free Kraken' offer while stock is 96 against ~118/month consumption. Acknowledged and parked.",
+  "polly_note": "DATA-ONLY REFRESH (Thursday 2026-07-30). Decision review: Mondays. No verdicts today. The EN A/B test remains CONCLUDED from the 07-28 review (dead heat, promote neither) and is not re-litigated. THREE THINGS THIS MORNING. (1) GERMANY HAS ITS FIRST CONVERSION. The DE page took 1 transaction this week (193 sessions), bringing post-fix cumulative to 233 sessions and 1 transaction. This resolves the zero-conversion worry in the least dramatic way possible: it was noise, exactly as the arithmetic predicted. At an EN-like 0.8 percent the 233 sessions predicted about 1.9 conversions and we observed 1, so DE is running low but is no longer an anomaly that needs explaining. I am deliberately NOT upgrading this to 'DE works'. One conversion is one conversion. The honest read is that the page is now inside the range where a real rate can eventually be measured, and it needs several more weeks of volume before anyone compares it to EN. (2) THE BOUNCE RISE HAS PERSISTED FOR A SECOND READING, so it is no longer a one-week blip. A is 79.9 percent and B is 81.5 percent, against roughly 70 to 72 percent two weeks ago. Both variants remain locked together, which continues to point at traffic mix rather than a page regression. Still not diagnosed, and diagnosis is a Monday job, but it has now earned a proper look rather than a watch note. (3) SHOPIFY IS STILL DOWN, SO SALES FIGURES ARE UNCHANGED AND STILL UNCONFIRMED. Both delegated connections continue to reject the access token, tested again this morning. real_sales_90d has deliberately NOT been rolled forward or re-dated; it carries the same origin-unconfirmed warning as yesterday. Nothing regional, including the German page thesis, should be decided until this is fixed and the numbers are re-pulled by someone who can name the source. GERMAN PAGE: v2 published for Lucas after his design feedback. While building it I caught myself inventing two payment methods (giropay and Sofortueberweisung) that the live store does not offer; I verified the real set against the storefront and corrected the page. Two claims on it still need Lucas to confirm before it could ever go live: whether pay-by-invoice is actually enabled, and whether 'ships from the EU in 4 to 8 working days' is accurate.",
   "experiments": [
     {
       "name": "Big Box LP - Headline & Hero (EN)",
@@ -15,23 +15,23 @@
         {
           "name": "Control (A)",
           "url": "https://nordicpirates.com/lp/lying-pirates-cities-of-greed-big-box/",
-          "sessions": 1603,
-          "bounce_pct": 79.23,
-          "conv_pct": 0.94,
+          "sessions": 1511,
+          "bounce_pct": 79.88,
+          "conv_pct": 0.86,
           "winner": false
         },
         {
           "name": "Variant B",
           "url": "https://nordicpirates.com/lp/lying-pirates-cities-of-greed-big-box-b/",
-          "sessions": 1225,
-          "bounce_pct": 81.47,
-          "conv_pct": 0.90,
+          "sessions": 1161,
+          "bounce_pct": 81.48,
+          "conv_pct": 0.86,
           "winner": false
         }
       ],
       "aggregate_7d": {
-        "lp_a": { "sessions": 1646, "bounce_pct": 78.31, "conv_pct": 0.67, "txn": 11 },
-        "lp_b": { "sessions": 1673, "bounce_pct": 81.35, "conv_pct": 0.60, "txn": 10 }
+        "lp_a": { "sessions": 1653, "bounce_pct": 79.01, "conv_pct": 0.73, "txn": 12 },
+        "lp_b": { "sessions": 1669, "bounce_pct": 81.97, "conv_pct": 0.60, "txn": 10 }
       },
       "significance": {
         "window": "2026-06-01..07-27 (cumulative) - computed 2026-07-28, carried unchanged",
@@ -46,34 +46,34 @@
         "verdict": "No winner. Threshold met and the two variants are statistically indistinguishable (z=0.11 by page, z=0.07 by ad content). Conclusive null, not insufficient data.",
         "action": "PROMOTE NEITHER. Stop running A vs B as a live test. Ship shared improvements to both pages and put the next real test behind V3 (proof-first)."
       },
-      "polly_note": "Data-only refresh, no re-verdict. This week A 0.94% / 15 txn vs B 0.90% / 11 txn, which is the same dead heat the concluded cumulative analysis describes, so nothing changes. The one thing worth carrying to Monday is bounce: both variants jumped about 9 points (70.6 to 79.2 on A, 71.8 to 81.5 on B) in a single week. Because both moved together and the unattributed traffic bucket grew at the same time, the likely cause is traffic mix rather than either page. Not diagnosed today, flagged for Monday."
+      "polly_note": "Data-only refresh, no re-verdict. This week the two pages land on identical conversion (0.86 percent each, 13 and 10 transactions), which is the same dead heat the concluded analysis describes. The only moving part is bounce, now elevated for a second consecutive reading on both variants (79.9 and 81.5 against roughly 70 to 72 two weeks ago). Because both moved together and the unattributed traffic bucket stayed large, traffic mix remains the leading explanation over any page fault. Carried to Monday for a real diagnosis rather than another watch note."
     },
     {
       "name": "Localized LP variants (IT / DE / FR / ES)",
       "url": "https://nordicpirates.com/lp/play-it | play-de | play-es | play-fr",
-      "status": "IT holding at volume, DE still zero-conversion, both carried to Monday",
+      "status": "DE took its first conversion; IT holding volume at a weak rate; both carried to Monday",
       "hypothesis": "Translated LPs convert non-EN paid traffic at rates comparable to EN, once ad clicks actually land on a live localized page.",
       "variants": [
-        { "name": "IT (live)", "url": "https://nordicpirates.com/lp/lying-pirates-it/", "sessions": 803, "bounce_pct": 78.83, "conv_pct": 0.62, "winner": false },
-        { "name": "DE (live)", "url": "https://nordicpirates.com/lp/lying-pirates-de/", "sessions": 186, "bounce_pct": 74.73, "conv_pct": 0.00, "winner": false },
-        { "name": "FR (paused)", "url": "https://nordicpirates.com/lp/lying-pirates-fr/", "sessions": 2, "bounce_pct": 0.00, "conv_pct": 0.00, "winner": false },
+        { "name": "IT (live)", "url": "https://nordicpirates.com/lp/lying-pirates-it/", "sessions": 905, "bounce_pct": 79.34, "conv_pct": 0.55, "winner": false },
+        { "name": "DE (live)", "url": "https://nordicpirates.com/lp/lying-pirates-de/", "sessions": 193, "bounce_pct": 77.2, "conv_pct": 0.52, "winner": false },
+        { "name": "FR (paused)", "url": "https://nordicpirates.com/lp/lying-pirates-fr/", "sessions": 0, "bounce_pct": 0.00, "conv_pct": 0.00, "winner": false },
         { "name": "ES (paused)", "url": "https://nordicpirates.com/lp/lying-pirates-es/", "sessions": 1, "bounce_pct": 0.00, "conv_pct": 0.00, "winner": false }
       ],
       "post_fix_cumulative": {
-        "window": "2026-07-21..28 (non-overlapping, everything after the routing fix)",
-        "it": { "sessions": 840, "txn": 5, "conv_pct": 0.60 },
-        "de": { "sessions": 201, "txn": 0, "conv_pct": 0.00 },
-        "note": "Computed as a single range rather than by adding the two 7d windows, which overlap by six days and would have roughly doubled the true count."
+        "window": "2026-07-21..29 (single non-overlapping range, everything after the routing fix)",
+        "it": { "sessions": 1060, "txn": 5, "conv_pct": 0.47 },
+        "de": { "sessions": 233, "txn": 1, "conv_pct": 0.43 },
+        "note": "Computed as one range, never by adding rolling 7d windows, which overlap and would roughly double the true count."
       },
       "retired_urls_residual_7d": {
-        "note": "Old rotator A/B targets, retired 07-21. Residual/cached traffic only.",
-        "lying-pirates-cities-of-greed-big-box-it": 7,
-        "lying-pirates-cities-of-greed-big-box-b-it": 1,
+        "note": "Old rotator A/B targets, retired 07-21. Residual/cached traffic only, continuing to decay.",
+        "lying-pirates-cities-of-greed-big-box-it": 4,
+        "lying-pirates-cities-of-greed-big-box-b-it": 2,
         "lying-pirates-cities-of-greed-big-box-de": 1
       },
       "real_sales_90d": {
-        "provenance": "ORIGIN UNCONFIRMED - DO NOT BASE A DECISION ON THESE FIGURES YET. Stated as 90 days to 2026-07-29, 1077 orders, refunds excluded. An earlier version of this file credited them to a live pull on Bengt's Shopify key; that attribution was WRONG and has been retracted. Bengt has since confirmed he has had no successful Shopify read at any point today and did not pull these numbers. Polly cannot re-pull them either: both delegated Shopify connections (ca_uNHagdh4mTgd, ca_Uif0IiPFITTv, both 'connected 0d') reject the access token, tested individually. So no party has named the source. WHAT IS VERIFIED: the figures are internally consistent. Listed countries sum to 112,254 EUR / 1029 orders; the three months sum to 115,678 EUR / 1062 orders; the stated total is 1077 orders. The residuals reconcile sensibly (48 unlisted tail-market orders carrying 3,424 EUR, an implied 71 EUR average, plus a 15-order partial-month edge). They behave like real data from a real export, which is why they are retained rather than deleted. WHAT IS NOT VERIFIED: that they came from this store, this window, or this metric basis. Treat as indicative context only until someone with Shopify authority confirms the source.",
-        "basis_caveat": "If these figures are genuine, their basis still differs from the extract carried until 07-24 (that one was net of tax and shipping). Country-level increases against last week's file would therefore be a measurement change, not growth. This caveat is moot until provenance is confirmed.",
+        "provenance": "NOT REFRESHED TODAY AND ORIGIN STILL UNCONFIRMED. DO NOT BASE A DECISION ON THESE FIGURES. Stated as 90 days to 2026-07-29, 1077 orders, refunds excluded. Both delegated Shopify connections (ca_uNHagdh4mTgd, ca_Uif0IiPFITTv) still reject the access token, re-tested 2026-07-30, so neither Polly nor Bengt can re-pull or confirm them. Bengt has confirmed he never had a successful Shopify read and did not pull these numbers, and no party has named the source. An earlier version of the 07-29 file credited them to a live pull on Bengt's key; that attribution was wrong and was retracted. WHAT IS VERIFIED: internal consistency only. Listed countries sum to 112,254 EUR / 1029 orders, the three months sum to 115,678 EUR / 1062 orders, the stated total is 1077 orders, and the residuals reconcile sensibly (48 unlisted tail-market orders carrying 3,424 EUR, an implied 71 EUR average, plus a 15-order partial-month edge). They behave like real data, which is why they are retained rather than deleted. WHAT IS NOT VERIFIED: that they came from this store, this window, or this metric basis.",
+        "basis_caveat": "If genuine, the basis still differs from the extract carried until 07-24 (that one was net of tax and shipping), so country-level increases against that file would be a measurement change and not growth. Moot until provenance is confirmed.",
         "US": { "orders": 345, "revenue_eur": 40197, "aov_eur": 117 },
         "GB": { "orders": 188, "revenue_eur": 19477, "aov_eur": 104 },
         "IT": { "orders": 162, "revenue_eur": 15329, "aov_eur": 95, "rank": "3rd-largest market" },
@@ -86,13 +86,13 @@
         "AT": { "orders": 18, "revenue_eur": 1970, "aov_eur": 109 }
       },
       "revenue_by_month_eur": {
-        "note": "From the same fresh extract. July is partial, to 2026-07-29.",
+        "note": "Same unconfirmed extract as real_sales_90d. July was partial, to 2026-07-29. Not refreshed 07-30.",
         "may": { "revenue_eur": 26377, "orders": 239, "aov_eur": 110 },
         "june": { "revenue_eur": 45902, "orders": 415, "aov_eur": 111 },
         "july_partial": { "revenue_eur": 43399, "orders": 408, "aov_eur": 106 }
       },
       "units_90d": {
-        "note": "Worldwide, NOT split by country. Country split requested from Bengt because it decides whether the Base-Game-first German mockup thesis holds.",
+        "note": "Worldwide, NOT split by country, and from the same unconfirmed extract. The country split is still the open request, because it decides whether the Base-Game-first German thesis holds. It needs Lucas or Mikaela to authorise, and it needs working credentials.",
         "big_box": 625,
         "kraken": 354,
         "base_game": 292,
@@ -103,14 +103,14 @@
         "cities_of_greed": 72,
         "bamboo_cups": 72
       },
-      "polly_note": "IT: 840 post-fix sessions and 5 LP-attributed transactions (0.60%). Worth separating two facts that are easy to conflate. Italy is the 3rd-largest market at 15.3k and 162 orders per 90 days, but the Italian LP is only attributed about 5 transactions a week, so the large majority of Italian revenue is arriving through channels other than this landing page. The LP is underperforming its traffic; the market is not underperforming. DE: 201 post-fix sessions, still zero transactions. I set a threshold of 300+ post-fix sessions before treating zero as a real signal, and we are not there yet, so this stays an observation for Monday rather than a conclusion today. At an EN-like 0.8% rate, 201 sessions would predict only about 1.6 conversions, so zero is still within noise. FR and ES remain paused with effectively no traffic."
+      "polly_note": "DE: first conversion recorded. 193 sessions and 1 transaction this week, 233 sessions and 1 transaction cumulative post-fix. The zero was noise, as the arithmetic said it would be (233 sessions at an EN-like 0.8 percent predicts about 1.9 conversions). Deliberately not upgraded to 'DE works': one conversion is one conversion, and the page needs several more weeks of volume before its rate means anything. IT: 1060 post-fix sessions and 5 transactions, a 0.47 percent rate that has drifted down from 0.60 percent as volume grew. Keep the two Italian facts separate. Italy is the 3rd-largest market on the (unconfirmed) sales extract at 15.3k and 162 orders per 90 days, while the Italian LP is attributed only about 5 transactions a week. That gap means the LP underperforms its own traffic, not that the market is weak, and most Italian revenue is arriving through other channels. FR now shows zero sessions and ES one, both still paused."
     }
   ],
   "built_not_yet_live": [
     {
-      "name": "German LP mockup - Base Game first, Big Box as anchor",
+      "name": "German LP v2 - brand-matched, trust-led",
       "mockup": "https://share.gate1.dev/mockups/lyingpirates-polly/lying-pirates-de-base-first.html",
-      "note": "PUBLISHED 2026-07-28 for Lucas. German-first with a DE/EN toggle so he can read exactly what it says. Leads with the Base Game at 39.95 as the low-risk entry, keeps the Big Box at 124.95 visible as the price anchor, adds a Popular Combinations block. OPEN QUESTION: the thesis rests on Germany preferring a cheaper entry, and the fresh data weakens the evidence for that (DE average order value is 95, not the ~70 previously reported, and Big Box outsells Base Game better than 2:1 worldwide). Country-by-product split requested from Bengt before this ships to a live test."
+      "note": "v2 PUBLISHED 2026-07-30 after Lucas's design feedback on v1. Now uses the real LP design system (navy/gold/cream, Cinzel and Raleway) instead of an approximation, fixes product images that were being cropped out of proportion, drops the 'Recommended for Germany' badge, and rewrites the German with proper umlauts (v1 used ASCII workarounds like 'gross' and 'Laender', which reads cheap to a German reader and was probably much of why it looked wrong). Trust content is built around what a German buyer actually checks before ordering from abroad: ships from the EU with no customs, 4 to 8 working days with tracking, 14-day statutory right of withdrawal, prices marked inkl. MwSt., and Impressum plus Widerrufsbelehrung in the footer. CORRECTION MADE DURING THE BUILD: the first draft listed giropay and Sofortueberweisung as payment methods. Neither is offered. I verified the real set against the live storefront (PayPal, Klarna, SEPA, Visa, Mastercard, Maestro, Amex, Apple Pay, Google Pay, Shop Pay) and removed the invented ones. TWO CLAIMS STILL NEED LUCAS TO CONFIRM BEFORE THIS COULD GO LIVE: whether pay-by-invoice is actually enabled in Klarna (the single strongest German trust lever, currently left off the page because it is unverified), and whether 'ships from the EU, 4 to 8 working days' is accurate. UNDERLYING THESIS STILL UNVERIFIED: the page leads with the Base Game on the assumption Germany wants a lower-risk entry, and the country-by-product split needed to test that is still blocked on Shopify access."
     },
     {
       "name": "V3 proof-first (video hero + live BGG reviews + real prices)",
@@ -125,7 +125,7 @@
     {
       "name": "BLOCKED: 'Buy Big Box/Base Game, get Kraken FREE' retargeting + email",
       "mockup": null,
-      "note": "NO COPY OR CREATIVE until stock is resolved. Bengt's numbers: 96 Kraken in stock against ~118/month consumption (354 units in 90d), so stock runs out in under 4 weeks with no campaign at all. Running the offer risks it dying mid-flight and burning the ad and email budget behind it. Bengt has flagged Lucas. Parked deliberately, not forgotten."
+      "note": "NO COPY OR CREATIVE until stock is resolved. 96 Kraken in stock against roughly 118 per month consumption (354 units in 90d), so stock runs dry in under 4 weeks with no campaign at all. Running the offer risks it dying mid-flight and burning the ad and email budget behind it. Bengt has flagged Lucas. Parked deliberately, not forgotten."
     },
     {
       "name": "SHIPPED 2026-07-21: localized ad-routing fix + source page_view dedupe",
