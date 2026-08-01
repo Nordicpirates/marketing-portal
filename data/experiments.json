@@ -1,10 +1,10 @@
 {
-  "updated": "2026-07-31",
+  "updated": "2026-08-01",
   "owner": "Polly",
-  "source": "GA4 property 250338585 (last 7d: 2026-07-24..07-30, landingPage + sessionManualAdContent) plus post-fix cumulative 2026-07-21..07-30, all pulled live by Polly this morning and reproducible. real_sales_90d was NOT refreshed today: Shopify orders remain unreadable and their origin remains unconfirmed. See real_sales_90d.provenance.",
+  "source": "GA4 property 250338585 (last 7d: 2026-07-25..07-31, landingPage + sessionManualAdContent, plus a date x landingPage daily cut) and post-fix cumulative 2026-07-21..07-31, all pulled live by Polly this morning and reproducible. real_sales_90d NOT refreshed: gate shopify orders still rejects the token. See provenance.",
   "analyst": "Polly",
   "note": "A/B landing-page experiments. Refreshed daily by Polly (data); pause/promote verdicts on Mondays.",
-  "polly_note": "DATA-ONLY REFRESH (Friday 2026-07-31). Decision review: Mondays. No verdicts today. The EN A/B test remains CONCLUDED from the 07-28 review (dead heat, promote neither) and is not re-litigated. THREE THINGS. (1) ITALY'S RATE KEEPS SLIDING AND IS NOW THE CLEAREST TREND IN THE FILE. The IT page took 3 transactions on 936 sessions this week (0.32 percent), down from 5 on 905 (0.55 percent) last week. Post-fix cumulative is now 1183 sessions and 6 transactions, 0.51 percent, drifting down from 0.60 and then 0.47 as volume accumulates. Traffic is holding, conversion is not. That is now three consecutive readings pointing the same way, so it is a trend rather than noise and it is the item I would put first on Monday. (2) GERMANY TOOK NO SECOND CONVERSION. Still 1 transaction, now against 249 post-fix sessions (0.40 percent, down from 0.43). This does not undo yesterday's read, it just means DE is still a single-conversion page and nothing about it can be measured yet. Explicitly not a new worry, and explicitly not progress either. (3) BOUNCE IS ELEVATED FOR A THIRD CONSECUTIVE READING. A is 80.4 percent and B is 81.8 percent, against roughly 70 to 72 percent three weeks ago. Both variants still move together, which continues to point at traffic mix over a page regression, and the unattributed bucket is again the largest single source (2043 sessions at a much lower 68 percent bounce). Carried to Monday for diagnosis. SHOPIFY: still no order data, but there is a concrete new lead, see real_sales_90d.provenance.",
+  "polly_note": "DATA-ONLY REFRESH (Saturday 2026-08-01). Decision review: Mondays. No verdicts today. EN A/B remains CONCLUDED from 07-28 and is not re-litigated. ONE URGENT FLAG AND ONE CORRECTION TO MY OWN PRIOR READ. (1) URGENT, GERMAN TRAFFIC STOPPED ON 07-31. The DE page ran 16 to 36 sessions a day all week then took 2 sessions on 07-31. Not a rounding artefact: the same day IT held at 114, variant A at 167, variant B at 135, so it is DE-specific and not a site-wide or tracking failure. Post-fix cumulative DE sessions moved only 249 to 251 in a day. WHAT I CANNOT TELL YOU IS WHY. A paused ad set, an exhausted budget and a disapproved ad are all consistent with this shape and I could not distinguish them: gate gads needs a customer id I do not hold and the Google Ads DEVELOPER_TOKEN is still missing on the GATE server, and the Meta connector was not attached to my session this morning. Someone with ad-platform access should look before Monday, because if this is unintentional the German page is dark across a weekend. (2) CORRECTION: I OVERSTATED THE ITALIAN DECAY YESTERDAY. I called it three readings in one direction. That leaned on rolling 7d windows, which overlap by six days and cannot be compared week to week as if independent. The clean series is the single non-overlapping post-fix range, and it has gone 0.47 then 0.51 then 0.54 percent, drifting UP not down. This week IT also recovered to 4 transactions on 973 sessions (0.41 percent) from 3 on 936. The honest read is that IT is roughly stable near 0.5 percent and I read a trend into noise. The durable Italian fact is unchanged and never depended on the trend: the LP is attributed 4 to 7 transactions a week while Italy is the 3rd-largest market on the (unconfirmed) sales extract, so the page underperforms its own traffic. That gap is the Monday item; the decay story is withdrawn. (3) Bounce elevated for a fourth reading (A 80.5, B 82.1), both variants still moving together. Unchanged, carried.",
   "experiments": [
     {
       "name": "Big Box LP - Headline & Hero (EN)",
@@ -15,32 +15,32 @@
         {
           "name": "Control (A)",
           "url": "https://nordicpirates.com/lp/lying-pirates-cities-of-greed-big-box/",
-          "sessions": 1476,
-          "bounce_pct": 80.35,
-          "conv_pct": 1.02,
+          "sessions": 1412,
+          "bounce_pct": 80.45,
+          "conv_pct": 1.2,
           "winner": false
         },
         {
           "name": "Variant B",
           "url": "https://nordicpirates.com/lp/lying-pirates-cities-of-greed-big-box-b/",
-          "sessions": 1099,
-          "bounce_pct": 81.8,
-          "conv_pct": 0.91,
+          "sessions": 1070,
+          "bounce_pct": 82.06,
+          "conv_pct": 0.84,
           "winner": false
         }
       ],
       "aggregate_7d": {
         "lp_a": {
-          "sessions": 1643,
-          "bounce_pct": 79.49,
-          "conv_pct": 0.79,
-          "txn": 13
+          "sessions": 1618,
+          "bounce_pct": 79.6,
+          "conv_pct": 0.99,
+          "txn": 16
         },
         "lp_b": {
-          "sessions": 1619,
-          "bounce_pct": 82.27,
-          "conv_pct": 0.68,
-          "txn": 11
+          "sessions": 1584,
+          "bounce_pct": 82.32,
+          "conv_pct": 0.63,
+          "txn": 10
         }
       },
       "significance": {
@@ -77,28 +77,28 @@
         "verdict": "No winner. Threshold met and the two variants are statistically indistinguishable (z=0.11 by page, z=0.07 by ad content). Conclusive null, not insufficient data.",
         "action": "PROMOTE NEITHER. Stop running A vs B as a live test. Ship shared improvements to both pages and put the next real test behind V3 (proof-first)."
       },
-      "polly_note": "Data-only refresh, no re-verdict. By page this week A is 1.02 percent (15 txn on 1476) and B is 0.91 percent (10 on 1099); by ad content A is 0.79 percent and B is 0.68 percent. A leads on both cuts, but on these volumes the gap is roughly 2 to 4 transactions and is well inside the noise the concluded test already measured across 24,000+ sessions. Nothing here reopens the dead heat. Bounce is elevated for a third consecutive reading (80.4 and 81.8 against roughly 70 to 72 three weeks ago) and both variants continue to move together, so traffic mix remains the leading explanation over a page fault. Diagnosis carried to Monday."
+      "polly_note": "Data-only refresh, no re-verdict. A leads for a second consecutive week on both cuts: by page 1.20 percent (17 txn on 1412) against 0.84 percent (9 on 1070), by ad content 0.99 against 0.63 percent. Worth stating plainly why this does NOT reopen the concluded test. The gap is 6 to 7 transactions on roughly 1,500 sessions per arm, and the concluded analysis measured these pages as indistinguishable across more than 24,000 sessions and 200 conversions (z=0.11). A fortnight of A running ahead on small weekly counts is exactly the fluctuation a null of that size predicts. If A is genuinely ahead it will surface in the cumulative series, which is where it should be judged on Monday, not in two weekly readings. Bounce elevated for a fourth reading, both variants together, still undiagnosed."
     },
     {
       "name": "Localized LP variants (IT / DE / FR / ES)",
       "url": "https://nordicpirates.com/lp/play-it | play-de | play-es | play-fr",
-      "status": "IT rate sliding for a third reading; DE still on its single conversion; both carried to Monday",
+      "status": "DE TRAFFIC STOPPED 07-31 (cause unverified, needs ad-platform check); IT stable near 0.5 percent, prior decay call withdrawn",
       "hypothesis": "Translated LPs convert non-EN paid traffic at rates comparable to EN, once ad clicks actually land on a live localized page.",
       "variants": [
         {
           "name": "IT (live)",
           "url": "https://nordicpirates.com/lp/lying-pirates-it/",
-          "sessions": 936,
-          "bounce_pct": 79.49,
-          "conv_pct": 0.32,
+          "sessions": 973,
+          "bounce_pct": 79.03,
+          "conv_pct": 0.41,
           "winner": false
         },
         {
           "name": "DE (live)",
           "url": "https://nordicpirates.com/lp/lying-pirates-de/",
-          "sessions": 186,
-          "bounce_pct": 79.57,
-          "conv_pct": 0.54,
+          "sessions": 159,
+          "bounce_pct": 79.25,
+          "conv_pct": 0.63,
           "winner": false
         },
         {
@@ -112,26 +112,26 @@
         {
           "name": "ES (paused)",
           "url": "https://nordicpirates.com/lp/lying-pirates-es/",
-          "sessions": 1,
+          "sessions": 0,
           "bounce_pct": 0.0,
           "conv_pct": 0.0,
           "winner": false
         }
       ],
       "post_fix_cumulative": {
-        "window": "2026-07-21..07-30 (single non-overlapping range, everything after the routing fix)",
+        "window": "2026-07-21..07-31 (single non-overlapping range, everything after the routing fix)",
         "it": {
-          "sessions": 1183,
-          "txn": 6,
-          "conv_pct": 0.51
+          "sessions": 1298,
+          "txn": 7,
+          "conv_pct": 0.54
         },
         "de": {
-          "sessions": 249,
+          "sessions": 251,
           "txn": 1,
           "conv_pct": 0.4
         },
         "fr": {
-          "sessions": 2,
+          "sessions": 3,
           "txn": 0,
           "conv_pct": 0.0
         },
@@ -140,16 +140,17 @@
           "txn": 0,
           "conv_pct": 0.0
         },
+        "series_note": "IT cumulative conv by run date: 0.47 (to 07-29), 0.51 (to 07-30), 0.54 (to 07-31). This is the ONLY IT series that should be trended. Rolling 7d windows overlap by six days and must NOT be compared week to week as if independent, which is the error behind the withdrawn 07-31 decay call.",
         "note": "Computed as one range, never by adding rolling 7d windows, which overlap and would roughly double the true count."
       },
       "retired_urls_residual_7d": {
         "note": "Old rotator A/B targets, retired 07-21. Residual/cached traffic only, continuing to decay.",
-        "lying-pirates-cities-of-greed-big-box-it": 3,
+        "lying-pirates-cities-of-greed-big-box-it": 2,
         "lying-pirates-cities-of-greed-big-box-b-it": 2,
         "lying-pirates-cities-of-greed-big-box-de": 1
       },
       "real_sales_90d": {
-        "provenance": "NOT REFRESHED TODAY AND ORIGIN STILL UNCONFIRMED. DO NOT BASE A DECISION ON THESE FIGURES. Stated as 90 days to 2026-07-29, 1077 orders, refunds excluded. `gate shopify orders` was re-tested this morning and still returns 'Invalid API key or access token' on the delegated connections (ca_uNHagdh4mTgd, ca_Uif0IiPFITTv), so the figures cannot be re-pulled or confirmed and have deliberately not been rolled forward or re-dated. Bengt has confirmed he never had a successful Shopify read and did not pull these numbers; no party has named the source. NEW LEAD WORTH ACTING ON: a SEPARATE Shopify path authenticated successfully for Polly earlier in this same session, the claude.ai Shopify connector rather than the gate delegated connection, and served live catalogue reads (products, product media, and the file library) from this store. That connector has since dropped out of the session, and it was only ever exercised on catalogue data, so whether it carries read_orders scope is UNTESTED and no order figure should be assumed from it. What it does establish is that a working credential path to this store exists, which is more than was known yesterday. UPDATE (Bengt 2026-07-31): the connector's read_orders scope is in fact PROVEN - Bengt's worker session used this exact connector on 2026-07-30 to page through 854 paid orders (17 pages, 60 days) for the Bundles discount analysis. The credential path for confirming real_sales_90d provenance therefore exists and works; a re-pull awaits Lucas/Mikaela authorisation per the Shopify order rule. WHAT IS VERIFIED ABOUT THE NUMBERS BELOW: internal consistency only. Listed countries sum to 112,254 EUR / 1029 orders, the three months sum to 115,678 EUR / 1062 orders, the stated total is 1077 orders, and the residuals reconcile sensibly. They behave like real data, which is why they are retained rather than deleted. WHAT IS NOT VERIFIED: that they came from this store, this window, or this metric basis.",
+        "provenance": "NOT REFRESHED TODAY AND ORIGIN STILL UNCONFIRMED. DO NOT BASE A DECISION ON THESE FIGURES. Stated as 90 days to 2026-07-29, 1077 orders, refunds excluded. `gate shopify orders` was re-tested this morning and still returns 'Invalid API key or access token' on the delegated connections (ca_uNHagdh4mTgd, ca_Uif0IiPFITTv), so the figures cannot be re-pulled or confirmed and have deliberately not been rolled forward or re-dated. Bengt has confirmed he never had a successful Shopify read and did not pull these numbers; no party has named the source. CREDENTIAL PATH RESOLVED; AUTHORISATION IS NOW THE ONLY BLOCKER. Bengt's worker session read 854 paid orders across 17 pages through the claude.ai Shopify connector on 2026-07-30, so that path works for ORDERS and not merely catalogue reads. This supersedes Polly's earlier 'scope untested' caveat, which was accurate only at the time it was written. gate shopify orders was re-tested on 2026-08-01 and still returns 'Invalid API key or access token', so the gate delegated path remains broken and is no longer the route to use. The ONLY thing still missing to confirm this extract's origin is a Lucas/Mikaela go-ahead for a re-pull, with Lucas since 2026-07-30. A re-pull split by country AND product answers both the Italian market-versus-page question and the German Base-Game-first thesis in one go. WHAT IS VERIFIED ABOUT THE NUMBERS BELOW: internal consistency only. Listed countries sum to 112,254 EUR / 1029 orders, the three months sum to 115,678 EUR / 1062 orders, the stated total is 1077 orders, and the residuals reconcile sensibly. They behave like real data, which is why they are retained rather than deleted. WHAT IS NOT VERIFIED: that they came from this store, this window, or this metric basis.",
         "basis_caveat": "If genuine, the basis still differs from the extract carried until 07-24 (that one was net of tax and shipping), so country-level increases against that file would be a measurement change and not growth. Moot until provenance is confirmed.",
         "US": {
           "orders": 345,
@@ -233,7 +234,14 @@
         "cities_of_greed": 72,
         "bamboo_cups": 72
       },
-      "polly_note": "IT IS THE STORY THIS WEEK. 936 sessions and 3 transactions, a 0.32 percent weekly rate against 0.55 percent last week. Post-fix cumulative is 1183 sessions and 6 transactions, 0.51 percent, having drifted 0.60 to 0.47 to 0.51 as volume built, and the weekly rate is now clearly below the cumulative one. Traffic is steady, conversion is decaying: three readings, one direction. Keep the two Italian facts separate, because they point opposite ways. Italy is the 3rd-largest market on the (still unconfirmed) sales extract at 15.3k EUR and 162 orders per 90 days, while the Italian LP is attributed roughly 3 to 5 transactions a week. The market is not weak; the page is underperforming its own traffic, and most Italian revenue arrives through other channels. DE: no second conversion. Still 1 transaction, now on 249 post-fix sessions (0.40 percent). Yesterday's read stands unchanged: the page is inside the range where a rate can eventually be measured, and it needs several more weeks before anyone compares it to EN. FR shows 2 post-fix sessions and ES 1, both still paused."
+      "polly_note": "DE IS THE FLAG THIS MORNING and it is about traffic, not conversion: 36, 23, 21, 29, 32, 16, then 2 sessions on 07-31, while IT and both EN variants held that same day. Cause unverified, see de_traffic_stop. The single DE conversion is unchanged at 1, now on 251 post-fix sessions. IT: yesterday's decay call is WITHDRAWN. It compared overlapping rolling windows, which share six of seven days and cannot be treated as independent readings. On the clean non-overlapping series the IT rate has gone 0.47, 0.51, 0.54 percent, drifting up, and this week recovered to 4 transactions on 973 sessions. IT is stable near 0.5 percent. What does NOT change, because it never depended on the trend, is the gap between market and page: Italy is the 3rd-largest market on the (unconfirmed) extract at 15.3k EUR and 162 orders per 90 days while the Italian LP is attributed 4 to 7 transactions a week. Most Italian revenue arrives through other channels. That gap is the Monday question. FR 3 post-fix sessions, ES 1, both still paused.",
+      "de_traffic_stop": {
+        "observed": "DE landing page sessions by day 07-25..07-31: 36, 23, 21, 29, 32, 16, 2.",
+        "control": "Same-day 07-31 comparators held: IT 114, variant A 167, variant B 135. DE-specific, not site-wide, not a tracking break.",
+        "verified": "GA4 date x landingPage cut, pulled 2026-08-01.",
+        "NOT_verified": "The cause. Paused ad set, spent budget and ad disapproval all fit this shape and I could not distinguish them. gate gads needs a customer id I do not hold and the Google Ads DEVELOPER_TOKEN is still missing server-side; the Meta connector was not attached to my session. Needs someone with ad-platform access.",
+        "why_it_matters": "If unintentional, the German page is dark across a weekend, and DE is the market that had only just produced its first conversion."
+      }
     }
   ],
   "built_not_yet_live": [
