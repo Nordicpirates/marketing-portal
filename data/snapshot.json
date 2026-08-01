@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-07-30",
+  "generated_at": "2026-08-01",
   "owner": "Bengt 🦉 (data) + Polly (analysis)",
   "currency_note": "Revenue in EUR (store currency). Meta spend in SEK. Blended MER = total Shopify revenue ÷ Meta spend (11.4 SEK/EUR).",
   "gads_alert": {
     "show": true,
-    "title": "Google Ads · 22 dagar in · 49 konv · 46 490 kr intäkt",
-    "sub": "7 kampanjer aktiva · ROAS 4.1× totalt (Brand Search All 9.1× + Shopping AU 7.6×)",
+    "title": "Google Ads · 24 dagar in · 53 konv · 51 777 kr intäkt",
+    "sub": "7 kampanjer aktiva · ROAS 4.2× totalt (Brand Search IT 39.6× + Shopping AU 6.8×)",
     "link_gads": "https://ads.google.com/aw/campaigns?__e=7166732500",
     "link_gmc": "https://merchants.google.com"
   },
@@ -24,31 +24,31 @@
   },
   "gads": {
     "live_since": "8 juli",
-    "as_of": "29 juli",
-    "note": "22 dagar in — Shopping US & UK håller 2.8× och Shopping AU tar fart (7.6×). Brand Search IT 24.5× men på låg volym. Shopping DE + Brand Search DE har bränt 689 kr utan konvertering. Rullande ROAS 4.1× totalt — daglig siffra svänger, det rullande är den ärliga.",
-    "spend_label": "11 382 kr",
-    "yesterday_label": "369 kr",
+    "as_of": "31 juli",
+    "note": "24 dagar in (8-31 juli) — Shopping US & UK håller 2.8× på hög volym, Brand Search IT 39.6× (låg volym men fantastisk intent). Shopping AU 6.8×. Brand Search All 8.3×. Shopping DE + Brand Search DE har bränt 689 kr utan konvertering. Rullande ROAS 4.2× totalt — daglig siffra svänger, det rullande är den ärliga.",
+    "spend_label": "12 215 kr",
+    "yesterday_label": "444 kr",
     "totals": {
-      "spend_sek": 11382,
-      "clicks": 2778,
-      "conversions": 49,
-      "conv_value_sek": 46490,
-      "roas": 4.1
+      "spend_sek": 12215,
+      "clicks": 3021,
+      "conversions": 53,
+      "conv_value_sek": 51777,
+      "roas": 4.2
     },
     "campaigns": [
       {
         "name": "🏆 Brand Search (alla marknader)",
-        "spend_label": "1 498 kr",
+        "spend_label": "1 643 kr",
         "conv": 14,
         "value_label": "13 698 kr",
-        "roas": 9.1
+        "roas": 8.3
       },
       {
         "name": "Brand Search IT",
-        "spend_label": "162 kr",
-        "conv": 4,
-        "value_label": "3 964 kr",
-        "roas": 24.5
+        "spend_label": "194 kr",
+        "conv": 6,
+        "value_label": "7 699 kr",
+        "roas": 39.6
       },
       {
         "name": "Brand Search DE",
@@ -59,17 +59,17 @@
       },
       {
         "name": "Shopping US & UK",
-        "spend_label": "7 942 kr",
-        "conv": 25,
-        "value_label": "22 106 kr",
+        "spend_label": "8 471 kr",
+        "conv": 26,
+        "value_label": "23 526 kr",
         "roas": 2.8
       },
       {
         "name": "Shopping AU",
-        "spend_label": "824 kr",
+        "spend_label": "928 kr",
         "conv": 5,
         "value_label": "6 286 kr",
-        "roas": 7.6
+        "roas": 6.8
       },
       {
         "name": "Shopping DE",
@@ -80,10 +80,10 @@
       },
       {
         "name": "Non-brand Test",
-        "spend_label": "267 kr",
-        "conv": 1,
-        "value_label": "434 kr",
-        "roas": 1.6
+        "spend_label": "290 kr",
+        "conv": 2,
+        "value_label": "568 kr",
+        "roas": 2.0
       }
     ]
   },
