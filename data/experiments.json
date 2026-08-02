@@ -1,10 +1,10 @@
 {
-  "updated": "2026-08-01",
+  "updated": "2026-08-02",
   "owner": "Polly",
-  "source": "GA4 property 250338585 (last 7d: 2026-07-25..07-31, landingPage + sessionManualAdContent, plus a date x landingPage daily cut) and post-fix cumulative 2026-07-21..07-31, all pulled live by Polly this morning and reproducible. real_sales_90d NOT refreshed: gate shopify orders still rejects the token. See provenance.",
+  "source": "GA4 property 250338585 (last 7d: 2026-07-26..08-01, landingPage + sessionManualAdContent, plus a date x landingPage daily cut) and post-fix cumulative 2026-07-21..08-01, pulled live by Polly this morning and reproducible. real_sales_90d NOT refreshed: gate shopify orders still rejects the token. See provenance.",
   "analyst": "Polly",
   "note": "A/B landing-page experiments. Refreshed daily by Polly (data); pause/promote verdicts on Mondays.",
-  "polly_note": "DATA-ONLY REFRESH (Saturday 2026-08-01). Decision review: Mondays. No verdicts today. EN A/B remains CONCLUDED from 07-28 and is not re-litigated. ONE URGENT FLAG AND ONE CORRECTION TO MY OWN PRIOR READ. (1) URGENT, GERMAN TRAFFIC STOPPED ON 07-31. The DE page ran 16 to 36 sessions a day all week then took 2 sessions on 07-31. Not a rounding artefact: the same day IT held at 114, variant A at 167, variant B at 135, so it is DE-specific and not a site-wide or tracking failure. Post-fix cumulative DE sessions moved only 249 to 251 in a day. WHAT I CANNOT TELL YOU IS WHY. A paused ad set, an exhausted budget and a disapproved ad are all consistent with this shape and I could not distinguish them: gate gads needs a customer id I do not hold and the Google Ads DEVELOPER_TOKEN is still missing on the GATE server, and the Meta connector was not attached to my session this morning. Someone with ad-platform access should look before Monday, because if this is unintentional the German page is dark across a weekend. (2) CORRECTION: I OVERSTATED THE ITALIAN DECAY YESTERDAY. I called it three readings in one direction. That leaned on rolling 7d windows, which overlap by six days and cannot be compared week to week as if independent. The clean series is the single non-overlapping post-fix range, and it has gone 0.47 then 0.51 then 0.54 percent, drifting UP not down. This week IT also recovered to 4 transactions on 973 sessions (0.41 percent) from 3 on 936. The honest read is that IT is roughly stable near 0.5 percent and I read a trend into noise. The durable Italian fact is unchanged and never depended on the trend: the LP is attributed 4 to 7 transactions a week while Italy is the 3rd-largest market on the (unconfirmed) sales extract, so the page underperforms its own traffic. That gap is the Monday item; the decay story is withdrawn. (3) Bounce elevated for a fourth reading (A 80.5, B 82.1), both variants still moving together. Unchanged, carried.",
+  "polly_note": "DATA-ONLY REFRESH (Sunday 2026-08-02). Decision review: Mondays, so the full significance check and any pause/promote calls land TOMORROW. EN A/B remains CONCLUDED from 07-28 and is not re-litigated today. (1) GERMANY IS STILL OFF, THIRD DAY. DE sessions by day: 21, 29, 32, 16, then 2 on 07-31 and 3 on 08-01. Not recovered. Bengt traced it on 08-01 to a single Meta campaign, 'CV - Purchases - DE', and cleared both Google DE campaigns and the account as a whole (IT and all EN campaigns delivered normally the same mornings). The exact cause still requires Ads Manager, which neither of us can read, and it is with Lucas. CORRECTION TO MY OWN FIGURE: yesterday I reported 08-01 as 0 sessions. That was same-day GA data still being processed; it settled at 3. The conclusion is unchanged, 2 and 3 against a 16 to 32 baseline is still a stop, but the number I gave was wrong and same-day GA should not be quoted as final. (2) ITALY: I AM NOT TRENDING IT AT ALL THIS WEEK, AND THAT IS THE POINT. The post-fix cumulative has now gone 0.47, 0.51, 0.54, 0.49 percent. It is non-monotonic because it rests on 7 conversions, where a single order moves the rate by roughly 0.07 points. Having withdrawn a decay call on Friday for over-reading overlapping windows, I am not going to narrate this wobble as a recovery either. IT sits near 0.5 percent and the direction is not yet measurable. (3) Bounce eased very slightly (A 79.5, B 82.0 against 80.5 and 82.1) but stays well above the 70 to 72 of three weeks ago, both variants still locked together. Diagnosis is a Monday item.",
   "experiments": [
     {
       "name": "Big Box LP - Headline & Hero (EN)",
@@ -15,32 +15,32 @@
         {
           "name": "Control (A)",
           "url": "https://nordicpirates.com/lp/lying-pirates-cities-of-greed-big-box/",
-          "sessions": 1412,
-          "bounce_pct": 80.45,
-          "conv_pct": 1.2,
+          "sessions": 1348,
+          "bounce_pct": 79.53,
+          "conv_pct": 1.11,
           "winner": false
         },
         {
           "name": "Variant B",
           "url": "https://nordicpirates.com/lp/lying-pirates-cities-of-greed-big-box-b/",
-          "sessions": 1070,
-          "bounce_pct": 82.06,
-          "conv_pct": 0.84,
+          "sessions": 1009,
+          "bounce_pct": 81.96,
+          "conv_pct": 0.79,
           "winner": false
         }
       ],
       "aggregate_7d": {
         "lp_a": {
-          "sessions": 1618,
-          "bounce_pct": 79.6,
-          "conv_pct": 0.99,
-          "txn": 16
+          "sessions": 1578,
+          "bounce_pct": 79.09,
+          "conv_pct": 0.95,
+          "txn": 15
         },
         "lp_b": {
-          "sessions": 1584,
-          "bounce_pct": 82.32,
-          "conv_pct": 0.63,
-          "txn": 10
+          "sessions": 1483,
+          "bounce_pct": 81.73,
+          "conv_pct": 0.61,
+          "txn": 9
         }
       },
       "significance": {
@@ -77,35 +77,35 @@
         "verdict": "No winner. Threshold met and the two variants are statistically indistinguishable (z=0.11 by page, z=0.07 by ad content). Conclusive null, not insufficient data.",
         "action": "PROMOTE NEITHER. Stop running A vs B as a live test. Ship shared improvements to both pages and put the next real test behind V3 (proof-first)."
       },
-      "polly_note": "Data-only refresh, no re-verdict. A leads for a second consecutive week on both cuts: by page 1.20 percent (17 txn on 1412) against 0.84 percent (9 on 1070), by ad content 0.99 against 0.63 percent. Worth stating plainly why this does NOT reopen the concluded test. The gap is 6 to 7 transactions on roughly 1,500 sessions per arm, and the concluded analysis measured these pages as indistinguishable across more than 24,000 sessions and 200 conversions (z=0.11). A fortnight of A running ahead on small weekly counts is exactly the fluctuation a null of that size predicts. If A is genuinely ahead it will surface in the cumulative series, which is where it should be judged on Monday, not in two weekly readings. Bounce elevated for a fourth reading, both variants together, still undiagnosed."
+      "polly_note": "Data-only refresh, no re-verdict; the significance check is tomorrow. A leads a third week by page (1.11 percent, 15 txn on 1348, against 0.79 percent, 8 on 1009) and by ad content (0.95 against 0.61 percent). Flagging this properly for tomorrow rather than dismissing it again: three consecutive weeks in the same direction is worth a deliberate look at the CUMULATIVE series, which is the only place it can be judged, and the weekly counts remain far too small to carry it on their own (a 6 to 7 transaction gap per week). The concluded test measured a genuine null across 24,000+ sessions and 200+ conversions at z=0.11, so the prior is strongly against a real effect, and three noisy weeks do not overturn it. The correct Monday question is whether the post-07-28 cumulative has moved at all, not whether A won this week. Bounce eased slightly but stays elevated, both variants together, undiagnosed."
     },
     {
       "name": "Localized LP variants (IT / DE / FR / ES)",
       "url": "https://nordicpirates.com/lp/play-it | play-de | play-es | play-fr",
-      "status": "DE TRAFFIC STOPPED 07-31 (cause unverified, needs ad-platform check); IT stable near 0.5 percent, prior decay call withdrawn",
+      "status": "DE OFF FOR A THIRD DAY (Meta campaign 'CV - Purchases - DE', cause with Lucas); IT near 0.5 percent, direction not measurable",
       "hypothesis": "Translated LPs convert non-EN paid traffic at rates comparable to EN, once ad clicks actually land on a live localized page.",
       "variants": [
         {
           "name": "IT (live)",
           "url": "https://nordicpirates.com/lp/lying-pirates-it/",
-          "sessions": 973,
-          "bounce_pct": 79.03,
-          "conv_pct": 0.41,
+          "sessions": 960,
+          "bounce_pct": 77.6,
+          "conv_pct": 0.42,
           "winner": false
         },
         {
-          "name": "DE (live)",
+          "name": "DE (live, traffic stopped)",
           "url": "https://nordicpirates.com/lp/lying-pirates-de/",
-          "sessions": 159,
-          "bounce_pct": 79.25,
-          "conv_pct": 0.63,
+          "sessions": 126,
+          "bounce_pct": 82.54,
+          "conv_pct": 0.79,
           "winner": false
         },
         {
           "name": "FR (paused)",
           "url": "https://nordicpirates.com/lp/lying-pirates-fr/",
-          "sessions": 0,
-          "bounce_pct": 0.0,
+          "sessions": 1,
+          "bounce_pct": 100.0,
           "conv_pct": 0.0,
           "winner": false
         },
@@ -119,16 +119,16 @@
         }
       ],
       "post_fix_cumulative": {
-        "window": "2026-07-21..07-31 (single non-overlapping range, everything after the routing fix)",
+        "window": "2026-07-21..08-01 (single non-overlapping range, everything after the routing fix)",
         "it": {
-          "sessions": 1298,
+          "sessions": 1423,
           "txn": 7,
-          "conv_pct": 0.54
+          "conv_pct": 0.49
         },
         "de": {
-          "sessions": 251,
+          "sessions": 254,
           "txn": 1,
-          "conv_pct": 0.4
+          "conv_pct": 0.39
         },
         "fr": {
           "sessions": 3,
@@ -140,13 +140,13 @@
           "txn": 0,
           "conv_pct": 0.0
         },
-        "series_note": "IT cumulative conv by run date: 0.47 (to 07-29), 0.51 (to 07-30), 0.54 (to 07-31). This is the ONLY IT series that should be trended. Rolling 7d windows overlap by six days and must NOT be compared week to week as if independent, which is the error behind the withdrawn 07-31 decay call.",
+        "series_note": "IT cumulative conv by run date: 0.47 (to 07-29), 0.51 (to 07-30), 0.54 (to 07-31), 0.49 (to 08-01). NON-MONOTONIC, and it rests on 7 conversions where one order shifts the rate by about 0.07 points. Report the level, near 0.5 percent; do not narrate a direction in either direction yet. Rolling 7d windows overlap by six days and must never be trended week to week.",
         "note": "Computed as one range, never by adding rolling 7d windows, which overlap and would roughly double the true count."
       },
       "retired_urls_residual_7d": {
         "note": "Old rotator A/B targets, retired 07-21. Residual/cached traffic only, continuing to decay.",
-        "lying-pirates-cities-of-greed-big-box-it": 2,
-        "lying-pirates-cities-of-greed-big-box-b-it": 2,
+        "lying-pirates-cities-of-greed-big-box-b-it": 4,
+        "lying-pirates-cities-of-greed-big-box-it": 1,
         "lying-pirates-cities-of-greed-big-box-de": 1
       },
       "real_sales_90d": {
@@ -234,13 +234,14 @@
         "cities_of_greed": 72,
         "bamboo_cups": 72
       },
-      "polly_note": "DE IS THE FLAG THIS MORNING and it is about traffic, not conversion: 36, 23, 21, 29, 32, 16, then 2 sessions on 07-31, while IT and both EN variants held that same day. Cause unverified, see de_traffic_stop. The single DE conversion is unchanged at 1, now on 251 post-fix sessions. IT: yesterday's decay call is WITHDRAWN. It compared overlapping rolling windows, which share six of seven days and cannot be treated as independent readings. On the clean non-overlapping series the IT rate has gone 0.47, 0.51, 0.54 percent, drifting up, and this week recovered to 4 transactions on 973 sessions. IT is stable near 0.5 percent. What does NOT change, because it never depended on the trend, is the gap between market and page: Italy is the 3rd-largest market on the (unconfirmed) extract at 15.3k EUR and 162 orders per 90 days while the Italian LP is attributed 4 to 7 transactions a week. Most Italian revenue arrives through other channels. That gap is the Monday question. FR 3 post-fix sessions, ES 1, both still paused.",
+      "polly_note": "DE: still off, third day, 2 then 3 sessions against a 16 to 36 baseline. Isolated to one Meta campaign and sitting with Lucas; see de_traffic_stop, including a correction to a figure I gave yesterday. The single DE conversion is unchanged at 1, now on 254 post-fix sessions, and no DE number will mean anything until traffic resumes. IT: 4 transactions on 960 sessions this week, 0.42 percent. The cumulative has wobbled 0.47, 0.51, 0.54, 0.49 and rests on 7 conversions, so I am reporting the level, near 0.5 percent, and explicitly not calling a direction. Having withdrawn a decay story on Friday, calling this a recovery would be the same mistake wearing the opposite sign. The stable Italian fact is untouched: Italy is the 3rd-largest market on the unconfirmed extract at 15.3k EUR and 162 orders per 90 days, while the IT LP is attributed 4 to 7 transactions a week, so the page underperforms its own traffic and most Italian revenue arrives elsewhere. That gap, not the weekly wobble, is the Monday question. FR 3 post-fix sessions, ES 1, both paused.",
       "de_traffic_stop": {
-        "observed": "DE landing page sessions by day 07-25..07-31: 36, 23, 21, 29, 32, 16, 2.",
-        "control": "Same-day 07-31 comparators held: IT 114, variant A 167, variant B 135. DE-specific, not site-wide, not a tracking break.",
-        "verified": "GA4 date x landingPage cut, pulled 2026-08-01.",
-        "NOT_verified": "The cause. Paused ad set, spent budget and ad disapproval all fit this shape and I could not distinguish them. gate gads needs a customer id I do not hold and the Google Ads DEVELOPER_TOKEN is still missing server-side; the Meta connector was not attached to my session. Needs someone with ad-platform access.",
-        "why_it_matters": "If unintentional, the German page is dark across a weekend, and DE is the market that had only just produced its first conversion."
+        "status": "UNRESOLVED, third day. With Lucas.",
+        "observed": "DE sessions by day 07-27..08-01: 21, 29, 32, 16, 2, 3. Baseline was 16 to 36 a day.",
+        "isolated_to": "Meta campaign 'CV - Purchases - DE'. Bengt's source x campaign x day GA read, 2026-08-01.",
+        "ruled_out": "Google is not involved (its two DE campaigns do not feed the LP; the DE page's only Google traffic was 6 organic sessions in a week). The ad account is healthy: 'CV - Purchases - IT' and all EN campaigns delivered normally the same mornings. Not a site or tracking fault, since IT and both EN variants held on the same days.",
+        "NOT_verified": "Which of paused / spent budget / end date / rejected ad it is. That needs Meta Ads Manager. Neither Polly nor Bengt has a read path (no Meta token in the vault, connector down). Flagged to Lucas by Bengt on 08-01 with the campaign name; his push notification did not deliver (no subscription), so Polly also raised it directly in chat.",
+        "correction": "Polly reported 08-01 as 0 sessions on 08-01. That was same-day GA still processing; the settled figure is 3. Conclusion unchanged, the number was wrong."
       }
     }
   ],
