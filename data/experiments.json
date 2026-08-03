@@ -186,7 +186,7 @@
         "lying-pirates-cities-of-greed-big-box-de": 1
       },
       "real_sales_90d": {
-        "provenance": "NOT REFRESHED TODAY AND ORIGIN STILL UNCONFIRMED. DO NOT BASE A DECISION ON THESE FIGURES. Stated as 90 days to 2026-07-29, 1077 orders, refunds excluded. `gate shopify orders` was re-tested this morning and still returns 'Invalid API key or access token' on the delegated connections (ca_uNHagdh4mTgd, ca_Uif0IiPFITTv), so the figures cannot be re-pulled or confirmed and have deliberately not been rolled forward or re-dated. Bengt has confirmed he never had a successful Shopify read and did not pull these numbers; no party has named the source. CREDENTIAL PATH RESOLVED; AUTHORISATION IS NOW THE ONLY BLOCKER. Bengt's worker session read 854 paid orders across 17 pages through the claude.ai Shopify connector on 2026-07-30, so that path works for ORDERS and not merely catalogue reads. This supersedes Polly's earlier 'scope untested' caveat, which was accurate only at the time it was written. gate shopify orders was re-tested on 2026-08-01 and still returns 'Invalid API key or access token', so the gate delegated path remains broken and is no longer the route to use. The ONLY thing still missing to confirm this extract's origin is a Lucas/Mikaela go-ahead for a re-pull, with Lucas since 2026-07-30. A re-pull split by country AND product answers both the Italian market-versus-page question and the German Base-Game-first thesis in one go. WHAT IS VERIFIED ABOUT THE NUMBERS BELOW: internal consistency only. Listed countries sum to 112,254 EUR / 1029 orders, the three months sum to 115,678 EUR / 1062 orders, the stated total is 1077 orders, and the residuals reconcile sensibly. They behave like real data, which is why they are retained rather than deleted. WHAT IS NOT VERIFIED: that they came from this store, this window, or this metric basis.",
+        "provenance": "RESOLVED 2026-08-03. Lucas approved the re-pull; Bengt pulled it with the store key. Authoritative source is now /home/shared/lyingpirates/shopify-sales-90d-2026-08-03.json (1,117 orders, 121,596 EUR, window 2026-05-05..08-03, test/cancelled/refunded excluded, post-refund totals incl tax+shipping, EUR). The older unconfirmed extract is corroborated, not discarded: its DE row (87 orders / 8,259 EUR) matches the fresh read (87 / 8,261), other rows sit 3-8 percent lower, consistent with a 5-day window shift. It behaved like genuine data from this store all along.",
         "basis_caveat": "If genuine, the basis still differs from the extract carried until 07-24 (that one was net of tax and shipping), so country-level increases against that file would be a measurement change and not growth. Moot until provenance is confirmed.",
         "US": {
           "orders": 345,
@@ -238,6 +238,42 @@
           "orders": 18,
           "revenue_eur": 1970,
           "aov_eur": 109
+        },
+        "country_x_product": {
+          "note": "Base Game vs BIG BOX units, recomputed by Polly from the JSON, not copied from the summary. Global baseline 304/657 = 0.463.",
+          "GB": {
+            "base": 78,
+            "bigbox": 94,
+            "ratio": 0.83,
+            "vs_global": 1.79,
+            "orders": 190
+          },
+          "DE": {
+            "base": 32,
+            "bigbox": 40,
+            "ratio": 0.8,
+            "vs_global": 1.73,
+            "orders": 87
+          },
+          "IT": {
+            "base": 54,
+            "bigbox": 82,
+            "ratio": 0.66,
+            "vs_global": 1.42,
+            "orders": 173
+          },
+          "US": {
+            "base": 96,
+            "bigbox": 245,
+            "ratio": 0.39,
+            "vs_global": 0.85,
+            "orders": 375
+          },
+          "NL_BE_DK": "0.04 to 0.10, effectively pure BIG BOX markets",
+          "finding_1": "German Base-Game-first thesis CONFIRMED at 1.73x global.",
+          "finding_2": "Biggest UNFLAGGED opportunity is GB, not DE: 0.83 (1.79x global) on 190 orders against Germany's 87. Second-largest market, no localized page, so it is a positioning question on the main EN page rather than a translation job.",
+          "finding_3": "IT at 0.66 is NOT 'near global', it is 42 percent above, the third-strongest entry-level skew we have. Second independent argument for Base-Game-first on the Italian LP, whose cold-visitor block currently offers 29,95 / 39,95 / 124,95.",
+          "CAVEAT": "Unit ratios measure what we SOLD, downstream of what we ADVERTISED. Channel mix differs by country (Google Shopping US/UK+AU, Brand Search IT, Meta CV-Purchases DE+IT). Whether the skew is native demand or our own channel mix is NOT established here. Defensible: 'DE, GB and IT orders skew entry-level.' Not yet defensible: 'German buyers prefer the Base Game.' Separating them needs spend/impression share by country against these ratios."
         }
       },
       "revenue_by_month_eur": {
