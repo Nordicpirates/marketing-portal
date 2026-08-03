@@ -1,54 +1,54 @@
 {
-  "generated_at": "2026-08-02",
+  "generated_at": "2026-08-03",
   "owner": "Bengt 🦉 (data) + Polly (analysis)",
   "currency_note": "Revenue in EUR (store currency). Meta spend in SEK. Blended MER = total Shopify revenue ÷ Meta spend (11.4 SEK/EUR).",
   "gads_alert": {
     "show": true,
-    "title": "Google Ads · 25 dagar in · 55 konv · 54 551 kr",
-    "sub": "7 kampanjer aktiva · ROAS 4.3× totalt (Brand Search IT 38.6× + Shopping AU 6.3×)",
+    "title": "Google Ads · 26 dagar in · 57 konv · 55 403 kr",
+    "sub": "7 kampanjer aktiva · ROAS 4.1× totalt (Brand Search IT 37.7× + Shopping AU 5.7×)",
     "link_gads": "https://ads.google.com/aw/campaigns?__e=7166732500",
     "link_gmc": "https://merchants.google.com"
   },
   "yesterday": {
-    "date": "2026-07-23",
-    "orders": 10,
-    "revenue_eur": 1083,
-    "revenue_sek": 12344,
-    "sessions": 406,
-    "conversions": null,
+    "date": "2026-08-02",
+    "orders": 9,
+    "revenue_eur": 1068,
+    "revenue_sek": 12175,
+    "sessions": 301,
+    "conversions": 9,
     "gads_spend": null,
-    "gads_spend_sek": null,
-    "gads_roas": null,
-    "gads_conv": null,
+    "gads_spend_sek": 664,
+    "gads_roas": 1.28,
+    "gads_conv": 2,
     "meta_spend_sek": null
   },
   "gads": {
     "live_since": "8 juli",
-    "as_of": "1 augusti",
-    "note": "25 dagar in (8 jul–1 aug) — Shopping US & UK håller 2.9× på hög volym, Brand Search IT 38.6× (låg volym, fantastisk intent), Shopping AU 6.3×, Brand Search All 8.1×. Shopping DE + Brand Search DE bränt 689 kr utan konvertering. Rullande ROAS 4.3× totalt.",
-    "spend_label": "12 745 kr",
-    "yesterday_label": "530 kr",
+    "as_of": "2 augusti",
+    "note": "26 dagar in (8 jul-2 aug) - Shopping US & UK håller 2.8×, Brand Search IT 37.7×. DE fortsatt 0 konv på båda kampanjerna.",
+    "spend_label": "13 408 kr",
+    "yesterday_label": "664 kr",
     "totals": {
-      "spend_sek": 12745,
-      "clicks": 3183,
-      "conversions": 55,
-      "conv_value_sek": 54551,
-      "roas": 4.3
+      "spend_sek": 13408,
+      "clicks": 3387,
+      "conversions": 57,
+      "conv_value_sek": 55403,
+      "roas": 4.1
     },
     "campaigns": [
       {
         "name": "Brand Search - All Markets",
-        "spend_label": "1 687 kr",
+        "spend_label": "1 756 kr",
         "conv": 14,
         "value_label": "13 698 kr",
-        "roas": 8.1
+        "roas": 7.8
       },
       {
         "name": "Brand Search IT",
-        "spend_label": "219 kr",
-        "conv": 7,
-        "value_label": "8 470 kr",
-        "roas": 38.6
+        "spend_label": "236 kr",
+        "conv": 8,
+        "value_label": "8 909 kr",
+        "roas": 37.7
       },
       {
         "name": "Brand Search DE",
@@ -59,17 +59,17 @@
       },
       {
         "name": "Shopping - US & UK",
-        "spend_label": "8 833 kr",
-        "conv": 27,
-        "value_label": "25 528 kr",
-        "roas": 2.9
+        "spend_label": "9 291 kr",
+        "conv": 28,
+        "value_label": "25 941 kr",
+        "roas": 2.8
       },
       {
         "name": "Shopping - AU",
-        "spend_label": "1 003 kr",
+        "spend_label": "1 107 kr",
         "conv": 5,
         "value_label": "6 286 kr",
-        "roas": 6.3
+        "roas": 5.7
       },
       {
         "name": "Shopping - DE",
@@ -80,94 +80,94 @@
       },
       {
         "name": "Non-brand Test - US & UK",
-        "spend_label": "313 kr",
+        "spend_label": "329 kr",
         "conv": 2,
         "value_label": "568 kr",
-        "roas": 1.8
+        "roas": 1.7
       }
     ]
   },
   "chart_data": {
     "orders_9d": {
       "labels": [
-        "16/7",
-        "17/7",
-        "18/7",
-        "19/7",
-        "20/7",
-        "21/7",
-        "22/7",
-        "23/7"
+        "26/7",
+        "27/7",
+        "28/7",
+        "29/7",
+        "30/7",
+        "31/7",
+        "1/8",
+        "2/8"
       ],
       "revenue": [
-        1076,
-        1731,
-        1811,
-        1621,
-        1699,
-        1663,
-        1227,
-        1083
+        1001,
+        1406,
+        892,
+        1578,
+        1179,
+        1580,
+        930,
+        1068
       ],
       "orders": [
-        13,
-        13,
-        16,
-        18,
+        10,
+        12,
+        9,
         15,
-        15,
-        15,
-        10
+        12,
+        14,
+        10,
+        9
       ]
     },
     "organic_14d": {
       "labels": [
-        "7/7",
-        "8/7",
-        "9/7",
-        "10/7",
-        "11/7",
-        "12/7",
-        "13/7",
-        "14/7",
-        "15/7",
-        "16/7",
-        "17/7",
-        "18/7",
-        "19/7",
-        "20/7*"
+        "20/7",
+        "21/7",
+        "22/7",
+        "23/7",
+        "24/7",
+        "25/7",
+        "26/7",
+        "27/7",
+        "28/7",
+        "29/7",
+        "30/7",
+        "31/7",
+        "1/8",
+        "2/8"
       ],
       "sessions": [
-        226,
-        250,
-        271,
-        250,
-        275,
-        375,
-        357,
-        381,
-        245,
-        319,
-        332,
+        323,
+        351,
         390,
-        383,
-        146
+        406,
+        374,
+        401,
+        437,
+        353,
+        301,
+        271,
+        246,
+        277,
+        284,
+        301
       ],
       "conversions": [
-        13,
         12,
-        16,
-        7,
-        13,
+        11,
         15,
-        13,
-        15,
-        7,
-        13,
-        12,
+        8,
+        9,
         14,
-        17,
-        4
+        8,
+        11,
+        7,
+        13,
+        10,
+        13,
+        9,
+        9
       ]
     }
   },
@@ -180,59 +180,58 @@
       "cvr": 1.27,
       "revenue_sek": 401168,
       "source": "meta",
-      "note": "Meta Ads Manager · 7d-klick / 1d-visning-attribution. Spend 180 616 kr, ROAS 2.22."
+      "note": "Meta Ads Manager · 7d-klick / 1d-visning-attribution. Spend 180 616 kr, ROAS 2.22. OBS: t.o.m. 30 juli - Meta-API-kopplingen nere sedan 31 juli."
     },
     {
       "name": "Direkt",
       "dot": "#8b5cf6",
-      "sessions": 4517,
-      "conversions": 280,
-      "cvr": 6.2,
-      "revenue_sek": 459603,
+      "sessions": 4530,
+      "conversions": 251,
+      "cvr": 5.54,
+      "revenue_sek": 301940,
       "source": "shopify",
       "cvr_good": true,
-      "note": "Shopify referrer. Inkluderar Meta-klick där referrer tappades (vanligt på mobil/iOS)."
+      "note": "Shopify referrer 4 jul-2 aug. Inkluderar Meta-klick där referrer tappades (vanligt på mobil/iOS)."
     },
     {
       "name": "Sökning (organisk + betald)",
       "dot": "#2f8f4e",
-      "sessions": 1509,
-      "conversions": 65,
-      "cvr": 4.31,
-      "revenue_sek": 87221,
-      "source": "shopify",
-      "cvr_good": true
+      "sessions": 3347,
+      "conversions": 53,
+      "cvr": 1.58,
+      "revenue_sek": 65299,
+      "source": "shopify"
     },
     {
-      "name": "Social (organisk)",
+      "name": "Social (organisk referrer)",
       "dot": "#14b8a6",
-      "sessions": 1525,
-      "conversions": 37,
-      "cvr": 2.43,
-      "revenue_sek": 19562,
+      "sessions": 1296,
+      "conversions": 28,
+      "cvr": 2.16,
+      "revenue_sek": 44950,
       "source": "shopify"
     },
     {
       "name": "Okänd",
       "dot": "#8a8073",
-      "sessions": 207,
-      "conversions": 4,
-      "cvr": 1.93,
-      "revenue_sek": null,
+      "sessions": 400,
+      "conversions": 16,
+      "cvr": 4.0,
+      "revenue_sek": 56316,
       "source": "shopify"
     },
     {
-      "name": "Google (Shopping + Sök · 8–13 jul)",
+      "name": "Google Ads (8 jul-2 aug)",
       "dot": "#ea4335",
-      "sessions": 461,
-      "conversions": 10,
-      "cvr": 2.17,
+      "sessions": 3387,
+      "conversions": 57,
+      "cvr": 1.68,
       "cvr_good": false,
-      "revenue_sek": 10723,
-      "note": "Shopify slår ihop organisk Google + Shopping. Google Ads: 1 789 kr spend, ROAS 3.3×"
+      "revenue_sek": 55403,
+      "note": "Google Ads-data: klick/konv/värde hela live-perioden. Spend 13 408 kr, ROAS 4.1×."
     }
   ],
-  "channels_note": "Rad 1 = Meta Ads Manager-data (7d-klick/1d-visning). Övriga rader = Shopify referrer-tracking (30d). Direkt inkluderar Meta-trafik som tappat referrer.",
+  "channels_note": "Rad 1 = Meta Ads Manager-data (7d-klick/1d-visning), t.o.m. 30 juli - API-kopplingen nere. Övriga rader = Shopify-data 4 jul-2 aug (sessioner via referrer, intäkt via kanal). Direkt inkluderar Meta-trafik som tappat referrer. Google Ads-raden visar klick, inte sessioner.",
   "dashboard_status": [
     {
       "icon": "✅",
