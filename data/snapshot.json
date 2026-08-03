@@ -405,9 +405,11 @@
         "orders": 84
       },
       "meta": {
-        "spend_label": "35 130 kr",
-        "meta_roas": 1.74,
-        "blended_mer": 2.91
+        "spend_label": "27 601,08 kr",
+        "spend_window": "27 jul-2 aug (Ads Manager, avläst 3 aug)",
+        "meta_roas": null,
+        "blended_mer": null,
+        "_note": "Exakt spend från Ads Manager. ROAS/MER visas inte: Meta-API-kopplingen nere sedan 31 jul, kan inte läsa intäktssidan för samma fönster."
       },
       "orders_by_country": [
         {
@@ -509,7 +511,14 @@
           "conv_pct": 6.67
         }
       ],
-      "flags": []
+      "flags": [
+        {
+          "level": "warning",
+          "title": "⚠️ Meta-siffran korrigerad 3 aug",
+          "body": "Tidigare visades <b>35 130 kr</b> här - det var spend för <b>23-29 jul</b> (sista API-läsningen) under fel datumrubrik. Verklig spend 27 jul-2 aug är <b>27 601,08 kr</b> (Ads Manager). Skillnaden är äkta: EU/UK och Growbit AU/NZ pausades 29-30 jul, så dagsspenden föll.",
+          "sub": "Permanent fix = återanslut Meta-kopplingen (Pipeboard.co ADS + META ADs på claude.ai), då hämtas exakt spend automatiskt igen."
+        }
+      ]
     },
     {
       "id": "30d",
@@ -526,7 +535,8 @@
       "meta": {
         "spend_label": "160 514 kr",
         "meta_roas": 2.41,
-        "blended_mer": 3.12
+        "blended_mer": 3.12,
+        "_note": "OBS: Meta-spend t.o.m. 30 jul (API-koppling nere sedan 31 jul) - dagarna efter saknas i summan."
       },
       "orders_by_country": [
         {
@@ -738,7 +748,8 @@
       "meta": {
         "spend_label": "441 605 kr",
         "meta_roas": 2.05,
-        "blended_mer": 3.13
+        "blended_mer": 3.13,
+        "_note": "OBS: Meta-spend t.o.m. 30 jul (API-koppling nere sedan 31 jul) - dagarna efter saknas i summan."
       },
       "orders_by_country": [
         {
