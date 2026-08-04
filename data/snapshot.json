@@ -20,7 +20,7 @@
     "gads_spend_sek": 609,
     "gads_roas": 2.28,
     "gads_conv": 1,
-    "meta_spend_sek": null
+    "meta_spend_sek": 2777
   },
   "gads": {
     "live_since": "8 juli",
@@ -175,12 +175,12 @@
     {
       "name": "Paid Social · Meta",
       "dot": "#4a90e2",
-      "sessions": 30565,
-      "conversions": 387,
-      "cvr": 1.27,
-      "revenue_sek": 401168,
+      "sessions": 22659,
+      "conversions": 279,
+      "cvr": 1.23,
+      "revenue_sek": 352624,
       "source": "meta",
-      "note": "Meta Ads Manager · 7d-klick / 1d-visning-attribution. Spend 180 616 kr, ROAS 2.22. OBS: t.o.m. 30 juli — Meta-auth återansluten 4 aug, färsk data nästa session."
+      "note": "Meta API 5 jul-3 aug · 7d-klick/1d-visning. Spend 149 479 kr, ROAS 2.36. Sessions = länk-klick."
     },
     {
       "name": "Direkt",
@@ -231,7 +231,7 @@
       "note": "Google Ads-data: klick/konv/värde hela live-perioden. Spend 14 020 kr, ROAS 4.15×."
     }
   ],
-  "channels_note": "Rad 1 = Meta Ads Manager-data (7d-klick/1d-visning), t.o.m. 30 juli - Auth återansluten 4 aug, färsk data nästa dagliga refresh. Övriga rader = Shopify-data 4 jul-2 aug. Direkt inkluderar Meta-trafik som tappat referrer.",
+  "channels_note": "Rad 1 = Meta API-data (7d-klick/1d-visning) 5 jul-3 aug, hämtad 4 aug. Övriga rader = Shopify-data 4 jul-2 aug. Direkt inkluderar Meta-trafik som tappat referrer.",
   "dashboard_status": [
     {
       "icon": "✅",
@@ -413,11 +413,11 @@
         "orders": 86
       },
       "meta": {
-        "spend_label": "27 601 kr",
-        "spend_window": "27 jul-2 aug (Ads Manager, avläst 3 aug)",
-        "meta_roas": null,
-        "blended_mer": null,
-        "_note": "Manuell spend från Ads Manager. Auth återansluten 4 aug — ROAS/MER uppdateras automatiskt nästa refresh."
+        "spend_label": "25 629 kr",
+        "spend_window": "28 jul-3 aug (Meta API, hämtad 4 aug)",
+        "meta_roas": 2.61,
+        "blended_mer": 3.66,
+        "_note": "Meta API (28 jul-3 aug, 7d-klick/1d-visning), hämtad 4 aug."
       },
       "orders_by_country": [
         {
@@ -541,10 +541,10 @@
         "orders": 403
       },
       "meta": {
-        "spend_label": "160 514 kr",
-        "meta_roas": 2.41,
-        "blended_mer": 3.12,
-        "_note": "OBS: Meta-spend t.o.m. 30 jul — auth återansluten 4 aug, uppdateras nästa refresh."
+        "spend_label": "149 479 kr",
+        "meta_roas": 2.36,
+        "blended_mer": 3.25,
+        "_note": "Meta API (5 jul-3 aug, 7d-klick/1d-visning), hämtad 4 aug."
       },
       "orders_by_country": [
         {
@@ -681,10 +681,10 @@
         "orders": 34
       },
       "meta": {
-        "spend_label": null,
-        "meta_roas": null,
-        "blended_mer": null,
-        "_note": "Meta-auth återansluten 4 aug — Meta-spend för aug hämtas nästa refresh."
+        "spend_label": "11 191 kr",
+        "meta_roas": 2.85,
+        "blended_mer": 3.97,
+        "_note": "Meta API (1-4 aug, 7d-klick/1d-visning), hämtad 4 aug."
       },
       "orders_by_country": [
         {
@@ -754,10 +754,10 @@
         "orders": 1132
       },
       "meta": {
-        "spend_label": "441 605 kr",
-        "meta_roas": 2.05,
-        "blended_mer": 3.13,
-        "_note": "OBS: Meta-spend t.o.m. 30 jul — auth återansluten 4 aug, uppdateras nästa refresh."
+        "spend_label": "455 789 kr",
+        "meta_roas": 2.09,
+        "blended_mer": 3.04,
+        "_note": "Meta API (6 maj-3 aug, 7d-klick/1d-visning), hämtad 4 aug."
       },
       "orders_by_country": [
         {
