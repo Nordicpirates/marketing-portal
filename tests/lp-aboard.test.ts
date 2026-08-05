@@ -266,6 +266,56 @@ test("the upstream routes this service answers on are still /lp/aboard", () => {
   expect(handleAsset("/gift-offer/style.css")).toBeNull();
 });
 
+test("the header CTA sells the game and points at the picker", async () => {
+  const html = await handleAsset("/lp/aboard")!.text();
+  expect(html).toContain('<a class="np-nav-cta" href="#offer">Get the Game</a>');
+  // The old label sold one box to everybody, including the two thirds of visitors who
+  // came for a base game.
+  expect(html).not.toContain("Get the Big Box");
+});
+
+test("the picker says what it is for, right above it", async () => {
+  const html = await handleAsset("/lp/aboard")!.text();
+  expect(html).toContain("<h2>Choose your gift</h2>");
+  // Above the picker itself, not somewhere else on the page.
+  expect(html.indexOf("<h2>Choose your gift</h2>")).toBeLessThan(html.indexOf('id="giftform"'));
+});
+
+test("the sticky gift button is in the markup, starts hidden, and routes to the picker", async () => {
+  const html = await handleAsset("/lp/aboard")!.text();
+  const js = await handleAsset("/lp/aboard/page.js")!.text();
+  const css = await handleAsset("/lp/aboard/style.css")!.text();
+
+  // Present and out of the way until the page decides otherwise. What decides that is
+  // driven and asserted for real in tests/lp-aboard-page.test.ts.
+  expect(html).toContain('<button type="button" class="gift-jump" id="gift-jump" hidden>Pick your gift!</button>');
+  expect(js).toContain('document.getElementById("gift-jump")');
+
+  // Mobile and desktop both, so no media query may switch it off.
+  expect(css).toContain(".gift-jump{position:fixed");
+  expect(css).not.toMatch(/@media[^{]*\{[^}]*\.gift-jump\{display:none/);
+  // Clear of the iOS Safari bottom bar.
+  expect(css).toContain("env(safe-area-inset-bottom");
+});
+
+test("the blocked state offers a real choice and promises no delivery time", async () => {
+  const html = await handleAsset("/lp/aboard")!.text();
+
+  expect(html).toContain("That edition will not reach you");
+  expect(html).toContain("The English Base Game is not in our European stock");
+  expect(html).toContain("Your gift stands either way. Pick whichever suits you.");
+  expect(html).toContain("Give me the European edition");
+  expect(html).toContain("Give me the BIG BOX in English");
+
+  // The stock claim that could not be backed by what is visible in Shopify is gone
+  // from this state. The hero line elsewhere on the page is a separate question.
+  const blocked = html.slice(html.indexOf('id="tpl-blocked"'), html.indexOf('id="tpl-editions"'));
+  expect(blocked).not.toContain("Australia");
+  expect(blocked).not.toContain("US and Australian stock");
+  expect(blocked.toLowerCase()).not.toContain("unfortunately");
+  expect(blocked).not.toMatch(/\bweeks?\b|\bdays?\b/i);
+});
+
 test("the page never hardcodes a discount code in its markup", async () => {
   const html = await handleAsset("/lp/aboard")!.text();
   expect(html).not.toContain("KRAKEN-A7F2");
@@ -304,6 +354,74 @@ test("English base game inside Europe is blocked, and offered the BIG BOX instea
   // The BIG BOX is what this state sells, so it must carry the BIG BOX code.
   // A base code on a BIG BOX cart buys the visitor nothing.
   expect(data.code).toBe("FULLHOLD-B642");
+  expect(data.cartUrl).toContain(BIGBOX_EN);
+  expect(data.cartUrl).toContain(KRAKEN);
+  expect(data.cartUrl).toContain(COINS);
+  expect(data.cartUrl).toContain("discount=FULLHOLD-B642");
+});
+
+test("a blocked answer carries both codes, one per choice the page offers", async () => {
+  // The page asks a blocked visitor whether they want another edition of the game they
+  // picked or the BIG BOX. Those need different codes, both of them already decided
+  // here, so the answer carries both rather than the page guessing at one of them.
+  const res = await claim(
+    { email: "choice@example.com", offer: "base-kraken", edition: "en" },
+    { country: "FR" }
+  );
+  const data = await res.json();
+  expect(data.state).toBe("blocked");
+
+  // Unchanged: "code" and "cartUrl" still describe the BIG BOX this state offers.
+  expect(data.code).toBe("FULLHOLD-B642");
+  expect(data.cartUrl).toContain("discount=FULLHOLD-B642");
+
+  // The addition: the code this visitor was actually issued, which is what a Base Game
+  // cart in another edition needs. It is the same value the emailer reads out of the
+  // store, so the code on screen and the code in the email cannot drift apart.
+  expect(data.baseCode).toBe("KRAKEN-A7F2");
+
+  const row = storedLines().find((l) => l.email === "choice@example.com");
+  expect(row!.code).toBe(data.baseCode);
+  expect(row!.shownCode).toBe(data.code);
+});
+
+test("only a blocked answer carries a base code", async () => {
+  // Every other state already shows the code it issued, so a second one would be the
+  // same value twice and an invitation to show the wrong one.
+  const cases: [string, string, string][] = [
+    ["base-kraken", "de", "DE"],
+    ["base-kraken", "en", "US"],
+    ["bigbox-both", "en", "SE"],
+  ];
+  for (const [offer, edition, country] of cases) {
+    const res = await claim({ email: "nobase@example.com", offer, edition }, { country });
+    const data = await res.json();
+    expect(data.state).toBe("code");
+    expect("baseCode" in data).toBe(false);
+  }
+});
+
+test("a blocked visitor ends up with a code their cart accepts, whichever choice they make", async () => {
+  const { buildCartUrl } = await import("../lib/offer.js");
+
+  const res = await claim(
+    { email: "either@example.com", offer: "base-coins", edition: "en" },
+    { country: "SE" }
+  );
+  const data = await res.json();
+
+  // Choice one, the European edition: the game they picked in a language we can send,
+  // carrying the code they were issued. Both codes are scoped to a product rather than
+  // to one variant, so every edition qualifies.
+  for (const edition of ["de", "fr", "es", "it"]) {
+    const url = buildCartUrl("base-coins", edition, data.baseCode)!;
+    expect(url).toContain(`discount=${data.baseCode}`);
+    expect(url).toContain(COINS);
+    expect(url).not.toContain(BASE_EN);
+    expect(url).not.toContain("FULLHOLD-B642");
+  }
+
+  // Choice two, the BIG BOX: the cart the endpoint built, with the BIG BOX code on it.
   expect(data.cartUrl).toContain(BIGBOX_EN);
   expect(data.cartUrl).toContain(KRAKEN);
   expect(data.cartUrl).toContain(COINS);

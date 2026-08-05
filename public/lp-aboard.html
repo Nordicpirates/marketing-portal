@@ -30,7 +30,7 @@
       ><button type="button" class="np-lang" data-lang="fr">FR</button
       ><button type="button" class="np-lang" data-lang="es">ES</button>
     </div>
-    <a class="np-nav-cta" href="#offer">Get the Big Box</a>
+    <a class="np-nav-cta" href="#offer">Get the Game</a>
   </div>
 </header>
 
@@ -245,9 +245,9 @@
   <div class="wrap">
     <div class="offer-head">
       <p class="eyebrow">The offer</p>
-      <h2>Pick your box. We will load the hold.</h2>
-      <p class="lede">Same price as always. We have simply put something in there that is not
-      normally part of the deal.</p>
+      <h2>Choose your gift</h2>
+      <p class="lede">Pick your box and we will load the hold. Same price as always. We have simply
+      put something in there that is not normally part of the deal.</p>
     </div>
 
     <form id="giftform">
@@ -378,6 +378,11 @@
   </div>
 </section>
 
+<!-- The way back to the picker from anywhere on the page. It starts hidden and only
+     appears when nothing else on screen already leads there, and it goes for good
+     once a code has been issued. It points the way, it does not nag. -->
+<button type="button" class="gift-jump" id="gift-jump" hidden>Pick your gift!</button>
+
 <footer>
   <div class="wrap">
     <span>Nordic Pirates, Stockholm</span>
@@ -386,28 +391,55 @@
   </div>
 </footer>
 
-<!-- Result states. One per outcome the claim endpoint can produce. -->
+<!-- Result states. One per outcome the claim endpoint can produce, plus the two
+     screens the blocked visitor chooses between. -->
 
+<!-- Every code reveal uses this one: the plain success, and both endings of the
+     blocked choice. The heading, the line under it and the cart button all get
+     rewritten by the page for whichever code is being handed over. -->
 <template id="tpl-code">
   <div class="state">
-    <h3>Welcome aboard</h3>
-    <p>Your code is below and already on its way to your inbox.</p>
+    <h3 data-title>Welcome aboard</h3>
+    <p data-lead>Your code is below and already on its way to your inbox.</p>
     <div class="code"><span data-code></span><button type="button" data-copy>Copy</button></div>
     <a class="btn btn--cart" data-cart>Put the game and the gift in my cart</a>
     <p class="state-note" data-cart-note>One click loads both items.</p>
   </div>
 </template>
 
+<!-- Blocked. No code on screen yet: the visitor picks which of the two carts they
+     want first, and the code that fits it follows. Copy is Polly's, verbatim. The
+     two choices are a genuine trade, language against package, so neither button
+     is styled as the lesser one and neither promises a delivery time. -->
 <template id="tpl-blocked">
   <div class="state state--blocked">
-    <h3>We cannot ship that edition to you</h3>
-    <p>The English Base Game sits in our US and Australian stock, so it does not leave our
-    European warehouse right now. We are not going to take your money for something that
-    will not arrive.</p>
-    <p>Your Base Game code does not fit a BIG BOX cart, so here is the one that does.</p>
-    <div class="code"><span data-code></span><button type="button" data-copy>Copy</button></div>
-    <a class="btn btn--cart" data-cart>The BIG BOX in English, with both gifts</a>
-    <p class="state-note">Or choose another edition of the Base Game and keep your original code.</p>
+    <h3>That edition will not reach you</h3>
+    <p>The English Base Game is not in our European stock, so we cannot ship it to you from
+    here. We would rather say that now than take your money and explain later.</p>
+    <p>Your gift stands either way. Pick whichever suits you.</p>
+    <div class="choices">
+      <button type="button" class="choice" data-choice="edition">
+        <b>Give me the European edition</b>
+        <span>Same game, in your language.</span>
+      </button>
+      <button type="button" class="choice" data-choice="package">
+        <b>Give me the BIG BOX in English</b>
+        <span>The full hold, in English, and both gifts come with it.</span>
+      </button>
+    </div>
+  </div>
+</template>
+
+<!-- Choice one opens this: the same Base Game in a language we can actually send.
+     The buttons are built from the edition picker further up the page, so there is
+     one list of editions on this page and not two. -->
+<template id="tpl-editions">
+  <div class="state state--blocked">
+    <h3>Which edition should we ship</h3>
+    <p>Your gift and your code stay exactly as they are. Only the language changes.</p>
+    <div class="choices" data-editions></div>
+    <p class="state-note"><button type="button" class="choice-back" data-choice="package">Give me
+    the BIG BOX in English instead</button></p>
   </div>
 </template>
 
