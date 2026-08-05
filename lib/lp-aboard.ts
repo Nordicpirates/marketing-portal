@@ -7,8 +7,9 @@
 // No Shopify and no Brevo calls happen here. Submissions land in a JSONL file on
 // the persistent volume and a separate process (Bengt, via Brevo) reads it.
 
-import { appendFileSync, existsSync, readFileSync } from "fs";
+import { appendFileSync, existsSync } from "fs";
 import { join } from "path";
+import { createHash, randomBytes, timingSafeEqual } from "crypto";
 import { STATE_DIR } from "./state-dir.ts";
 import { EDITIONS, OFFERS, buildCartUrl } from "./offer.js";
 
@@ -72,34 +73,74 @@ const RATE_LIMIT_MAX = 10;
 const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000;
 const hits = new Map<string, number[]>();
 
-/** First of these headers with something in it. */
-function firstHeader(req: Request, names: string[]): string {
-  for (const name of names) {
-    const value = (req.headers.get(name) || "").trim();
-    if (value) return value;
-  }
-  return "";
+function header(req: Request, name: string): string {
+  return (req.headers.get(name) || "").trim();
 }
 
 // The pretty URL nordicpirates.com/lp/aboard reaches this service through a
 // Cloudflare Worker. On that hop the CF headers describe the worker, not the
-// person, so the worker forwards the real visitor as x-visitor-*. Those win when
-// present; direct traffic to marketing.nordicpirate.com has none of them and falls
-// back to the CF headers exactly as before.
-const IP_HEADERS = ["x-visitor-ip", "cf-connecting-ip"];
-const COUNTRY_HEADERS = ["x-visitor-country", "cf-ipcountry"];
+// person, so the worker forwards the real visitor as x-visitor-ip and
+// x-visitor-country.
+//
+// Those headers are just headers: anyone who can reach this origin directly can
+// send them. Believed unconditionally they would hand an attacker a new identity
+// per request - past the rate limit, past the Europe check, and straight into the
+// signup file. So they are believed ONLY when the request also carries the shared
+// secret the Worker holds. No secret, wrong secret, or no LP_PROXY_SECRET
+// configured on this side means we ignore them entirely and use the CF headers.
+//
+// Fails closed on purpose: an unset LP_PROXY_SECRET trusts nothing.
+const PROXY_SECRET = (process.env.LP_PROXY_SECRET || "").trim();
 
-function clientIp(req: Request): string {
-  const direct = firstHeader(req, IP_HEADERS);
-  if (direct) return direct;
+if (!PROXY_SECRET) {
+  console.warn(
+    "[lp/aboard] LP_PROXY_SECRET is not set: x-visitor-* headers will be ignored " +
+      "and geo/rate-limit fall back to the CF headers. Set it here and on the Worker " +
+      "before routing nordicpirates.com/lp/aboard at this service."
+  );
+}
+
+/**
+ * Constant-time secret check.
+ *
+ * Both sides are hashed first so the comparison is always over two 32 byte
+ * buffers. timingSafeEqual throws on a length mismatch, and calling it on the raw
+ * strings would both leak the secret's length and turn a wrong-length guess into a
+ * different, faster answer than a wrong-value guess.
+ */
+function secretMatches(presented: string): boolean {
+  if (!PROXY_SECRET || !presented) return false;
+  const a = createHash("sha256").update(presented).digest();
+  const b = createHash("sha256").update(PROXY_SECRET).digest();
+  return timingSafeEqual(a, b);
+}
+
+/** True when this request proved it came through our Worker. */
+function proxyIsTrusted(req: Request): boolean {
+  const presented = header(req, "x-lp-proxy-secret");
+  if (!presented) return false;
+  return secretMatches(presented);
+}
+
+function clientIp(req: Request, trusted: boolean): string {
+  if (trusted) {
+    const visitor = header(req, "x-visitor-ip");
+    if (visitor) return visitor;
+  }
+  const cf = header(req, "cf-connecting-ip");
+  if (cf) return cf;
   // Last resort. Take the first hop, which is the client the edge saw.
-  const fwd = req.headers.get("x-forwarded-for");
+  const fwd = header(req, "x-forwarded-for");
   if (fwd) return fwd.split(",")[0].trim();
   return "unknown";
 }
 
-function clientCountry(req: Request): string {
-  return firstHeader(req, COUNTRY_HEADERS).toUpperCase();
+function clientCountry(req: Request, trusted: boolean): string {
+  if (trusted) {
+    const visitor = header(req, "x-visitor-country");
+    if (visitor) return visitor.toUpperCase();
+  }
+  return header(req, "cf-ipcountry").toUpperCase();
 }
 
 /** True when this IP has already used its 10 submissions this hour. */
@@ -154,15 +195,34 @@ async function readBody(req: Request): Promise<ClaimBody> {
   return out;
 }
 
+// Logs go to the container log, which is a far looser thing than the signup file:
+// it is shipped around, tailed in chat, and kept for as long as nobody prunes it.
+// So nothing identifying goes in one. No email, no country, no IP, no discount
+// code, no honeypot value, no raw request body. Only what the endpoint DID.
+//
+// Every stored submission gets an event id that goes into both the log line and
+// the JSONL row, so a line in the log can be tied back to its record by whoever
+// is allowed to open the protected file. The file stays the record; the log is
+// only ever a trace of what happened.
+function newEventId(): string {
+  return randomBytes(6).toString("hex");
+}
+
 /** Append one submission to the JSONL store. Never silently drops a signup. */
-function record(entry: Record<string, unknown>): void {
+function record(entry: Record<string, unknown>, event: string): void {
   try {
-    appendFileSync(SIGNUPS_FILE, JSON.stringify(entry) + "\n");
-    console.log("[lp/aboard] stored", JSON.stringify(entry));
+    appendFileSync(SIGNUPS_FILE, JSON.stringify({ event, ...entry }) + "\n");
+    console.log(
+      `[lp/aboard] claim stored event=${event} state=${entry.state} offer=${entry.offer} edition=${entry.edition}`
+    );
   } catch (err) {
     // A lost signup is the worst outcome here, so shout about it. The visitor
     // still gets their code - we are not going to punish them for our disk.
-    console.error(`[lp/aboard] FAILED to write ${SIGNUPS_FILE}, signup not stored:`, JSON.stringify(entry), err);
+    console.error(
+      `[lp/aboard] FAILED to write ${SIGNUPS_FILE}, signup NOT stored event=${event} ` +
+        `state=${entry.state} offer=${entry.offer} edition=${entry.edition}:`,
+      err
+    );
   }
 }
 
@@ -222,9 +282,17 @@ export function handleAsset(path: string, req?: Request): Response | null {
 }
 
 export async function handleClaim(req: Request): Promise<Response> {
-  const ip = clientIp(req);
+  const trusted = proxyIsTrusted(req);
+
+  // Somebody sent visitor headers without the secret. Either the Worker is
+  // misconfigured or someone is trying them on. Worth seeing, without the values.
+  if (!trusted && (header(req, "x-visitor-ip") || header(req, "x-visitor-country"))) {
+    console.warn("[lp/aboard] x-visitor-* headers ignored: proxy secret missing or wrong");
+  }
+
+  const ip = clientIp(req, trusted);
   if (rateLimited(ip)) {
-    console.warn(`[lp/aboard] rate limited ${ip}`);
+    console.warn("[lp/aboard] claim rejected reason=rate-limited");
     return Response.json({ error: "Too many attempts, try again later" }, { status: 429 });
   }
 
@@ -232,27 +300,35 @@ export async function handleClaim(req: Request): Promise<Response> {
   const email = (body.email || "").trim();
   const offer = (body.offer || "").trim();
   const edition = (body.edition || "").trim();
-  const action = (body.action || "").trim();
   const honeypot = (body.company || "").trim();
-  const country = clientCountry(req);
+  const country = clientCountry(req, trusted);
 
   // Honeypot is invisible to humans, so anything in it is a bot.
   if (honeypot) {
-    console.warn(`[lp/aboard] honeypot filled from ${ip}, value: ${JSON.stringify(honeypot)}`);
+    console.warn("[lp/aboard] claim rejected reason=honeypot");
     return Response.json({ error: "Bad request" }, { status: 400 });
+  }
+
+  // This endpoint proves nothing about who owns the address it is given, so it
+  // must not carry an instruction about somebody's mailing list. Anyone could post
+  // a victim's address and have us write down that they asked to be re-subscribed.
+  // Any action field at all is refused, and no action is ever stored, so the Brevo
+  // job downstream has nothing here it could mistake for consent. Putting people
+  // back on a list needs a confirmed-email flow, which is not this.
+  if ("action" in body) {
+    console.warn("[lp/aboard] claim rejected reason=action-not-accepted");
+    return Response.json({ error: "Invalid action" }, { status: 400 });
   }
 
   const problems: string[] = [];
   if (email.length > EMAIL_MAX || !EMAIL_RE.test(email)) problems.push("email");
   if (!OFFERS.includes(offer)) problems.push("offer");
   if (!EDITIONS.includes(edition)) problems.push("edition");
-  if (action && action !== "rejoin") problems.push("action");
 
   if (problems.length) {
-    console.warn(
-      `[lp/aboard] rejected from ${ip}, bad fields: ${problems.join(",")}, raw:`,
-      JSON.stringify({ email, offer, edition, action, country })
-    );
+    // Field names only. The values are attacker controlled and one of them is an
+    // email address, so neither belongs in a log line.
+    console.warn(`[lp/aboard] claim rejected reason=invalid-fields fields=${problems.join(",")}`);
     return Response.json({ error: `Invalid ${problems.join(", ")}` }, { status: 400 });
   }
 
@@ -273,25 +349,32 @@ export async function handleClaim(req: Request): Promise<Response> {
     ? { offer: "bigbox-both", edition, code: CODE_BIGBOX }
     : { offer, edition, code: issuedCode };
 
-  // Every submission is stored, blocked and rejoin included. Blocked people still
-  // asked for a code, and Bengt still needs to mail it to them.
+  // Every submission is stored, blocked ones included. Blocked people still asked
+  // for a code, and Bengt still needs to mail it to them.
   //
   // "code" and "shownCode" are two fields more than issue #2 asked for. The codes are
   // meant to rotate and the emailer reads this file later, so it cannot re-derive
   // them: without them, a rotation means everyone who signed up before it gets mailed
   // a code they never saw. They differ only for a blocked visitor, who is issued the
   // Base Game code but is shown the BIG BOX one on screen.
-  record({
-    ts: new Date().toISOString(),
-    email,
-    offer,
-    edition,
-    country: country || null,
-    action: action || null,
-    state,
-    code: issuedCode,
-    shownCode: target.code,
-  });
+  //
+  // There is no "action" field any more. Nothing this endpoint receives is proof of
+  // anything about the address, so it stores facts about the request and no
+  // instructions about anyone's subscription.
+  const event = newEventId();
+  record(
+    {
+      ts: new Date().toISOString(),
+      email,
+      offer,
+      edition,
+      country: country || null,
+      state,
+      code: issuedCode,
+      shownCode: target.code,
+    },
+    event
+  );
 
   // "code" and "cartUrl" always describe the state being shown, so they agree with
   // each other. The page rebuilds the same link from the same shared module, so if

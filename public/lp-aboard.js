@@ -90,14 +90,14 @@ function render(kind, data) {
     });
   }
 
-  const rejoin = node.querySelector("[data-rejoin]");
-  if (rejoin) rejoin.addEventListener("click", () => submit("rejoin"));
-
   result.replaceChildren(node);
   result.scrollIntoView({ block: "nearest", behavior: "smooth" });
 }
 
-async function submit(action) {
+// No "action" is ever sent. The endpoint refuses one, because a form post proves
+// nothing about who owns the address in it and must not carry an instruction about
+// somebody's mailing list. Re-subscribing needs a confirmed-email flow, not this.
+async function submit() {
   const offer = chosen("offer");
   const edition = chosen("edition");
   const email = (emailInput.value || "").trim();
@@ -118,7 +118,7 @@ async function submit(action) {
     const res = await fetch("/lp/aboard/claim", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, offer, edition, company, ...(action ? { action } : {}) }),
+      body: JSON.stringify({ email, offer, edition, company }),
     });
 
     const data = await res.json().catch(() => ({}));
@@ -136,10 +136,7 @@ async function submit(action) {
     const target = targetFor(data.state, offer, edition);
     const cartUrl = buildCartUrl(target.offer, target.edition, data.code);
 
-    // A rejoin that worked gets its own confirmation. Everything else renders the
-    // state the endpoint named.
-    const kind = action === "rejoin" && data.state === "code" ? "rejoin" : data.state;
-    render(kind, { code: data.code, cartUrl, offer: target.offer });
+    render(data.state, { code: data.code, cartUrl, offer: target.offer });
   } catch (err) {
     console.error("[lp/aboard] claim request never completed:", err);
     showError("We could not reach the ship. Check your connection and try again.");
@@ -151,7 +148,7 @@ async function submit(action) {
 
 form.addEventListener("submit", (event) => {
   event.preventDefault();
-  submit(null);
+  submit();
 });
 
 // The nav language chips pick the edition. There is no translated version of this

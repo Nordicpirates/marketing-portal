@@ -15,6 +15,10 @@ import { join } from "path";
 const TEST_STATE = mkdtempSync(join(tmpdir(), "lp-aboard-test-"));
 process.env.STATE_DIR = TEST_STATE;
 
+// The Worker's shared secret. Set before the module reads it at import time.
+const PROXY_SECRET = "test-proxy-secret-2f8a1c";
+process.env.LP_PROXY_SECRET = PROXY_SECRET;
+
 const SIGNUPS = join(TEST_STATE, "lp-aboard-signups.jsonl");
 
 // Variant IDs from the authoritative map in issue #2.
@@ -193,12 +197,13 @@ test("every EU, EEA and GB country blocks the English base game", async () => {
   }
 });
 
-test("behind the Cloudflare Worker, the visitor headers decide, not the proxy hop", async () => {
+test("with the proxy secret, the visitor headers decide, not the proxy hop", async () => {
   // The worker sits in front of nordicpirates.com/lp/aboard, so the CF headers
   // describe the worker. x-visitor-* carries the person and has to win.
   const blocked = await claimWithHeaders(
     { email: "proxied@example.com", offer: "base-kraken", edition: "en" },
     {
+      "x-lp-proxy-secret": PROXY_SECRET,
       "x-visitor-country": "SE",
       "x-visitor-ip": "203.0.113.5",
       // What the worker hop itself looks like: a US edge, nowhere near the visitor.
@@ -214,9 +219,75 @@ test("behind the Cloudflare Worker, the visitor headers decide, not the proxy ho
   // And the other way round: a real visitor outside Europe behind a European hop.
   const allowed = await claimWithHeaders(
     { email: "proxied-us@example.com", offer: "base-kraken", edition: "en" },
-    { "x-visitor-country": "US", "x-visitor-ip": "203.0.113.6", "CF-IPCountry": "SE" }
+    {
+      "x-lp-proxy-secret": PROXY_SECRET,
+      "x-visitor-country": "US",
+      "x-visitor-ip": "203.0.113.6",
+      "CF-IPCountry": "SE",
+    }
   );
   expect((await allowed.json()).state).toBe("code");
+});
+
+test("without the proxy secret, forged visitor headers are ignored", async () => {
+  // This is the attack: hit the origin directly, claim to be in the US, and walk
+  // past the Europe restriction. The CF header is what counts, so it stays blocked.
+  const noSecret = await claimWithHeaders(
+    { email: "forged@example.com", offer: "base-kraken", edition: "en" },
+    { "x-visitor-country": "US", "x-visitor-ip": "203.0.113.50", "CF-IPCountry": "SE" }
+  );
+  expect((await noSecret.json()).state).toBe("blocked");
+  expect(storedLines().find((l) => l.email === "forged@example.com")?.country).toBe("SE");
+
+  // A wrong secret is no better than none.
+  const wrongSecret = await claimWithHeaders(
+    { email: "forged2@example.com", offer: "base-kraken", edition: "en" },
+    {
+      "x-lp-proxy-secret": "not-the-secret",
+      "x-visitor-country": "US",
+      "CF-IPCountry": "SE",
+    }
+  );
+  expect((await wrongSecret.json()).state).toBe("blocked");
+
+  // Nor is a secret that merely starts right, or has the right length.
+  for (const guess of [PROXY_SECRET.slice(0, -1), PROXY_SECRET + "x", "x".repeat(PROXY_SECRET.length)]) {
+    const res = await claimWithHeaders(
+      { email: "forged3@example.com", offer: "base-kraken", edition: "en" },
+      { "x-lp-proxy-secret": guess, "x-visitor-country": "US", "CF-IPCountry": "SE" }
+    );
+    expect((await res.json()).state).toBe("blocked");
+  }
+});
+
+test("without the secret, a rotating x-visitor-ip cannot walk past the rate limit", async () => {
+  // The other half of the forgery: a new identity per request to get unlimited
+  // writes into the signup file. Unsigned, every one of these is the same IP.
+  const hop = { "CF-Connecting-IP": "198.51.100.77" };
+  let refused = 0;
+
+  for (let i = 0; i < 14; i++) {
+    const res = await claimWithHeaders(
+      { email: "flood@example.com", offer: "base-kraken", edition: "de" },
+      { ...hop, "x-visitor-ip": `203.0.113.${150 + i}` }
+    );
+    if (res.status === 429) refused++;
+  }
+
+  expect(refused).toBeGreaterThan(0);
+});
+
+test("with the secret, each real visitor gets their own rate limit budget", async () => {
+  // Every request through the worker shares one CF-Connecting-IP. If that were what
+  // we counted, one busy visitor would lock out everybody else behind the proxy.
+  const hop = { "x-lp-proxy-secret": PROXY_SECRET, "CF-Connecting-IP": "198.51.100.201" };
+  for (let i = 0; i < 12; i++) {
+    const res = await claimWithHeaders(
+      { email: "crowd@example.com", offer: "base-kraken", edition: "de" },
+      { ...hop, "x-visitor-ip": `203.0.113.${200 + i}` }
+    );
+    expect(res.status).toBe(200);
+  }
 });
 
 test("direct traffic with only the CF headers still works unchanged", async () => {
@@ -226,19 +297,6 @@ test("direct traffic with only the CF headers still works unchanged", async () =
   );
   expect((await res.json()).state).toBe("blocked");
   expect(storedLines().find((l) => l.email === "direct@example.com")?.country).toBe("SE");
-});
-
-test("the rate limit counts the real visitor, not the shared proxy hop", async () => {
-  // Every request through the worker carries the same CF-Connecting-IP. If that were
-  // what we counted, one busy visitor would rate limit everybody else.
-  const proxyHop = { "CF-Connecting-IP": "198.51.100.201" };
-  for (let i = 0; i < 12; i++) {
-    const res = await claimWithHeaders(
-      { email: "crowd@example.com", offer: "base-kraken", edition: "de" },
-      { ...proxyHop, "x-visitor-ip": `203.0.113.${100 + i}` }
-    );
-    expect(res.status).toBe(200);
-  }
 });
 
 test("English base game outside Europe is fine", async () => {
@@ -359,28 +417,36 @@ test("a filled honeypot is rejected and never stored", async () => {
   expect(storedLines().length).toBe(before);
 });
 
-test("rejoin is accepted and recorded as such", async () => {
-  const res = await claim({
-    email: "back@example.com",
-    offer: "base-coins",
-    edition: "fr",
-    action: "rejoin",
-  });
-  expect(res.status).toBe(200);
-  expect((await res.json()).state).toBe("code");
+test("any action field is refused, and no action is ever stored", async () => {
+  // This endpoint cannot prove who owns the address it is given. Anyone could post
+  // a victim's address, so it must not accept an instruction about their mailing
+  // list. rejoin included: there is no such thing here any more.
+  const before = storedLines().length;
 
-  const entry = storedLines().find((l) => l.email === "back@example.com");
-  expect(entry?.action).toBe("rejoin");
+  for (const action of ["rejoin", "unsubscribe-everyone", "", "REJOIN"]) {
+    const res = await claim({ email: "back@example.com", offer: "base-coins", edition: "fr", action });
+    expect(res.status).toBe(400);
+  }
+
+  expect(storedLines().length).toBe(before);
+
+  // And a clean submission never grows an action field of its own.
+  const ok = await claim({ email: "clean@example.com", offer: "base-coins", edition: "fr" });
+  expect(ok.status).toBe(200);
+
+  const entry = storedLines().find((l) => l.email === "clean@example.com");
+  expect(entry).toBeDefined();
+  expect("action" in entry!).toBe(false);
 });
 
-test("an unknown action is rejected rather than quietly ignored", async () => {
-  const res = await claim({
-    email: "a@example.com",
-    offer: "base-kraken",
-    edition: "de",
-    action: "unsubscribe-everyone",
-  });
-  expect(res.status).toBe(400);
+test("the page has no rejoin control and no rejoin state", async () => {
+  const html = await handleAsset("/lp/aboard")!.text();
+  const js = await handleAsset("/lp/aboard/page.js")!.text();
+  for (const source of [html, js]) {
+    expect(source).not.toContain("rejoin");
+    expect(source).not.toContain("Come back aboard");
+  }
+  expect(html).not.toContain("tpl-rejoin");
 });
 
 test("every submission lands in the JSONL store, blocked ones included", async () => {
@@ -404,6 +470,73 @@ test("every submission lands in the JSONL store, blocked ones included", async (
   // Issued the base code, shown the BIG BOX one. The emailer needs both.
   expect(blocked!.code).toBe("KRAKEN-A7F2");
   expect(blocked!.shownCode).toBe("FULLHOLD-B642");
+});
+
+test("logs carry no PII, no codes and no raw payload, only the event and what happened", async () => {
+  // Container logs get shipped around and tailed in chat. The protected JSONL file
+  // is the record; a log line is only ever a trace of what the endpoint did.
+  const lines: string[] = [];
+  const original = { log: console.log, warn: console.warn, error: console.error };
+  const capture = (...args: unknown[]) => {
+    lines.push(args.map((a) => (typeof a === "string" ? a : JSON.stringify(a))).join(" "));
+  };
+  console.log = capture;
+  console.warn = capture;
+  console.error = capture;
+
+  const email = "very.private.person@secret-domain.example";
+  try {
+    // A success, a blocked one, a bad email, a honeypot hit, and a refused action.
+    await claimWithHeaders(
+      { email, offer: "base-kraken", edition: "de" },
+      { "CF-IPCountry": "DE", "CF-Connecting-IP": "203.0.113.99" }
+    );
+    await claimWithHeaders(
+      { email, offer: "base-kraken", edition: "en" },
+      { "CF-IPCountry": "SE", "CF-Connecting-IP": "203.0.113.98" }
+    );
+    await claim({ email: "not-an-email-at-all", offer: "base-kraken", edition: "de" });
+    await claim({ email, offer: "base-kraken", edition: "de", company: "SpamCorp AB" });
+    await claim({ email, offer: "base-kraken", edition: "de", action: "rejoin" });
+  } finally {
+    console.log = original.log;
+    console.warn = original.warn;
+    console.error = original.error;
+  }
+
+  expect(lines.length).toBeGreaterThan(0);
+  const logged = lines.join("\n");
+
+  for (const secret of [
+    email,
+    "secret-domain.example",
+    "not-an-email-at-all",
+    "SpamCorp AB", // honeypot value
+    "KRAKEN-A7F2", // discount codes
+    "FULLHOLD-B642",
+    "203.0.113.99", // visitor IPs
+    "203.0.113.98",
+    "DE", // country. Checked case sensitively below, "DE" never appears alone.
+    "SE",
+  ]) {
+    expect(logged).not.toContain(secret);
+  }
+
+  // What it SHOULD say: the event id and the non-sensitive shape of the request.
+  expect(logged).toContain("claim stored event=");
+  expect(logged).toContain("offer=base-kraken");
+  expect(logged).toContain("reason=honeypot");
+  expect(logged).toContain("reason=invalid-fields fields=email");
+  expect(logged).toContain("reason=action-not-accepted");
+});
+
+test("the event id ties a log line back to its stored row", async () => {
+  const res = await claim({ email: "traced@example.com", offer: "base-kraken", edition: "de" });
+  expect(res.status).toBe(200);
+
+  const entry = storedLines().find((l) => l.email === "traced@example.com");
+  expect(entry).toBeDefined();
+  expect(entry!.event).toMatch(/^[0-9a-f]{12}$/);
 });
 
 test("the JSONL store is not reachable over HTTP", () => {

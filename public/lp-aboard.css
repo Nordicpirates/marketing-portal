@@ -1,7 +1,9 @@
 /* Gift offer page /lp/aboard. Lifted from Polly's approved v20 mockup.
-   Rules for the review-only markup (.review-flag, .state--left, .rejoin form)
-   are gone with that markup. Everything after "PAGE STATES" is new: the result
-   panel is rendered by JS now instead of sitting in the HTML four times over. */
+   Rules for markup this page does not have are gone with it: the review-only
+   flags and states, and the rejoin control, which was dropped because this
+   endpoint cannot prove who owns the address it is given. Everything after
+   "PAGE STATES" is new: the result panel is rendered by JS now instead of
+   sitting in the HTML four times over. */
 
 :root{
 --navy:#0d1117;--navy-mid:#141b26;--gold:#c8a96e;--gold-light:#e0c28e;--cream:#f5f0e8;--cream-deep:#ede7d9;--body-text:#3d3d4a;--teal:#7f652a;--teal-deep:#141b26;--teal-soft:#a2803f;
@@ -204,7 +206,6 @@ text-decoration:none}
 .states{display:grid;gap:1.1rem}
 .state{border:1px solid var(--line);border-left:3px solid var(--teal);
 background:#fff;padding:1.35rem 1.5rem;border-radius:2px}
-.state--known{border-left-color:var(--brass)}
 .state--blocked{border-left-color:var(--red)}
 .state h3{font-size:1.05rem;margin:0 0 .4rem}
 .state p{font-family:var(--sans);font-size:.9rem;color:var(--muted);margin:0 0 1rem}
@@ -216,10 +217,6 @@ align-items:center;gap:1rem}
 font-weight:700;background:none;border:1px solid var(--line);color:var(--teal);
 padding:.42rem .7rem;border-radius:2px;cursor:pointer}
 .state-note{font-family:var(--sans);font-size:.76rem;color:var(--muted);margin:.85rem 0 0}
-.linkbtn{font:inherit;color:var(--teal);background:none;border:0;padding:0;cursor:pointer;
-text-decoration:underline;text-underline-offset:2px}
-.linkbtn:hover{color:var(--teal-soft)}
-.linkbtn:focus-visible{outline:3px solid var(--teal-soft);outline-offset:2px}
 
 footer{background:var(--dark);color:#8a8f9a;padding:2.75rem 0;
 font-family:var(--sans);font-size:.82rem;border-top:1px solid var(--line-dark)}
