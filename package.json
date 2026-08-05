@@ -4,5 +4,8 @@
   "scripts": {
     "start": "bun run server.ts",
     "test": "bun test tests/"
+  },
+  "devDependencies": {
+    "happy-dom": "^20.11.1"
   }
 }
