@@ -19,7 +19,12 @@ process.env.STATE_DIR = TEST_STATE;
 const PROXY_SECRET = "test-proxy-secret-2f8a1c";
 process.env.LP_PROXY_SECRET = PROXY_SECRET;
 
-const SIGNUPS = join(TEST_STATE, "lp-aboard-signups.jsonl");
+// Where the store actually put the file, asked of the store itself rather than
+// rebuilt from TEST_STATE here. bun test shares one module cache across test files,
+// so the first file to import lib/state-dir.ts fixes STATE_DIR for the whole run and
+// a second test file's scratch dir is ignored. Guessing the path locally would then
+// read an empty directory while the code under test writes somewhere else.
+let SIGNUPS: string;
 
 // Variant IDs from the authoritative map in issue #2.
 const BASE_EN = "51542813409627";
@@ -36,6 +41,7 @@ beforeAll(async () => {
   const mod = await import("../lib/lp-aboard.ts");
   handleClaim = mod.handleClaim;
   handleAsset = mod.handleAsset;
+  SIGNUPS = (await import("../lib/lp-aboard-store.ts")).SIGNUPS_FILE;
 });
 
 /**

@@ -5,16 +5,18 @@
 // so server.ts routes /lp/* before the auth check on purpose.
 //
 // No Shopify and no Brevo calls happen here. Submissions land in a JSONL file on
-// the persistent volume and a separate process (Bengt, via Brevo) reads it.
+// the persistent volume and a separate process (Bengt, via Brevo) reads it. The
+// files themselves are in lib/lp-aboard-store.ts, and the authenticated routes the
+// emailer reads them through are in lib/lp-aboard-admin.ts.
 
-import { appendFileSync, existsSync } from "fs";
+import { existsSync } from "fs";
 import { join } from "path";
-import { createHash, randomBytes, timingSafeEqual } from "crypto";
-import { STATE_DIR } from "./state-dir.ts";
+import { randomBytes } from "crypto";
+import { SIGNUPS_FILE, appendSignup } from "./lp-aboard-store.ts";
+import { secretMatches } from "./secret.ts";
 import { EDITIONS, OFFERS, buildCartUrl } from "./offer.js";
 
 const REPO_DIR = join(import.meta.dir, "..");
-const SIGNUPS_FILE = join(STATE_DIR, "lp-aboard-signups.jsonl");
 
 // One code per offer, because they are two different Shopify BXGY rules: buying a
 // base game grants one free gift, buying the BIG BOX grants both. A single shared
@@ -117,25 +119,14 @@ if (!PROXY_SECRET) {
 }
 
 /**
- * Constant-time secret check.
+ * True when this request proved it came through our Worker.
  *
- * Both sides are hashed first so the comparison is always over two 32 byte
- * buffers. timingSafeEqual throws on a length mismatch, and calling it on the raw
- * strings would both leak the secret's length and turn a wrong-length guess into a
- * different, faster answer than a wrong-value guess.
+ * The comparison itself lives in lib/secret.ts, because the emailer's door in
+ * lib/lp-aboard-admin.ts checks its own secret exactly the same way and two copies
+ * of a constant-time compare is one copy too many.
  */
-function secretMatches(presented: string): boolean {
-  if (!PROXY_SECRET || !presented) return false;
-  const a = createHash("sha256").update(presented).digest();
-  const b = createHash("sha256").update(PROXY_SECRET).digest();
-  return timingSafeEqual(a, b);
-}
-
-/** True when this request proved it came through our Worker. */
 function proxyIsTrusted(req: Request): boolean {
-  const presented = header(req, "x-lp-proxy-secret");
-  if (!presented) return false;
-  return secretMatches(presented);
+  return secretMatches(header(req, "x-lp-proxy-secret"), PROXY_SECRET);
 }
 
 // Both of these are only ever called after the secret has been checked, so they
@@ -231,7 +222,7 @@ function newEventId(): string {
  */
 function record(entry: Record<string, unknown>, event: string): boolean {
   try {
-    appendFileSync(SIGNUPS_FILE, JSON.stringify({ event, ...entry }) + "\n");
+    appendSignup({ event, ...entry });
     console.log(
       `[lp/aboard] claim stored event=${event} state=${entry.state} offer=${entry.offer} edition=${entry.edition}`
     );
