@@ -97,8 +97,10 @@ export async function loadCart(offer, edition, code) {
   try {
     const res = await fetch(link, { credentials: "same-origin" });
     if (!res.ok) {
+      // The link is not in this line on purpose: it carries the code, and codes stay
+      // out of logs on both sides of the wire.
       console.warn(
-        `[lp/aboard] discount ${link} answered ${res.status}, landing through the link instead`
+        `[lp/aboard] discount request answered ${res.status}, landing through the link instead`
       );
       return { ok: true, url: link };
     }

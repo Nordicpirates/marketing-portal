@@ -206,7 +206,9 @@ function showCode({ title, lead, code, offer, edition, retry }) {
 }
 
 function goTo(url) {
-  console.log(`[lp/aboard] cart is loaded, going to ${url}`);
+  // Not the url: on the discount-fallback path it carries the code, and codes stay
+  // out of logs. Which road was taken is visible one line up in loadCart's own logs.
+  console.log("[lp/aboard] cart is loaded, going to it");
   window.location.assign(url);
 }
 
