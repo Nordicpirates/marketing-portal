@@ -381,8 +381,27 @@ export async function handleClaim(req: Request): Promise<Response> {
     return Response.json({ error: `Invalid ${problems.join(", ")}` }, { status: 400 });
   }
 
-  const blocked =
-    edition === "en" && BLOCKED_OFFERS.has(offer) && EUROPE.has(country);
+  // The English Base Game is the one combination we cannot ship into Europe. If the
+  // trusted hop tells us nothing about where the visitor is, we do not know whether
+  // this is allowed, and the honest answer to "we do not know" is not "yes". An
+  // empty country used to read as "not in Europe" and sold them a box that would
+  // never arrive. Unknown now lands on blocked, which offers the BIG BOX instead:
+  // worst case someone outside Europe is offered the wrong thing and can pick
+  // another edition, rather than being charged for something we cannot send.
+  //
+  // Only this combination is affected. A known country, any other edition and the
+  // BIG BOX all behave exactly as before.
+  const restricted = edition === "en" && BLOCKED_OFFERS.has(offer);
+  const countryKnown = country !== "";
+
+  if (restricted && !countryKnown) {
+    console.warn(
+      "[lp/aboard] country missing from trusted hop, treating the English base game " +
+        "as not shippable: check the Worker forwards x-visitor-country"
+    );
+  }
+
+  const blocked = restricted && (!countryKnown || EUROPE.has(country));
   const state = blocked ? "blocked" : "code";
 
   // The code issued for what they picked. This is the one that gets emailed, and

@@ -404,6 +404,52 @@ test("static assets stay public: only the claim endpoint needs the secret", () =
   }
 });
 
+test("an unknown country blocks the English base game rather than guessing", async () => {
+  // The one combination we cannot ship into Europe. If the trusted hop says nothing
+  // about where the visitor is, we do not know whether this is allowed, and the
+  // honest answer to "we do not know" is not "yes". It used to read as "not in
+  // Europe" and sell a box that would never arrive.
+
+  // Header absent entirely.
+  const missing = await claim({ email: "nocountry@example.com", offer: "base-kraken", edition: "en" });
+  expect(missing.status).toBe(200);
+  expect((await missing.json()).state).toBe("blocked");
+
+  // Header present but empty, which is what a half-configured Worker sends.
+  const empty = await claimWithHeaders(
+    { email: "emptycountry@example.com", offer: "base-coins", edition: "en" },
+    { "x-lp-proxy-secret": PROXY_SECRET, "x-visitor-ip": "203.0.113.80", "x-visitor-country": "" }
+  );
+  expect((await empty.json()).state).toBe("blocked");
+
+  // Stored the same way as any other unknown country: null, not invented.
+  for (const email of ["nocountry@example.com", "emptycountry@example.com"]) {
+    const row = storedLines().find((l) => l.email === email);
+    expect(row).toBeDefined();
+    expect(row!.country).toBeNull();
+    expect(row!.state).toBe("blocked");
+  }
+});
+
+test("an unknown country changes nothing for other editions or the BIG BOX", async () => {
+  // Only the English base game is restricted. Everything else ships from Europe, so
+  // not knowing where someone is has no bearing on it.
+  for (const edition of ["de", "fr", "es", "it"]) {
+    const res = await claim({ email: "nc@example.com", offer: "base-kraken", edition });
+    expect((await res.json()).state).toBe("code");
+  }
+
+  const bigbox = await claim({ email: "nc-big@example.com", offer: "bigbox-both", edition: "en" });
+  expect((await bigbox.json()).state).toBe("code");
+
+  // And a known non-European country is still fine for the English base game.
+  const known = await claim(
+    { email: "nc-us@example.com", offer: "base-kraken", edition: "en" },
+    { country: "US" }
+  );
+  expect((await known.json()).state).toBe("code");
+});
+
 test("English base game outside Europe is fine", async () => {
   for (const country of ["US", "AU", "CA", "CH", "JP"]) {
     const res = await claim(
