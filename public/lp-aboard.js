@@ -1,18 +1,30 @@
 // Page behaviour for /gift-offer.
 //
-// The form posts to /gift-offer/claim and the answer decides what gets rendered into
-// #result. Cart links are built here, in the browser, from the offer and edition the
-// visitor chose plus the code the endpoint sent back. The codes are never written into
-// this file or the HTML - they rotate.
+// The form posts to /gift-offer/claim and the answer decides what happens next. On a
+// plain success that is not a panel to read: the page loads the visitor's real Shopify
+// cart with the game, the gift and the code, then takes them to /cart. The cart calls
+// themselves live in ./cart.js. Codes are never written into this file or the HTML -
+// they rotate, and the only one this page ever knows is the one it was just handed.
 
 import { buildCartUrl } from "./offer.js";
+import { loadCart } from "./cart.js";
 
 const form = document.getElementById("giftform");
 const result = document.getElementById("result");
 const submitBtn = document.getElementById("submit-btn");
 const emailInput = document.getElementById("email");
 const offerSection = document.getElementById("offer");
-const claimSection = document.querySelector(".claim");
+const claimTitle = document.getElementById("claim-title");
+
+// The demo and test escape. With ?no_redirect=1 the page hands over the code and its
+// cart link the old way and touches nobody's cart, so the live flow can be checked on
+// the real shop without emptying and refilling the reviewer's own basket.
+const noRedirect = new URLSearchParams(window.location.search).get("no_redirect") === "1";
+
+// How long "Code unlocked" stays on screen before the page navigates. Long enough to
+// be read, short enough that nobody wonders whether the button worked. The cart calls
+// run during it, so this is a floor on the wait and not an addition to it.
+const CONFIRM_MS = 800;
 
 // One state serves every offer, so the cart button has to say what it is really
 // loading. A BIG BOX cart is three items, not "the game and the gift".
@@ -21,6 +33,25 @@ const CART_COPY = {
     label: "Put the BIG BOX and both gifts in my cart",
     note: "One click loads all three items.",
   },
+};
+
+// The heading over the email field names the gift they just clicked, so the ask reads
+// as the last step of what they were already doing rather than a toll gate. Polly's
+// copy, one line per box, because "both gifts are yours" is not "the Kraken is yours"
+// with a word swapped.
+const CLAIM_TITLES = {
+  "base-kraken": "One step and the Kraken is yours",
+  "base-coins": "One step and the gold coins are yours",
+  "bigbox-both": "One step and both gifts are yours",
+};
+const CLAIM_TITLE_FALLBACK = "One step and your gift is yours";
+
+// Shown instead of the cart when the cart could not be built. It promises nothing
+// about anybody's inbox: on one branch of the blocked flow the code on screen is not
+// the code we mail, and this copy is used by every branch.
+const CART_FAILED = {
+  title: "Your code is safe, your cart is not loaded",
+  lead: "We could not load your cart just now. Your code is below and it still works, so nothing is lost. Try again, or use the cart button.",
 };
 
 function chosen(name) {
@@ -36,9 +67,44 @@ function scrollToSection(el) {
   el.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
+/**
+ * Wait for the page to stop moving, then run.
+ *
+ * A phone is still settling when a tap lands: the keyboard slides up, the address bar
+ * changes height, the sticky nav re-measures. Scrolling in the same tick aims at the
+ * page as it was before all that and stops short of where the visitor needs to be.
+ * A frame plus a task later, the layout is the one they will actually see.
+ */
+function afterLayout(run) {
+  if (typeof window.requestAnimationFrame !== "function") {
+    console.warn("[lp/aboard] no requestAnimationFrame here, scrolling without waiting");
+    setTimeout(run, 0);
+    return;
+  }
+  window.requestAnimationFrame(() => setTimeout(run, 0));
+}
+
+/**
+ * Put the visitor in the email field.
+ *
+ * The field, not the section around it. On a phone the claim section starts a heading
+ * and two paragraphs above the input, so scrolling to the section leaves the thing
+ * they have to fill in below the fold. Centred, so it is clear of the sticky nav at
+ * the top and of the keyboard at the bottom.
+ */
+function goToEmail() {
+  // Focus first, so it is still the visitor's own tap that opens the keyboard on a
+  // phone, and scroll after, so the smooth scroll has the last word on where the page
+  // ends up instead of fighting the jump focus() would otherwise cause.
+  emailInput.focus({ preventScroll: true });
+  afterLayout(() => emailInput.scrollIntoView({ behavior: "smooth", block: "center" }));
+}
+
 function showError(message) {
   render("error", { message });
 }
+
+const wait = (ms) => new Promise((done) => setTimeout(done, ms));
 
 /**
  * Swap #result for one of the <template> states.
@@ -84,6 +150,18 @@ function render(kind, data = {}) {
     }
   }
 
+  // Only the state that follows a cart we could not build has anything to retry.
+  // Everywhere else the button is taken out rather than left on screen doing nothing.
+  const retry = node.querySelector("[data-retry]");
+  if (retry) {
+    if (data.retry) {
+      retry.hidden = false;
+      retry.addEventListener("click", data.retry);
+    } else {
+      retry.remove();
+    }
+  }
+
   const copy = node.querySelector("[data-copy]");
   if (copy && data.code) {
     copy.addEventListener("click", async () => {
@@ -122,9 +200,52 @@ function render(kind, data = {}) {
 }
 
 /** Hand over one code, with the cart link that this exact code fits. */
-function showCode({ title, lead, code, offer, edition }) {
+function showCode({ title, lead, code, offer, edition, retry }) {
   const cartUrl = buildCartUrl(offer, edition, code);
-  render("code", { title, lead, code, cartUrl, offer });
+  render("code", { title, lead, code, cartUrl, offer, retry });
+}
+
+function goTo(url) {
+  console.log(`[lp/aboard] cart is loaded, going to ${url}`);
+  window.location.assign(url);
+}
+
+/**
+ * Finish one claim: the code is decided, now put it to work.
+ *
+ * The visitor asked for a game, not for a code to copy somewhere, so the page loads
+ * their cart and takes them to it. The code goes on the cart on the way in. What they
+ * see in between says so, and stays up long enough to be read.
+ *
+ * Two ways out of the redirect:
+ *  - ?no_redirect=1, which hands over the code and its cart link and touches no cart;
+ *  - a cart that could not be built, where the code stays on screen with the fallback
+ *    cart link and a retry. Losing the code because the shop had a bad moment would
+ *    be the one unrecoverable outcome here.
+ */
+async function completeWith(claim) {
+  if (noRedirect) {
+    console.log("[lp/aboard] no_redirect=1, showing the code instead of loading the cart");
+    showCode(claim);
+    return;
+  }
+
+  render("sending");
+  const legible = wait(CONFIRM_MS);
+
+  const cart = await loadCart(claim.offer, claim.edition, claim.code);
+  if (!cart.ok) {
+    showCode({
+      ...claim,
+      title: CART_FAILED.title,
+      lead: CART_FAILED.lead,
+      retry: () => completeWith(claim),
+    });
+    return;
+  }
+
+  await legible;
+  goTo(cart.url);
 }
 
 /**
@@ -136,18 +257,21 @@ function showCode({ title, lead, code, offer, edition }) {
  * and emailed; taking the BIG BOX swaps in the BIG BOX code. Both codes are scoped to
  * their product rather than to one variant, so every language edition qualifies and
  * neither choice leaves anyone holding a code their cart refuses.
+ *
+ * No cart is touched until they have chosen. Loading one for a package we have just
+ * said we cannot ship would be the same mistake in a new place.
  */
 function showBlocked({ code, baseCode, offer, edition }) {
   const warning = render("blocked");
   if (!warning) return;
 
   const takeBigBox = () => {
-    showCode({
+    completeWith({
       title: "The BIG BOX in English it is",
       // No word about the inbox on this branch: the code we mail this visitor is the
       // Base Game one they were issued, not this one. Promising otherwise would be a
       // promise made by the wrong half of the system.
-      lead: "Here is the code that fits it. The button below loads the box and both gifts together.",
+      lead: "Here is the code that fits it. It loads the box and both gifts together.",
       code,
       offer: "bigbox-both",
       edition,
@@ -159,7 +283,7 @@ function showBlocked({ code, baseCode, offer, edition }) {
     // scrolling back up does not show them the edition we already refused.
     input.checked = true;
     syncLangChips();
-    showCode({
+    completeWith({
       title: "Aboard, in your language",
       lead: "Your code has not changed, and it is already on its way to your inbox.",
       code: baseCode,
@@ -263,17 +387,18 @@ async function submit() {
       return;
     }
 
-    if (data.state === "blocked") {
-      showBlocked({ code: data.code, baseCode: data.baseCode, offer, edition });
-    } else if (data.state === "code") {
-      showCode({ code: data.code, offer, edition });
-    } else {
+    if (data.state !== "code" && data.state !== "blocked") {
       console.error(`[lp/aboard] claim answered with a state this page does not know: ${data.state}`);
       showError("We could not issue your code just now.");
       return;
     }
 
+    // The picker has done its job, so the button that points at it goes now rather
+    // than after the cart, where it would sit on the confirmation for a second.
     giftJump.retire();
+
+    if (data.state === "blocked") showBlocked({ code: data.code, baseCode: data.baseCode, offer, edition });
+    else await completeWith({ code: data.code, offer, edition });
   } catch (err) {
     console.error("[lp/aboard] claim request never completed:", err);
     showError("We could not reach the ship. Check your connection and try again.");
@@ -313,62 +438,108 @@ for (const btn of langButtons) {
 for (const input of editionInputs) input.addEventListener("change", syncLangChips);
 syncLangChips();
 
+/** Keep the heading over the email field naming the box that is currently chosen. */
+function syncClaimTitle() {
+  if (!claimTitle) {
+    console.error("[lp/aboard] the claim heading is missing from the page");
+    return;
+  }
+  const offer = chosen("offer");
+  const title = CLAIM_TITLES[offer];
+  if (!title) console.error(`[lp/aboard] no claim heading written for offer "${offer}"`);
+  claimTitle.textContent = title || CLAIM_TITLE_FALLBACK;
+}
+
 // Choosing a box is the moment the next step has to become unmistakable, so it takes
 // the visitor to the email field and puts the cursor in it.
 //
 // Pointer clicks only. Arrow keys walk through a radio group and fire a click of their
 // own with detail 0, and pulling focus out of the group on those would strand a
-// keyboard visitor on whichever box they happened to arrow onto.
+// keyboard visitor on whichever box they happened to arrow onto. The heading and the
+// sticky button still follow an arrow-key choice, through the change event below.
 for (const pick of form.querySelectorAll(".pick")) {
   pick.addEventListener("click", (event) => {
     if (event.detail === 0) return;
-    // Focus first, so it is still the visitor's own tap that opens the keyboard on a
-    // phone, and scroll after, so the smooth scroll has the last word on where the
-    // page ends up instead of fighting the jump focus() would otherwise cause.
-    emailInput.focus({ preventScroll: true });
-    scrollToSection(claimSection);
+    // Clicking the box that was already selected fires no change event, and it is
+    // still a visitor choosing that box.
+    giftJump.chose();
+    goToEmail();
   });
 }
 
-// The button that follows the visitor down the page. It is a router, not a nag: it
-// shows only while nothing else on screen already leads to the picker, and it goes for
-// good once a code has been handed over. Watching the claim form is also what keeps it
-// off the claim form, which on a phone is the one place it must never sit.
+for (const input of form.querySelectorAll('input[name="offer"]')) {
+  input.addEventListener("change", () => {
+    syncClaimTitle();
+    giftJump.chose();
+  });
+}
+syncClaimTitle();
+
+// The button that follows the visitor down the page. It has two jobs and knows which
+// one it is doing: before a box is chosen it goes to the picker, after it goes to the
+// email field. It shows whenever neither of those is on screen, and it goes for good
+// once a code has been handed over.
+//
+// The state is three flags and nothing else. It used to hide whenever the hero, the
+// picker or the claim section was in view, which between them cover nearly the whole
+// page, so on a phone it was never seen at all.
 const giftJump = (function stickyRouter() {
-  const nothingToRetire = { retire() {} };
+  const inert = { retire() {}, chose() {} };
 
   const button = document.getElementById("gift-jump");
   if (!button) {
     console.error("[lp/aboard] the sticky gift button is missing from the page");
-    return nothingToRetire;
+    return inert;
   }
 
-  button.addEventListener("click", () => scrollToSection(offerSection));
-
-  const landmarks = [document.querySelector(".hero-cta"), offerSection, claimSection].filter(Boolean);
-  if (!landmarks.length) {
-    console.error("[lp/aboard] found none of the sections the gift button hides behind, leaving it hidden");
-    return nothingToRetire;
+  // The picker, because that is where it sends people who have not chosen, and the
+  // email field, because that is where it sends everybody else. Nothing else on the
+  // page has a say: a visitor reading the reviews with the picker off screen is
+  // exactly who this button is for.
+  const landmarks = [offerSection, emailInput].filter(Boolean);
+  if (landmarks.length !== 2) {
+    console.error("[lp/aboard] the picker or the email field is missing, leaving the gift button hidden");
+    return inert;
   }
 
   if (typeof IntersectionObserver !== "function") {
     console.warn("[lp/aboard] no IntersectionObserver in this browser, so the gift button stays hidden");
-    return nothingToRetire;
+    return inert;
   }
 
   const onScreen = new Set();
+  let reported = false;
+  let chose = false;
   let retired = false;
+
+  // Three flags, one answer, and nothing that depends on which order things happened
+  // in. Until the observer has said something, "what is on screen" is not empty, it
+  // is unknown, and the button stays out of the way.
+  function paint() {
+    button.hidden = retired || !reported || onScreen.size > 0;
+    button.textContent = chose ? "Continue to email" : "Pick your gift!";
+  }
+
+  button.addEventListener("click", () => {
+    if (chose) goToEmail();
+    else scrollToSection(offerSection);
+  });
 
   const watch = new IntersectionObserver((entries) => {
     for (const entry of entries) {
       if (entry.isIntersecting) onScreen.add(entry.target);
       else onScreen.delete(entry.target);
     }
-    button.hidden = retired || onScreen.size > 0;
+    reported = true;
+    paint();
   });
   for (const el of landmarks) watch.observe(el);
 
   return {
+    chose() {
+      chose = true;
+      paint();
+    },
     retire() {
       retired = true;
       watch.disconnect();

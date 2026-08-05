@@ -1,170 +1,31 @@
-// Tests for what the gift page DOES in a browser, straight off the acceptance
-// criteria in issue #6: the picker sends you to the email field, the sticky button
-// routes and then gets out of the way, and a blocked visitor is asked which cart they
-// want before any code appears.
+// Tests for what the gift page DOES in a browser: the picker sends you to the email
+// field, the sticky button follows you down the page and changes job when you choose,
+// the reviewer section is gone, and a blocked visitor is asked which cart they want
+// before any code appears.
 //
-// The real public/lp-aboard.html and public/lp-aboard.js are loaded into a DOM and
-// driven with real events. Nothing here re-implements the page: the only things faked
-// are the four browser pieces a test process does not have, and each of them is faked
-// so the test can DRIVE it (the claim answer, what is on screen, where the page
-// scrolled), not so the page can avoid it.
-//
-// About the module copy: page.js imports "./offer.js", which the browser resolves
-// against /gift-offer/page.js and the server answers from lib/offer.js. On disk those
-// two files are not siblings, so each test writes the page module to a scratch file
-// with that one import pointing at the real lib/offer.js. A fresh filename per test is
-// also what gets a fresh module: bun caches by path, and this page runs its setup at
-// import time.
+// Straight off the acceptance criteria in issues #6 and #10. What happens to the CART
+// after a code is issued is the other half of #10 and lives in lp-aboard-cart.test.ts.
+// The harness both files drive the page with is tests/page-harness.ts.
 
 import { test, expect } from "bun:test";
-import { Window } from "happy-dom";
-import { mkdtempSync, readFileSync, writeFileSync } from "fs";
-import { tmpdir } from "os";
-import { join } from "path";
+import {
+  loadPage,
+  selectOffer,
+  tapPick,
+  blockedAnswer,
+  codeAnswer,
+  BASE_DE,
+  BASE_EN,
+  BIGBOX_EN,
+  KRAKEN,
+  COINS,
+  CODE_BASE,
+  CODE_BIGBOX,
+  type Page,
+} from "./page-harness.ts";
 
-const REPO = join(import.meta.dir, "..");
-const HTML = readFileSync(join(REPO, "public", "lp-aboard.html"), "utf8");
-const PAGE_JS = readFileSync(join(REPO, "public", "lp-aboard.js"), "utf8");
-const OFFER_JS = join(REPO, "lib", "offer.js");
-
-const SCRATCH = mkdtempSync(join(tmpdir(), "lp-aboard-page-"));
-let copies = 0;
-
-function freshPageModule(): string {
-  copies++;
-  const path = join(SCRATCH, `page-${copies}.js`);
-  const source = PAGE_JS.replace('"./offer.js"', JSON.stringify(OFFER_JS));
-  if (source === PAGE_JS) throw new Error("page.js no longer imports ./offer.js, this rewrite is stale");
-  writeFileSync(path, source);
-  return path;
-}
-
-// Variant ids and codes, same values the claim endpoint deals in.
-const BASE_EN = "51542813409627";
-const BASE_DE = "51542813540699";
-const BIGBOX_EN = "51542655959387";
-const KRAKEN = "51542942318939";
-const COINS = "51676501508443";
-const CODE_BASE = "KRAKEN-A7F2";
-const CODE_BIGBOX = "FULLHOLD-B642";
-
-/** What the page can see of the viewport, driven by the test rather than by scrolling. */
-class FakeObserver {
-  static live: FakeObserver[] = [];
-  targets: any[] = [];
-  disconnected = false;
-  constructor(public callback: (entries: any[]) => void) {
-    FakeObserver.live.push(this);
-  }
-  observe(el: any) {
-    this.targets.push(el);
-  }
-  unobserve(el: any) {
-    this.targets = this.targets.filter((t) => t !== el);
-  }
-  disconnect() {
-    this.disconnected = true;
-    this.targets = [];
-  }
-  /** Tell the page which of the things it is watching are on screen right now. */
-  show(...onScreen: any[]) {
-    this.callback(this.targets.map((target) => ({ target, isIntersecting: onScreen.includes(target) })));
-  }
-}
-
-type Page = {
-  document: any;
-  window: any;
-  scrolls: any[];
-  requests: { url: string; body: any }[];
-  observer: FakeObserver;
-  claimAnswer: { status: number; body: any };
-  submit: () => Promise<void>;
-  click: (el: any, detail?: number) => Promise<void>;
-  text: () => string;
-};
-
-/** Load the real page with a claim endpoint that answers whatever the test says. */
-async function loadPage(answer: { status?: number; body: any }): Promise<Page> {
-  const window = new Window({
-    url: "https://nordicpirates.com/gift-offer",
-    settings: {
-      disableJavaScriptFileLoading: true,
-      disableJavaScriptEvaluation: true,
-      disableCSSFileLoading: true,
-    },
-  });
-  const document = window.document;
-  document.write(HTML);
-
-  const scrolls: any[] = [];
-  const requests: { url: string; body: any }[] = [];
-  const claimAnswer = { status: answer.status ?? 200, body: answer.body };
-
-  // Where the page scrolled, which is the only observable half of a smooth scroll.
-  window.HTMLElement.prototype.scrollIntoView = function scrollIntoView(this: any) {
-    scrolls.push(this);
-  };
-  window.HTMLElement.prototype.scrollTo = function scrollTo() {};
-
-  FakeObserver.live = [];
-
-  const globals = globalThis as any;
-  globals.window = window;
-  globals.document = document;
-  globals.navigator = window.navigator;
-  globals.IntersectionObserver = FakeObserver;
-  globals.fetch = async (url: string, init: any) => {
-    requests.push({ url, body: JSON.parse(init.body) });
-    return new Response(JSON.stringify(claimAnswer.body), {
-      status: claimAnswer.status,
-      headers: { "Content-Type": "application/json" },
-    });
-  };
-
-  // The browser's own email validation is not what these tests are about, and
-  // happy-dom does not run it. The page's own "is this address usable" question is
-  // the endpoint's, and it has its own tests.
-  const email = document.getElementById("email");
-  email.checkValidity = () => true;
-  email.value = "crew@example.com";
-
-  await import(freshPageModule());
-  const settle = () => new Promise((done) => setTimeout(done, 0));
-
-  return {
-    document,
-    window,
-    scrolls,
-    requests,
-    get observer() {
-      const watching = FakeObserver.live.filter((o) => o.targets.length);
-      if (watching.length !== 1) throw new Error(`expected one live observer, found ${watching.length}`);
-      return watching[0];
-    },
-    claimAnswer,
-    async submit() {
-      document
-        .getElementById("giftform")
-        .dispatchEvent(new window.Event("submit", { bubbles: true, cancelable: true }));
-      await settle();
-      await settle();
-    },
-    async click(el: any, detail = 1) {
-      el.dispatchEvent(new window.MouseEvent("click", { bubbles: true, cancelable: true, detail }));
-      await settle();
-    },
-    text: () => document.getElementById("result").textContent.replace(/\s+/g, " ").trim(),
-  };
-}
-
-const codeAnswer = { state: "code", code: CODE_BASE, cartUrl: "https://nordicpirates.com/cart/x" };
-const blockedAnswer = {
-  state: "blocked",
-  code: CODE_BIGBOX,
-  baseCode: CODE_BASE,
-  cartUrl: `https://nordicpirates.com/cart/${BIGBOX_EN}:1,${KRAKEN}:1,${COINS}:1?discount=${CODE_BIGBOX}`,
-};
+/** Nothing to redirect into: these tests are about the page, not about the cart. */
+const DEMO = "https://nordicpirates.com/gift-offer?no_redirect=1";
 
 function cartLink(page: Page): any {
   return page.document.querySelector("#result [data-cart]");
@@ -182,19 +43,71 @@ function choices(page: Page): string[] {
   );
 }
 
-test("choosing a box takes the visitor to the email field and puts the cursor in it", async () => {
+test("the top nav keeps its one selling button, on every screen", async () => {
+  // Lucas could see neither CTA on his phone. This one has to be in the bar at every
+  // width; that no stylesheet rule takes it away again is asserted in lp-aboard.test.ts.
   const page = await loadPage({ body: codeAnswer });
+  const cta = page.document.querySelector(".np-nav-cta");
+
+  expect(cta).not.toBeNull();
+  expect(cta.textContent.trim()).toBe("Get the Game");
+  expect(cta.getAttribute("href")).toBe("#offer");
+  expect(cta.hidden).toBe(false);
+
+  // And it is inside the sticky bar rather than somewhere further down the page.
+  expect(page.document.getElementById("npnav").contains(cta)).toBe(true);
+});
+
+test("the reviewer section is gone, and so is the nav link that pointed at it", async () => {
+  const page = await loadPage({ body: codeAnswer });
+
+  expect(page.document.querySelector(".pros")).toBeNull();
+  expect(page.document.getElementById("pros")).toBeNull();
+  expect(page.document.querySelector('.np-links a[href="#pros"]')).toBeNull();
+
+  const body = page.document.body.textContent;
+  for (const gone of ["Unfiltered Gamer", "Meeple University", "Dice Tower", "What They Say"]) {
+    expect(body).not.toContain(gone);
+  }
+
+  // The community reviews are a different section and Lucas did not ask for those.
+  expect(page.document.getElementById("bgg-reviews")).not.toBeNull();
+});
+
+test("choosing a box scrolls the email field itself into the middle and focuses it", async () => {
+  // Not the claim section: on a phone that puts the heading and two paragraphs on
+  // screen and the field the visitor has to fill in below the fold.
+  const page = await loadPage({ body: codeAnswer });
+  const email = page.document.getElementById("email");
+  const claim = page.document.querySelector(".claim");
 
   for (const id of ["o-kraken", "o-coins", "o-bigbox"]) {
     page.document.activeElement?.blur?.();
     page.scrolls.length = 0;
 
-    const pick = page.document.getElementById(id).closest(".pick");
-    await page.click(pick);
+    await tapPick(page, id);
 
-    expect(page.scrolls).toContain(page.document.querySelector(".claim"));
+    expect(page.scrolledTo(email)).toEqual({ behavior: "smooth", block: "center" });
+    expect(page.scrolledTo(claim)).toBeUndefined();
     expect(page.document.activeElement.id).toBe("email");
   }
+});
+
+test("the heading over the email field names the gift that is chosen", async () => {
+  const page = await loadPage({ body: codeAnswer });
+  const title = () => page.document.getElementById("claim-title").textContent.trim();
+
+  // The box that starts out chosen, named in the markup and not only once JS runs.
+  expect(title()).toBe("One step and the Kraken is yours");
+
+  await tapPick(page, "o-coins");
+  expect(title()).toBe("One step and the gold coins are yours");
+
+  await tapPick(page, "o-bigbox");
+  expect(title()).toBe("One step and both gifts are yours");
+
+  await tapPick(page, "o-kraken");
+  expect(title()).toBe("One step and the Kraken is yours");
 });
 
 test("arrow keys through the boxes do not drag a keyboard visitor out of the group", async () => {
@@ -210,43 +123,88 @@ test("arrow keys through the boxes do not drag a keyboard visitor out of the gro
   expect(page.document.activeElement.id).not.toBe("email");
 });
 
-test("the sticky gift button shows only when nothing else on screen leads to the picker", async () => {
+test("the floating CTA shows whenever the picker is off screen, hero and claim included", async () => {
+  // The old rule hid it while the hero CTA, the picker OR the claim section was in
+  // view, which between them is nearly the whole page, so nobody ever saw it.
   const page = await loadPage({ body: codeAnswer });
   const button = page.document.getElementById("gift-jump");
-  const hero = page.document.querySelector(".hero-cta");
   const offer = page.document.getElementById("offer");
-  const claim = page.document.querySelector(".claim");
+  const email = page.document.getElementById("email");
 
   // Before anything is known about the viewport it stays out of the way.
   expect(button.hidden).toBe(true);
 
-  page.observer.show(hero);
-  expect(button.hidden).toBe(true);
-
-  // Scrolled past the hero, with neither the picker nor the form in view.
+  // Top of the page, hero CTA on screen, picker not yet. It has somewhere to send you.
   page.observer.show();
   expect(button.hidden).toBe(false);
+  expect(button.textContent).toBe("Pick your gift!");
 
   // The picker is the thing it points at, so it has nothing to say while that is up.
   page.observer.show(offer);
   expect(button.hidden).toBe(true);
 
-  // And it must never sit on top of the claim form, which on a phone is where it
-  // would land.
-  page.observer.show(claim);
+  // Scrolled past it again, still visible. This is the state Lucas never got to see.
+  page.observer.show();
+  expect(button.hidden).toBe(false);
+
+  // Only the email field itself takes it away at the bottom, so it can never sit on
+  // top of the one input on the page.
+  page.observer.show(email);
+  expect(button.hidden).toBe(true);
+
+  // Both at once, which is the tall-desktop case.
+  page.observer.show(offer, email);
   expect(button.hidden).toBe(true);
 });
 
-test("the sticky gift button scrolls to the picker", async () => {
+test("the floating CTA changes job once a box has been chosen", async () => {
   const page = await loadPage({ body: codeAnswer });
+  const button = page.document.getElementById("gift-jump");
+  const offer = page.document.getElementById("offer");
+  const email = page.document.getElementById("email");
+
+  page.observer.show();
+  expect(button.textContent).toBe("Pick your gift!");
+
+  await page.click(button);
+  expect(page.scrolledTo(offer)).toEqual({ behavior: "smooth", block: "start" });
+
+  // Choosing a box is what changes its job. The picker is on screen for that, so the
+  // button is not, and the visitor scrolls on down.
+  page.observer.show(offer);
+  await tapPick(page, "o-coins");
   page.observer.show();
 
-  await page.click(page.document.getElementById("gift-jump"));
-  expect(page.scrolls).toContain(page.document.getElementById("offer"));
+  expect(button.hidden).toBe(false);
+  expect(button.textContent).toBe("Continue to email");
+
+  page.scrolls.length = 0;
+  page.document.activeElement?.blur?.();
+  await page.click(button);
+
+  expect(page.scrolledTo(email)).toEqual({ behavior: "smooth", block: "center" });
+  expect(page.document.activeElement.id).toBe("email");
 });
 
-test("the sticky gift button goes for good once a code has been issued", async () => {
+test("an arrow-key choice changes the floating CTA too, without moving focus", async () => {
   const page = await loadPage({ body: codeAnswer });
+  const button = page.document.getElementById("gift-jump");
+
+  page.observer.show();
+
+  // What a real radio group does when the arrow keys move through it: the selection
+  // changes, and no click ever lands on the card.
+  selectOffer(page, "o-coins");
+
+  expect(button.textContent).toBe("Continue to email");
+  expect(page.document.getElementById("claim-title").textContent.trim()).toBe(
+    "One step and the gold coins are yours"
+  );
+  expect(page.document.activeElement.id).not.toBe("email");
+});
+
+test("the floating CTA goes for good once a code has been issued", async () => {
+  const page = await loadPage({ body: codeAnswer }, DEMO);
   const button = page.document.getElementById("gift-jump");
   const observer = page.observer;
 
@@ -293,7 +251,7 @@ test("a blocked visitor is asked which cart they want before any code appears", 
 });
 
 test("the European edition choice keeps the code they were issued and carts that edition", async () => {
-  const page = await loadPage({ body: blockedAnswer });
+  const page = await loadPage({ body: blockedAnswer }, DEMO);
   await page.submit();
 
   await page.click(page.document.querySelector('#result [data-choice="edition"]'));
@@ -334,7 +292,7 @@ test("the European edition choice keeps the code they were issued and carts that
 });
 
 test("the BIG BOX choice shows the BIG BOX code and the BIG BOX cart", async () => {
-  const page = await loadPage({ body: blockedAnswer });
+  const page = await loadPage({ body: blockedAnswer }, DEMO);
   await page.submit();
 
   await page.click(page.document.querySelector('#result [data-choice="package"]'));
@@ -359,7 +317,7 @@ test("answering inside the panel keeps focus inside the panel", async () => {
   // Every choice replaces the button that was just pressed. Without somewhere to put
   // focus it lands back at the top of the document, and a keyboard visitor has to walk
   // the whole page again to find out what their answer did.
-  const page = await loadPage({ body: blockedAnswer });
+  const page = await loadPage({ body: blockedAnswer }, DEMO);
   await page.submit();
 
   // The submit did not move focus: the visitor put it where it is.
@@ -386,7 +344,7 @@ test("answering inside the panel keeps focus inside the panel", async () => {
 test("the BIG BOX is still reachable from the edition list", async () => {
   // Somebody who opens the language list and finds nothing they read must not be
   // stuck there with a dead end.
-  const page = await loadPage({ body: blockedAnswer });
+  const page = await loadPage({ body: blockedAnswer }, DEMO);
   await page.submit();
 
   await page.click(page.document.querySelector('#result [data-choice="edition"]'));
@@ -400,7 +358,7 @@ test("a blocked answer with no base code offers the one choice it can honour", a
   // The language choice needs the code the visitor was issued. Without it the cart it
   // builds would carry no discount at all, which is a gift silently not given. One
   // honest choice beats two where the second is broken.
-  const page = await loadPage({ body: { ...blockedAnswer, baseCode: undefined } });
+  const page = await loadPage({ body: { ...blockedAnswer, baseCode: undefined } }, DEMO);
   await page.submit();
 
   expect(page.document.querySelector('#result [data-choice="edition"]')).toBeNull();
@@ -411,13 +369,14 @@ test("a blocked answer with no base code offers the one choice it can honour", a
   expect(cartLink(page).href).toContain(`discount=${CODE_BIGBOX}`);
 });
 
-test("an unblocked visitor still gets their code and their cart in one go", async () => {
-  const page = await loadPage({ body: codeAnswer });
+test("the form posts what the visitor picked, and nothing it was not given", async () => {
+  const page = await loadPage({ body: codeAnswer }, DEMO);
   await page.submit();
 
-  expect(page.requests.length).toBe(1);
-  expect(page.requests[0].url).toBe("/gift-offer/claim");
-  expect(page.requests[0].body).toEqual({
+  expect(page.calls.length).toBe(1);
+  expect(page.calls[0].url).toBe("/gift-offer/claim");
+  expect(page.calls[0].method).toBe("POST");
+  expect(page.calls[0].body).toEqual({
     email: "crew@example.com",
     offer: "base-kraken",
     edition: "en",
@@ -450,4 +409,5 @@ test("a state this page does not know is an error, not a blank panel", async () 
 
   expect(page.text()).toContain("That did not go through");
   expect(page.text()).not.toContain(CODE_BASE);
+  expect(page.cartCalls()).toEqual([]);
 });
