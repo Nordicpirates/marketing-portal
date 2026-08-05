@@ -47,6 +47,22 @@ const BLOCKED_OFFERS = new Set(["base-kraken", "base-coins"]);
 // Files the public page is allowed to pull. An explicit map, not a directory
 // walk, so a stray file in public/ can never become publicly readable.
 //
+// These are UPSTREAM paths. The public URL is https://nordicpirates.com/gift-offer
+// and the Cloudflare Worker rewrites it onto this service:
+//
+//   browser asks for            Worker sends us
+//   /gift-offer                 /lp/aboard
+//   /gift-offer/style.css       /lp/aboard/style.css
+//   /gift-offer/page.js         /lp/aboard/page.js
+//   /gift-offer/offer.js        /lp/aboard/offer.js
+//   /gift-offer/media/<file>    /lp/aboard/media/<file>
+//   POST /gift-offer/claim      POST /lp/aboard/claim
+//
+// So every path the PAGE emits is /gift-offer/... and every path THIS FILE knows
+// is /lp/aboard/... . They are meant to differ. page.js imports "./offer.js",
+// which the browser resolves against /gift-offer/page.js and therefore asks for
+// /gift-offer/offer.js, which lands here as /lp/aboard/offer.js.
+//
 // The media is served from this repo, not hotlinked from the mockup share space.
 // share.gate1.dev is where designs get reviewed; a live page that people are
 // being paid to visit cannot have its hero video disappear when a mockup is

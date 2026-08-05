@@ -1,6 +1,6 @@
-// Page behaviour for /lp/aboard.
+// Page behaviour for /gift-offer.
 //
-// The form posts to /lp/aboard/claim and the answer decides which of the result
+// The form posts to /gift-offer/claim and the answer decides which of the result
 // states gets rendered into #result. Cart links are built here, in the browser,
 // from the offer and edition the visitor chose plus the code the endpoint sent
 // back. The codes are never written into this file or the HTML - they rotate.
@@ -115,7 +115,7 @@ async function submit() {
   submitBtn.disabled = true;
 
   try {
-    const res = await fetch("/lp/aboard/claim", {
+    const res = await fetch("/gift-offer/claim", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, offer, edition, company }),

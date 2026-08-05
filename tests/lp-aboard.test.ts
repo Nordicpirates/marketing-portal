@@ -120,7 +120,12 @@ test("the mockup media is served from this repo, not hotlinked from the share sp
   const css = await handleAsset("/lp/aboard/style.css")!.text();
   expect(html).not.toContain("share.gate1.dev");
   expect(css).not.toContain("share.gate1.dev");
-  for (const [path] of media) expect(html + css).toContain(path);
+
+  // The page asks for these under the PUBLIC path. The Worker rewrites
+  // /gift-offer/media/<file> onto the upstream /lp/aboard/media/<file> served above.
+  for (const [path] of media) {
+    expect(html + css).toContain(path.replace("/lp/aboard/", "/gift-offer/"));
+  }
 });
 
 test("video is served in byte ranges, which Safari needs before it will play", async () => {
@@ -141,6 +146,53 @@ test("video is served in byte ranges, which Safari needs before it will play", a
 
   const past = handleAsset(path, new Request("https://x/", { headers: { Range: `bytes=${size + 10}-` } }))!;
   expect(past.status).toBe(416);
+});
+
+test("everything the browser asks for uses the public /gift-offer path", async () => {
+  // The public URL is https://nordicpirates.com/gift-offer. The Cloudflare Worker
+  // rewrites /gift-offer and /gift-offer/* onto this service's /lp/aboard and
+  // /lp/aboard/*. So the upstream routes stay /lp/aboard (asserted elsewhere) while
+  // every path the page EMITS has to be /gift-offer, or the browser asks the shop
+  // for something it does not have.
+  const html = await handleAsset("/lp/aboard")!.text();
+  const js = await handleAsset("/lp/aboard/page.js")!.text();
+  const css = await handleAsset("/lp/aboard/style.css")!.text();
+
+  expect(html).toContain('<link rel="canonical" href="https://nordicpirates.com/gift-offer">');
+  expect(html).toContain('href="/gift-offer/style.css"');
+  expect(html).toContain('src="/gift-offer/page.js"');
+  expect(js).toContain('fetch("/gift-offer/claim"');
+  expect(css).toContain("/gift-offer/media/lp-hero-poster.jpg");
+
+  // Not one upstream path may leak into anything the browser receives, comments
+  // included. page.js and offer.js are both shipped to the browser.
+  const offerJs = await handleAsset("/lp/aboard/offer.js")!.text();
+  for (const delivered of [html, js, css, offerJs]) {
+    expect(delivered).not.toContain("/lp/aboard");
+  }
+
+  // page.js imports "./offer.js" relative to itself. Served to the browser as
+  // /gift-offer/page.js, that resolves to /gift-offer/offer.js, which the Worker
+  // rewrites back to the upstream module. A path with a directory in it would not.
+  expect(js).toContain('from "./offer.js"');
+});
+
+test("the upstream routes this service answers on are still /lp/aboard", () => {
+  // The Worker rewrites onto these. They must not move.
+  for (const path of [
+    "/lp/aboard",
+    "/lp/aboard/style.css",
+    "/lp/aboard/page.js",
+    "/lp/aboard/offer.js",
+    "/lp/aboard/media/lp-hero-1080.mp4",
+  ]) {
+    expect(handleAsset(path)?.status).toBe(200);
+  }
+
+  // The public paths are the Worker's job, not this service's. It does not answer
+  // on them, which is why the rewrite has to be in place before the URL goes live.
+  expect(handleAsset("/gift-offer")).toBeNull();
+  expect(handleAsset("/gift-offer/style.css")).toBeNull();
 });
 
 test("the page never hardcodes a discount code in its markup", async () => {
