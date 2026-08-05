@@ -20,6 +20,16 @@ function targetFor(state, offer, edition) {
   return { offer, edition };
 }
 
+// One state serves all three offers, so the cart button has to say what it is really
+// loading. A BIG BOX cart is three items, not "the game and the gift". The blocked
+// state names the BIG BOX in its own markup and needs no swap.
+const CART_COPY = {
+  "bigbox-both": {
+    label: "Put the BIG BOX and both gifts in my cart",
+    note: "One click loads all three items.",
+  },
+};
+
 function chosen(name) {
   const el = form.querySelector(`input[name="${name}"]:checked`);
   return el ? el.value : "";
@@ -46,8 +56,15 @@ function render(kind, data) {
   const codeEl = node.querySelector("[data-code]");
   if (codeEl) codeEl.textContent = data.code || "";
 
+  const copyFor = CART_COPY[data.offer];
+  if (copyFor) {
+    const note = node.querySelector("[data-cart-note]");
+    if (note) note.textContent = copyFor.note;
+  }
+
   const cart = node.querySelector("[data-cart]");
   if (cart) {
+    if (copyFor) cart.textContent = copyFor.label;
     if (data.cartUrl) {
       cart.href = data.cartUrl;
     } else {
@@ -84,7 +101,10 @@ async function submit(action) {
   const offer = chosen("offer");
   const edition = chosen("edition");
   const email = (emailInput.value || "").trim();
-  const company = (form.querySelector('input[name="company"]').value || "").trim();
+
+  const honeypot = form.querySelector('input[name="company"]');
+  if (!honeypot) console.error("[lp/aboard] honeypot field is missing from the form");
+  const company = honeypot ? (honeypot.value || "").trim() : "";
 
   if (!emailInput.checkValidity()) {
     emailInput.reportValidity();
@@ -119,7 +139,7 @@ async function submit(action) {
     // A rejoin that worked gets its own confirmation. Everything else renders the
     // state the endpoint named.
     const kind = action === "rejoin" && data.state === "code" ? "rejoin" : data.state;
-    render(kind, { code: data.code, cartUrl });
+    render(kind, { code: data.code, cartUrl, offer: target.offer });
   } catch (err) {
     console.error("[lp/aboard] claim request never completed:", err);
     showError("We could not reach the ship. Check your connection and try again.");
