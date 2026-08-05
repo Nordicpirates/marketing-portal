@@ -2,6 +2,7 @@
   "name": "marketing-portal",
   "version": "1.0.0",
   "scripts": {
-    "start": "bun run server.ts"
+    "start": "bun run server.ts",
+    "test": "bun test tests/"
   }
 }
