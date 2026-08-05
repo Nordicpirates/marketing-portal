@@ -47,18 +47,22 @@ function callerIsTrusted(req: Request): boolean {
   return secretMatches((req.headers.get("x-lp-admin-secret") || "").trim(), ADMIN_SECRET);
 }
 
+// Rows carry email addresses, so no cache anywhere is allowed to keep a copy of any
+// answer these two routes give.
+const JSON_HEADERS = { "Cache-Control": "no-store" };
+
 // Same wording as the claim endpoint uses, and just as empty. A refused caller
 // learns nothing about the route, the store or the secret.
 function forbidden(): Response {
-  return Response.json({ error: "Not available here" }, { status: 403 });
+  return Response.json({ error: "Not available here" }, { status: 403, headers: JSON_HEADERS });
 }
 
 function methodNotAllowed(allowed: string): Response {
-  return Response.json({ error: `Use ${allowed}` }, { status: 405, headers: { Allow: allowed } });
+  return Response.json(
+    { error: `Use ${allowed}` },
+    { status: 405, headers: { ...JSON_HEADERS, Allow: allowed } }
+  );
 }
-
-// Rows carry email addresses, so no cache anywhere is allowed to keep a copy.
-const JSON_HEADERS = { "Cache-Control": "no-store" };
 
 /** The event id on a stored row, or "" for a row that has none. */
 function eventId(row: SignupRow): string {
@@ -116,11 +120,11 @@ export function handleSignups(req: Request): Response {
     return id !== "" && ledger.events.has(id);
   };
 
-  const rows = wantAll
-    ? store.rows.map((row) => ({ ...row, sent: isSent(row) }))
-    : store.rows.filter((row) => !isSent(row));
-
-  const unsent = store.rows.filter((row) => !isSent(row)).length;
+  // Worked out once, then either handed back on its own or used for the count next
+  // to every row.
+  const unsentRows = store.rows.filter((row) => !isSent(row));
+  const rows = wantAll ? store.rows.map((row) => ({ ...row, sent: isSent(row) })) : unsentRows;
+  const unsent = unsentRows.length;
 
   // Counts only. Not one email address, code or country goes anywhere near the log.
   console.log(
@@ -172,8 +176,10 @@ export async function handleMarkSent(req: Request): Promise<Response> {
 
   if (req.method !== "POST") return methodNotAllowed("POST");
 
-  const body = await req.json().catch((err) => {
-    console.warn("[lp/aboard admin] mark-sent body was not valid JSON:", err instanceof Error ? err.message : err);
+  const body = await req.json().catch(() => {
+    // What was in the body is not logged, not even through the parser's own error
+    // message: a caller can put anything in there, an email address included.
+    console.warn("[lp/aboard admin] mark-sent body was not valid JSON");
     return null;
   });
 
