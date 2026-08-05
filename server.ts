@@ -3,6 +3,7 @@ import { join } from "path";
 import { createHash } from "crypto";
 import { STATE_DIR } from "./lib/state-dir.ts";
 import { handleAsset, handleClaim } from "./lib/lp-aboard.ts";
+import { handleMarkSent, handleSignups } from "./lib/lp-aboard-admin.ts";
 
 const AUTH_PASSWORD = (process.env.AUTH_PASSWORD || "pirates2024").trim();
 const PORT = parseInt(process.env.PORT || "3000");
@@ -118,6 +119,14 @@ const server = Bun.serve({
       if (req.method !== "POST") return new Response("Method not allowed", { status: 405 });
       return handleClaim(req);
     }
+    // The emailer's two routes. Server to server only: they carry their own shared
+    // secret in x-lp-admin-secret and answer 403 without it, so they sit here rather
+    // than behind the staff password, which would only ever redirect a script to a
+    // login page. They are not in the ASSETS map either, so nothing about them is
+    // reachable from the public gift page.
+    if (lpPath === "/lp/aboard/signups") return handleSignups(req);
+    if (lpPath === "/lp/aboard/signups/mark-sent") return handleMarkSent(req);
+
     if (lpPath.startsWith("/lp/")) {
       // 404 rather than falling through, so an unknown /lp/ path never bounces a
       // logged-out visitor to the staff login screen. The request goes along so
