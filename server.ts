@@ -1,14 +1,13 @@
-import { readFileSync, existsSync, writeFileSync, mkdirSync } from "fs";
+import { readFileSync, existsSync, writeFileSync } from "fs";
 import { join } from "path";
 import { createHash } from "crypto";
+import { STATE_DIR } from "./lib/state-dir.ts";
+import { handleAsset, handleClaim } from "./lib/lp-aboard.ts";
 
 const AUTH_PASSWORD = (process.env.AUTH_PASSWORD || "pirates2024").trim();
 const PORT = parseInt(process.env.PORT || "3000");
 const DIR = import.meta.dir;
 
-// Persistent state dir (volume-mounted in prod) for mutable checklist state.
-const STATE_DIR = process.env.STATE_DIR || join(DIR, "state");
-try { mkdirSync(STATE_DIR, { recursive: true }); } catch {}
 const TASKS_FILE = join(STATE_DIR, "tasks.json");
 const TASKS_SEED = join(DIR, "data", "tasks.json");
 
@@ -103,6 +102,21 @@ const server = Bun.serve({
     const path = url.pathname;
 
     if (path === "/health") return new Response("ok");
+
+    // PUBLIC, and deliberately ahead of the password gate below. /lp/aboard is the
+    // gift offer page for people arriving from a retargeting ad. They have no login
+    // and never will, so nothing under /lp/ may be sent to /login.
+    // Trailing slash included: an ad platform or a person will eventually add one.
+    const lpPath = path.length > 1 && path.endsWith("/") ? path.slice(0, -1) : path;
+    if (lpPath === "/lp/aboard/claim") {
+      if (req.method !== "POST") return new Response("Method not allowed", { status: 405 });
+      return handleClaim(req);
+    }
+    if (lpPath.startsWith("/lp/")) {
+      // 404 rather than falling through, so an unknown /lp/ path never bounces a
+      // logged-out visitor to the staff login screen.
+      return handleAsset(lpPath) || new Response("Not found", { status: 404 });
+    }
 
     if (path === "/login") {
       if (req.method === "POST") {
