@@ -110,9 +110,9 @@ const PROXY_SECRET = (process.env.LP_PROXY_SECRET || "").trim();
 
 if (!PROXY_SECRET) {
   console.warn(
-    "[lp/aboard] LP_PROXY_SECRET is not set: x-visitor-* headers will be ignored " +
-      "and geo/rate-limit fall back to the CF headers. Set it here and on the Worker " +
-      "before routing nordicpirates.com/lp/aboard at this service."
+    "[lp/aboard] LP_PROXY_SECRET is not set: EVERY claim will be refused with 403 " +
+      "and no codes will be issued. The page itself still serves. Set it here and on " +
+      "the Worker before routing nordicpirates.com/gift-offer at this service."
   );
 }
 
@@ -138,25 +138,22 @@ function proxyIsTrusted(req: Request): boolean {
   return secretMatches(presented);
 }
 
-function clientIp(req: Request, trusted: boolean): string {
-  if (trusted) {
-    const visitor = header(req, "x-visitor-ip");
-    if (visitor) return visitor;
-  }
-  const cf = header(req, "cf-connecting-ip");
-  if (cf) return cf;
-  // Last resort. Take the first hop, which is the client the edge saw.
-  const fwd = header(req, "x-forwarded-for");
-  if (fwd) return fwd.split(",")[0].trim();
+// Both of these are only ever called after the secret has been checked, so they
+// read the Worker's headers and nothing else. There is deliberately no fallback to
+// CF-Connecting-IP, X-Forwarded-For or CF-IPCountry: those are set by whoever can
+// reach this origin, and a claim decision must not rest on them.
+function clientIp(req: Request): string {
+  const visitor = header(req, "x-visitor-ip");
+  if (visitor) return visitor;
+  // Authenticated but nothing forwarded. That is a broken Worker, not a visitor.
+  // Everyone lands in one rate-limit bucket until it is fixed, which is the safe
+  // way round.
+  console.warn("[lp/aboard] authenticated request carried no x-visitor-ip: check the Worker");
   return "unknown";
 }
 
-function clientCountry(req: Request, trusted: boolean): string {
-  if (trusted) {
-    const visitor = header(req, "x-visitor-country");
-    if (visitor) return visitor.toUpperCase();
-  }
-  return header(req, "cf-ipcountry").toUpperCase();
+function clientCountry(req: Request): string {
+  return header(req, "x-visitor-country").toUpperCase();
 }
 
 /** True when this IP has already used its 10 submissions this hour. */
@@ -224,21 +221,28 @@ function newEventId(): string {
   return randomBytes(6).toString("hex");
 }
 
-/** Append one submission to the JSONL store. Never silently drops a signup. */
-function record(entry: Record<string, unknown>, event: string): void {
+/**
+ * Append one submission to the JSONL store. Returns false if it did not land.
+ *
+ * The caller must not answer with a code when this returns false. The page tells
+ * people the code is also on its way to their inbox, and the only thing that makes
+ * that true is this file: the emailer reads it and nothing else. A code on screen
+ * with no row in the file is a promise we have already broken.
+ */
+function record(entry: Record<string, unknown>, event: string): boolean {
   try {
     appendFileSync(SIGNUPS_FILE, JSON.stringify({ event, ...entry }) + "\n");
     console.log(
       `[lp/aboard] claim stored event=${event} state=${entry.state} offer=${entry.offer} edition=${entry.edition}`
     );
+    return true;
   } catch (err) {
-    // A lost signup is the worst outcome here, so shout about it. The visitor
-    // still gets their code - we are not going to punish them for our disk.
     console.error(
       `[lp/aboard] FAILED to write ${SIGNUPS_FILE}, signup NOT stored event=${event} ` +
         `state=${entry.state} offer=${entry.offer} edition=${entry.edition}:`,
       err
     );
+    return false;
   }
 }
 
@@ -269,20 +273,43 @@ export function handleAsset(path: string, req?: Request): Response | null {
     const size = file.size;
     const match = /^bytes=(\d*)-(\d*)$/.exec(range.trim());
     if (!match) {
-      console.warn(`[lp/aboard] unparseable Range header for ${path}: ${JSON.stringify(range)}`);
+      // Malformed. RFC 7233 says ignore the header and send the whole thing.
+      console.warn(`[lp/aboard] unparseable Range header for ${path}, serving whole file`);
       return new Response(file, { headers });
     }
 
-    const start = match[1] ? parseInt(match[1], 10) : 0;
-    const end = match[2] ? Math.min(parseInt(match[2], 10), size - 1) : size - 1;
-
-    if (Number.isNaN(start) || Number.isNaN(end) || start > end || start >= size) {
-      console.warn(`[lp/aboard] unsatisfiable range ${range} for ${path} (${size} bytes)`);
+    const [, rawStart, rawEnd] = match;
+    const unsatisfiable = () => {
+      console.warn(`[lp/aboard] unsatisfiable range for ${path} (${size} bytes)`);
       return new Response("Range not satisfiable", {
         status: 416,
         headers: { ...headers, "Content-Range": `bytes */${size}` },
       });
+    };
+
+    let start: number;
+    let end: number;
+
+    if (rawStart === "") {
+      // Suffix form. "bytes=-500" is the LAST 500 bytes, not the first 500. Getting
+      // this backwards hands the player the start of the file when it asked for the
+      // end, which for an mp4 is where the moov atom lives on a non-faststart file.
+      const suffix = parseInt(rawEnd, 10);
+      if (!rawEnd || Number.isNaN(suffix) || suffix <= 0) return unsatisfiable();
+      // A suffix longer than the file just means the whole file.
+      start = Math.max(0, size - suffix);
+      end = size - 1;
+    } else {
+      start = parseInt(rawStart, 10);
+      end = rawEnd ? parseInt(rawEnd, 10) : size - 1;
+      if (Number.isNaN(start) || Number.isNaN(end) || start > end || start >= size) {
+        return unsatisfiable();
+      }
+      // "bytes=0-99999999" on a small file is legal: clamp, do not refuse.
+      end = Math.min(end, size - 1);
     }
+
+    if (size === 0 || end < start) return unsatisfiable();
 
     return new Response(file.slice(start, end + 1), {
       status: 206,
@@ -298,15 +325,21 @@ export function handleAsset(path: string, req?: Request): Response | null {
 }
 
 export async function handleClaim(req: Request): Promise<Response> {
-  const trusted = proxyIsTrusted(req);
-
-  // Somebody sent visitor headers without the secret. Either the Worker is
-  // misconfigured or someone is trying them on. Worth seeing, without the values.
-  if (!trusted && (header(req, "x-visitor-ip") || header(req, "x-visitor-country"))) {
-    console.warn("[lp/aboard] x-visitor-* headers ignored: proxy secret missing or wrong");
+  // The claim endpoint is reachable only through the Cloudflare Worker, so it
+  // refuses anything that cannot prove it came from there. Nothing is parsed,
+  // nothing is stored, and no code is handed out until the secret checks out.
+  //
+  // Failing closed here rather than falling back to the CF headers is the whole
+  // point: at the origin those are just headers, and believing them would let
+  // anyone who can reach this host pick their own country and their own identity
+  // per request. An unset LP_PROXY_SECRET matches nothing, so an unconfigured
+  // deploy issues no codes at all rather than issuing them to everybody.
+  if (!proxyIsTrusted(req)) {
+    console.warn("[lp/aboard] claim rejected reason=unauthenticated");
+    return Response.json({ error: "Not available here" }, { status: 403 });
   }
 
-  const ip = clientIp(req, trusted);
+  const ip = clientIp(req);
   if (rateLimited(ip)) {
     console.warn("[lp/aboard] claim rejected reason=rate-limited");
     return Response.json({ error: "Too many attempts, try again later" }, { status: 429 });
@@ -317,7 +350,7 @@ export async function handleClaim(req: Request): Promise<Response> {
   const offer = (body.offer || "").trim();
   const edition = (body.edition || "").trim();
   const honeypot = (body.company || "").trim();
-  const country = clientCountry(req, trusted);
+  const country = clientCountry(req);
 
   // Honeypot is invisible to humans, so anything in it is a bot.
   if (honeypot) {
@@ -378,7 +411,7 @@ export async function handleClaim(req: Request): Promise<Response> {
   // anything about the address, so it stores facts about the request and no
   // instructions about anyone's subscription.
   const event = newEventId();
-  record(
+  const stored = record(
     {
       ts: new Date().toISOString(),
       email,
@@ -391,6 +424,16 @@ export async function handleClaim(req: Request): Promise<Response> {
     },
     event
   );
+
+  // The write failed, so nobody is going to email this person anything. Saying
+  // "your code is on its way to your inbox" now would be a lie, and handing over a
+  // working code we have no record of issuing is worse. Ask them to try again.
+  if (!stored) {
+    return Response.json(
+      { error: "We could not issue your code just now. Please try again in a moment." },
+      { status: 503 }
+    );
+  }
 
   // "code" and "cartUrl" always describe the state being shown, so they agree with
   // each other. The page rebuilds the same link from the same shared module, so if

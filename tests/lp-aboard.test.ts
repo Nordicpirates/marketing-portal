@@ -7,7 +7,7 @@
 // The handlers are called directly with Request objects. No server is started.
 
 import { test, expect, beforeAll } from "bun:test";
-import { mkdtempSync, readFileSync, existsSync } from "fs";
+import { mkdtempSync, readFileSync, existsSync, chmodSync } from "fs";
 import { tmpdir } from "os";
 import { join } from "path";
 
@@ -38,16 +38,21 @@ beforeAll(async () => {
   handleAsset = mod.handleAsset;
 });
 
-/** One claim POST. Each caller passes its own IP so the rate limit stays out of the way. */
+/**
+ * One claim POST as it arrives from the Worker: carrying the shared secret and the
+ * forwarded visitor. Each caller gets its own IP so the rate limit stays out of the
+ * way. Requests WITHOUT the secret are the unauthenticated tests, further down.
+ */
 function claim(
   body: Record<string, string>,
   opts: { country?: string; ip?: string } = {}
 ): Promise<Response> {
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
-    "CF-Connecting-IP": opts.ip || `10.0.0.${Math.floor(Math.random() * 250) + 1}`,
+    "x-lp-proxy-secret": PROXY_SECRET,
+    "x-visitor-ip": opts.ip || `10.0.0.${Math.floor(Math.random() * 250) + 1}`,
   };
-  if (opts.country) headers["CF-IPCountry"] = opts.country;
+  if (opts.country) headers["x-visitor-country"] = opts.country;
   return handleClaim(
     new Request("https://nordicpirates.com/lp/aboard/claim", {
       method: "POST",
@@ -130,22 +135,82 @@ test("the mockup media is served from this repo, not hotlinked from the share sp
 
 test("video is served in byte ranges, which Safari needs before it will play", async () => {
   const path = "/lp/aboard/media/lp-hero-1080.mp4";
+  const ranged = (value: string) =>
+    handleAsset(path, new Request("https://x/", { headers: { Range: value } }))!;
+
   const full = handleAsset(path)!;
-  const size = Number(full.headers.get("Content-Length") ?? (await full.arrayBuffer()).byteLength);
+  const size = (await full.arrayBuffer()).byteLength;
   expect(full.headers.get("Accept-Ranges")).toBe("bytes");
 
-  const ranged = handleAsset(path, new Request("https://x/", { headers: { Range: "bytes=0-1023" } }))!;
-  expect(ranged.status).toBe(206);
-  expect(ranged.headers.get("Content-Range")).toBe(`bytes 0-1023/${size}`);
-  expect((await ranged.arrayBuffer()).byteLength).toBe(1024);
+  const first = ranged("bytes=0-1023");
+  expect(first.status).toBe(206);
+  expect(first.headers.get("Content-Range")).toBe(`bytes 0-1023/${size}`);
+  expect((await first.arrayBuffer()).byteLength).toBe(1024);
 
   // An open ended range is the one Safari actually opens with.
-  const open = handleAsset(path, new Request("https://x/", { headers: { Range: "bytes=0-" } }))!;
+  const open = ranged("bytes=0-");
   expect(open.status).toBe(206);
   expect(open.headers.get("Content-Range")).toBe(`bytes 0-${size - 1}/${size}`);
+  expect((await open.arrayBuffer()).byteLength).toBe(size);
 
-  const past = handleAsset(path, new Request("https://x/", { headers: { Range: `bytes=${size + 10}-` } }))!;
-  expect(past.status).toBe(416);
+  const mid = ranged("bytes=1000-1999");
+  expect(mid.status).toBe(206);
+  expect(mid.headers.get("Content-Range")).toBe(`bytes 1000-1999/${size}`);
+
+  // An end past the file is legal and clamps. Refusing it breaks players that ask
+  // for a fixed size chunk near the end of the file.
+  const over = ranged(`bytes=${size - 10}-${size + 5000}`);
+  expect(over.status).toBe(206);
+  expect(over.headers.get("Content-Range")).toBe(`bytes ${size - 10}-${size - 1}/${size}`);
+  expect((await over.arrayBuffer()).byteLength).toBe(10);
+});
+
+test("a suffix range means the LAST n bytes, not the first n", async () => {
+  const path = "/lp/aboard/media/lp-hero-1080.mp4";
+  const ranged = (value: string) =>
+    handleAsset(path, new Request("https://x/", { headers: { Range: value } }))!;
+  const size = (await handleAsset(path)!.arrayBuffer()).byteLength;
+  const whole = new Uint8Array(await handleAsset(path)!.arrayBuffer());
+
+  const suffix = ranged("bytes=-500");
+  expect(suffix.status).toBe(206);
+  expect(suffix.headers.get("Content-Range")).toBe(`bytes ${size - 500}-${size - 1}/${size}`);
+
+  const bytes = new Uint8Array(await suffix.arrayBuffer());
+  expect(bytes.byteLength).toBe(500);
+  // Really the tail of the file, not the head wearing the right Content-Range.
+  expect(Array.from(bytes)).toEqual(Array.from(whole.slice(size - 500)));
+
+  // A suffix longer than the file is the whole file, not an error.
+  const everything = ranged(`bytes=-${size + 1000}`);
+  expect(everything.status).toBe(206);
+  expect(everything.headers.get("Content-Range")).toBe(`bytes 0-${size - 1}/${size}`);
+  expect((await everything.arrayBuffer()).byteLength).toBe(size);
+});
+
+test("unsatisfiable ranges are refused with 416", async () => {
+  const path = "/lp/aboard/media/lp-hero-1080.mp4";
+  const ranged = (value: string) =>
+    handleAsset(path, new Request("https://x/", { headers: { Range: value } }))!;
+  const size = (await handleAsset(path)!.arrayBuffer()).byteLength;
+
+  for (const bad of [
+    `bytes=${size + 10}-`, // starts past the end
+    `bytes=${size}-`, // first byte past the end
+    "bytes=-0", // zero length suffix
+    "bytes=-", // no start and no suffix
+    "bytes=500-100", // backwards
+  ]) {
+    const res = ranged(bad);
+    expect(res.status).toBe(416);
+    expect(res.headers.get("Content-Range")).toBe(`bytes */${size}`);
+  }
+
+  // Malformed headers are ignored rather than refused: the whole file comes back.
+  for (const junk of ["items=0-10", "bytes=abc-def", "nonsense"]) {
+    const res = ranged(junk);
+    expect(res.status).toBe(200);
+  }
 });
 
 test("everything the browser asks for uses the public /gift-offer path", async () => {
@@ -249,23 +314,20 @@ test("every EU, EEA and GB country blocks the English base game", async () => {
   }
 });
 
-test("with the proxy secret, the visitor headers decide, not the proxy hop", async () => {
-  // The worker sits in front of nordicpirates.com/lp/aboard, so the CF headers
-  // describe the worker. x-visitor-* carries the person and has to win.
+test("an authenticated claim uses the forwarded visitor and ignores the proxy hop", async () => {
   const blocked = await claimWithHeaders(
     { email: "proxied@example.com", offer: "base-kraken", edition: "en" },
     {
       "x-lp-proxy-secret": PROXY_SECRET,
       "x-visitor-country": "SE",
       "x-visitor-ip": "203.0.113.5",
-      // What the worker hop itself looks like: a US edge, nowhere near the visitor.
+      // What the Worker hop itself looks like: a US edge, nowhere near the visitor.
+      // It must have no say at all.
       "CF-IPCountry": "US",
       "CF-Connecting-IP": "198.51.100.200",
     }
   );
   expect((await blocked.json()).state).toBe("blocked");
-
-  // The country actually recorded is the visitor's, not the proxy's.
   expect(storedLines().find((l) => l.email === "proxied@example.com")?.country).toBe("SE");
 
   // And the other way round: a real visitor outside Europe behind a European hop.
@@ -279,58 +341,50 @@ test("with the proxy secret, the visitor headers decide, not the proxy hop", asy
     }
   );
   expect((await allowed.json()).state).toBe("code");
+  expect(storedLines().find((l) => l.email === "proxied-us@example.com")?.country).toBe("US");
 });
 
-test("without the proxy secret, forged visitor headers are ignored", async () => {
-  // This is the attack: hit the origin directly, claim to be in the US, and walk
-  // past the Europe restriction. The CF header is what counts, so it stays blocked.
-  const noSecret = await claimWithHeaders(
-    { email: "forged@example.com", offer: "base-kraken", edition: "en" },
-    { "x-visitor-country": "US", "x-visitor-ip": "203.0.113.50", "CF-IPCountry": "SE" }
-  );
-  expect((await noSecret.json()).state).toBe("blocked");
-  expect(storedLines().find((l) => l.email === "forged@example.com")?.country).toBe("SE");
+test("a claim without the proxy secret is refused with 403 and stores nothing", async () => {
+  // The claim endpoint is reachable only through the Worker. Anything that cannot
+  // prove it came from there is refused outright, rather than quietly falling back
+  // to headers that whoever reached this origin can set for themselves.
+  const before = storedLines().length;
 
-  // A wrong secret is no better than none.
-  const wrongSecret = await claimWithHeaders(
-    { email: "forged2@example.com", offer: "base-kraken", edition: "en" },
-    {
-      "x-lp-proxy-secret": "not-the-secret",
+  const attempts: Record<string, Record<string, string>> = {
+    "no headers at all": {},
+    "forged visitor headers, no secret": {
       "x-visitor-country": "US",
+      "x-visitor-ip": "203.0.113.50",
+    },
+    "CF headers only, straight at the origin": {
       "CF-IPCountry": "SE",
-    }
-  );
-  expect((await wrongSecret.json()).state).toBe("blocked");
+      "CF-Connecting-IP": "203.0.113.7",
+    },
+    "wrong secret": { "x-lp-proxy-secret": "not-the-secret", "x-visitor-country": "US" },
+    "secret one char short": { "x-lp-proxy-secret": PROXY_SECRET.slice(0, -1) },
+    "secret with one char too many": { "x-lp-proxy-secret": PROXY_SECRET + "x" },
+    "right length, wrong value": { "x-lp-proxy-secret": "x".repeat(PROXY_SECRET.length) },
+    "empty secret": { "x-lp-proxy-secret": "" },
+  };
 
-  // Nor is a secret that merely starts right, or has the right length.
-  for (const guess of [PROXY_SECRET.slice(0, -1), PROXY_SECRET + "x", "x".repeat(PROXY_SECRET.length)]) {
+  for (const [name, headers] of Object.entries(attempts)) {
     const res = await claimWithHeaders(
-      { email: "forged3@example.com", offer: "base-kraken", edition: "en" },
-      { "x-lp-proxy-secret": guess, "x-visitor-country": "US", "CF-IPCountry": "SE" }
+      { email: `unauth-${name.replace(/\W+/g, "-")}@example.com`, offer: "base-kraken", edition: "de" },
+      headers
     );
-    expect((await res.json()).state).toBe("blocked");
-  }
-});
+    expect(res.status).toBe(403);
 
-test("without the secret, a rotating x-visitor-ip cannot walk past the rate limit", async () => {
-  // The other half of the forgery: a new identity per request to get unlimited
-  // writes into the signup file. Unsigned, every one of these is the same IP.
-  const hop = { "CF-Connecting-IP": "198.51.100.77" };
-  let refused = 0;
-
-  for (let i = 0; i < 14; i++) {
-    const res = await claimWithHeaders(
-      { email: "flood@example.com", offer: "base-kraken", edition: "de" },
-      { ...hop, "x-visitor-ip": `203.0.113.${150 + i}` }
-    );
-    if (res.status === 429) refused++;
+    // No code leaves the building, and nothing is written down.
+    const body = await res.json();
+    expect(body.code).toBeUndefined();
+    expect(body.cartUrl).toBeUndefined();
   }
 
-  expect(refused).toBeGreaterThan(0);
+  expect(storedLines().length).toBe(before);
 });
 
-test("with the secret, each real visitor gets their own rate limit budget", async () => {
-  // Every request through the worker shares one CF-Connecting-IP. If that were what
+test("each authenticated visitor gets their own rate limit budget", async () => {
+  // Every request through the Worker shares one CF-Connecting-IP. If that were what
   // we counted, one busy visitor would lock out everybody else behind the proxy.
   const hop = { "x-lp-proxy-secret": PROXY_SECRET, "CF-Connecting-IP": "198.51.100.201" };
   for (let i = 0; i < 12; i++) {
@@ -342,13 +396,12 @@ test("with the secret, each real visitor gets their own rate limit budget", asyn
   }
 });
 
-test("direct traffic with only the CF headers still works unchanged", async () => {
-  const res = await claimWithHeaders(
-    { email: "direct@example.com", offer: "base-kraken", edition: "en" },
-    { "CF-IPCountry": "SE", "CF-Connecting-IP": "203.0.113.7" }
-  );
-  expect((await res.json()).state).toBe("blocked");
-  expect(storedLines().find((l) => l.email === "direct@example.com")?.country).toBe("SE");
+test("static assets stay public: only the claim endpoint needs the secret", () => {
+  // The page itself has to load for anyone the Worker sends, before any request
+  // with a body happens. Locking the assets down would break the page.
+  for (const path of ["/lp/aboard", "/lp/aboard/style.css", "/lp/aboard/page.js"]) {
+    expect(handleAsset(path)?.status).toBe(200);
+  }
 });
 
 test("English base game outside Europe is fine", async () => {
@@ -538,18 +591,17 @@ test("logs carry no PII, no codes and no raw payload, only the event and what ha
 
   const email = "very.private.person@secret-domain.example";
   try {
-    // A success, a blocked one, a bad email, a honeypot hit, and a refused action.
-    await claimWithHeaders(
-      { email, offer: "base-kraken", edition: "de" },
-      { "CF-IPCountry": "DE", "CF-Connecting-IP": "203.0.113.99" }
-    );
-    await claimWithHeaders(
-      { email, offer: "base-kraken", edition: "en" },
-      { "CF-IPCountry": "SE", "CF-Connecting-IP": "203.0.113.98" }
-    );
+    // A success, a blocked one, a bad email, a honeypot hit, a refused action, and
+    // one that never got past the door.
+    await claim({ email, offer: "base-kraken", edition: "de" }, { country: "DE", ip: "203.0.113.99" });
+    await claim({ email, offer: "base-kraken", edition: "en" }, { country: "SE", ip: "203.0.113.98" });
     await claim({ email: "not-an-email-at-all", offer: "base-kraken", edition: "de" });
     await claim({ email, offer: "base-kraken", edition: "de", company: "SpamCorp AB" });
     await claim({ email, offer: "base-kraken", edition: "de", action: "rejoin" });
+    await claimWithHeaders({ email, offer: "base-kraken", edition: "de" }, {
+      "x-visitor-ip": "203.0.113.97",
+      "x-lp-proxy-secret": "a-guess-at-the-secret",
+    });
   } finally {
     console.log = original.log;
     console.warn = original.warn;
@@ -568,6 +620,9 @@ test("logs carry no PII, no codes and no raw payload, only the event and what ha
     "FULLHOLD-B642",
     "203.0.113.99", // visitor IPs
     "203.0.113.98",
+    "203.0.113.97",
+    "a-guess-at-the-secret", // never echo a presented secret
+    PROXY_SECRET,
     "DE", // country. Checked case sensitively below, "DE" never appears alone.
     "SE",
   ]) {
@@ -580,6 +635,7 @@ test("logs carry no PII, no codes and no raw payload, only the event and what ha
   expect(logged).toContain("reason=honeypot");
   expect(logged).toContain("reason=invalid-fields fields=email");
   expect(logged).toContain("reason=action-not-accepted");
+  expect(logged).toContain("reason=unauthenticated");
 });
 
 test("the event id ties a log line back to its stored row", async () => {
@@ -589,6 +645,41 @@ test("the event id ties a log line back to its stored row", async () => {
   const entry = storedLines().find((l) => l.email === "traced@example.com");
   expect(entry).toBeDefined();
   expect(entry!.event).toMatch(/^[0-9a-f]{12}$/);
+});
+
+test("a failed write returns 503 with no code, instead of a code nobody recorded", async () => {
+  // The page tells people the code is also on its way to their inbox. The only thing
+  // that makes that true is this file - the emailer reads it and nothing else. So a
+  // code on screen with no row in the file is a promise already broken.
+  //
+  // Make the store unwritable for real rather than mocking the failure away.
+  const before = storedLines();
+  expect(existsSync(SIGNUPS)).toBe(true);
+  chmodSync(SIGNUPS, 0o444);
+
+  let res: Response;
+  try {
+    res = await claim({ email: "unwritable@example.com", offer: "base-kraken", edition: "de" });
+  } finally {
+    chmodSync(SIGNUPS, 0o644);
+  }
+
+  expect(res!.status).toBe(503);
+
+  const body = await res!.json();
+  expect(body.code).toBeUndefined();
+  expect(body.cartUrl).toBeUndefined();
+  expect(body.state).toBeUndefined();
+  expect(typeof body.error).toBe("string");
+
+  // Nothing was written, and the file is intact.
+  expect(storedLines().length).toBe(before.length);
+  expect(storedLines().some((l) => l.email === "unwritable@example.com")).toBe(false);
+
+  // And the endpoint recovers once the disk does.
+  const after = await claim({ email: "recovered@example.com", offer: "base-kraken", edition: "de" });
+  expect(after.status).toBe(200);
+  expect((await after.json()).code).toBe("KRAKEN-A7F2");
 });
 
 test("the JSONL store is not reachable over HTTP", () => {
@@ -617,7 +708,7 @@ test("a plain form post works too, not only JSON", async () => {
   const res = await handleClaim(
     new Request("https://nordicpirates.com/lp/aboard/claim", {
       method: "POST",
-      headers: { "CF-Connecting-IP": "198.51.100.9" },
+      headers: { "x-lp-proxy-secret": PROXY_SECRET, "x-visitor-ip": "198.51.100.9" },
       body: form,
     })
   );
