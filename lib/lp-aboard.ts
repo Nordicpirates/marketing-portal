@@ -415,7 +415,9 @@ export async function handleClaim(req: Request): Promise<Response> {
   // meant to rotate and the emailer reads this file later, so it cannot re-derive
   // them: without them, a rotation means everyone who signed up before it gets mailed
   // a code they never saw. They differ only for a blocked visitor, who is issued the
-  // Base Game code but is shown the BIG BOX one on screen.
+  // Base Game code and sees the BIG BOX one only if they take the BIG BOX on the page.
+  // That choice is made in the browser and never comes back here, so "shownCode" is
+  // the code the BIG BOX choice shows, not proof that anyone took it.
   //
   // There is no "action" field any more. Nothing this endpoint receives is proof of
   // anything about the address, so it stores facts about the request and no
@@ -456,9 +458,23 @@ export async function handleClaim(req: Request): Promise<Response> {
     );
   }
 
+  // A blocked visitor is no longer handed one answer. The page asks them whether they
+  // want the same game in a language we can send or the BIG BOX in English, and each
+  // of those needs a different code: a Base Game cart wants the code they were issued,
+  // a BIG BOX cart wants the BIG BOX one. Both are already decided here, so the answer
+  // carries both rather than the page guessing or a second request going out.
+  //
+  // "code" and "cartUrl" mean exactly what they always did - the code and the cart of
+  // the BIG BOX this state offers - so nothing that reads this answer today changes.
+  // "baseCode" is the addition: the code this visitor was issued and will be emailed,
+  // the same value stored as "code" in the signup row. It rides along only on a blocked
+  // answer, because that is the only state with a choice left in it.
+  const baseCode = blocked ? issuedCode : "";
+
   return Response.json({
     state,
     code: target.code,
+    ...(baseCode ? { baseCode } : {}),
     ...(cartUrl ? { cartUrl } : {}),
   });
 }

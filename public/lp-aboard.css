@@ -341,3 +341,37 @@ border:1px dashed var(--line);border-radius:2px;padding:1.35rem 1.5rem}
 
 .btn[aria-busy="true"]{opacity:.6;cursor:progress}
 .btn[disabled]{opacity:.6;cursor:not-allowed}
+
+/* The two ways out of the blocked state, and the edition list behind the first of
+   them. They are a real trade, language against package, so both buttons get exactly
+   the same weight: styling one as the main answer would be us choosing for the
+   visitor. */
+.choices{display:grid;gap:.7rem;margin:0 0 .2rem}
+.choice{display:block;width:100%;text-align:left;font-family:var(--sans);cursor:pointer;
+background:var(--paper);border:1px solid var(--line);border-radius:2px;
+padding:.85rem 1.05rem;color:var(--ink);font-size:.95rem;font-weight:700;
+transition:border-color .18s,background .18s}
+.choice:hover{border-color:var(--teal-soft);background:#fff}
+.choice:focus-visible{outline:3px solid var(--teal-soft);outline-offset:2px}
+.choice b{display:block}
+.choice span{display:block;font-size:.8rem;font-weight:400;color:var(--muted);margin-top:.25rem}
+.choice-back{font-family:var(--sans);font-size:.76rem;color:var(--teal);background:none;border:0;
+padding:0;cursor:pointer;text-decoration:underline;text-underline-offset:2px;text-align:left}
+.choice-back:hover{color:var(--teal-soft)}
+
+/* The way back to the picker from anywhere on the page. Small, out of the way, and
+   the page hides it whenever the picker or the claim form is on screen, so it never
+   sits on top of the form. The safe area inset keeps it clear of the iOS Safari bar. */
+.gift-jump{position:fixed;z-index:70;right:clamp(.85rem,3vw,1.6rem);
+bottom:calc(clamp(.85rem,3vw,1.6rem) + env(safe-area-inset-bottom,0px));
+font-family:var(--sans);font-weight:700;font-size:.86rem;
+background:var(--gold);color:#1a1508;border:1px solid var(--gold);
+padding:.72rem 1.15rem;border-radius:999px;cursor:pointer;
+box-shadow:0 12px 28px -14px rgba(13,17,23,.8)}
+.gift-jump:hover{background:var(--gold-light)}
+.gift-jump:focus-visible{outline:3px solid var(--gold-light);outline-offset:3px}
+.gift-jump[hidden]{display:none}
+
+/* The nav is sticky, so anything scrolled to by anchor or by button has to stop
+   below it instead of underneath it. */
+#offer,.claim,#how-to-play,#pros{scroll-margin-top:4.75rem}
