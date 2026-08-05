@@ -355,6 +355,34 @@ test("the BIG BOX choice shows the BIG BOX code and the BIG BOX cart", async () 
   expect(page.text()).not.toContain("inbox");
 });
 
+test("answering inside the panel keeps focus inside the panel", async () => {
+  // Every choice replaces the button that was just pressed. Without somewhere to put
+  // focus it lands back at the top of the document, and a keyboard visitor has to walk
+  // the whole page again to find out what their answer did.
+  const page = await loadPage({ body: blockedAnswer });
+  await page.submit();
+
+  // The submit did not move focus: the visitor put it where it is.
+  expect(page.document.activeElement.id).not.toBe("");
+
+  const language = page.document.querySelector('#result [data-choice="edition"]');
+  language.focus();
+  await page.click(language);
+
+  let focused = page.document.activeElement;
+  expect(page.document.getElementById("result").contains(focused)).toBe(true);
+  expect(focused.tagName).toBe("H3");
+  expect(focused.textContent).toContain("Which edition should we ship");
+
+  const german = page.document.querySelector('#result [data-edition="de"]');
+  german.focus();
+  await page.click(german);
+
+  focused = page.document.activeElement;
+  expect(page.document.getElementById("result").contains(focused)).toBe(true);
+  expect(focused.tagName).toBe("H3");
+});
+
 test("the BIG BOX is still reachable from the edition list", async () => {
   // Somebody who opens the language list and finds nothing they read must not be
   // stuck there with a dead end.

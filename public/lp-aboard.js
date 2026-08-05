@@ -100,7 +100,23 @@ function render(kind, data = {}) {
     });
   }
 
+  // The blocked visitor answers inside this panel, and the button they press is gone a
+  // moment later. Without this, focus falls back to the top of the document and anyone
+  // on a keyboard or a screen reader has to find their way down here again. Only when
+  // they were working in the panel: a render that follows the submit button leaves
+  // focus where the visitor put it.
+  const wasWorkingInPanel = result.contains(document.activeElement);
+
   result.replaceChildren(node);
+
+  if (wasWorkingInPanel && state) {
+    const heading = state.querySelector("h3");
+    if (heading) {
+      heading.tabIndex = -1;
+      heading.focus();
+    }
+  }
+
   result.scrollIntoView({ block: "nearest", behavior: "smooth" });
   return state;
 }
