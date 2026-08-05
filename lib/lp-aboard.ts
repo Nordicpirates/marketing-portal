@@ -56,14 +56,16 @@ const BLOCKED_OFFERS = new Set(["base-kraken", "base-coins"]);
 //   /gift-offer                 /lp/aboard
 //   /gift-offer/style.css       /lp/aboard/style.css
 //   /gift-offer/page.js         /lp/aboard/page.js
+//   /gift-offer/cart.js         /lp/aboard/cart.js
 //   /gift-offer/offer.js        /lp/aboard/offer.js
 //   /gift-offer/media/<file>    /lp/aboard/media/<file>
 //   POST /gift-offer/claim      POST /lp/aboard/claim
 //
 // So every path the PAGE emits is /gift-offer/... and every path THIS FILE knows
-// is /lp/aboard/... . They are meant to differ. page.js imports "./offer.js",
-// which the browser resolves against /gift-offer/page.js and therefore asks for
-// /gift-offer/offer.js, which lands here as /lp/aboard/offer.js.
+// is /lp/aboard/... . They are meant to differ. page.js imports "./offer.js" and
+// "./cart.js", which the browser resolves against /gift-offer/page.js and therefore
+// asks for as /gift-offer/offer.js and /gift-offer/cart.js, which land here as
+// /lp/aboard/offer.js and /lp/aboard/cart.js.
 //
 // The media is served from this repo, not hotlinked from the mockup share space.
 // share.gate1.dev is where designs get reviewed; a live page that people are
@@ -78,6 +80,7 @@ const ASSETS: Record<string, { file: string; type: string; cache: string }> = {
   "/lp/aboard": { file: "public/lp-aboard.html", type: "text/html; charset=utf-8", cache: NO_CACHE },
   "/lp/aboard/style.css": { file: "public/lp-aboard.css", type: "text/css; charset=utf-8", cache: NO_CACHE },
   "/lp/aboard/page.js": { file: "public/lp-aboard.js", type: "text/javascript; charset=utf-8", cache: NO_CACHE },
+  "/lp/aboard/cart.js": { file: "public/lp-aboard-cart.js", type: "text/javascript; charset=utf-8", cache: NO_CACHE },
   "/lp/aboard/offer.js": { file: "lib/offer.js", type: "text/javascript; charset=utf-8", cache: NO_CACHE },
 
   "/lp/aboard/media/lp-hero-poster.jpg": { file: "public/lp-aboard-media/lp-hero-poster.jpg", type: "image/jpeg", cache: CACHE_MEDIA },

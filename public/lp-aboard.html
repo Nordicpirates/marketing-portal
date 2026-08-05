@@ -18,8 +18,8 @@
     <a class="np-logo" href="#top">NORDIC <span>PIRATES</span></a>
     <nav class="np-links" aria-label="Main">
       <a href="#how-to-play">How to Play</a>
-      <a href="#pros">Reviews</a>
       <a href="#offer">Editions</a>
+      <a href="#bgg-reviews">Reviews</a>
     </nav>
     <!-- These pick the edition further down the page. There is no translated
          version of this page, so they must not pretend to link to one. -->
@@ -146,34 +146,6 @@
   </div>
 </section>
 
-<!-- PROFESSIONAL REVIEWERS -->
-<section class="pros" id="pros">
-  <div class="wrap">
-    <p class="eyebrow center">Board game reviewers</p>
-    <h2 class="pros-title">What <span class="gold">They</span> Say</h2>
-    <div class="pros-rule"></div>
-    <div class="pros-grid">
-      <figure class="pro-card">
-        <div class="pro-logo"><img src="https://www.nordicpirates.com/cdn/shop/files/nedladdning.jpg?v=1776435608&amp;width=220" alt="Unfiltered Gamer" loading="lazy"></div>
-        <p class="pro-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</p>
-        <blockquote>"One of the best bluffing games I've played in years, the quality is top notch and it's a game I'm never getting rid of."</blockquote>
-        <figcaption><span class="pro-av">M</span><span class="pro-who"><b>Michael</b><small>Unfiltered Gamer</small></span></figcaption>
-      </figure>
-      <figure class="pro-card">
-        <div class="pro-logo"><img src="https://www.nordicpirates.com/cdn/shop/files/nedladdning_1.jpg?v=1776435639&amp;width=220" alt="Meeple University" loading="lazy"></div>
-        <p class="pro-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</p>
-        <blockquote>"Deception, dice and daring, a fun take of Liar's Dice mixed with racing. Pure table energy from the first roll."</blockquote>
-        <figcaption><span class="pro-av">S</span><span class="pro-who"><b>Stella</b><small>Meeple University</small></span></figcaption>
-      </figure>
-      <figure class="pro-card">
-        <div class="pro-logo"><img src="https://www.nordicpirates.com/cdn/shop/files/DiceTowerLogo.png?v=1764332880&amp;width=220" alt="The Dice Tower" loading="lazy"></div>
-        <p class="pro-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</p>
-        <blockquote>"Cities of Greed doesn't just add to Lying Pirates, it sharpens it. More strategy. More betrayal. Even more reason to question your friends."</blockquote>
-        <figcaption><span class="pro-av">M</span><span class="pro-who"><b>Mark</b><small>The Dice Tower</small></span></figcaption>
-      </figure>
-    </div>
-  </div>
-</section>
 <!-- REVIEWS -->
 <section class="voices" id="bgg-reviews">
   <div class="wrap">
@@ -354,19 +326,22 @@
     <div class="claim-grid">
       <div>
         <p class="eyebrow">Last step</p>
-        <h2>Tell us where to send the code</h2>
-        <p>One field. The code lands on this screen and in your inbox at the same time, and the
-        button next to it drops the game and the gift straight into your cart together.</p>
+        <!-- Names the gift they just picked, so the click that brought them here is
+             visibly the one being answered. Rewritten by the page whenever the picker
+             changes; this is the wording for the box that starts out chosen. -->
+        <h2 id="claim-title">One step and the Kraken is yours</h2>
+        <p class="claim-lead">Tell us where to send your code. It appears on this screen straight
+        away, so you are not waiting on an email to get going.</p>
         <div class="field">
           <label for="email">Your email</label>
           <input type="email" id="email" name="email" required autocomplete="email"
                  placeholder="you@example.com" form="giftform">
         </div>
-        <p class="consent">Your email gets you the code. New crew join our list at the same time,
-        we write when there is something worth writing about, and you can step off any time you like.
+        <p class="claim-go"><button class="btn" type="submit" form="giftform" id="submit-btn">Get my code</button></p>
+        <p class="consent">You are joining the crew list at the same time. We write when there is
+        something worth writing about, and you can step off any time.
         <a href="https://nordicpirates.com/policies/privacy-policy" rel="noopener">How we handle your details</a>.</p>
-        <p style="margin:1.25rem 0 0"><button class="btn" type="submit" form="giftform" id="submit-btn">Send me the code</button></p>
-        <p class="fine">The code applies your gift at checkout. It does not stack with our
+        <p class="fine">The code applies your gift in the cart. It does not stack with our
         multi-item discount, so use whichever suits you better.</p>
       </div>
 
@@ -378,9 +353,10 @@
   </div>
 </section>
 
-<!-- The way back to the picker from anywhere on the page. It starts hidden and only
-     appears when nothing else on screen already leads there, and it goes for good
-     once a code has been issued. It points the way, it does not nag. -->
+<!-- The one control that follows the visitor down the page. It starts hidden, shows
+     as soon as the picker is off screen, and changes its job once a box has been
+     chosen: before, it goes to the picker; after, it goes to the email field. The
+     page writes the label for whichever of those two it currently is. -->
 <button type="button" class="gift-jump" id="gift-jump" hidden>Pick your gift!</button>
 
 <footer>
@@ -404,6 +380,19 @@
     <div class="code"><span data-code></span><button type="button" data-copy>Copy</button></div>
     <a class="btn btn--cart" data-cart>Put the game and the gift in my cart</a>
     <p class="state-note" data-cart-note>One click loads both items.</p>
+    <!-- Only when the page could not load the cart for them. The page unhides it and
+         hangs the same attempt off it; otherwise it is taken out entirely. -->
+    <button type="button" class="btn btn--retry" data-retry hidden>Try my cart again</button>
+  </div>
+</template>
+
+<!-- Between the code and the cart. The page is about to move the visitor to another
+     page on their behalf, so it says what it did and holds still long enough to be
+     read rather than the screen simply vanishing under them. -->
+<template id="tpl-sending">
+  <div class="state state--sending">
+    <h3>Code unlocked</h3>
+    <p>Taking you to your cart, with the game, the gift and the code already on it.</p>
   </div>
 </template>
 

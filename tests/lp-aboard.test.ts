@@ -236,16 +236,34 @@ test("everything the browser asks for uses the public /gift-offer path", async (
   expect(css).toContain("/gift-offer/media/lp-hero-poster.jpg");
 
   // Not one upstream path may leak into anything the browser receives, comments
-  // included. page.js and offer.js are both shipped to the browser.
+  // included. page.js, cart.js and offer.js are all shipped to the browser.
   const offerJs = await handleAsset("/lp/aboard/offer.js")!.text();
-  for (const delivered of [html, js, css, offerJs]) {
+  const cartJs = await handleAsset("/lp/aboard/cart.js")!.text();
+  for (const delivered of [html, js, css, offerJs, cartJs]) {
     expect(delivered).not.toContain("/lp/aboard");
   }
 
-  // page.js imports "./offer.js" relative to itself. Served to the browser as
-  // /gift-offer/page.js, that resolves to /gift-offer/offer.js, which the Worker
-  // rewrites back to the upstream module. A path with a directory in it would not.
+  // page.js imports "./offer.js" and "./cart.js" relative to itself. Served to the
+  // browser as /gift-offer/page.js, those resolve to /gift-offer/offer.js and
+  // /gift-offer/cart.js, which the Worker rewrites back to the upstream modules. A
+  // path with a directory in it would not.
   expect(js).toContain('from "./offer.js"');
+  expect(js).toContain('from "./cart.js"');
+  expect(cartJs).toContain('from "./offer.js"');
+});
+
+test("the cart calls go to the shop, not to the portal and not across origins", async () => {
+  // The page is served from the shop's own origin and the Worker holds only the
+  // /gift-offer/* paths, so a bare /cart path reaches Shopify with the visitor's cart
+  // cookie on it. An absolute URL would be cross-origin and refused; a /gift-offer
+  // path would land on this portal, which has no cart.
+  const cartJs = await handleAsset("/lp/aboard/cart.js")!.text();
+
+  expect(cartJs).toContain('"/cart/clear.js"');
+  expect(cartJs).toContain('"/cart/add.js"');
+  expect(cartJs).toContain("/discount/${encodeURIComponent(code)}?redirect=");
+  expect(cartJs).not.toContain("https://nordicpirates.com/cart");
+  expect(cartJs).not.toContain("/gift-offer/cart");
 });
 
 test("the upstream routes this service answers on are still /lp/aboard", () => {
@@ -254,6 +272,7 @@ test("the upstream routes this service answers on are still /lp/aboard", () => {
     "/lp/aboard",
     "/lp/aboard/style.css",
     "/lp/aboard/page.js",
+    "/lp/aboard/cart.js",
     "/lp/aboard/offer.js",
     "/lp/aboard/media/lp-hero-1080.mp4",
   ]) {
@@ -272,6 +291,75 @@ test("the header CTA sells the game and points at the picker", async () => {
   // The old label sold one box to everybody, including the two thirds of visitors who
   // came for a base game.
   expect(html).not.toContain("Get the Big Box");
+});
+
+test("no stylesheet rule may take the header CTA off a phone", async () => {
+  // Lucas could not see it on his. The links and the language chips are allowed to go
+  // on a narrow screen; the one button that sells anything is not, so it shrinks
+  // instead. What it may not do is disappear or hang off the right hand edge.
+  const css = await handleAsset("/lp/aboard/style.css")!.text();
+
+  expect(css).not.toMatch(/\.np-nav-cta\{[^}]*display:none/);
+  expect(css).not.toMatch(/@media[^{]*\{[^}]*\.np-nav-cta\{[^}]*display:none/);
+
+  // Pinned to the right once the links are gone, and smaller on the narrowest phones.
+  expect(css).toContain("@media(max-width:1080px){.np-links{display:none}.np-nav-cta{margin-left:auto}}");
+  expect(css).toMatch(/@media\(max-width:420px\)\{[^}]*\.np-nav-inner/);
+  expect(css).toMatch(/\.np-nav-cta\{font-size:\.76rem/);
+  // The bar never wraps, so the logo is the part that gives up room.
+  expect(css).toContain("flex-wrap:nowrap");
+  expect(css).toMatch(/\.np-logo\{[^}]*text-overflow:ellipsis/);
+});
+
+test("the reviewer section is gone from the markup and from the stylesheet", async () => {
+  const html = await handleAsset("/lp/aboard")!.text();
+  const css = await handleAsset("/lp/aboard/style.css")!.text();
+
+  expect(html).not.toContain('class="pros"');
+  expect(html).not.toContain('id="pros"');
+  expect(html).not.toContain('href="#pros"');
+  for (const gone of ["Unfiltered Gamer", "Meeple University", "Dice Tower", "BOARD GAME REVIEWERS"]) {
+    expect(html).not.toContain(gone);
+  }
+
+  // The CSS for it goes with it rather than sitting there unused.
+  for (const rule of [".pros", ".pros-title", ".pros-rule", ".pros-grid", ".pro-card", ".pro-logo", ".pro-stars", ".pro-av", ".pro-who"]) {
+    expect(css).not.toContain(rule);
+  }
+
+  // The community reviews are a different section, and Lucas did not ask for those.
+  expect(html).toContain('id="bgg-reviews"');
+  expect(html).toContain("Community reviews");
+});
+
+test("the signup step is Polly's copy, and names the gift that is chosen", async () => {
+  const html = await handleAsset("/lp/aboard")!.text();
+  const js = await handleAsset("/lp/aboard/page.js")!.text();
+
+  // The heading names what they just clicked. One line per box, because "both gifts
+  // are yours" is not "the Kraken is yours" with a word swapped.
+  expect(html).toContain('<h2 id="claim-title">One step and the Kraken is yours</h2>');
+  expect(js).toContain('"base-kraken": "One step and the Kraken is yours"');
+  expect(js).toContain('"base-coins": "One step and the gold coins are yours"');
+  expect(js).toContain('"bigbox-both": "One step and both gifts are yours"');
+
+  // Copy is checked with the line breaks flattened: where the markup wraps is a
+  // formatting choice, and a test that locks it in only ever fails for the wrong
+  // reason.
+  const flat = html.replace(/\s+/g, " ");
+  expect(flat).toContain(
+    "Tell us where to send your code. It appears on this screen straight away, so you are not waiting on an email to get going."
+  );
+  expect(html).toContain('<label for="email">Your email</label>');
+  expect(html).toContain('id="submit-btn">Get my code</button>');
+  expect(flat).toContain(
+    "You are joining the crew list at the same time. We write when there is something worth writing about, and you can step off any time."
+  );
+
+  // No pressure language, and no proof line quoting a rating this page cannot back.
+  expect(html).not.toContain("Don't miss out");
+  expect(html).not.toContain("exclusive");
+  expect(html).not.toContain("608");
 });
 
 test("the picker says what it is for, right above it", async () => {

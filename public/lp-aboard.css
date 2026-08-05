@@ -187,6 +187,8 @@ grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);align-items:start}
 grid-template-columns:minmax(0,1fr) minmax(0,.95fr);align-items:start}
 .claim h2{font-size:clamp(1.6rem,3.2vw,2.3rem)}
 .claim .eyebrow{color:var(--teal)}
+.claim-lead{max-width:46ch}
+.claim-go{margin:1.25rem 0 0}
 .field{display:grid;gap:.7rem;margin:1.75rem 0 0}
 .field label{font-family:var(--sans);font-size:.78rem;letter-spacing:.13em;
 text-transform:uppercase;color:var(--muted);font-weight:600}
@@ -239,8 +241,12 @@ color:var(--brass,#c8a96e);font-size:.8rem;font-weight:700;display:grid;place-it
 
 .np-nav{position:sticky;top:0;z-index:60;background:rgba(13,17,23,.82);backdrop-filter:blur(10px);
 border-bottom:1px solid rgba(200,169,110,.18)}
-.np-nav-inner{max-width:78rem;margin:0 auto;padding:.75rem var(--pad);display:flex;align-items:center;gap:clamp(.8rem,2.2vw,2rem)}
-.np-logo{font-family:var(--serif);font-weight:700;letter-spacing:.14em;font-size:.95rem;color:#fff;text-decoration:none;white-space:nowrap}
+.np-nav-inner{max-width:78rem;margin:0 auto;padding:.75rem var(--pad);display:flex;align-items:center;
+gap:clamp(.8rem,2.2vw,2rem);flex-wrap:nowrap;min-width:0}
+/* The logo is the one thing here that may give up room. Everything else in this bar
+   is either hidden on a small screen or is the CTA, and the CTA is the point. */
+.np-logo{font-family:var(--serif);font-weight:700;letter-spacing:.14em;font-size:.95rem;color:#fff;
+text-decoration:none;white-space:nowrap;min-width:0;overflow:hidden;text-overflow:ellipsis}
 .np-logo span{color:var(--gold)}
 .np-links{display:flex;gap:clamp(.7rem,1.7vw,1.6rem);margin-left:auto}
 .np-links a{color:#e7e3da;text-decoration:none;font-size:.86rem;font-weight:500;white-space:nowrap;padding:.3rem 0;border-bottom:1px solid transparent}
@@ -252,10 +258,22 @@ text-decoration:none;padding:.28rem .42rem;border-radius:3px;background:none;bor
 .np-lang:hover:not(.is-on){color:var(--gold)}
 .np-lang:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 .np-nav-cta{background:var(--gold);color:#1a1508;font-weight:700;font-size:.84rem;text-decoration:none;
-padding:.6rem 1.05rem;border-radius:4px;white-space:nowrap}
+padding:.6rem 1.05rem;border-radius:4px;white-space:nowrap;flex:none}
 .np-nav-cta:hover{background:var(--gold-light)}
-@media(max-width:1080px){.np-links{display:none}}
-@media(max-width:560px){.np-langs{display:none}}
+/* "Get the Game" is the only thing in this bar that sells anything, so it survives
+   every width. Nothing below may hide it: the links go first, then the language
+   chips, and on the narrowest phones the CTA gets smaller rather than getting cut
+   off the right hand edge. Measured at 360px: logo, gap and button clear the
+   viewport with room to spare. */
+@media(max-width:1080px){.np-links{display:none}.np-nav-cta{margin-left:auto}}
+/* The chips go at 720, not 560: between those two widths the logo, five chips and
+   the button together are wider than the bar, and the button is what falls off. */
+@media(max-width:720px){.np-langs{display:none}}
+@media(max-width:420px){
+  .np-nav-inner{padding-left:.9rem;padding-right:.9rem;gap:.6rem}
+  .np-logo{font-size:.8rem;letter-spacing:.08em}
+  .np-nav-cta{font-size:.76rem;padding:.5rem .75rem}
+}
 
 .hero{position:relative;overflow:hidden;isolation:isolate}
 .hero-vid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2}
@@ -268,21 +286,6 @@ background:linear-gradient(180deg,rgba(13,17,23,.62) 0%,rgba(13,17,23,.72) 55%,r
 .hero{background:#0d1117 url(/gift-offer/media/lp-hero-poster.jpg) center/cover}}
 
 .center{text-align:center}
-.pros{background:linear-gradient(168deg,#efe4cd,#e6d8bc);color:#2b2519;padding:clamp(3.5rem,7vw,5.5rem) 0}
-.pros-title{font-family:var(--serif);text-align:center;font-size:clamp(1.9rem,4.4vw,2.9rem);margin:.2rem 0 0;font-weight:600;color:#241f16}
-.pros-title .gold{color:#7f652a}
-.pros-rule{width:4rem;height:1px;background:#8c7440;margin:1.1rem auto 2.6rem}
-.pros-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(17rem,1fr));gap:1.3rem}
-.pro-card{margin:0;background:#fbf6ea;border:1px solid rgba(124,100,48,.28);border-radius:8px;padding:1.6rem 1.5rem;display:flex;flex-direction:column;gap:.85rem}
-.pro-logo{height:44px;display:flex;align-items:center}
-.pro-logo img{max-height:44px;max-width:130px;object-fit:contain;border-radius:4px}
-.pro-stars{color:#8a6d2a;letter-spacing:.16em;font-size:.9rem;margin:0}
-.pro-card blockquote{margin:0;font-size:1rem;line-height:1.6;color:#332d21;font-style:italic}
-.pro-card figcaption{display:flex;align-items:center;gap:.7rem;margin-top:auto;padding-top:.9rem;border-top:1px solid rgba(124,100,48,.22)}
-.pro-av{flex:none;width:2.1rem;height:2.1rem;border-radius:50%;background:#3a2f1a;color:#f0e4c8;font-weight:700;display:grid;place-items:center;font-size:.9rem}
-.pro-who{display:flex;flex-direction:column;line-height:1.25}
-.pro-who b{color:#241f16;font-size:.95rem}
-.pro-who small{color:#7f652a;font-size:.8rem}
 
 .quotes{display:grid;grid-template-columns:repeat(auto-fit,minmax(18rem,1fr));gap:1.2rem}
 .q-card{margin:0;background:#fff;border:1px solid var(--line);border-radius:8px;padding:1.5rem;position:relative;display:flex;flex-direction:column;gap:.9rem}
@@ -303,7 +306,6 @@ background:linear-gradient(180deg,rgba(13,17,23,.62) 0%,rgba(13,17,23,.72) 55%,r
 .ship-grid li{background:#fff;border:1px solid var(--line);border-radius:8px;padding:1.3rem 1rem;text-align:center;display:flex;flex-direction:column;gap:.35rem}
 .ship-grid b{font-family:var(--serif);font-size:1.5rem;color:var(--gold);letter-spacing:.05em}
 .ship-grid span{font-size:.84rem;color:var(--muted)}
-.pros .eyebrow{color:#7f652a}
 .offer-head{text-align:center;margin-left:auto;margin-right:auto}
 .offer-head .lede{margin-left:auto;margin-right:auto}
 .pick{justify-items:center}
@@ -341,6 +343,17 @@ border:1px dashed var(--line);border-radius:2px;padding:1.35rem 1.5rem}
 
 .btn[aria-busy="true"]{opacity:.6;cursor:progress}
 .btn[disabled]{opacity:.6;cursor:not-allowed}
+/* .btn sets display:block, which beats the browser's own [hidden] rule. Without this
+   the retry button in the code state would be on screen for everybody. */
+.btn[hidden]{display:none}
+
+/* The moment between the code and the cart. Second in weight to the code itself: it
+   is there to be read once, not to be looked at. */
+.state--sending{border-left-color:var(--brass)}
+/* The way back into a cart that did not load. The cart link above it is the other
+   way, so this one is the quieter of the two. */
+.btn--retry{background:none;border-color:var(--line);color:var(--ink);margin-top:.85rem}
+.btn--retry:hover{background:var(--off-white)}
 
 /* The two ways out of the blocked state, and the edition list behind the first of
    them. They are a real trade, language against package, so both buttons get exactly
@@ -363,9 +376,10 @@ transition:border-color .18s,background .18s}
 padding:0;cursor:pointer;text-decoration:underline;text-underline-offset:2px;text-align:left}
 .choice-back:hover{color:var(--teal-soft)}
 
-/* The way back to the picker from anywhere on the page. Small, out of the way, and
-   the page hides it whenever the picker or the claim form is on screen, so it never
-   sits on top of the form. The safe area inset keeps it clear of the iOS Safari bar. */
+/* The control that follows the visitor down the page: to the picker before they have
+   chosen a box, to the email field after. Small and out of the way, and the page
+   takes it off screen whenever the picker or the email field is in view, so it never
+   sits on top of either. The safe area inset keeps it clear of the iOS Safari bar. */
 .gift-jump{position:fixed;z-index:70;right:clamp(.85rem,3vw,1.6rem);
 bottom:calc(clamp(.85rem,3vw,1.6rem) + env(safe-area-inset-bottom,0px));
 font-family:var(--sans);font-weight:700;font-size:.86rem;
@@ -378,4 +392,4 @@ box-shadow:0 12px 28px -14px rgba(13,17,23,.8)}
 
 /* The nav is sticky, so anything scrolled to by anchor or by button has to stop
    below it instead of underneath it. */
-#offer,.claim,#how-to-play,#pros{scroll-margin-top:4.75rem}
+#offer,.claim,#how-to-play,#email,#bgg-reviews{scroll-margin-top:4.75rem}
