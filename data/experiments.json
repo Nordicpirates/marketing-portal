@@ -1,10 +1,10 @@
 {
-  "updated": "2026-08-03",
+  "updated": "2026-08-05",
   "owner": "Polly",
   "source": "GA4 property 250338585. Weekly 2026-07-27..08-02 (landingPage + sessionManualAdContent); post-fix cumulative 2026-07-21..08-02; significance re-run on two windows, the full test window 2026-06-01..08-02 and the post-conclusion slice 2026-07-28..08-02, both by page and by ad content; plus a date x landingPage daily cut. All pulled live by Polly this morning and reproducible. real_sales_90d NOT refreshed: gate shopify orders still rejects the token.",
   "analyst": "Polly",
   "note": "A/B landing-page experiments. Refreshed daily by Polly (data); pause/promote verdicts on Mondays.",
-  "polly_note": "MONDAY DECISION REVIEW (2026-08-03). Verdicts below. (1) EN A/B: PROMOTE NEITHER, the null STANDS. I said on Sunday that A leading three weeks running earned a deliberate check rather than a third dismissal, so I ran it. On the full window 06-01..08-02 A is 0.869 percent (117 conv on 13,459) against B 0.812 percent (107 on 13,172), z=+0.51, not significant, threshold comfortably met. On the post-conclusion slice 07-28..08-02, where A's recent lead actually lives, A is 1.331 percent (14 on 1052) against B 0.709 percent (6 on 846), z=+1.32, and by ad content z=+1.53. Neither reaches 1.96 and the slice holds 14 and 6 conversions against a 100 per variant threshold, so it is nowhere near powered. The honest summary: A has led three weeks in the same direction, which is not nothing, but it does not clear significance on any cut and the cumulative z has moved only 0.11 to 0.51 across the whole test. IMPORTANT CAVEAT ON THAT SLICE, WHICH I DO NOT WANT GLOSSED: I chose the 07-28 start date AFTER seeing A pull ahead. A window selected because it looks promising will flatter itself, so its z is optimistically biased and must not be read as a fresh test. If we want this question genuinely settled rather than re-litigated every Monday, the move is to pre-register a new window: fix the start date, fix the endpoint, and commit to the readout before looking. At the observed effect size that needs roughly 2,000 sessions per arm, about one more week at current volume. Recommend deciding whether to do that deliberately, instead of continuing to slice. (2) LOCALIZED IT/DE: NO VERDICT POSSIBLE, and this is insufficient data rather than a null. IT carries 10 conversions and DE carries 1, against a 100 per variant threshold. Nothing about either rate is decidable yet and no pause or promote call is available. (3) DE TRAFFIC IS OFF FOR A FOURTH DAY: 29, 32, 16, 2, 3, 4. Still isolated to the Meta campaign 'CV - Purchases - DE', still needs Ads Manager, still with Lucas. It should be either fixed or formally paused, because a half-dead campaign dribbling 2 to 4 sessions a day keeps accruing denominator against a single conversion and quietly degrades the DE rate. (4) BOUNCE: A 79.5, B 81.8, stable for a third week and still roughly 8 to 10 points above where both sat three weeks ago. Both variants remain locked together, which continues to indicate traffic mix over a page fault. Undiagnosed; I have no channel-level cut that would settle it, and the largest single bucket is still unattributed traffic.",
+  "polly_note": "Wednesday: DATA-ONLY refresh, no verdicts. Decision review: Mondays. GA is fresh (last 7d to 2026-08-05). real_sales_90d is NOT re-pulled today: my Shopify connection returns 'Invalid API key or access token', so the sales block is carried over unchanged from Bengt's authoritative 2026-08-03 pull. It is 2 days stale, which is acceptable for a 90-day context figure, but the auth break needs fixing before any sales-dependent verdict on Monday.",
   "experiments": [
     {
       "name": "Big Box LP - Headline & Hero (EN)",
@@ -13,20 +13,26 @@
       "hypothesis": "Variant B (price-anchored CTA 'Get Your Box · From EUR39.95', single Big Box hero, prominent stats, scrolling reviews, FAQ) converts better than Variant A (carousel of 3 products, 'Choose Your Adventure' CTA).",
       "variants": [
         {
-          "name": "Control (A)",
-          "url": "https://nordicpirates.com/lp/lying-pirates-cities-of-greed-big-box/",
-          "sessions": 1265,
-          "bounce_pct": 79.45,
-          "conv_pct": 1.26,
-          "winner": false
+          "key": "lp_a",
+          "landing_page": "/lp/lying-pirates-cities-of-greed-big-box",
+          "sessions_7d": 1430,
+          "bounce_rate_7d": 0.7895,
+          "transactions_7d": 21,
+          "cvr_7d": 0.0147,
+          "page_sessions_7d": 1028,
+          "page_transactions_7d": 19,
+          "page_cvr_7d": 0.0185
         },
         {
-          "name": "Variant B",
-          "url": "https://nordicpirates.com/lp/lying-pirates-cities-of-greed-big-box-b/",
-          "sessions": 993,
-          "bounce_pct": 81.77,
-          "conv_pct": 0.7,
-          "winner": false
+          "key": "lp_b",
+          "landing_page": "/lp/lying-pirates-cities-of-greed-big-box-b",
+          "sessions_7d": 1393,
+          "bounce_rate_7d": 0.8155,
+          "transactions_7d": 11,
+          "cvr_7d": 0.0079,
+          "page_sessions_7d": 918,
+          "page_transactions_7d": 9,
+          "page_cvr_7d": 0.0098
         }
       ],
       "aggregate_7d": {
@@ -112,7 +118,8 @@
         "verdict": "No winner. The null stands. A has led three consecutive weeks but does not reach significance on any cut (z=0.51 full window, 1.32 post-conclusion by page, 1.53 by ad content), and the post-conclusion slice holds 14 and 6 conversions against a 100 threshold.",
         "action": "PROMOTE NEITHER. Do not re-slice this weekly. Either pre-register a fresh A/B window with a committed endpoint, or leave A/B closed and put the effort behind V3 proof-first, which remains the only genuinely different angle on the table."
       },
-      "polly_note": "Monday verdict: promote neither, null stands. I flagged on Sunday that three weeks in one direction deserved a real check rather than a third brush-off, and the check says no. The cumulative z has crawled from 0.11 to 0.51 across the entire test. The recent slice looks stronger (z=1.32 by page, 1.53 by ad content) but is both underpowered, 14 and 6 conversions, and selection-biased, because I picked its start date after seeing A lead. I would rather say that plainly than present a flattering number. If this matters enough to settle, pre-register a window; otherwise leave it closed."
+      "polly_note": "lp_a ahead on this window (1.47% vs 0.79% by ad content). NOT a verdict: 21 and 11 conversions are far below the ~100/variant threshold, and consecutive 7d pulls overlap by 6 days so a run of them is not a trend. Monday gets the significance check on non-overlapping buckets.",
+      "window": "last 7d to 2026-08-05"
     },
     {
       "name": "Localized LP variants (IT / DE / FR / ES)",
@@ -123,24 +130,24 @@
         {
           "name": "IT (live)",
           "url": "https://nordicpirates.com/lp/lying-pirates-it/",
-          "sessions": 951,
-          "bounce_pct": 77.71,
-          "conv_pct": 0.63,
+          "sessions": 1017,
+          "bounce_pct": 76.2,
+          "conv_pct": 0.59,
           "winner": false
         },
         {
           "name": "DE (live, traffic stopped)",
           "url": "https://nordicpirates.com/lp/lying-pirates-de/",
-          "sessions": 107,
-          "bounce_pct": 84.11,
-          "conv_pct": 0.93,
+          "sessions": 61,
+          "bounce_pct": 85.2,
+          "conv_pct": 1.64,
           "winner": false
         },
         {
           "name": "FR (paused)",
           "url": "https://nordicpirates.com/lp/lying-pirates-fr/",
-          "sessions": 1,
-          "bounce_pct": 100.0,
+          "sessions": 0,
+          "bounce_pct": 0.0,
           "conv_pct": 0.0,
           "winner": false
         },
@@ -306,7 +313,7 @@
         "cities_of_greed": 72,
         "bamboo_cups": 72
       },
-      "polly_note": "Monday: NO VERDICT AVAILABLE on either localized page, and the reason is power, not performance. IT has 10 conversions and DE has 1 against a 100 per variant threshold. IT ran 6 transactions on 951 sessions this week (0.63 percent) and its cumulative now reads 0.64 percent, up from 0.49, but that series has now moved down and then up on a base of 10 conversions and I am not calling a direction on it in either sign. The Italian question that IS answerable does not need the trend: Italy is the 3rd-largest market on the unconfirmed extract at 15.3k EUR and 162 orders per 90 days, while the IT LP is attributed 6 to 10 transactions a week, so the page underperforms its own traffic and most Italian revenue arrives through other channels. Settling that needs the country x product re-pull, which is still waiting on Lucas or Mikaela. DE is off for a fourth day and should be fixed or formally paused; see de_traffic_stop.",
+      "polly_note": "Data-only refresh (Wednesday). IT 1,017 sessions / 0.59% conv, DE 61 / 1.64% on 1 transaction so the DE percentage is noise at that volume. FR and ES still dark. NOTE the standing IT finding: Italy is the 3rd largest market by revenue (16,496 EUR/90d) but the Italian LP attributes almost none of it, and Italian orders skew 1.42x toward the entry-level Base Game while the page's cold-visitor block leads with a 124,95 box.",
       "de_traffic_stop": {
         "status": "UNRESOLVED, fourth day. With Lucas since 08-01.",
         "observed": "DE sessions by day 07-28..08-02: 29, 32, 16, 2, 3, 4. Baseline was 16 to 36 a day.",
@@ -314,7 +321,8 @@
         "ruled_out": "Google is not involved; the ad account is healthy (IT and all EN campaigns delivering normally); not a site or tracking fault, since IT and both EN variants held on the same days.",
         "NOT_verified": "Which of paused / spent budget / end date / rejected ad. Needs Meta Ads Manager; neither Polly nor Bengt has a read path.",
         "recommendation": "Fix it or formally pause it. A half-dead campaign trickling 2 to 4 sessions a day keeps adding denominator against a single conversion, so the DE rate quietly degrades while nobody is running a real test."
-      }
+      },
+      "window": "last 7d to 2026-08-05"
     }
   ],
   "built_not_yet_live": [
@@ -352,6 +360,19 @@
       "name": "Full LP refresh (premium redesign, EN)",
       "mockup": "https://share.gate1.dev/mockups/lyingpirates-polly/lp-refresh.html",
       "note": "Full-page redesign previewed 2026-07-14. Candidate to become the shared-improved control or a V3 sibling."
+    }
+  ],
+  "blockers": [
+    {
+      "what": "Shopify orders unavailable to Polly",
+      "detail": "gate shopify orders -> Composio SHOPIFY_GET_ORDER_LIST returns 'Invalid API key or access token'. Bengt's store key works (he pulled 90d on 08-03). Not urgent while sales is carried context, but blocks any independent sales pull.",
+      "since": "2026-08-05",
+      "owner": "Bengt / Lucas"
+    },
+    {
+      "what": "Meta remains unreadable",
+      "detail": "No Meta token in vault; the 00:30 job on 08-04 stopped entirely on this. Keeps DE and IT channel attribution closed.",
+      "owner": "Lucas"
     }
   ]
 }
