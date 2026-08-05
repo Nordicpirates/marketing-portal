@@ -1,4 +1,4 @@
-/* Gift offer page /lp/aboard. Lifted from Polly's approved v18 mockup.
+/* Gift offer page /lp/aboard. Lifted from Polly's approved v20 mockup.
    Rules for the review-only markup (.review-flag, .state--left, .rejoin form)
    are gone with that markup. Everything after "PAGE STATES" is new: the result
    panel is rendered by JS now instead of sitting in the HTML four times over. */
@@ -268,7 +268,7 @@ background:linear-gradient(180deg,rgba(13,17,23,.62) 0%,rgba(13,17,23,.72) 55%,r
 .hero-ship{margin-top:1.4rem;font-size:.9rem;color:#ded8cc;letter-spacing:.01em}
 .hero-ship strong{color:var(--gold);font-weight:600}
 @media(prefers-reduced-motion:reduce){.hero-vid{display:none}
-.hero{background:#0d1117 url(https://share.gate1.dev/mockups/lyingpirates-polly/lp-hero-poster.jpg) center/cover}}
+.hero{background:#0d1117 url(/lp/aboard/media/lp-hero-poster.jpg) center/cover}}
 
 .center{text-align:center}
 .pros{background:linear-gradient(168deg,#efe4cd,#e6d8bc);color:#2b2519;padding:clamp(3.5rem,7vw,5.5rem) 0}

@@ -45,23 +45,61 @@ const BLOCKED_OFFERS = new Set(["base-kraken", "base-coins"]);
 
 // Files the public page is allowed to pull. An explicit map, not a directory
 // walk, so a stray file in public/ can never become publicly readable.
-const ASSETS: Record<string, { file: string; type: string }> = {
-  "/lp/aboard": { file: "public/lp-aboard.html", type: "text/html; charset=utf-8" },
-  "/lp/aboard/style.css": { file: "public/lp-aboard.css", type: "text/css; charset=utf-8" },
-  "/lp/aboard/page.js": { file: "public/lp-aboard.js", type: "text/javascript; charset=utf-8" },
-  "/lp/aboard/offer.js": { file: "lib/offer.js", type: "text/javascript; charset=utf-8" },
+//
+// The media is served from this repo, not hotlinked from the mockup share space.
+// share.gate1.dev is where designs get reviewed; a live page that people are
+// being paid to visit cannot have its hero video disappear when a mockup is
+// tidied up. Markup and code stay on no-cache because they change; the media is
+// immutable once committed, so it gets a real cache lifetime instead of being
+// re-sent on every visit.
+const NO_CACHE = "no-cache";
+const CACHE_MEDIA = "public, max-age=604800";
+
+const ASSETS: Record<string, { file: string; type: string; cache: string }> = {
+  "/lp/aboard": { file: "public/lp-aboard.html", type: "text/html; charset=utf-8", cache: NO_CACHE },
+  "/lp/aboard/style.css": { file: "public/lp-aboard.css", type: "text/css; charset=utf-8", cache: NO_CACHE },
+  "/lp/aboard/page.js": { file: "public/lp-aboard.js", type: "text/javascript; charset=utf-8", cache: NO_CACHE },
+  "/lp/aboard/offer.js": { file: "lib/offer.js", type: "text/javascript; charset=utf-8", cache: NO_CACHE },
+
+  "/lp/aboard/media/lp-hero-poster.jpg": { file: "public/lp-aboard-media/lp-hero-poster.jpg", type: "image/jpeg", cache: CACHE_MEDIA },
+  "/lp/aboard/media/lp-hero-1080.webm": { file: "public/lp-aboard-media/lp-hero-1080.webm", type: "video/webm", cache: CACHE_MEDIA },
+  "/lp/aboard/media/lp-hero-1080.mp4": { file: "public/lp-aboard-media/lp-hero-1080.mp4", type: "video/mp4", cache: CACHE_MEDIA },
+  "/lp/aboard/media/lp-gift-hero.jpg": { file: "public/lp-aboard-media/lp-gift-hero.jpg", type: "image/jpeg", cache: CACHE_MEDIA },
+  "/lp/aboard/media/lp-gift-howto.jpg": { file: "public/lp-aboard-media/lp-gift-howto.jpg", type: "image/jpeg", cache: CACHE_MEDIA },
 };
 
 const RATE_LIMIT_MAX = 10;
 const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000;
 const hits = new Map<string, number[]>();
 
+/** First of these headers with something in it. */
+function firstHeader(req: Request, names: string[]): string {
+  for (const name of names) {
+    const value = (req.headers.get(name) || "").trim();
+    if (value) return value;
+  }
+  return "";
+}
+
+// The pretty URL nordicpirates.com/lp/aboard reaches this service through a
+// Cloudflare Worker. On that hop the CF headers describe the worker, not the
+// person, so the worker forwards the real visitor as x-visitor-*. Those win when
+// present; direct traffic to marketing.nordicpirate.com has none of them and falls
+// back to the CF headers exactly as before.
+const IP_HEADERS = ["x-visitor-ip", "cf-connecting-ip"];
+const COUNTRY_HEADERS = ["x-visitor-country", "cf-ipcountry"];
+
 function clientIp(req: Request): string {
-  const cf = req.headers.get("cf-connecting-ip");
-  if (cf) return cf.trim();
+  const direct = firstHeader(req, IP_HEADERS);
+  if (direct) return direct;
+  // Last resort. Take the first hop, which is the client the edge saw.
   const fwd = req.headers.get("x-forwarded-for");
   if (fwd) return fwd.split(",")[0].trim();
   return "unknown";
+}
+
+function clientCountry(req: Request): string {
+  return firstHeader(req, COUNTRY_HEADERS).toUpperCase();
 }
 
 /** True when this IP has already used its 10 submissions this hour. */
@@ -88,6 +126,10 @@ function rateLimited(ip: string): boolean {
 // Deliberately loose: something@something.tld. Anything stricter starts rejecting
 // real addresses, and the real proof an address works is the email that follows.
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+// RFC 5321 caps a forward path at 254 characters. Anything longer is not an address
+// anyone owns, and without a cap it is a free way to pad the JSONL store.
+const EMAIL_MAX = 254;
 
 type ClaimBody = Record<string, string>;
 
@@ -124,7 +166,7 @@ function record(entry: Record<string, unknown>): void {
   }
 }
 
-export function handleAsset(path: string): Response | null {
+export function handleAsset(path: string, req?: Request): Response | null {
   const asset = ASSETS[path];
   if (!asset) return null;
 
@@ -134,15 +176,49 @@ export function handleAsset(path: string): Response | null {
     return new Response("Not found", { status: 404 });
   }
 
-  return new Response(readFileSync(full), {
-    headers: {
-      "Content-Type": asset.type,
-      // Belt and braces with the noindex meta tag in the HTML: this page is for
-      // people who clicked an ad, not for search engines.
-      "X-Robots-Tag": "noindex, nofollow",
-      "Cache-Control": "no-cache",
-    },
-  });
+  const file = Bun.file(full);
+  const headers: Record<string, string> = {
+    "Content-Type": asset.type,
+    // Belt and braces with the noindex meta tag in the HTML: this page is for
+    // people who clicked an ad, not for search engines.
+    "X-Robots-Tag": "noindex, nofollow",
+    "Cache-Control": asset.cache,
+    // The hero video needs this. Safari asks for a byte range before it will play
+    // anything, and a server that answers 200-with-everything gets no video.
+    "Accept-Ranges": "bytes",
+  };
+
+  const range = req?.headers.get("range");
+  if (range) {
+    const size = file.size;
+    const match = /^bytes=(\d*)-(\d*)$/.exec(range.trim());
+    if (!match) {
+      console.warn(`[lp/aboard] unparseable Range header for ${path}: ${JSON.stringify(range)}`);
+      return new Response(file, { headers });
+    }
+
+    const start = match[1] ? parseInt(match[1], 10) : 0;
+    const end = match[2] ? Math.min(parseInt(match[2], 10), size - 1) : size - 1;
+
+    if (Number.isNaN(start) || Number.isNaN(end) || start > end || start >= size) {
+      console.warn(`[lp/aboard] unsatisfiable range ${range} for ${path} (${size} bytes)`);
+      return new Response("Range not satisfiable", {
+        status: 416,
+        headers: { ...headers, "Content-Range": `bytes */${size}` },
+      });
+    }
+
+    return new Response(file.slice(start, end + 1), {
+      status: 206,
+      headers: {
+        ...headers,
+        "Content-Range": `bytes ${start}-${end}/${size}`,
+        "Content-Length": String(end - start + 1),
+      },
+    });
+  }
+
+  return new Response(file, { headers });
 }
 
 export async function handleClaim(req: Request): Promise<Response> {
@@ -158,7 +234,7 @@ export async function handleClaim(req: Request): Promise<Response> {
   const edition = (body.edition || "").trim();
   const action = (body.action || "").trim();
   const honeypot = (body.company || "").trim();
-  const country = (req.headers.get("cf-ipcountry") || "").trim().toUpperCase();
+  const country = clientCountry(req);
 
   // Honeypot is invisible to humans, so anything in it is a bot.
   if (honeypot) {
@@ -167,7 +243,7 @@ export async function handleClaim(req: Request): Promise<Response> {
   }
 
   const problems: string[] = [];
-  if (!EMAIL_RE.test(email)) problems.push("email");
+  if (email.length > EMAIL_MAX || !EMAIL_RE.test(email)) problems.push("email");
   if (!OFFERS.includes(offer)) problems.push("offer");
   if (!EDITIONS.includes(edition)) problems.push("edition");
   if (action && action !== "rejoin") problems.push("action");

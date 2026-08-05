@@ -53,6 +53,17 @@ function claim(
   );
 }
 
+/** A claim carrying whatever raw headers the caller wants. */
+function claimWithHeaders(body: Record<string, string>, headers: Record<string, string>): Promise<Response> {
+  return handleClaim(
+    new Request("https://nordicpirates.com/lp/aboard/claim", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", ...headers },
+      body: JSON.stringify(body),
+    })
+  );
+}
+
 function storedLines(): Record<string, any>[] {
   if (!existsSync(SIGNUPS)) return [];
   return readFileSync(SIGNUPS, "utf8")
@@ -79,6 +90,53 @@ test("the page ships real copy, not a placeholder", async () => {
   expect(html).not.toContain("AI-AGENT-INSTRUCTIONS");
   expect(html).not.toContain("MOCKUP-WIDGET");
   expect(html).not.toContain("TODO-BENGT-ENDPOINT");
+});
+
+test("the mockup media is served from this repo, not hotlinked from the share space", async () => {
+  const media = [
+    ["/lp/aboard/media/lp-hero-poster.jpg", "image/jpeg"],
+    ["/lp/aboard/media/lp-hero-1080.webm", "video/webm"],
+    ["/lp/aboard/media/lp-hero-1080.mp4", "video/mp4"],
+    ["/lp/aboard/media/lp-gift-hero.jpg", "image/jpeg"],
+    ["/lp/aboard/media/lp-gift-howto.jpg", "image/jpeg"],
+  ];
+
+  for (const [path, type] of media) {
+    const res = handleAsset(path);
+    expect(res).not.toBeNull();
+    expect(res!.status).toBe(200);
+    expect(res!.headers.get("Content-Type")).toBe(type);
+    // Real bytes on disk, not an empty placeholder.
+    expect((await res!.arrayBuffer()).byteLength).toBeGreaterThan(1000);
+  }
+
+  // Nothing on the page may still point at the mockup share space. A live page
+  // people are paid to visit cannot break when a mockup gets tidied up.
+  const html = await handleAsset("/lp/aboard")!.text();
+  const css = await handleAsset("/lp/aboard/style.css")!.text();
+  expect(html).not.toContain("share.gate1.dev");
+  expect(css).not.toContain("share.gate1.dev");
+  for (const [path] of media) expect(html + css).toContain(path);
+});
+
+test("video is served in byte ranges, which Safari needs before it will play", async () => {
+  const path = "/lp/aboard/media/lp-hero-1080.mp4";
+  const full = handleAsset(path)!;
+  const size = Number(full.headers.get("Content-Length") ?? (await full.arrayBuffer()).byteLength);
+  expect(full.headers.get("Accept-Ranges")).toBe("bytes");
+
+  const ranged = handleAsset(path, new Request("https://x/", { headers: { Range: "bytes=0-1023" } }))!;
+  expect(ranged.status).toBe(206);
+  expect(ranged.headers.get("Content-Range")).toBe(`bytes 0-1023/${size}`);
+  expect((await ranged.arrayBuffer()).byteLength).toBe(1024);
+
+  // An open ended range is the one Safari actually opens with.
+  const open = handleAsset(path, new Request("https://x/", { headers: { Range: "bytes=0-" } }))!;
+  expect(open.status).toBe(206);
+  expect(open.headers.get("Content-Range")).toBe(`bytes 0-${size - 1}/${size}`);
+
+  const past = handleAsset(path, new Request("https://x/", { headers: { Range: `bytes=${size + 10}-` } }))!;
+  expect(past.status).toBe(416);
 });
 
 test("the page never hardcodes a discount code in its markup", async () => {
@@ -132,6 +190,54 @@ test("every EU, EEA and GB country blocks the English base game", async () => {
       { country }
     );
     expect((await res.json()).state).toBe("blocked");
+  }
+});
+
+test("behind the Cloudflare Worker, the visitor headers decide, not the proxy hop", async () => {
+  // The worker sits in front of nordicpirates.com/lp/aboard, so the CF headers
+  // describe the worker. x-visitor-* carries the person and has to win.
+  const blocked = await claimWithHeaders(
+    { email: "proxied@example.com", offer: "base-kraken", edition: "en" },
+    {
+      "x-visitor-country": "SE",
+      "x-visitor-ip": "203.0.113.5",
+      // What the worker hop itself looks like: a US edge, nowhere near the visitor.
+      "CF-IPCountry": "US",
+      "CF-Connecting-IP": "198.51.100.200",
+    }
+  );
+  expect((await blocked.json()).state).toBe("blocked");
+
+  // The country actually recorded is the visitor's, not the proxy's.
+  expect(storedLines().find((l) => l.email === "proxied@example.com")?.country).toBe("SE");
+
+  // And the other way round: a real visitor outside Europe behind a European hop.
+  const allowed = await claimWithHeaders(
+    { email: "proxied-us@example.com", offer: "base-kraken", edition: "en" },
+    { "x-visitor-country": "US", "x-visitor-ip": "203.0.113.6", "CF-IPCountry": "SE" }
+  );
+  expect((await allowed.json()).state).toBe("code");
+});
+
+test("direct traffic with only the CF headers still works unchanged", async () => {
+  const res = await claimWithHeaders(
+    { email: "direct@example.com", offer: "base-kraken", edition: "en" },
+    { "CF-IPCountry": "SE", "CF-Connecting-IP": "203.0.113.7" }
+  );
+  expect((await res.json()).state).toBe("blocked");
+  expect(storedLines().find((l) => l.email === "direct@example.com")?.country).toBe("SE");
+});
+
+test("the rate limit counts the real visitor, not the shared proxy hop", async () => {
+  // Every request through the worker carries the same CF-Connecting-IP. If that were
+  // what we counted, one busy visitor would rate limit everybody else.
+  const proxyHop = { "CF-Connecting-IP": "198.51.100.201" };
+  for (let i = 0; i < 12; i++) {
+    const res = await claimWithHeaders(
+      { email: "crowd@example.com", offer: "base-kraken", edition: "de" },
+      { ...proxyHop, "x-visitor-ip": `203.0.113.${100 + i}` }
+    );
+    expect(res.status).toBe(200);
   }
 });
 
@@ -212,6 +318,25 @@ test("bad email is rejected with 400", async () => {
     const res = await claim({ email, offer: "base-kraken", edition: "de" });
     expect(res.status).toBe(400);
   }
+});
+
+test("an email longer than 254 characters is rejected with 400", async () => {
+  // RFC 5321 caps a forward path at 254. 254 is fine, 255 is not.
+  const local = (n: number) => "a".repeat(n) + "@example.com";
+  const atLimit = local(254 - "@example.com".length);
+  expect(atLimit.length).toBe(254);
+
+  const ok = await claim({ email: atLimit, offer: "base-kraken", edition: "de" });
+  expect(ok.status).toBe(200);
+
+  const tooLong = local(255 - "@example.com".length);
+  expect(tooLong.length).toBe(255);
+
+  const rejected = await claim({ email: tooLong, offer: "base-kraken", edition: "de" });
+  expect(rejected.status).toBe(400);
+
+  // And nothing that long reached the store.
+  expect(storedLines().some((l) => l.email === tooLong)).toBe(false);
 });
 
 test("unknown offer or edition is rejected with 400", async () => {

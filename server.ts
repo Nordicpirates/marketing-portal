@@ -95,8 +95,14 @@ function serveLogin(error = false): Response {
   });
 }
 
+// 1 MB. Nothing this server accepts is remotely that big: the largest real body
+// is a claim form with an email address in it. Bun's default ceiling is 128 MB,
+// which on a public endpoint is a free way to make us hold rubbish in memory.
+const MAX_REQUEST_BODY_BYTES = 1024 * 1024;
+
 const server = Bun.serve({
   port: PORT,
+  maxRequestBodySize: MAX_REQUEST_BODY_BYTES,
   async fetch(req) {
     const url = new URL(req.url);
     const path = url.pathname;
@@ -114,8 +120,9 @@ const server = Bun.serve({
     }
     if (lpPath.startsWith("/lp/")) {
       // 404 rather than falling through, so an unknown /lp/ path never bounces a
-      // logged-out visitor to the staff login screen.
-      return handleAsset(lpPath) || new Response("Not found", { status: 404 });
+      // logged-out visitor to the staff login screen. The request goes along so
+      // the hero video can be served in byte ranges.
+      return handleAsset(lpPath, req) || new Response("Not found", { status: 404 });
     }
 
     if (path === "/login") {
