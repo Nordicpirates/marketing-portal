@@ -3,11 +3,21 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+// The shop's primary domain is www.nordicpirates.com (Shopify 301s every shop
+// path on the bare domain to www, and the browser refuses the redirected cart
+// calls as cross-origin). A visitor on the bare domain could read this page but
+// never load a cart from it, so move them to www before anything else runs.
+// This HTML is served no-cache, so the guard reaches every visitor immediately.
+if (location.hostname === "nordicpirates.com") {
+  location.replace("https://www.nordicpirates.com" + location.pathname + location.search + location.hash);
+}
+</script>
 <meta name="robots" content="noindex, nofollow, noarchive">
 <title>We made something special | Lying Pirates</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="canonical" href="https://nordicpirates.com/gift-offer">
+<link rel="canonical" href="https://www.nordicpirates.com/gift-offer">
 <meta property="og:title" content="Nordic Pirates">
 <meta property="og:description" content="Lying Pirates, a bluffing dice game.">
 <link rel="stylesheet" href="/gift-offer/style.css">
@@ -335,7 +345,7 @@
         <p class="claim-go"><button class="btn" type="submit" form="giftform" id="submit-btn">Get my code</button></p>
         <p class="consent">You are joining the crew list at the same time. We write when there is
         something worth writing about, and you can step off any time.
-        <a href="https://nordicpirates.com/policies/privacy-policy" rel="noopener">How we handle your details</a>.</p>
+        <a href="https://www.nordicpirates.com/policies/privacy-policy" rel="noopener">How we handle your details</a>.</p>
         <p class="fine">The code applies your gift in the cart. It does not stack with our
         multi-item discount, so use whichever suits you better.</p>
       </div>
@@ -358,7 +368,7 @@
   <div class="wrap">
     <span>Nordic Pirates, Stockholm</span>
     <span>Lying Pirates is a bluffing dice game for 2 to 6 liars.</span>
-    <span><a href="https://nordicpirates.com/policies/privacy-policy" rel="noopener">Privacy</a></span>
+    <span><a href="https://www.nordicpirates.com/policies/privacy-policy" rel="noopener">Privacy</a></span>
   </div>
 </footer>
 
