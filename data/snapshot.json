@@ -419,6 +419,50 @@
         "blended_mer": 3.88,
         "_note": "Meta API (3-9 aug, 7d-klick/1d-visning), hämtad 10 aug."
       },
+      "gads": {
+        "spend_label": "4 929 kr",
+        "gads_roas": 1.89,
+        "conv": 9,
+        "value_label": "9 319 kr",
+        "_note": "Google Ads API (3-9 aug), hämtad 10 aug.",
+        "campaigns": [
+          {
+            "name": "Shopping - US & UK",
+            "spend_label": "3 152 kr",
+            "conv": 4,
+            "value_label": "4 593 kr",
+            "roas": 1.46
+          },
+          {
+            "name": "Shopping - AU",
+            "spend_label": "726 kr",
+            "conv": 1,
+            "value_label": "503 kr",
+            "roas": 0.69
+          },
+          {
+            "name": "Brand Search - All Markets",
+            "spend_label": "524 kr",
+            "conv": 2,
+            "value_label": "3 762 kr",
+            "roas": 7.18
+          },
+          {
+            "name": "Brand Search - IT",
+            "spend_label": "362 kr",
+            "conv": 2,
+            "value_label": "460 kr",
+            "roas": 1.27
+          },
+          {
+            "name": "Non-brand Test - US & UK",
+            "spend_label": "165 kr",
+            "conv": 0,
+            "value_label": "0 kr",
+            "roas": 0.0
+          }
+        ]
+      },
       "orders_by_country": [
         {
           "name": "USA",
@@ -552,6 +596,64 @@
         "meta_roas": 2.27,
         "blended_mer": 3.36,
         "_note": "Meta API (11 jul-9 aug, 7d-klick/1d-visning), hämtad 10 aug."
+      },
+      "gads": {
+        "spend_label": "18 019 kr",
+        "gads_roas": 3.9,
+        "conv": 73,
+        "value_label": "70 308 kr",
+        "_note": "Google Ads API (11 jul-9 aug), hämtad 10 aug.",
+        "campaigns": [
+          {
+            "name": "Shopping - US & UK",
+            "spend_label": "12 244 kr",
+            "conv": 37,
+            "value_label": "35 338 kr",
+            "roas": 2.89
+          },
+          {
+            "name": "Brand Search - All Markets",
+            "spend_label": "2 180 kr",
+            "conv": 16,
+            "value_label": "16 410 kr",
+            "roas": 7.53
+          },
+          {
+            "name": "Shopping - AU",
+            "spend_label": "1 834 kr",
+            "conv": 8,
+            "value_label": "8 623 kr",
+            "roas": 4.7
+          },
+          {
+            "name": "Brand Search - IT",
+            "spend_label": "598 kr",
+            "conv": 10,
+            "value_label": "9 370 kr",
+            "roas": 15.66
+          },
+          {
+            "name": "Shopping - DE",
+            "spend_label": "546 kr",
+            "conv": 0,
+            "value_label": "0 kr",
+            "roas": 0.0
+          },
+          {
+            "name": "Non-brand Test - US & UK",
+            "spend_label": "475 kr",
+            "conv": 2,
+            "value_label": "568 kr",
+            "roas": 1.2
+          },
+          {
+            "name": "Brand Search - DE",
+            "spend_label": "143 kr",
+            "conv": 0,
+            "value_label": "0 kr",
+            "roas": 0.0
+          }
+        ]
       },
       "orders_by_country": [
         {
@@ -687,6 +789,50 @@
         "blended_mer": 3.66,
         "_note": "Meta API (1-9 aug, 7d-klick/1d-visning), hämtad 10 aug."
       },
+      "gads": {
+        "spend_label": "6 124 kr",
+        "gads_roas": 2.24,
+        "conv": 14,
+        "value_label": "13 726 kr",
+        "_note": "Google Ads API (1-9 aug), hämtad 10 aug.",
+        "campaigns": [
+          {
+            "name": "Shopping - US & UK",
+            "spend_label": "3 974 kr",
+            "conv": 8,
+            "value_label": "8 562 kr",
+            "roas": 2.15
+          },
+          {
+            "name": "Shopping - AU",
+            "spend_label": "906 kr",
+            "conv": 1,
+            "value_label": "503 kr",
+            "roas": 0.56
+          },
+          {
+            "name": "Brand Search - All Markets",
+            "spend_label": "637 kr",
+            "conv": 2,
+            "value_label": "3 762 kr",
+            "roas": 5.91
+          },
+          {
+            "name": "Brand Search - IT",
+            "spend_label": "404 kr",
+            "conv": 3,
+            "value_label": "899 kr",
+            "roas": 2.23
+          },
+          {
+            "name": "Non-brand Test - US & UK",
+            "spend_label": "204 kr",
+            "conv": 0,
+            "value_label": "0 kr",
+            "roas": 0.0
+          }
+        ]
+      },
       "orders_by_country": [
         {
           "name": "USA",
@@ -778,6 +924,64 @@
         "meta_roas": 2.08,
         "blended_mer": 3.1,
         "_note": "Meta API (12 maj-9 aug, 7d-klick/1d-visning), hämtad 10 aug."
+      },
+      "gads": {
+        "spend_label": "18 339 kr",
+        "gads_roas": 3.92,
+        "conv": 74,
+        "value_label": "71 934 kr",
+        "_note": "Google Ads API (live 8 jul-9 aug - hela livstiden ryms i 90d-fönstret), hämtad 10 aug.",
+        "campaigns": [
+          {
+            "name": "Shopping - US & UK",
+            "spend_label": "12 444 kr",
+            "conv": 37,
+            "value_label": "35 338 kr",
+            "roas": 2.84
+          },
+          {
+            "name": "Brand Search - All Markets",
+            "spend_label": "2 280 kr",
+            "conv": 18,
+            "value_label": "19 410 kr",
+            "roas": 8.51
+          },
+          {
+            "name": "Shopping - AU",
+            "spend_label": "1 834 kr",
+            "conv": 8,
+            "value_label": "8 623 kr",
+            "roas": 4.7
+          },
+          {
+            "name": "Brand Search - IT",
+            "spend_label": "598 kr",
+            "conv": 10,
+            "value_label": "9 370 kr",
+            "roas": 15.66
+          },
+          {
+            "name": "Shopping - DE",
+            "spend_label": "546 kr",
+            "conv": 0,
+            "value_label": "0 kr",
+            "roas": 0.0
+          },
+          {
+            "name": "Non-brand Test - US & UK",
+            "spend_label": "494 kr",
+            "conv": 2,
+            "value_label": "568 kr",
+            "roas": 1.15
+          },
+          {
+            "name": "Brand Search - DE",
+            "spend_label": "143 kr",
+            "conv": 0,
+            "value_label": "0 kr",
+            "roas": 0.0
+          }
+        ]
       },
       "orders_by_country": [
         {
@@ -900,6 +1104,128 @@
           "sub": "Worth a dedicated fix sprint: localized pricing, FR checkout, shipping clarity — or pause FR paid traffic until the page is fixed. (Landing page-listan för 90d är per 6 aug.)"
         }
       ]
+    },
+    {
+      "id": "yesterday",
+      "label": "Yesterday (Aug 9)",
+      "range_start": "2026-08-09",
+      "range_end": "2026-08-09",
+      "days": 1,
+      "kpis": {
+        "sessions": 363,
+        "conversion_label": "3.31%",
+        "sales_label": "€1,231",
+        "orders": 12
+      },
+      "meta": {
+        "spend_label": "2 887 kr",
+        "spend_window": "9 aug (Meta API, hämtad 10 aug)",
+        "meta_roas": 1.39,
+        "blended_mer": 4.86,
+        "_note": "Meta API (9 aug, 7d-klick/1d-visning), hämtad 10 aug."
+      },
+      "gads": {
+        "spend_label": "645 kr",
+        "gads_roas": 0.69,
+        "conv": 1,
+        "value_label": "448 kr",
+        "_note": "Google Ads API (9 aug), hämtad 10 aug.",
+        "campaigns": [
+          {
+            "name": "Shopping - US & UK",
+            "spend_label": "469 kr",
+            "conv": 1,
+            "value_label": "448 kr",
+            "roas": 0.95
+          },
+          {
+            "name": "Shopping - AU",
+            "spend_label": "82 kr",
+            "conv": 0,
+            "value_label": "0 kr",
+            "roas": 0.0
+          },
+          {
+            "name": "Brand Search - IT",
+            "spend_label": "55 kr",
+            "conv": 0,
+            "value_label": "0 kr",
+            "roas": 0.0
+          },
+          {
+            "name": "Brand Search - All Markets",
+            "spend_label": "38 kr",
+            "conv": 0,
+            "value_label": "0 kr",
+            "roas": 0.0
+          }
+        ]
+      },
+      "orders_by_country": [
+        {
+          "name": "USA",
+          "flag": "🇺🇸",
+          "orders": 5,
+          "revenue": "€411"
+        },
+        {
+          "name": "UK",
+          "flag": "🇬🇧",
+          "orders": 3,
+          "revenue": "€392"
+        },
+        {
+          "name": "Austria",
+          "flag": "🇦🇹",
+          "orders": 1,
+          "revenue": "€137"
+        },
+        {
+          "name": "Croatia",
+          "flag": "🇭🇷",
+          "orders": 1,
+          "revenue": "€135"
+        },
+        {
+          "name": "Ireland",
+          "flag": "🇮🇪",
+          "orders": 1,
+          "revenue": "€110"
+        },
+        {
+          "name": "Germany",
+          "flag": "🇩🇪",
+          "orders": 1,
+          "revenue": "€47"
+        }
+      ],
+      "landing_pages": [
+        {
+          "name": "Base Game (product)",
+          "path": "/products/lying-pirates-base-game",
+          "sessions": 145,
+          "conv_pct": 2.07
+        },
+        {
+          "name": "Big Box (product)",
+          "path": "/products/lying-pirates-big-box",
+          "sessions": 80,
+          "conv_pct": 6.25
+        },
+        {
+          "name": "Homepage",
+          "path": "/",
+          "sessions": 62,
+          "conv_pct": 3.23
+        },
+        {
+          "name": "Gold Coins (product)",
+          "path": "/products/gold-coins-20-pcs",
+          "sessions": 16,
+          "conv_pct": 0.0
+        }
+      ],
+      "flags": []
     }
   ],
   "inventory_data": {
