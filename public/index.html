@@ -231,9 +231,21 @@
     <div class="stats" id="meta-grid"></div>
   </section>
 
-  <!-- GOOGLE ADS -->
-  <section id="gads-section">
+  <!-- GOOGLE ADS — SELECTED PERIOD -->
+  <section id="pgads-section">
     <h2><span class="dot"></span>Paid (Google Ads)</h2>
+    <p class="h2sub" id="pgads-period">…</p>
+    <div class="stats" id="pgads-grid"></div>
+    <div class="panel" id="pgads-panel" style="margin-top:14px"><table>
+      <thead><tr><th>Kampanj</th><th>Spend</th><th>Köp</th><th>Värde</th><th>ROAS</th></tr></thead>
+      <tbody id="pgads-body"></tbody>
+    </table></div>
+    <p class="h2sub" id="pgads-note" style="margin-top:10px;font-style:italic"></p>
+  </section>
+
+  <!-- GOOGLE ADS — SINCE START -->
+  <section id="gads-section">
+    <h2><span class="dot"></span>Google Ads — sedan start</h2>
     <p class="h2sub" id="gads-sub">…</p>
     <div class="stats" id="gads-grid"></div>
     <div class="panel" id="gads-panel" style="margin-top:14px"><table>
@@ -339,6 +351,8 @@ let DATA = null;
 let CUR = 0;
 
 function fmtInt(n){ return (n===null||n===undefined)?'—':Number(n).toLocaleString('en-US'); }
+// ROAS the way the rest of the page writes it: Swedish decimal comma, trailing ×.
+function fmtRoas(v){ return (v===null||v===undefined)?'—':String(v).replace('.',',')+'×'; }
 
 async function load() {
   try {
@@ -414,9 +428,9 @@ function renderPeriod(i) {
   document.querySelectorAll('.preset').forEach(b=>b.classList.toggle('active', parseInt(b.dataset.i)===i));
 
   const rangeStr = `${p.range_start} → ${p.range_end}`;
-  document.getElementById('range-caption').innerHTML = `Showing <b>${p.label}</b> · ${rangeStr} · ${p.days} days`;
+  document.getElementById('range-caption').innerHTML = `Showing <b>${p.label}</b> · ${rangeStr} · ${p.days} day${p.days===1?'':'s'}`;
   const note = `${p.label} · ${rangeStr}`;
-  ['kpi-period','meta-period','lp-period','countries-period','creative-period','oc-period'].forEach(id=>{
+  ['kpi-period','meta-period','pgads-period','lp-period','countries-period','creative-period','oc-period'].forEach(id=>{
     const el=document.getElementById(id); if(el) el.textContent = id==='lp-period' ? `${note} · ranked by sessions` : id==='oc-period' ? `Actual Shopify orders · ${note}` : note;
   });
 
@@ -434,6 +448,9 @@ function renderPeriod(i) {
     <div class="stat ink"><div class="n">${m.spend_label||'—'}</div><div class="k">Meta ad spend</div></div>
     <div class="stat gold"><div class="n">${String(m.meta_roas??'—').replace('.',',')}</div><div class="k">Meta ROAS</div></div>
     <div class="stat gold"><div class="n">${String(m.blended_mer??'—').replace('.',',')}</div><div class="k">Blended MER</div></div>`;
+
+  // Google Ads for this period
+  renderPeriodGads(p.gads);
 
   // Landing pages
   const lps = p.landing_pages||[];
@@ -497,6 +514,29 @@ function renderPeriod(i) {
         <div class="track"><div class="fill static" style="width:${cv.static.pct}%"></div></div>
         <div class="meta">${cv.static.note}</div></div>`;
   }
+}
+
+// Google Ads numbers for the period the user picked, from that period's own `gads`
+// block. Snapshots written before per-period Google data existed have no such block,
+// and for those the section is hidden rather than drawn empty.
+function renderPeriodGads(g) {
+  const sec = document.getElementById('pgads-section');
+  if (!sec) return;
+  if (!g) { sec.style.display='none'; return; }
+  sec.style.display='';
+  document.getElementById('pgads-grid').innerHTML = `
+    <div class="stat ink"><div class="n">${g.spend_label||'—'}</div><div class="k">Google ad spend</div></div>
+    <div class="stat gold"><div class="n">${fmtRoas(g.gads_roas)}</div><div class="k">Google ROAS</div></div>
+    <div class="stat"><div class="n">${fmtInt(g.conv)}</div><div class="k">Conversions</div></div>
+    <div class="stat ink"><div class="n">${g.value_label||'—'}</div><div class="k">Conversion value</div></div>`;
+  // A period can have spend without a campaign breakdown; an empty table would just
+  // be a header with nothing under it.
+  const camps = g.campaigns||[];
+  document.getElementById('pgads-panel').style.display = camps.length ? '' : 'none';
+  document.getElementById('pgads-body').innerHTML = camps.map(c=>`
+    <tr><td>${c.name}</td><td>${c.spend_label||'—'}</td><td>${fmtInt(c.conv)}</td><td>${c.value_label||'—'}</td>
+    <td><b>${fmtRoas(c.roas)}</b></td></tr>`).join('');
+  document.getElementById('pgads-note').textContent = g._note||'';
 }
 
 function renderGads() {
