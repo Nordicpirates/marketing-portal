@@ -27,6 +27,10 @@ import {
   CART_CLEAR,
   CODE_BASE,
   CODE_BIGBOX,
+  CODE_VISIBLE_MS,
+  REDIRECT_TEST_MS,
+  say,
+  tapOffer,
   type Page,
 } from "./page-harness.ts";
 
@@ -67,7 +71,7 @@ test("a successful claim empties the cart, loads it, applies the code, then goes
   // other offers live on the cart page and Shop Pay skips them.
   expect(landed).toBe(CART);
   expect(page.navigations.length).toBe(1);
-});
+}, REDIRECT_TEST_MS);
 
 test("every call goes to a bare path, so it reaches the shop and not the portal", async () => {
   // The page is served from the shop's own origin with a Worker holding only the
@@ -82,25 +86,31 @@ test("every call goes to a bare path, so it reaches the shop and not the portal"
     expect(call.url).not.toContain("://");
     expect(call.url).not.toContain("/gift-offer");
   }
-});
+}, REDIRECT_TEST_MS);
 
-test("the visitor is told what is happening before the page moves under them", async () => {
+test("the code is on screen, and stays there, before the page moves under them", async () => {
+  // Lucas asked for the code to be visible before the redirect, long enough to read.
+  // The page is about to navigate on the visitor's behalf, so a code that flashed past
+  // is a code they never got.
   const page = await loadPage({ body: codeAnswer });
+  const started = Date.now();
   await page.submit();
 
-  // On screen while the cart is being built, and still there once it is: the page
-  // holds the confirmation for long enough to be read rather than blinking through it.
   const text = page.text();
   expect(text).toContain("Code unlocked");
   expect(text.toLowerCase()).toContain("taking you to your cart");
+  expect(page.document.querySelector("#result [data-code]").textContent.trim()).toBe(CODE_BASE);
   expect(page.navigations).toEqual([]);
 
-  // No code on this screen. It is in their inbox and on the cart they are going to,
-  // and a code they could copy invites them to stop here instead of going on.
-  expect(page.document.querySelector("#result [data-code]")).toBeNull();
+  // Still there a second later, with the cart already built underneath it. This is the
+  // half that matters: the hold is a real one, not the incidental gap a fetch leaves.
+  await page.until(() => page.cartCalls().length === 3, "the cart to finish loading");
+  expect(page.navigations).toEqual([]);
+  expect(page.document.querySelector("#result [data-code]").textContent.trim()).toBe(CODE_BASE);
 
   await page.navigated();
-});
+  expect(Date.now() - started).toBeGreaterThanOrEqual(CODE_VISIBLE_MS);
+}, REDIRECT_TEST_MS);
 
 test("the BIG BOX loads three items and its own code", async () => {
   const page = await loadPage({ body: { state: "code", code: CODE_BIGBOX } });
@@ -112,7 +122,113 @@ test("the BIG BOX loads three items and its own code", async () => {
   expect(addedIds(page)).toEqual([BIGBOX_EN, KRAKEN, COINS]);
   expect(cartPaths(page)[2]).toBe(discountPath(CODE_BIGBOX));
   expect(cartPaths(page)[2]).not.toContain(CODE_BASE);
+}, REDIRECT_TEST_MS);
+
+// The gift is posted with the box that was chosen when the button was pressed, and the
+// answer comes back some unknown time later. This is that gap from the picker's end: a
+// box tapped during the wait must not be able to leave the page showing one gift while
+// another one is being carted.
+const CART_FOR: Record<string, string[]> = {
+  "base-kraken": [BASE_EN, KRAKEN],
+  "base-coins": [BASE_EN, COINS],
+  "bigbox-both": [BIGBOX_EN, KRAKEN, COINS],
+};
+
+test(
+  "a box tapped while the claim is in flight cannot move the gift that goes in the cart",
+  async () => {
+    const page = await loadPage({ body: codeAnswer });
+    const release = page.holdClaim();
+
+    // The Kraken box is the one checked in the markup, so that is what goes out.
+    await page.submit();
+    expect(page.calls[0].body.offer).toBe("base-kraken");
+    expect(page.cartCalls()).toEqual([]);
+
+    // They change their mind to the BIG BOX while the answer is still in the air.
+    tapOffer(page, "o-bigbox");
+
+    release();
+    await page.navigated();
+
+    // Whatever box the page ends up showing, that is the box in the cart. This is the
+    // whole claim, and it is read off the page rather than assumed so it holds in
+    // either direction.
+    const shown = page.document.querySelector('input[name="offer"]:checked').value;
+    expect(addedIds(page)).toEqual(CART_FOR[shown]);
+
+    // And the box that is kept is the one the claim was made for, with the heading over
+    // the email field naming that same box rather than the one that was tapped.
+    expect(shown).toBe("base-kraken");
+    expect(page.document.getElementById("claim-title").textContent.trim()).toBe(
+      say("en", "claim.title.kraken")
+    );
+  },
+  REDIRECT_TEST_MS
+);
+
+test("the gift radios are held with the language, and handed back with it", async () => {
+  // How the test above is kept true. no_redirect so the page stays put and the release
+  // can be watched: what happens to the cart afterwards is the test above's business.
+  const page = await loadPage({ body: codeAnswer }, DEMO);
+  const release = page.holdClaim();
+
+  await page.submit();
+
+  // Visibly held rather than dead, the same as the edition radios and the submit button
+  // beside them: a control the visitor can see is not theirs for the moment.
+  const bigbox = page.document.getElementById("o-bigbox");
+  expect(bigbox.disabled).toBe(true);
+
+  // Both events dispatched anyway, because a held control that still acted on them would
+  // be the same bug wearing a disabled attribute.
+  bigbox.dispatchEvent(new page.window.Event("change", { bubbles: true }));
+  await page.click(bigbox.closest(".pick"));
+
+  // The heading still names the box that was posted, and the tap did not answer the
+  // visitor by carrying them to the email field as though it had landed.
+  expect(page.document.getElementById("claim-title").textContent.trim()).toBe(
+    say("en", "claim.title.kraken")
+  );
+  expect(page.scrolledTo(page.document.getElementById("email"))).toBeUndefined();
+
+  release();
+  await page.until(() => !!page.document.querySelector("#result [data-code]"), "the code");
+
+  // The answer has landed and the visitor has something to act on, so the gift is theirs
+  // to change again rather than staying dead for the rest of the page's life.
+  expect(bigbox.disabled).toBe(false);
 });
+
+test(
+  "the wait between a built cart and the redirect cannot move either control",
+  async () => {
+    // The other half of the same window. The claim is answered and the cart is loaded,
+    // but the page is still holding the code on screen long enough to read, and that wait
+    // is the last place a tap can land before the browser leaves. Everything in the cart
+    // is settled by then, so neither control may move.
+    const page = await loadPage({ body: codeAnswer });
+    await page.submit();
+    await page.until(() => page.cartCalls().length === 3, "the cart to finish loading");
+    expect(page.navigations).toEqual([]);
+
+    const bigbox = page.document.getElementById("o-bigbox");
+    const french = page.document.getElementById("ed-fr");
+    expect(bigbox.disabled).toBe(true);
+    expect(french.disabled).toBe(true);
+
+    tapOffer(page, "o-bigbox");
+    french.dispatchEvent(new page.window.Event("change", { bubbles: true }));
+
+    await page.navigated();
+
+    const shown = page.document.querySelector('input[name="offer"]:checked').value;
+    expect(addedIds(page)).toEqual(CART_FOR[shown]);
+    expect(shown).toBe("base-kraken");
+    expect(page.document.querySelector('input[name="edition"]:checked').value).toBe("en");
+  },
+  REDIRECT_TEST_MS
+);
 
 test("a blocked visitor's cart is not touched until they have chosen", async () => {
   const page = await loadPage({ body: blockedAnswer });
@@ -135,7 +251,7 @@ test("the BIG BOX choice loads the BIG BOX cart with the BIG BOX code", async ()
   expect(cartPaths(page)).toEqual([CART_CLEAR, CART_ADD, discountPath(CODE_BIGBOX)]);
   expect(addedIds(page)).toEqual([BIGBOX_EN, KRAKEN, COINS]);
   expect(landed).toBe(CART);
-});
+}, REDIRECT_TEST_MS);
 
 test("the European edition choice loads that edition with the code they were issued", async () => {
   const page = await loadPage({ body: blockedAnswer });
@@ -150,7 +266,7 @@ test("the European edition choice loads that edition with the code they were iss
   expect(cartPaths(page)[2]).toBe(discountPath(CODE_BASE));
   expect(cartPaths(page)[2]).not.toContain(CODE_BIGBOX);
   expect(landed).toBe(CART);
-});
+}, REDIRECT_TEST_MS);
 
 test("a cart that will not build keeps the code on screen, with a way to try again", async () => {
   // The one unrecoverable outcome here would be losing the code because the shop had a
@@ -192,7 +308,7 @@ test("the retry runs the whole sequence again and takes them to the cart", async
   // The whole sequence over again, not just the call that failed.
   expect(cartPaths(page).slice(failed)).toEqual([CART_CLEAR, CART_ADD, discountPath(CODE_BASE)]);
   expect(landed).toBe(CART);
-});
+}, REDIRECT_TEST_MS);
 
 test("a discount call that does not go through still lands them on a cart with the code", async () => {
   // The same link works as a destination: Shopify applies the code and sends the
@@ -206,7 +322,7 @@ test("a discount call that does not go through still lands them on a cart with t
   expect(addedIds(page)).toEqual([BASE_EN, KRAKEN]);
   expect(landed).toBe(discountPath(CODE_BASE));
   expect(landed).toContain("redirect=/cart");
-});
+}, REDIRECT_TEST_MS);
 
 test("no_redirect=1 hands over the code and touches nobody's cart", async () => {
   // The escape hatch for checking this live without emptying the reviewer's own cart.

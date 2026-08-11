@@ -14,7 +14,12 @@ if (location.hostname === "nordicpirates.com") {
 }
 </script>
 <meta name="robots" content="noindex, nofollow, noarchive">
-<title>We made something special | Lying Pirates</title>
+<!-- Every visitor-facing string on this page carries a data-i18n key, and the copy
+     for all five languages lives in /gift-offer/i18n-<lang>.js. The English words in
+     this markup are the same words the English table holds, so the page reads
+     correctly before the module runs and if it never runs at all. A test asserts
+     the two cannot drift apart. -->
+<title data-i18n="meta.title">We made something special | Lying Pirates</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="canonical" href="https://www.nordicpirates.com/gift-offer">
@@ -26,21 +31,22 @@ if (location.hostname === "nordicpirates.com") {
 <header class="np-nav" id="npnav">
   <div class="np-nav-inner">
     <a class="np-logo" href="#top">NORDIC <span>PIRATES</span></a>
-    <nav class="np-links" aria-label="Main">
-      <a href="#how-to-play">How to Play</a>
-      <a href="#offer">Editions</a>
-      <a href="#bgg-reviews">Reviews</a>
+    <nav class="np-links" data-i18n-aria-label="nav.aria.main" aria-label="Main">
+      <a href="#how-to-play" data-i18n="nav.howToPlay">How to Play</a>
+      <a href="#offer" data-i18n="nav.editions">Editions</a>
+      <a href="#bgg-reviews" data-i18n="nav.reviews">Reviews</a>
     </nav>
-    <!-- These pick the edition further down the page. There is no translated
-         version of this page, so they must not pretend to link to one. -->
-    <div class="np-langs" role="group" aria-label="Choose edition">
+    <!-- These do two things at once: they translate the whole page into the language
+         on the chip, and they select the matching physical edition in the picker
+         further down. The two never move apart. -->
+    <div class="np-langs" role="group" data-i18n-aria-label="nav.aria.langs" aria-label="Language and edition">
       <button type="button" class="np-lang is-on" data-lang="en">EN</button
       ><button type="button" class="np-lang" data-lang="de">DE</button
       ><button type="button" class="np-lang" data-lang="it">IT</button
       ><button type="button" class="np-lang" data-lang="fr">FR</button
       ><button type="button" class="np-lang" data-lang="es">ES</button>
     </div>
-    <a class="np-nav-cta" href="#offer">Get the Game</a>
+    <a class="np-nav-cta" href="#offer" data-i18n="nav.cta">Get the Game</a>
   </div>
 </header>
 
@@ -55,14 +61,14 @@ if (location.hostname === "nordicpirates.com") {
   <div class="hero-veil" aria-hidden="true"></div>
   <div class="wrap hero-copy">
     <p class="eyebrow">Nordic Pirates</p>
-    <h1>We will not have a better offer than this.</h1>
-    <p class="lede">A bluffing dice game. You lie to the people you like most, then race their ships into the rocks.</p>
+    <h1 data-i18n="hero.title">We will not have a better offer than this.</h1>
+    <p class="lede" data-i18n="hero.lede">A bluffing dice game. You lie to the people you like most, then race their ships into the rocks.</p>
     <ol class="hero-points">
-      <li><span>1</span> Pick any box below</li>
-      <li><span>2</span> We put something in it we do not normally give away</li>
-      <li><span>3</span> You only see this page because you did not buy the first time</li>
+      <li><span>1</span> <span data-i18n="hero.point1">Pick any box below</span></li>
+      <li><span>2</span> <span data-i18n="hero.point2">We put something in it we do not normally give away</span></li>
+      <li><span>3</span> <span data-i18n="hero.point3">You only see this page because you did not buy the first time</span></li>
     </ol>
-    <a class="hero-cta" href="#offer">See what comes free</a>
+    <a class="hero-cta" href="#offer" data-i18n="hero.cta">See what comes free</a>
   </div>
 </section>
 
@@ -70,6 +76,7 @@ if (location.hostname === "nordicpirates.com") {
 <div class="showcase">
   <figure>
     <img src="/gift-offer/media/lp-gift-hero.jpg"
+         data-i18n-alt="showcase.alt"
          alt="Three players around a table mid-game, board and pieces spread out, one laughing"
          width="1920" height="1280">
       </figure>
@@ -79,12 +86,12 @@ if (location.hostname === "nordicpirates.com") {
 <div class="stats">
   <div class="wrap">
     <ul>
-      <li><b>2 to 6</b>players, 14+</li>
-      <li><b>40 to 75 min</b>a full game</li>
-      <li><b>18,000</b>copies sold</li>
-      <li><b>7.3</b>on BoardGameGeek</li>
-      <li><b>600+</b>community reviews</li>
-      <li><b>69+</b>countries shipped</li>
+      <li><b>2 to 6</b><span data-i18n="stats.players">players, 14+</span></li>
+      <li><b>40 to 75 min</b><span data-i18n="stats.length">a full game</span></li>
+      <li><b>18,000</b><span data-i18n="stats.sold">copies sold</span></li>
+      <li><b>7.3</b><span data-i18n="stats.bgg">on BoardGameGeek</span></li>
+      <li><b>600+</b><span data-i18n="stats.reviews">community reviews</span></li>
+      <li><b>69+</b><span data-i18n="stats.countries">countries shipped</span></li>
     </ul>
   </div>
 </div>
@@ -94,14 +101,15 @@ if (location.hostname === "nordicpirates.com") {
   <div class="wrap">
     <div class="game-top">
       <div>
-        <p class="eyebrow">In case you forgot</p>
-        <h2>Liar's dice, but everyone is racing a ship</h2>
+        <p class="eyebrow" data-i18n="game.eyebrow">In case you forgot</p>
+        <h2 data-i18n="game.title">Liar's dice, but everyone is racing a ship</h2>
       </div>
       <figure>
         <img src="/gift-offer/media/lp-gift-howto.jpg"
+             data-i18n-alt="game.alt"
              alt="A branded bamboo cup lifted to reveal five dice on the board"
              width="1280" height="853" loading="lazy">
-        <figcaption>Lift the cup and find out who was telling the truth.</figcaption>
+        <figcaption data-i18n="game.caption">Lift the cup and find out who was telling the truth.</figcaption>
       </figure>
     </div>
   </div>
@@ -110,43 +118,46 @@ if (location.hostname === "nordicpirates.com") {
 <!-- HOW TO PLAY - reused from the main landing page -->
 <section class="how" id="how-to-play">
   <div class="wrap">
-    <p class="eyebrow">Quick to learn</p>
-    <h2>How to play</h2>
-    <p class="how-sub">Three phases per round. There is a how-to-play video for each one.</p>
+    <p class="eyebrow" data-i18n="how.eyebrow">Quick to learn</p>
+    <h2 data-i18n="how.title">How to play</h2>
+    <p class="how-sub" data-i18n="how.sub">Three phases per round. There is a how-to-play video for each one.</p>
     <div class="how-cards">
       <article class="how-card">
         <video src="https://www.nordicpirates.com/cdn/shop/videos/c/vp/3cf0f069d1b348af98cb66b0020f57cc/3cf0f069d1b348af98cb66b0020f57cc.SD-480p-1.5Mbps-80560920.mp4?v=0"
                muted autoplay loop playsinline preload="metadata" width="640" height="360"
+               data-i18n-aria-label="how.1.aria"
                aria-label="Betting phase, dice hidden under a cup"></video>
         <div class="how-body">
           <span class="how-n">01</span>
-          <span class="how-phase">Betting phase</span>
-          <h3>Bluff your crew</h3>
-          <p>Roll your crew dice hidden under the bamboo cup, then bluff on totals. Raise the stakes,
+          <span class="how-phase" data-i18n="how.1.phase">Betting phase</span>
+          <h3 data-i18n="how.1.title">Bluff your crew</h3>
+          <p data-i18n="how.1.body">Roll your crew dice hidden under the bamboo cup, then bluff on totals. Raise the stakes,
           lock a number, or call someone a liar, at exactly the right moment.</p>
         </div>
       </article>
       <article class="how-card">
         <video src="https://www.nordicpirates.com/cdn/shop/videos/c/vp/1dfdb441cf284fa6ae350d9f8b4ae3e5/1dfdb441cf284fa6ae350d9f8b4ae3e5.SD-480p-1.5Mbps-80560922.mp4?v=0"
                muted autoplay loop playsinline preload="metadata" width="640" height="360"
+               data-i18n-aria-label="how.2.aria"
                aria-label="Sail phase, ships moving across the board"></video>
         <div class="how-body">
           <span class="how-n">02</span>
-          <span class="how-phase">Sail phase</span>
-          <h3>Move the fleet</h3>
-          <p>The round winner rolls the sail die and advances ships 1 to 2 tiles. Battle dice decide
+          <span class="how-phase" data-i18n="how.2.phase">Sail phase</span>
+          <h3 data-i18n="how.2.title">Move the fleet</h3>
+          <p data-i18n="how.2.body">The round winner rolls the sail die and advances ships 1 to 2 tiles. Battle dice decide
           naval combat. Tile events keep every move unpredictable.</p>
         </div>
       </article>
       <article class="how-card">
         <video src="https://www.nordicpirates.com/cdn/shop/videos/c/vp/2979ea32e6bd4ec0bbdba4679be2b186/2979ea32e6bd4ec0bbdba4679be2b186.SD-480p-1.5Mbps-80560919.mp4?v=0"
                muted autoplay loop playsinline preload="metadata" width="640" height="360"
+               data-i18n-aria-label="how.3.aria"
                aria-label="Action phase, playing cards"></video>
         <div class="how-body">
           <span class="how-n">03</span>
-          <span class="how-phase">Action phase</span>
-          <h3>Play your hand</h3>
-          <p>Deploy Gold or Silver cards to attack rivals, defend your position, or upgrade your
+          <span class="how-phase" data-i18n="how.3.phase">Action phase</span>
+          <h3 data-i18n="how.3.title">Play your hand</h3>
+          <p data-i18n="how.3.body">Deploy Gold or Silver cards to attack rivals, defend your position, or upgrade your
           crew. Every card changes the board.</p>
         </div>
       </article>
@@ -155,27 +166,31 @@ if (location.hostname === "nordicpirates.com") {
 </section>
 
 <!-- REVIEWS -->
+<!-- The quotes themselves are NOT translated, and they carry no data-i18n key. They
+     are what named people wrote on BoardGameGeek, the line above them says they are
+     unedited, and a translated quote is no longer the sentence its author wrote.
+     Everything around them, that line included, switches with the page. -->
 <section class="voices" id="bgg-reviews">
   <div class="wrap">
     <div class="voices-head">
       <div>
-        <p class="eyebrow">From the people who own it</p>
-        <div class="bgg-badge"><b>7.3</b><span>on BoardGameGeek<br>from 600+ community reviews</span></div>
-        <h2>Community reviews</h2>
+        <p class="eyebrow" data-i18n="reviews.eyebrow">From the people who own it</p>
+        <div class="bgg-badge"><b>7.3</b><span><span data-i18n="reviews.bgg.on">on BoardGameGeek</span><br><span data-i18n="reviews.bgg.from">from 600+ community reviews</span></span></div>
+        <h2 data-i18n="reviews.title">Community reviews</h2>
       </div>
-      <p>Unedited, with the scores their authors gave them. Trimmed for length where marked.</p>
+      <p data-i18n="reviews.note">Unedited, with the scores their authors gave them. Trimmed for length where marked.</p>
     </div>
     <div class="quotes">
       <figure class="q-card">
         <p class="q-score">10<span>/10</span></p>
         <blockquote>I absolutely love this game! Especially at 6 players. Lots of laughs and fun every time we play. I've yet to play it with someone who hasn't had a great time.</blockquote>
-        <figcaption><span class="q-av">K</span><span class="q-who"><b>King_Apparatus</b><small>United States</small></span>
+        <figcaption><span class="q-av">K</span><span class="q-who"><b>King_Apparatus</b><small data-i18n="country.us">United States</small></span>
         <span class="q-src">BoardGameGeek</span></figcaption>
       </figure>
       <figure class="q-card">
         <p class="q-score">10<span>/10</span></p>
         <blockquote>Nordic Pirates did a great job: the game is really funny together with friends and has many nice tools like metal coins, bamboo cups and 3D printed ships! &hellip; Strongly suggested!</blockquote>
-        <figcaption><span class="q-av">A</span><span class="q-who"><b>AuGold</b><small>Italy</small></span>
+        <figcaption><span class="q-av">A</span><span class="q-who"><b>AuGold</b><small data-i18n="country.it">Italy</small></span>
         <span class="q-src">BoardGameGeek</span></figcaption>
       </figure>
       <figure class="q-card">
@@ -187,19 +202,19 @@ if (location.hostname === "nordicpirates.com") {
       <figure class="q-card">
         <p class="q-score">9<span>/10</span></p>
         <blockquote>Having a great time playing this one. Quality production throughout. It captures the tavern feel perfectly.</blockquote>
-        <figcaption><span class="q-av">B</span><span class="q-who"><b>Bazmondo123</b><small>United Kingdom</small></span>
+        <figcaption><span class="q-av">B</span><span class="q-who"><b>Bazmondo123</b><small data-i18n="country.gb">United Kingdom</small></span>
         <span class="q-src">BoardGameGeek</span></figcaption>
       </figure>
             <figure class="q-card">
         <p class="q-score">10<span>/10</span></p>
         <blockquote>Excellent game with a lot of replay value!</blockquote>
-        <figcaption><span class="q-av">O</span><span class="q-who"><b>Owmybrains</b><small>Sweden</small></span>
+        <figcaption><span class="q-av">O</span><span class="q-who"><b>Owmybrains</b><small data-i18n="country.se">Sweden</small></span>
         <span class="q-src">BoardGameGeek</span></figcaption>
       </figure>
       <figure class="q-card">
         <p class="q-score">10<span>/10</span></p>
         <blockquote>&ldquo;Lying Pirates&rdquo; is a treasure trove of fun and deception, perfectly blending strategic gameplay with the thrill of bluffing. &hellip; The rules are easy to grasp, making it a great choice for both newcomers and seasoned gamers.</blockquote>
-        <figcaption><span class="q-av">S</span><span class="q-who"><b>Sharrku</b><small>Germany</small></span>
+        <figcaption><span class="q-av">S</span><span class="q-who"><b>Sharrku</b><small data-i18n="country.de">Germany</small></span>
         <span class="q-src">BoardGameGeek</span></figcaption>
       </figure>
     </div>
@@ -209,14 +224,14 @@ if (location.hostname === "nordicpirates.com") {
 <!-- SHIPPING -->
 <section class="ship">
   <div class="wrap">
-    <p class="eyebrow center">Shipping</p>
-    <h2 class="ship-title">Sent from a warehouse near you</h2>
-    <p class="ship-lede">We hold stock locally, so your box does not cross an ocean to reach you and you are not charged import fees on arrival.</p>
+    <p class="eyebrow center" data-i18n="ship.eyebrow">Shipping</p>
+    <h2 class="ship-title" data-i18n="ship.title">Sent from a warehouse near you</h2>
+    <p class="ship-lede" data-i18n="ship.lede">We hold stock locally, so your box does not cross an ocean to reach you and you are not charged import fees on arrival.</p>
     <ul class="ship-grid">
-      <li><b>EU</b><span>European warehouse</span></li>
-      <li><b>UK</b><span>UK warehouse</span></li>
-      <li><b>US</b><span>United States warehouse</span></li>
-      <li><b>AUS</b><span>Australian warehouse</span></li>
+      <li><b>EU</b><span data-i18n="ship.eu">European warehouse</span></li>
+      <li><b>UK</b><span data-i18n="ship.uk">UK warehouse</span></li>
+      <li><b>US</b><span data-i18n="ship.us">United States warehouse</span></li>
+      <li><b>AUS</b><span data-i18n="ship.aus">Australian warehouse</span></li>
     </ul>
   </div>
 </section>
@@ -224,12 +239,12 @@ if (location.hostname === "nordicpirates.com") {
 <section class="offer" id="offer">
   <div class="wrap">
     <div class="offer-head">
-      <h2>Choose your gift</h2>
+      <h2 data-i18n="offer.title">Choose your gift</h2>
     </div>
 
     <form id="giftform">
       <fieldset>
-        <legend>Choose one</legend>
+        <legend data-i18n="offer.legend">Choose one</legend>
         <div class="picks">
 
           <div class="pick">
@@ -237,16 +252,17 @@ if (location.hostname === "nordicpirates.com") {
             <label for="o-kraken">
               <span class="pick-media">
                 <img src="https://www.nordicpirates.com/cdn/shop/files/Kraken_1.png?v=1775020469"
+                     data-i18n-alt="pick.kraken.alt"
                      alt="Kraken Mini-Expansion cards" loading="lazy" width="420" height="315">
               </span>
               <span>
-                <span class="pick-title">Base Game, and the Kraken</span>
-                <span class="pick-what">The Kraken Mini-Expansion puts a monster in the water.
+                <span class="pick-title" data-i18n="pick.kraken.title">Base Game, and the Kraken</span>
+                <span class="pick-what" data-i18n="pick.kraken.what">The Kraken Mini-Expansion puts a monster in the water.
                 Somebody is lying about where it is. Probably everybody.</span>
               </span>
               <span class="pick-foot">
-                <span class="pick-price">&euro;39.95 <b>+ a &euro;7.95 gift</b></span>
-                <span class="pick-state"><span class="s-off">Choose this</span><span class="s-on">&#10003; In your hold</span></span>
+                <span class="pick-price">&euro;39.95 <b data-i18n="pick.kraken.gift">+ a &euro;7.95 gift</b></span>
+                <span class="pick-state"><span class="s-off" data-i18n="pick.choose">Choose this</span><span class="s-on" data-i18n="pick.chosen">&#10003; In your hold</span></span>
               </span>
             </label>
           </div>
@@ -256,16 +272,17 @@ if (location.hostname === "nordicpirates.com") {
             <label for="o-coins">
               <span class="pick-media">
                 <img src="https://www.nordicpirates.com/cdn/shop/files/Goldcoins_20pcs_413e3651-0f5f-4566-a5d6-84ca092fb36c.png?v=1762192283"
+                     data-i18n-alt="pick.coins.alt"
                      alt="Twenty metal gold coins" loading="lazy" width="420" height="315">
               </span>
               <span>
-                <span class="pick-title">Base Game, and the gold</span>
-                <span class="pick-what">Twenty metal coins with real weight. Cardboard tokens never
+                <span class="pick-title" data-i18n="pick.coins.title">Base Game, and the gold</span>
+                <span class="pick-what" data-i18n="pick.coins.what">Twenty metal coins with real weight. Cardboard tokens never
                 sounded like this when they hit the table.</span>
               </span>
               <span class="pick-foot">
-                <span class="pick-price">&euro;39.95 <b>+ an &euro;11.95 gift</b></span>
-                <span class="pick-state"><span class="s-off">Choose this</span><span class="s-on">&#10003; In your hold</span></span>
+                <span class="pick-price">&euro;39.95 <b data-i18n="pick.coins.gift">+ an &euro;11.95 gift</b></span>
+                <span class="pick-state"><span class="s-off" data-i18n="pick.choose">Choose this</span><span class="s-on" data-i18n="pick.chosen">&#10003; In your hold</span></span>
               </span>
             </label>
           </div>
@@ -275,17 +292,18 @@ if (location.hostname === "nordicpirates.com") {
             <label for="o-bigbox">
               <span class="pick-media">
                 <img src="https://www.nordicpirates.com/cdn/shop/files/Bigbox_Lyingpirates.webp?v=1778497083&width=900"
+                     data-i18n-alt="pick.bigbox.alt"
                      alt="Lying Pirates Big Box with all components" loading="lazy" width="900" height="563">
               </span>
               <span>
-                <span class="pick-tag">Both gifts, no choosing</span>
-                <span class="pick-title">Take the full hold and we will not make you pick</span>
-                <span class="pick-what">The BIG BOX carries the bamboo cups, the metal coins, the
+                <span class="pick-tag" data-i18n="pick.bigbox.tag">Both gifts, no choosing</span>
+                <span class="pick-title" data-i18n="pick.bigbox.title">Take the full hold and we will not make you pick</span>
+                <span class="pick-what" data-i18n="pick.bigbox.what">The BIG BOX carries the bamboo cups, the metal coins, the
                 magnetic tiles, eight captains and the Cities of Greed expansion. Take it and the
                 Kraken and the gold both come along, because you did not do this by halves.</span>
                 <span class="pick-foot">
-                  <span class="pick-price">&euro;124.95 <b>+ &euro;19.90 of gifts</b></span>
-                  <span class="pick-state"><span class="s-off">Choose this</span><span class="s-on">&#10003; In your hold</span></span>
+                  <span class="pick-price">&euro;124.95 <b data-i18n="pick.bigbox.gift">+ &euro;19.90 of gifts</b></span>
+                  <span class="pick-state"><span class="s-off" data-i18n="pick.choose">Choose this</span><span class="s-on" data-i18n="pick.chosen">&#10003; In your hold</span></span>
                 </span>
               </span>
             </label>
@@ -293,13 +311,15 @@ if (location.hostname === "nordicpirates.com") {
 
         </div>
         <p class="stock-note">
-          <strong>Kraken stock is low.</strong>
-          <span>When it runs out this choice becomes the gold, and we will say so here.</span>
+          <strong data-i18n="offer.stock.head">Kraken stock is low.</strong>
+          <span data-i18n="offer.stock.body">When it runs out this choice becomes the gold, and we will say so here.</span>
         </p>
       </fieldset>
 
       <fieldset>
-        <legend>Which edition should we ship</legend>
+        <legend data-i18n="offer.edition.legend">Which edition should we ship</legend>
+        <!-- The edition names stay in their own language. "Deutsch" is what is printed
+             on the box, in every language this page is read in. -->
         <div class="editions">
           <span class="ed"><input type="radio" name="edition" id="ed-en" value="en" checked><label for="ed-en">English</label></span>
           <span class="ed"><input type="radio" name="edition" id="ed-de" value="de"><label for="ed-de">Deutsch</label></span>
@@ -308,14 +328,15 @@ if (location.hostname === "nordicpirates.com") {
           <span class="ed"><input type="radio" name="edition" id="ed-it" value="it"><label for="ed-it">Italiano</label></span>
         </div>
         <p class="en-warn">
-          <strong>One thing before you go further.</strong>
-          The English Base Game ships from our stock in the US and Australia, so we cannot send that
+          <strong data-i18n="offer.warn.head">One thing before you go further.</strong>
+          <span data-i18n="offer.warn.body">The English Base Game ships from our stock in the US and Australia, so we cannot send that
           edition inside Europe at the moment. The BIG BOX in English is here and ready, and it comes
-          with both gifts. Or pick another edition below and keep your code either way.
+          with both gifts. Or pick another edition below and keep your code either way.</span>
         </p>
       </fieldset>
 
-      <!-- Honeypot. Never shown, never filled by a person. -->
+      <!-- Honeypot. Never shown, never filled by a person, and deliberately not
+           translated: the only readers are bots, and they read the markup. -->
       <div class="hp" aria-hidden="true">
         <label for="company">Company</label>
         <input type="text" id="company" name="company" tabindex="-1" autocomplete="off">
@@ -330,29 +351,34 @@ if (location.hostname === "nordicpirates.com") {
   <div class="wrap">
     <div class="claim-grid">
       <div>
-        <p class="eyebrow">Last step</p>
+        <p class="eyebrow" data-i18n="claim.eyebrow">Last step</p>
         <!-- Names the gift they just picked, so the click that brought them here is
              visibly the one being answered. Rewritten by the page whenever the picker
-             changes; this is the wording for the box that starts out chosen. -->
+             or the language changes, which is why it carries no data-i18n key of its
+             own; this is the wording for the box that starts out chosen. -->
         <h2 id="claim-title">One step and the Kraken is yours</h2>
-        <p class="claim-lead">Tell us where to send your code. It appears on this screen straight
+        <p class="claim-lead" data-i18n="claim.lead">Tell us where to send your code. It appears on this screen straight
         away, so you are not waiting on an email to get going.</p>
         <div class="field">
-          <label for="email">Your email</label>
+          <label for="email" data-i18n="claim.emailLabel">Your email</label>
           <input type="email" id="email" name="email" required autocomplete="email"
                  placeholder="you@example.com" form="giftform">
         </div>
-        <p class="claim-go"><button class="btn" type="submit" form="giftform" id="submit-btn">Get my code</button></p>
-        <p class="consent">You are joining the crew list at the same time. We write when there is
-        something worth writing about, and you can step off any time.
-        <a href="https://www.nordicpirates.com/policies/privacy-policy" rel="noopener">How we handle your details</a>.</p>
-        <p class="fine">The code applies your gift in the cart. It does not stack with our
+        <p class="claim-go"><button class="btn" type="submit" form="giftform" id="submit-btn" data-i18n="claim.submit">Get my code</button></p>
+        <p class="consent"><span data-i18n="claim.consent">You are joining the crew list at the same time. We write when there is
+        something worth writing about, and you can step off any time.</span>
+        <a href="https://www.nordicpirates.com/policies/privacy-policy" rel="noopener" data-i18n="claim.consent.link">How we handle your details</a>.</p>
+        <p class="fine" data-i18n="claim.fine">The code applies your gift in the cart. It does not stack with our
         multi-item discount, so use whichever suits you better.</p>
       </div>
 
       <div>
-        <!-- Filled in by /gift-offer/page.js once the form comes back. -->
-        <div class="states" id="result" aria-live="polite"></div>
+        <!-- Filled in by /gift-offer/page.js once the form comes back. The resting
+             line is a real element rather than CSS content, so it translates with
+             everything else; the first rendered state replaces it. -->
+        <div class="states" id="result" aria-live="polite">
+          <p class="states-idle" data-i18n="claim.idle">Your code appears here once you send the form.</p>
+        </div>
       </div>
     </div>
   </div>
@@ -361,43 +387,48 @@ if (location.hostname === "nordicpirates.com") {
 <!-- The one control that follows the visitor down the page. It starts hidden, shows
      as soon as the picker is off screen, and changes its job once a box has been
      chosen: before, it goes to the picker; after, it goes to the email field. The
-     page writes the label for whichever of those two it currently is. -->
+     page writes the label for whichever of those two it currently is, in whichever
+     language the page is in, so it carries no data-i18n key of its own. -->
 <button type="button" class="gift-jump" id="gift-jump" hidden>Pick your gift!</button>
 
 <footer>
   <div class="wrap">
     <span>Nordic Pirates, Stockholm</span>
-    <span>Lying Pirates is a bluffing dice game for 2 to 6 liars.</span>
-    <span><a href="https://www.nordicpirates.com/policies/privacy-policy" rel="noopener">Privacy</a></span>
+    <span data-i18n="footer.tagline">Lying Pirates is a bluffing dice game for 2 to 6 liars.</span>
+    <span><a href="https://www.nordicpirates.com/policies/privacy-policy" rel="noopener" data-i18n="footer.privacy">Privacy</a></span>
   </div>
 </footer>
 
 <!-- Result states. One per outcome the claim endpoint can produce, plus the two
-     screens the blocked visitor chooses between. -->
+     screens the blocked visitor chooses between. The page translates each one as it
+     clones it, so a state that is already on screen when the language changes is
+     rebuilt in the new language. -->
 
 <!-- Every code reveal uses this one: the plain success, and both endings of the
      blocked choice. The heading, the line under it and the cart button all get
      rewritten by the page for whichever code is being handed over. -->
 <template id="tpl-code">
   <div class="state">
-    <h3 data-title>Welcome aboard</h3>
-    <p data-lead>Your code is below and already on its way to your inbox.</p>
-    <div class="code"><span data-code></span><button type="button" data-copy>Copy</button></div>
-    <a class="btn btn--cart" data-cart>Put the game and the gift in my cart</a>
-    <p class="state-note" data-cart-note>One click loads both items.</p>
+    <h3 data-title data-i18n="state.code.title">Welcome aboard</h3>
+    <p data-lead data-i18n="state.code.lead">Your code is below and already on its way to your inbox.</p>
+    <div class="code"><span data-code></span><button type="button" data-copy data-i18n="state.copy">Copy</button></div>
+    <a class="btn btn--cart" data-cart data-i18n="state.cart.label">Put the game and the gift in my cart</a>
+    <p class="state-note" data-cart-note data-i18n="state.cart.note">One click loads both items.</p>
     <!-- Only when the page could not load the cart for them. The page unhides it and
          hangs the same attempt off it; otherwise it is taken out entirely. -->
-    <button type="button" class="btn btn--retry" data-retry hidden>Try my cart again</button>
+    <button type="button" class="btn btn--retry" data-retry hidden data-i18n="state.retry">Try my cart again</button>
   </div>
 </template>
 
-<!-- Between the code and the cart. The page is about to move the visitor to another
-     page on their behalf, so it says what it did and holds still long enough to be
-     read rather than the screen simply vanishing under them. -->
+<!-- Between the code and the cart. The code the endpoint just issued is ON this
+     screen, because the page is about to move the visitor somewhere else on their
+     behalf and they should have read their code before it does. It holds still long
+     enough to be read rather than the screen vanishing under them. -->
 <template id="tpl-sending">
   <div class="state state--sending">
-    <h3>Code unlocked</h3>
-    <p>Taking you to your cart, with the game, the gift and the code already on it.</p>
+    <h3 data-i18n="state.sending.title">Code unlocked</h3>
+    <div class="code"><span data-code></span></div>
+    <p data-i18n="state.sending.lead">Taking you to your cart, with the game, the gift and the code already on it.</p>
   </div>
 </template>
 
@@ -407,18 +438,18 @@ if (location.hostname === "nordicpirates.com") {
      is styled as the lesser one and neither promises a delivery time. -->
 <template id="tpl-blocked">
   <div class="state state--blocked">
-    <h3>That edition will not reach you</h3>
-    <p>The English Base Game is not in our European stock, so we cannot ship it to you from
+    <h3 data-i18n="state.blocked.title">That edition will not reach you</h3>
+    <p data-i18n="state.blocked.body">The English Base Game is not in our European stock, so we cannot ship it to you from
     here. We would rather say that now than take your money and explain later.</p>
-    <p>Your gift stands either way. Pick whichever suits you.</p>
+    <p data-i18n="state.blocked.pick">Your gift stands either way. Pick whichever suits you.</p>
     <div class="choices">
       <button type="button" class="choice" data-choice="edition">
-        <b>Give me the European edition</b>
-        <span>Same game, in your language.</span>
+        <b data-i18n="state.blocked.editionTitle">Give me the European edition</b>
+        <span data-i18n="state.blocked.editionWhat">Same game, in your language.</span>
       </button>
       <button type="button" class="choice" data-choice="package">
-        <b>Give me the BIG BOX in English</b>
-        <span>The full hold, in English, and both gifts come with it.</span>
+        <b data-i18n="state.blocked.packageTitle">Give me the BIG BOX in English</b>
+        <span data-i18n="state.blocked.packageWhat">The full hold, in English, and both gifts come with it.</span>
       </button>
     </div>
   </div>
@@ -429,19 +460,19 @@ if (location.hostname === "nordicpirates.com") {
      one list of editions on this page and not two. -->
 <template id="tpl-editions">
   <div class="state state--blocked">
-    <h3>Which edition should we ship</h3>
-    <p>Your gift and your code stay exactly as they are. Only the language changes.</p>
+    <h3 data-i18n="state.editions.title">Which edition should we ship</h3>
+    <p data-i18n="state.editions.lead">Your gift and your code stay exactly as they are. Only the language changes.</p>
     <div class="choices" data-editions></div>
-    <p class="state-note"><button type="button" class="choice-back" data-choice="package">Give me
+    <p class="state-note"><button type="button" class="choice-back" data-choice="package" data-i18n="state.editions.back">Give me
     the BIG BOX in English instead</button></p>
   </div>
 </template>
 
 <template id="tpl-error">
   <div class="state state--error">
-    <h3>That did not go through</h3>
+    <h3 data-i18n="state.error.title">That did not go through</h3>
     <p data-message></p>
-    <p class="state-note">Try again, and if it keeps happening write to us and we will send
+    <p class="state-note" data-i18n="state.error.note">Try again, and if it keeps happening write to us and we will send
     the code by hand.</p>
   </div>
 </template>

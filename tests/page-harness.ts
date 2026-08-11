@@ -5,23 +5,68 @@
 // the claim endpoint answers, what Shopify's cart answers, what is on screen, where
 // the page scrolled, where it navigated), never so the page can avoid it.
 //
-// About the module copies: page.js imports "./offer.js" and "./cart.js", which the
-// browser resolves against /gift-offer/page.js and the server answers from lib/ and
-// public/. On disk those files are not siblings, so each test writes its own copy of
-// page.js and cart.js with those imports pointed at the real files. A fresh filename
-// per test is also what gets a fresh module: bun caches by path, and this page runs
-// its setup at import time.
+// About the module copies: page.js imports "./offer.js", "./cart.js" and "./i18n.js",
+// which the browser resolves against /gift-offer/page.js and the server answers from
+// lib/ and public/. On disk those files are not siblings, so each test writes its own
+// copy of page.js, cart.js and i18n.js with those imports pointed at the real files. A
+// fresh filename per test is also what gets a fresh module: bun caches by path, and
+// this page runs its setup at import time.
 
 import { Window } from "happy-dom";
 import { mkdtempSync, readFileSync, writeFileSync } from "fs";
 import { tmpdir } from "os";
 import { join } from "path";
+import { EN } from "../public/lp-aboard-i18n-en.js";
+import { DE } from "../public/lp-aboard-i18n-de.js";
+import { IT } from "../public/lp-aboard-i18n-it.js";
+import { FR } from "../public/lp-aboard-i18n-fr.js";
+import { ES } from "../public/lp-aboard-i18n-es.js";
 
 const REPO = join(import.meta.dir, "..");
 export const HTML = readFileSync(join(REPO, "public", "lp-aboard.html"), "utf8");
 const PAGE_JS = readFileSync(join(REPO, "public", "lp-aboard.js"), "utf8");
 const CART_JS = readFileSync(join(REPO, "public", "lp-aboard-cart.js"), "utf8");
+const I18N_JS = readFileSync(join(REPO, "public", "lp-aboard-i18n.js"), "utf8");
 const OFFER_JS = join(REPO, "lib", "offer.js");
+
+/** The five the page ships, in the order the nav chips sit in. */
+export const LANGUAGES = ["en", "de", "it", "fr", "es"];
+
+/**
+ * How long the page holds the code on screen before it navigates, read out of the page
+ * itself. A test that hardcoded the number would keep passing against a page that had
+ * quietly stopped waiting.
+ */
+export const CODE_VISIBLE_MS = (() => {
+  const match = /const CODE_VISIBLE_MS = (\d+);/.exec(PAGE_JS);
+  if (!match) throw new Error("page.js no longer declares CODE_VISIBLE_MS, this read is stale");
+  return Number(match[1]);
+})();
+
+/**
+ * Per-test timeout for a test that waits out a real redirect. Pass it as the third
+ * argument to `test()`.
+ *
+ * Bun's default is 5000ms and the page deliberately holds the code for CODE_VISIBLE_MS
+ * before it navigates, so a test that drives one claim to the cart spends most of that
+ * default doing exactly what it is there to check. Saying so per test is what keeps
+ * `bun test` green with no flags: a suite that only passes when it is invoked a
+ * particular way is a suite that is red for whoever invokes it the obvious way.
+ *
+ * Derived from the constant rather than typed out, so raising the hold cannot leave
+ * these behind.
+ */
+export const REDIRECT_TEST_MS = CODE_VISIBLE_MS * 4;
+
+/** Every copy table, the same objects the page itself imports. */
+export const COPY: Record<string, Record<string, string>> = { en: EN, de: DE, it: IT, fr: FR, es: ES };
+
+/** What the page should say for one key, in one language. */
+export function say(lang: string, key: string): string {
+  const value = COPY[lang]?.[key];
+  if (value === undefined) throw new Error(`no "${lang}" copy for "${key}"`);
+  return value;
+}
 
 const SCRATCH = mkdtempSync(join(tmpdir(), "lp-aboard-page-"));
 let copies = 0;
@@ -61,9 +106,24 @@ function freshPageModule(): string {
   const cartPath = join(SCRATCH, `cart-${copies}.js`);
   writeFileSync(cartPath, rewrite(CART_JS, '"./offer.js"', OFFER_JS, "cart.js"));
 
+  // The copy tables are not rewritten, only pointed at: they hold no imports of their
+  // own, so every page in a run reads the same five real files the browser is served.
+  const i18nPath = join(SCRATCH, `i18n-${copies}.js`);
+  let i18n = I18N_JS;
+  for (const lang of LANGUAGES) {
+    i18n = rewrite(
+      i18n,
+      `"./i18n-${lang}.js"`,
+      join(REPO, "public", `lp-aboard-i18n-${lang}.js`),
+      "i18n.js"
+    );
+  }
+  writeFileSync(i18nPath, i18n);
+
   const pagePath = join(SCRATCH, `page-${copies}.js`);
   let page = rewrite(PAGE_JS, '"./offer.js"', OFFER_JS, "page.js");
   page = rewrite(page, '"./cart.js"', cartPath, "page.js");
+  page = rewrite(page, '"./i18n.js"', i18nPath, "page.js");
   writeFileSync(pagePath, page);
 
   return pagePath;
@@ -93,6 +153,29 @@ export function selectOffer(page: Page, id: string) {
   }
   input.dispatchEvent(new page.window.Event("change", { bubbles: true }));
   return input;
+}
+
+/**
+ * A visitor tapping one of the boxes, as a browser would deliver it.
+ *
+ * Two halves, and only one of them is the browser's to refuse. A click on a disabled
+ * radio moves nothing: it stays unchecked, and so does the label wrapped around it. The
+ * change event is dispatched either way, because a held control that still acted on the
+ * event would be the same bug wearing a disabled attribute.
+ *
+ * selectOffer above is the other thing entirely: it puts the page into a state a test
+ * wants to start from. Driving a tap with it would force through a control the page has
+ * said is not the visitor's, and the test would be checking the harness instead.
+ */
+export function tapOffer(page: Page, id: string) {
+  const input = page.document.getElementById(id);
+  if (!input) throw new Error(`no offer input "${id}" on the page`);
+
+  if (input.disabled) {
+    input.dispatchEvent(new page.window.Event("change", { bubbles: true }));
+    return input;
+  }
+  return selectOffer(page, id);
 }
 
 /** A visitor tapping a box: the radio changes, then the click lands on the card. */
@@ -142,6 +225,14 @@ export type Page = {
   claimAnswer: { status: number; body: any };
   /** What Shopify answers for a given path. Tests overwrite this to break the cart. */
   cartStatus: (path: string) => number;
+  /**
+   * Hold the claim answer in the air, and hand back the release.
+   *
+   * The request still goes out and is still recorded; only the answer waits. That gap
+   * is a real one on a real connection, and it is where a visitor's next tap lands, so
+   * it is the only way to drive what the page does while a claim is in flight.
+   */
+  holdClaim: () => () => void;
   submit: () => Promise<void>;
   click: (el: any, detail?: number) => Promise<void>;
   text: () => string;
@@ -171,6 +262,11 @@ export async function loadPage(answer: { status?: number; body: any }, url?: str
   const navigations: string[] = [];
   const claimAnswer = { status: answer.status ?? 200, body: answer.body };
   const cart = { status: (_path: string) => 200 };
+
+  // Nothing by default: the claim answers as fast as the process can, which is what
+  // every other test wants. holdClaim below puts a gate in front of it.
+  let claimGate: Promise<void> | null = null;
+  let openClaimGate: (() => void) | null = null;
 
   // Where the page scrolled, which is the only observable half of a smooth scroll.
   window.HTMLElement.prototype.scrollIntoView = function scrollIntoView(this: any, options: any) {
@@ -203,6 +299,7 @@ export async function loadPage(answer: { status?: number; body: any }, url?: str
     calls.push({ url: path, method, body });
 
     if (path === "/gift-offer/claim") {
+      if (claimGate) await claimGate;
       return new Response(JSON.stringify(claimAnswer.body), {
         status: claimAnswer.status,
         headers: { "Content-Type": "application/json" },
@@ -250,6 +347,18 @@ export async function loadPage(answer: { status?: number; body: any }, url?: str
     get cartStatus() {
       return cart.status;
     },
+    holdClaim() {
+      if (claimGate) throw new Error("the claim answer is already being held");
+      claimGate = new Promise<void>((done) => {
+        openClaimGate = done;
+      });
+      return () => {
+        if (!openClaimGate) throw new Error("this claim answer has already been released");
+        openClaimGate();
+        openClaimGate = null;
+        claimGate = null;
+      };
+    },
     async submit() {
       document
         .getElementById("giftform")
@@ -265,7 +374,10 @@ export async function loadPage(answer: { status?: number; body: any }, url?: str
     text: () => document.getElementById("result").textContent.replace(/\s+/g, " ").trim(),
     scrolledTo: (el: any) => scrolls.find((s) => s.target === el)?.options,
     async until(check: () => boolean, what: string) {
-      for (let waited = 0; waited < 3000; waited += 10) {
+      // Comfortably past CODE_VISIBLE_MS in the page: a successful claim deliberately
+      // holds the code on screen for a couple of seconds before it navigates, so a
+      // wait that expired at three seconds would be racing the thing under test.
+      for (let waited = 0; waited < 15000; waited += 10) {
         if (check()) return;
         await new Promise((done) => setTimeout(done, 10));
       }

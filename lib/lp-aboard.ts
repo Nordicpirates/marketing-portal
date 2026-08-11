@@ -58,6 +58,8 @@ const BLOCKED_OFFERS = new Set(["base-kraken", "base-coins"]);
 //   /gift-offer/page.js         /lp/aboard/page.js
 //   /gift-offer/cart.js         /lp/aboard/cart.js
 //   /gift-offer/offer.js        /lp/aboard/offer.js
+//   /gift-offer/i18n.js         /lp/aboard/i18n.js
+//   /gift-offer/i18n-<lang>.js  /lp/aboard/i18n-<lang>.js
 //   /gift-offer/media/<file>    /lp/aboard/media/<file>
 //   POST /gift-offer/claim      POST /lp/aboard/claim
 //
@@ -75,13 +77,26 @@ const BLOCKED_OFFERS = new Set(["base-kraken", "base-coins"]);
 // re-sent on every visit.
 const NO_CACHE = "no-cache";
 const CACHE_MEDIA = "public, max-age=604800";
+const JS = "text/javascript; charset=utf-8";
+
+// The five languages the page sells in. Same list as LANGUAGES in
+// public/lp-aboard-i18n.js: a language the page can switch to and cannot fetch the
+// copy for would be a blank page in that language.
+const LANGUAGE_ASSETS = ["en", "de", "it", "fr", "es"];
 
 const ASSETS: Record<string, { file: string; type: string; cache: string }> = {
   "/lp/aboard": { file: "public/lp-aboard.html", type: "text/html; charset=utf-8", cache: NO_CACHE },
   "/lp/aboard/style.css": { file: "public/lp-aboard.css", type: "text/css; charset=utf-8", cache: NO_CACHE },
-  "/lp/aboard/page.js": { file: "public/lp-aboard.js", type: "text/javascript; charset=utf-8", cache: NO_CACHE },
-  "/lp/aboard/cart.js": { file: "public/lp-aboard-cart.js", type: "text/javascript; charset=utf-8", cache: NO_CACHE },
-  "/lp/aboard/offer.js": { file: "lib/offer.js", type: "text/javascript; charset=utf-8", cache: NO_CACHE },
+  "/lp/aboard/page.js": { file: "public/lp-aboard.js", type: JS, cache: NO_CACHE },
+  "/lp/aboard/cart.js": { file: "public/lp-aboard-cart.js", type: JS, cache: NO_CACHE },
+  "/lp/aboard/offer.js": { file: "lib/offer.js", type: JS, cache: NO_CACHE },
+  "/lp/aboard/i18n.js": { file: "public/lp-aboard-i18n.js", type: JS, cache: NO_CACHE },
+  ...Object.fromEntries(
+    LANGUAGE_ASSETS.map((lang) => [
+      `/lp/aboard/i18n-${lang}.js`,
+      { file: `public/lp-aboard-i18n-${lang}.js`, type: JS, cache: NO_CACHE },
+    ])
+  ),
 
   "/lp/aboard/media/lp-hero-poster.jpg": { file: "public/lp-aboard-media/lp-hero-poster.jpg", type: "image/jpeg", cache: CACHE_MEDIA },
   "/lp/aboard/media/lp-hero-1080.webm": { file: "public/lp-aboard-media/lp-hero-1080.webm", type: "video/webm", cache: CACHE_MEDIA },
