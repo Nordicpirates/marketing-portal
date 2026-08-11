@@ -28,6 +28,7 @@ import {
   CODE_BASE,
   CODE_BIGBOX,
   CODE_VISIBLE_MS,
+  REDIRECT_TEST_MS,
   type Page,
 } from "./page-harness.ts";
 
@@ -68,7 +69,7 @@ test("a successful claim empties the cart, loads it, applies the code, then goes
   // other offers live on the cart page and Shop Pay skips them.
   expect(landed).toBe(CART);
   expect(page.navigations.length).toBe(1);
-});
+}, REDIRECT_TEST_MS);
 
 test("every call goes to a bare path, so it reaches the shop and not the portal", async () => {
   // The page is served from the shop's own origin with a Worker holding only the
@@ -83,7 +84,7 @@ test("every call goes to a bare path, so it reaches the shop and not the portal"
     expect(call.url).not.toContain("://");
     expect(call.url).not.toContain("/gift-offer");
   }
-});
+}, REDIRECT_TEST_MS);
 
 test("the code is on screen, and stays there, before the page moves under them", async () => {
   // Lucas asked for the code to be visible before the redirect, long enough to read.
@@ -107,7 +108,7 @@ test("the code is on screen, and stays there, before the page moves under them",
 
   await page.navigated();
   expect(Date.now() - started).toBeGreaterThanOrEqual(CODE_VISIBLE_MS);
-});
+}, REDIRECT_TEST_MS);
 
 test("the BIG BOX loads three items and its own code", async () => {
   const page = await loadPage({ body: { state: "code", code: CODE_BIGBOX } });
@@ -119,7 +120,7 @@ test("the BIG BOX loads three items and its own code", async () => {
   expect(addedIds(page)).toEqual([BIGBOX_EN, KRAKEN, COINS]);
   expect(cartPaths(page)[2]).toBe(discountPath(CODE_BIGBOX));
   expect(cartPaths(page)[2]).not.toContain(CODE_BASE);
-});
+}, REDIRECT_TEST_MS);
 
 test("a blocked visitor's cart is not touched until they have chosen", async () => {
   const page = await loadPage({ body: blockedAnswer });
@@ -142,7 +143,7 @@ test("the BIG BOX choice loads the BIG BOX cart with the BIG BOX code", async ()
   expect(cartPaths(page)).toEqual([CART_CLEAR, CART_ADD, discountPath(CODE_BIGBOX)]);
   expect(addedIds(page)).toEqual([BIGBOX_EN, KRAKEN, COINS]);
   expect(landed).toBe(CART);
-});
+}, REDIRECT_TEST_MS);
 
 test("the European edition choice loads that edition with the code they were issued", async () => {
   const page = await loadPage({ body: blockedAnswer });
@@ -157,7 +158,7 @@ test("the European edition choice loads that edition with the code they were iss
   expect(cartPaths(page)[2]).toBe(discountPath(CODE_BASE));
   expect(cartPaths(page)[2]).not.toContain(CODE_BIGBOX);
   expect(landed).toBe(CART);
-});
+}, REDIRECT_TEST_MS);
 
 test("a cart that will not build keeps the code on screen, with a way to try again", async () => {
   // The one unrecoverable outcome here would be losing the code because the shop had a
@@ -199,7 +200,7 @@ test("the retry runs the whole sequence again and takes them to the cart", async
   // The whole sequence over again, not just the call that failed.
   expect(cartPaths(page).slice(failed)).toEqual([CART_CLEAR, CART_ADD, discountPath(CODE_BASE)]);
   expect(landed).toBe(CART);
-});
+}, REDIRECT_TEST_MS);
 
 test("a discount call that does not go through still lands them on a cart with the code", async () => {
   // The same link works as a destination: Shopify applies the code and sends the
@@ -213,7 +214,7 @@ test("a discount call that does not go through still lands them on a cart with t
   expect(addedIds(page)).toEqual([BASE_EN, KRAKEN]);
   expect(landed).toBe(discountPath(CODE_BASE));
   expect(landed).toContain("redirect=/cart");
-});
+}, REDIRECT_TEST_MS);
 
 test("no_redirect=1 hands over the code and touches nobody's cart", async () => {
   // The escape hatch for checking this live without emptying the reviewer's own cart.

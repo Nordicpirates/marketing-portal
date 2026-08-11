@@ -43,6 +43,21 @@ export const CODE_VISIBLE_MS = (() => {
   return Number(match[1]);
 })();
 
+/**
+ * Per-test timeout for a test that waits out a real redirect. Pass it as the third
+ * argument to `test()`.
+ *
+ * Bun's default is 5000ms and the page deliberately holds the code for CODE_VISIBLE_MS
+ * before it navigates, so a test that drives one claim to the cart spends most of that
+ * default doing exactly what it is there to check. Saying so per test is what keeps
+ * `bun test` green with no flags: a suite that only passes when it is invoked a
+ * particular way is a suite that is red for whoever invokes it the obvious way.
+ *
+ * Derived from the constant rather than typed out, so raising the hold cannot leave
+ * these behind.
+ */
+export const REDIRECT_TEST_MS = CODE_VISIBLE_MS * 4;
+
 /** Every copy table, the same objects the page itself imports. */
 export const COPY: Record<string, Record<string, string>> = { en: EN, de: DE, it: IT, fr: FR, es: ES };
 

@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "start": "bun run server.ts",
-    "test": "bun test --timeout 20000 tests/"
+    "test": "bun test tests/"
   },
   "devDependencies": {
     "happy-dom": "^20.11.1"

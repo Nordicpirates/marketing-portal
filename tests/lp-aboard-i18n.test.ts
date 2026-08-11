@@ -18,6 +18,7 @@ import {
   COPY,
   LANGUAGES,
   CODE_VISIBLE_MS,
+  REDIRECT_TEST_MS,
   CODE_BASE,
   CODE_BIGBOX,
   HTML,
@@ -375,29 +376,41 @@ test("a cart that will not build says so in the language on screen", async () =>
   expect(page.navigations).toEqual([]);
 });
 
-test("the code is on screen, in the visitor's language, before the redirect", async () => {
-  // Both halves of Lucas's first ask at once: the code is visible and readable, and
-  // the screen that shows it is in the language the visitor was reading.
-  for (const lang of ["en", "fr"]) {
-    const page = await loadPage({ body: codeAnswer });
-    await page.click(chip(page, lang));
+// Both halves of Lucas's first ask at once: the code is visible and readable, and the
+// screen that shows it is in the language the visitor was reading.
+//
+// One test per language rather than a loop over both. Each of these waits out the real
+// CODE_VISIBLE_MS hold, so a loop of two spends over 5000ms in a single test body and
+// trips bun's default per-test timeout. The hold is the thing under test and does not
+// get shortened for the test's convenience; the test is split so each one waits once,
+// and says how long it is allowed to take.
+const BASE_VARIANT_FOR = { en: "51542813409627", fr: "51542813442395" };
 
-    const started = Date.now();
-    await page.submit();
+for (const lang of ["en", "fr"]) {
+  test(
+    `the code is on screen, in ${lang.toUpperCase()}, before the redirect`,
+    async () => {
+      const page = await loadPage({ body: codeAnswer });
+      await page.click(chip(page, lang));
 
-    expect(on(page, "#result h3")).toBe(say(lang, "state.sending.title"));
-    expect(on(page, "#result [data-code]")).toBe(CODE_BASE);
-    expect(flat(page.text())).toContain(say(lang, "state.sending.lead"));
-    expect(page.navigations).toEqual([]);
+      const started = Date.now();
+      await page.submit();
 
-    await page.navigated();
-    expect(Date.now() - started).toBeGreaterThanOrEqual(CODE_VISIBLE_MS);
+      expect(on(page, "#result h3")).toBe(say(lang, "state.sending.title"));
+      expect(on(page, "#result [data-code]")).toBe(CODE_BASE);
+      expect(flat(page.text())).toContain(say(lang, "state.sending.lead"));
+      expect(page.navigations).toEqual([]);
 
-    // And it went to the cart for the edition that chip selected.
-    const add = page.cartCalls().find((c) => c.url === "/cart/add.js");
-    expect(add.body.items[0].id).toBe(lang === "en" ? "51542813409627" : "51542813442395");
-  }
-});
+      await page.navigated();
+      expect(Date.now() - started).toBeGreaterThanOrEqual(CODE_VISIBLE_MS);
+
+      // And it went to the cart for the edition that chip selected.
+      const add = page.cartCalls().find((c) => c.url === "/cart/add.js");
+      expect(add.body.items[0].id).toBe(BASE_VARIANT_FOR[lang]);
+    },
+    REDIRECT_TEST_MS
+  );
+}
 
 test("switching language after a code is issued rewords the panel and nothing else", async () => {
   // The claim is already made. The words follow the visitor; the cart the code was
