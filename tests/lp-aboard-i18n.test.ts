@@ -115,6 +115,16 @@ test("all five tables hold exactly the same keys", async () => {
       expect(COPY[lang][key].length, `"${lang}" has nothing for "${key}"`).toBeGreaterThan(0);
     }
   }
+
+  // Named rather than left to the comparison above, which is English against itself for
+  // the other four and would go on passing if this line were dropped from all five at
+  // once. The whole point of this lead is that the five tables moved together.
+  for (const lang of LANGUAGES) {
+    expect(
+      COPY[lang]["state.cartFailedRetired.lead"],
+      `"${lang}" has no lead for the cart-failure panel that has lost its cart link`
+    ).toBeDefined();
+  }
 });
 
 test("no copy is written and then never shown", async () => {
@@ -992,6 +1002,55 @@ test(
   },
   REDIRECT_TEST_MS
 );
+
+// What that panel SAYS once its link has gone. Each of these is the phrase that
+// language's own cart-failure lead uses for the button, so the assertions below are
+// about the sentence a visitor reads and not about a key having changed.
+const CART_BUTTON: Record<string, string> = {
+  en: "cart button",
+  de: "Warenkorb Button",
+};
+
+for (const lang of Object.keys(CART_BUTTON)) {
+  test(`the panel stops naming a cart button it no longer has: ${lang.toUpperCase()}`, async () => {
+    // The lead on this panel ends by pointing at the link beside it. The link retires
+    // when the page moves off the box it carts, and a line telling the visitor to press
+    // a button that is not there is the panel describing itself wrongly. Two languages,
+    // because all five tables carry that sentence and all five had to move.
+    const page = await loadPage({ body: codeAnswer });
+    page.cartStatus = (path) => (path === "/cart/add.js" ? 500 : 200);
+
+    await page.click(chip(page, lang));
+    await page.submit();
+    await page.until(() => !!page.document.querySelector("#result [data-retry]"), "the retry button");
+
+    // With the link still on the panel, the lead is the one that names it, unchanged.
+    expect(on(page, "#result [data-lead]")).toBe(say(lang, "state.cartFailed.lead"));
+    expect(on(page, "#result [data-lead]")).toContain(CART_BUTTON[lang]);
+
+    // Out through the link and back, which is how this panel ends up on screen with the
+    // controls free beside it: the hold left with the page and came back released.
+    // Awaited, because following the link leaves the panel to redraw itself one task
+    // later, and a test that read the panel before that would be reading it mid-move.
+    await page.click(page.document.querySelector("#result [data-cart]"));
+    restoreFromCache(page);
+
+    // Now the gift moves, so the link is retired. The gift rather than the language on
+    // purpose: it repaints nothing, so the lead has to be corrected where the link is
+    // taken away and not on the way back through a repaint.
+    tapOffer(page, "o-bigbox");
+    expect(page.document.querySelector("#result [data-cart]"), "the link is gone").toBeNull();
+
+    expect(on(page, "#result [data-lead]")).toBe(say(lang, "state.cartFailedRetired.lead"));
+    expect(on(page, "#result [data-lead]")).not.toContain(CART_BUTTON[lang]);
+
+    // Everything else about the panel is untouched: the code is the one thing that must
+    // not be lost, and the retry is the road out that still works.
+    expect(on(page, "#result h3")).toBe(say(lang, "state.cartFailed.title"));
+    expect(on(page, "#result [data-code]")).toBe(CODE_BASE);
+    expect(page.document.querySelector("#result [data-retry]")).not.toBeNull();
+  });
+}
 
 test("the fallback cart link carts the box the page is showing, even after Back", async () => {
   // The cart would not build, the visitor left through the fallback link, and Back handed

@@ -155,6 +155,8 @@ export const IT = {
   "state.cartFailed.title": "Il tuo codice è al sicuro, il carrello non si è caricato",
   "state.cartFailed.lead":
     "Non siamo riusciti a caricare il carrello in questo momento. Il tuo codice è qui sotto e funziona lo stesso, quindi non hai perso niente. Riprova, oppure usa il pulsante del carrello.",
+  "state.cartFailedRetired.lead":
+    "Non siamo riusciti a caricare il carrello in questo momento. Il tuo codice è qui sotto e funziona lo stesso, quindi non hai perso niente. Riprova.",
 
   "state.blocked.title": "Quell'edizione non arriverebbe da te",
   "state.blocked.body":

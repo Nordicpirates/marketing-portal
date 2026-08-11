@@ -145,6 +145,8 @@ export const EN = {
   "state.cartFailed.title": "Your code is safe, your cart is not loaded",
   "state.cartFailed.lead":
     "We could not load your cart just now. Your code is below and it still works, so nothing is lost. Try again, or use the cart button.",
+  "state.cartFailedRetired.lead":
+    "We could not load your cart just now. Your code is below and it still works, so nothing is lost. Try again.",
 
   "state.blocked.title": "That edition will not reach you",
   "state.blocked.body":

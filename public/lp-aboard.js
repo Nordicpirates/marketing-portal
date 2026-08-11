@@ -79,6 +79,21 @@ const CART_COPY_KEYS = {
   "bigbox-both": { label: "state.cart.bigbox.label", note: "state.cart.bigbox.note" },
 };
 
+// What a panel's lead has to say instead once its cart link has been retired.
+//
+// One entry, because one state has both a link to lose and a lead that ends by naming
+// it: the cart that would not build. Its lead sends the visitor to the retry OR to the
+// button beside it, and the button is exactly what retireStaleCart takes away, so on the
+// panel it leaves behind that sentence points at nothing. Each replacement is its own
+// language's line with that last clause cut and nothing else touched, so retiring the
+// link brings no new vocabulary onto the page.
+//
+// Keyed by the lead it replaces rather than by the state, so a state that gains a cart
+// link and has no line about it is left alone by not being in here.
+const RETIRED_LEAD_KEYS = {
+  "state.cartFailed.lead": "state.cartFailedRetired.lead",
+};
+
 function chosen(name) {
   const el = form.querySelector(`input[name="${name}"]:checked`);
   return el ? el.value : "";
@@ -199,10 +214,15 @@ const wait = (ms) => new Promise((done) => setTimeout(done, ms));
 let repaintPanel = null;
 
 // The cart link on the panel that is on screen, and the one selection it agrees with:
-// `{ link, note, offer, edition }`, or null whenever the panel has no cart link on it.
+// `{ link, note, lead, retiredLeadKey, offer, edition }`, or null whenever the panel has
+// no cart link on it.
+//
 // The note is the line under the link that says one click loads both items, which
 // describes nothing once the link is gone, so the two are held together and retire
-// together.
+// together. The lead is the panel's opening line, held here for the same reason: on the
+// one state whose lead ends by naming the link, that sentence has to stop naming it at
+// the moment it goes. `retiredLeadKey` is what it says instead, or undefined on the
+// states whose lead never mentioned the link and therefore does not move.
 let cartOnPanel = null;
 
 /**
@@ -218,6 +238,12 @@ let cartOnPanel = null;
  * Retired rather than left there dead, which is what this file already does with the
  * retry button on every state that has nothing to retry. An anchor with its href taken
  * off still reads as a button and answers nothing.
+ *
+ * The panel's own words go with it. The line under the link describes a click nobody can
+ * make any more, and on the cart-failure panel the lead ends by sending the visitor to
+ * that same button, so both are corrected here rather than left describing a road that
+ * has closed. The retry is what the lead is left pointing at, and the retry is still
+ * there.
  *
  * The retry beside it is deliberately untouched. It cannot carry this bug: it goes back
  * through completeWith, which aims the page at the claim before it builds anything, so
@@ -238,6 +264,11 @@ function retireStaleCart() {
   );
   cartOnPanel.link.remove();
   if (cartOnPanel.note) cartOnPanel.note.remove();
+  // In the language the page is in NOW, which is where it has just moved to. The panel
+  // stays on screen and the visitor reads this sentence after the move, not before it.
+  if (cartOnPanel.lead && cartOnPanel.retiredLeadKey) {
+    cartOnPanel.lead.textContent = t(cartOnPanel.retiredLeadKey);
+  }
   cartOnPanel = null;
 }
 
@@ -285,6 +316,10 @@ function render(kind, data = {}, options = {}) {
   // that take one away, because a caption for a button nobody can press is a sentence
   // about nothing.
   const cartNote = node.querySelector("[data-cart-note]");
+  // The panel's opening line, which on one state ends by naming that same link. Held
+  // alongside it so retireStaleCart can reword it, rather than found again from the
+  // document later: this is the element the words were just written into.
+  const lead = node.querySelector("[data-lead]");
   const copyFor = CART_COPY_KEYS[data.offer];
   if (copyFor && cartNote) cartNote.textContent = t(copyFor.note);
 
@@ -299,7 +334,14 @@ function render(kind, data = {}, options = {}) {
       // again from the keys the flow handed over, so at a repaint those two are exactly
       // what have come apart, and reading the live selection here would write the
       // disagreement down as agreement and hand the link a clean bill.
-      cartOnPanel = { link: cart, note: cartNote, offer: data.offer, edition: data.edition };
+      cartOnPanel = {
+        link: cart,
+        note: cartNote,
+        lead,
+        retiredLeadKey: RETIRED_LEAD_KEYS[data.leadKey],
+        offer: data.offer,
+        edition: data.edition,
+      };
       cart.addEventListener("click", () => {
         // This link is a road to a cart, so it goes through the choke point like every
         // other one. Its href was ruled on by the endpoint and cannot be re-pointed at

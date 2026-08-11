@@ -154,6 +154,8 @@ export const FR = {
   "state.cartFailed.title": "Votre code est en sécurité, votre panier n'est pas chargé",
   "state.cartFailed.lead":
     "Nous n'avons pas pu charger votre panier à l'instant. Votre code est ci-dessous et il fonctionne toujours, rien n'est perdu. Réessayez, ou utilisez le bouton du panier.",
+  "state.cartFailedRetired.lead":
+    "Nous n'avons pas pu charger votre panier à l'instant. Votre code est ci-dessous et il fonctionne toujours, rien n'est perdu. Réessayez.",
 
   "state.blocked.title": "Cette édition ne vous parviendra pas",
   "state.blocked.body":
