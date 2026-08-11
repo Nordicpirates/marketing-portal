@@ -860,14 +860,148 @@ function linkMatchesPage(page: Page, href: string) {
   return shown;
 }
 
+/**
+ * Every road out of this document that ends on a shop cart.
+ *
+ * An href, not a listener. A browser follows an anchor by ways that reach no JavaScript
+ * at all: the middle button, Ctrl or Cmd with a click, Open in new tab out of the context
+ * menu, the keyboard's own menu key. A test that clicked the link would be checking the
+ * one road that DOES reach a listener and calling the class covered, so nothing below
+ * clicks it. Read off the whole document rather than off the panel, because an anchor
+ * anywhere is a road a visitor can walk.
+ *
+ * The attribute rather than the resolved property, because the page writes an absolute
+ * shop url and every other anchor here is an in-page "#offer". This DOM resolves those
+ * against the document url, which the click in the test below moves onto the shop's cart,
+ * so reading the property would report the whole nav as roads to a cart. A real browser
+ * leaves the frozen document with the url it had.
+ */
+function cartRoads(page: Page): string[] {
+  return Array.from(page.document.querySelectorAll("a[href]"))
+    .map((a: any) => a.getAttribute("href"))
+    .filter((href: string) => href.includes("/cart/"));
+}
+
+/** The variants one cart url would put in the cart, in the order it names them. */
+function cartedBy(href: string): string[] {
+  const path = href.split("?")[0].split("/cart/")[1] || "";
+  return path.split(",").map((item) => item.split(":")[0]);
+}
+
+/**
+ * The property, over the whole document: nothing on this page is a road to a cart that
+ * disagrees with what the page is showing.
+ *
+ * A road that agrees and no road at all both satisfy it, which is deliberate. This says
+ * what the visitor may end up with, not how the page arranges for it.
+ */
+function noRoadDisagrees(page: Page) {
+  const shown = showing(page);
+  const wanted = cartItems(shown.offer, shown.edition)!.items.map((item) => item.id);
+  for (const href of cartRoads(page)) {
+    expect(
+      cartedBy(href),
+      `the page shows ${shown.offer}/${shown.edition}, and this road carts ${href}`
+    ).toEqual(wanted);
+  }
+}
+
+// Either control moving takes the page off the claim, so either one has to retire the
+// link. The gift is the half that redraws nothing: a language change repaints the panel
+// around the visitor and a gift change does not, so a page that only checked its own
+// repaints would keep the link standing here and look fixed from the other end.
+const LEAVING_THE_CLAIM: {
+  control: string;
+  move: (page: Page) => unknown;
+  shows: { offer: string; edition: string };
+}[] = [
+  {
+    control: "the language",
+    move: (page) => page.click(chip(page, "fr")),
+    shows: { offer: "base-kraken", edition: "fr" },
+  },
+  {
+    control: "the gift",
+    move: (page) => tapOffer(page, "o-bigbox"),
+    shows: { offer: "bigbox-both", edition: "en" },
+  },
+];
+
+for (const { control, move, shows } of LEAVING_THE_CLAIM) {
+  test(`a cart link the page has moved away from stops being a road out: ${control}`, async () => {
+    // no_redirect hands over the code with its fallback link beside it and lets go of both
+    // controls, so this is a panel the visitor can sit on and change their mind next to.
+    // Nothing is clicked on the link here and nothing has to be: the disagreement is in the
+    // href, and every way a browser has of following an href is a way that never reaches
+    // the correction hanging off its click.
+    const page = await loadPage({ body: codeAnswer }, DEMO);
+    await page.submit();
+
+    expect(cartRoads(page).length, "the panel starts with a cart link on it").toBe(1);
+    noRoadDisagrees(page);
+
+    await move(page);
+
+    expect(showing(page)).toEqual(shows);
+    noRoadDisagrees(page);
+    expect(cartRoads(page), "the link the page has left behind is gone").toEqual([]);
+  });
+}
+
+test(
+  "the fallback link is retired when the page leaves the claim, and the retry is not",
+  async () => {
+    // The cart would not build, the visitor left through the fallback link, and Back
+    // handed them the frozen page: the hold went out of the door with them, so that panel
+    // is on screen with both controls free beside it. The click below is how the page gets
+    // into that state; it is the setup, and the test is everything after it.
+    const page = await loadPage({ body: codeAnswer });
+    page.cartStatus = (path) => (path === "/cart/add.js" ? 500 : 200);
+
+    await page.submit();
+    await page.until(() => !!page.document.querySelector("#result [data-retry]"), "the retry button");
+
+    page.document
+      .querySelector("#result [data-cart]")
+      .dispatchEvent(new page.window.MouseEvent("click", { bubbles: true, cancelable: true, detail: 1 }));
+    restoreFromCache(page);
+
+    // Both halves of the claim move, and neither of them through the link.
+    await page.click(chip(page, "fr"));
+    tapOffer(page, "o-bigbox");
+    expect(showing(page)).toEqual({ offer: "bigbox-both", edition: "fr" });
+
+    noRoadDisagrees(page);
+    // The line under the link says one click loads both items. With no link to click it
+    // describes nothing, so it goes with it.
+    expect(page.document.querySelector("#result [data-cart-note]")).toBeNull();
+
+    // The other road off this panel stays, because it cannot disagree: it goes back
+    // through the page, which puts the claim on screen before anything is built. It is
+    // also the recovery path a visitor needs precisely when the shop's cart is what broke.
+    const retry = page.document.querySelector("#result [data-retry]");
+    expect(retry, "the retry is still there").not.toBeNull();
+
+    page.cartStatus = () => 200;
+    await page.click(retry);
+    await page.navigated();
+
+    const add = page.cartCalls().filter((c) => c.url === "/cart/add.js").pop();
+    expect(showing(page)).toEqual({ offer: "base-kraken", edition: "en" });
+    expect(add.body.items).toEqual(cartItems("base-kraken", "en")!.items);
+  },
+  REDIRECT_TEST_MS
+);
+
 test("the fallback cart link carts the box the page is showing, even after Back", async () => {
   // The cart would not build, the visitor left through the fallback link, and Back handed
   // them the frozen page: the hold went out of the door with them, so both controls are
-  // theirs again with that panel still on screen. The retry beside the link answers that
-  // by bringing the page back to the box it is about to cart. The link is the other road
-  // off the same panel and has to answer it the same way, because its href was ruled on
-  // by the endpoint and must not follow the picker: a European re-aiming themselves at
-  // the English Base Game is the one combination the endpoint refuses.
+  // theirs again with that panel still on screen. This is that panel with nothing moved
+  // on it, which is the state the link is meant to be taken from: it carts what the page
+  // is showing, and taking it works, because it is their road to the shop.
+  //
+  // The visitor moving a control first is the test above. That road closes rather than
+  // correcting itself, because an href is followed by ways no listener ever sees.
   const page = await loadPage({ body: codeAnswer });
   page.cartStatus = (path) => (path === "/cart/add.js" ? 500 : 200);
 
@@ -879,14 +1013,12 @@ test("the fallback cart link carts the box the page is showing, even after Back"
     .dispatchEvent(new page.window.MouseEvent("click", { bubbles: true, cancelable: true, detail: 1 }));
   restoreFromCache(page);
 
-  // Both controls moved while the page was theirs again.
-  await page.click(chip(page, "fr"));
-  tapOffer(page, "o-bigbox");
-  expect(page.document.documentElement.getAttribute("lang")).toBe("fr");
+  // Theirs again, and the link is still on the panel they came back to.
+  expect(chip(page, "fr").disabled).toBe(false);
+  expect(page.document.getElementById("o-bigbox").disabled).toBe(false);
 
-  // And then they take the link that was still sitting there.
   const link = page.document.querySelector("#result [data-cart]");
-  const href = link.href;
+  const href = link.getAttribute("href");
   const followed = link.dispatchEvent(
     new page.window.MouseEvent("click", { bubbles: true, cancelable: true, detail: 1 })
   );
@@ -898,6 +1030,7 @@ test("the fallback cart link carts the box the page is showing, even after Back"
   const shown = linkMatchesPage(page, href);
   expect(shown).toEqual({ offer: "base-kraken", edition: "en" });
   expect(page.document.documentElement.getAttribute("lang")).toBe("en");
+  noRoadDisagrees(page);
 });
 
 test("taking the BIG BOX moves the page onto the box it carts", async () => {
@@ -947,16 +1080,26 @@ test(
   REDIRECT_TEST_MS
 );
 
-test("switching language after a code is issued rewords the panel and nothing else", async () => {
-  // The claim is already made. The words follow the visitor; the cart the code was
-  // issued against does not move under them.
+test("switching language after a code is issued rewords the panel and retires its cart link", async () => {
+  // The claim is already made. The words follow the visitor, and the cart the code was
+  // issued against does not move under them: this link is never re-pointed at the picker,
+  // because the endpoint ruled on the box in it and a European re-aiming themselves at the
+  // English Base Game is the one combination it refuses.
+  //
+  // This test used to assert the link's href was still the one it started with, which is
+  // the other half of the same sentence and was the wrong half to keep. An unchanged href
+  // on a page that has changed is a road to the box they claimed sitting on a page showing
+  // the box they are looking at, and no click is needed to walk it. So the href does not
+  // move, and the link does not stay.
   const page = await loadPage({ body: codeAnswer }, DEMO);
   await page.submit();
 
-  const before = page.document.querySelector("#result [data-cart]").href;
+  const before = page.document.querySelector("#result [data-cart]").getAttribute("href");
+  expect(before).toContain(BASE_VARIANT_FOR.en);
+
   await page.click(chip(page, "de"));
 
   expect(on(page, "#result h3")).toBe(say("de", "state.code.title"));
   expect(on(page, "#result [data-code]")).toBe(CODE_BASE);
-  expect(page.document.querySelector("#result [data-cart]").href).toBe(before);
+  expect(cartRoads(page), "the link is gone rather than re-pointed at the picker").toEqual([]);
 });

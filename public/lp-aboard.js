@@ -29,6 +29,17 @@
 // because a control that moves under a request already in flight is a worse experience
 // than one that is visibly refused, but it is no longer the thing that makes the rule
 // true: see holdChoice and aim.
+//
+// The last of those five roads cannot be corrected on the way out. The fallback link
+// beside the code is an HREF, and a browser follows an href by ways that reach no
+// JavaScript at all: the middle button, Ctrl or Cmd with a click, Open in new tab out of
+// the context menu, the keyboard's own menu key. A correction hanging off its click
+// covers the one activation that fires the listener and leaves every other one carting
+// whatever the link was built for. So that road is not corrected, it is
+// retired: it exists only while the page is still showing the box it carts, and it is
+// taken off the panel the moment the page moves away from it. A road that cannot be
+// walked cannot disagree with anything, which is why this closes the class rather than
+// one way of walking it. See retireStaleCart.
 
 import { buildCartUrl } from "./offer.js";
 import { loadCart } from "./cart.js";
@@ -187,6 +198,49 @@ const wait = (ms) => new Promise((done) => setTimeout(done, ms));
 // only the branch knows which half is which. Null before anything has been rendered.
 let repaintPanel = null;
 
+// The cart link on the panel that is on screen, and the one selection it agrees with:
+// `{ link, note, offer, edition }`, or null whenever the panel has no cart link on it.
+// The note is the line under the link that says one click loads both items, which
+// describes nothing once the link is gone, so the two are held together and retire
+// together.
+let cartOnPanel = null;
+
+/**
+ * Take the panel's cart link away once the page has moved off what it carts.
+ *
+ * The link's href was built from the offer and the edition the ENDPOINT ruled on, so it
+ * cannot be re-pointed at the picker: the one combination the endpoint refuses is a
+ * European asking for the English Base Game, and following the picker is exactly how a
+ * visitor would walk back into it. The disagreement therefore only ever runs one way -
+ * the visitor would get the box they claimed instead of the box they are looking at - and
+ * the honest answer to it is to stop offering that road, not to re-point it.
+ *
+ * Retired rather than left there dead, which is what this file already does with the
+ * retry button on every state that has nothing to retry. An anchor with its href taken
+ * off still reads as a button and answers nothing.
+ *
+ * The retry beside it is deliberately untouched. It cannot carry this bug: it goes back
+ * through completeWith, which aims the page at the claim before it builds anything, so
+ * pressing it moves the page onto the box it is about to cart. 51539dc kept that button
+ * alive on purpose, because a broken shop cart page is exactly when a visitor needs a
+ * recovery path, and this takes away only the road that cannot correct itself.
+ */
+function retireStaleCart() {
+  if (!cartOnPanel) return;
+
+  const live = selection();
+  if (live.offer === cartOnPanel.offer && live.edition === cartOnPanel.edition) return;
+
+  // Not the url: on this path it carries the code, and codes stay out of logs.
+  console.log(
+    `[lp/aboard] the page has moved to offer="${live.offer}" edition="${live.edition}", so the ` +
+      `cart link for offer="${cartOnPanel.offer}" edition="${cartOnPanel.edition}" is retired`
+  );
+  cartOnPanel.link.remove();
+  if (cartOnPanel.note) cartOnPanel.note.remove();
+  cartOnPanel = null;
+}
+
 /**
  * Swap #result for one of the <template> states.
  *
@@ -207,6 +261,10 @@ function render(kind, data = {}, options = {}) {
   const node = tpl.content.cloneNode(true);
   const state = node.firstElementChild;
 
+  // Whatever link was on the old panel is going out with it, and the new panel has none
+  // until the block below builds one.
+  cartOnPanel = null;
+
   // The template's own wording first, in the current language. Anything this caller
   // has an opinion about is written over it below.
   translate(node, language());
@@ -222,11 +280,13 @@ function render(kind, data = {}, options = {}) {
   fill("[data-message]", data.messageKey && t(data.messageKey));
   fill("[data-code]", data.code);
 
+  // The line under the cart link, which is about that link: it says what one click
+  // loads. It is written here and taken away with the link below, in both the branches
+  // that take one away, because a caption for a button nobody can press is a sentence
+  // about nothing.
+  const cartNote = node.querySelector("[data-cart-note]");
   const copyFor = CART_COPY_KEYS[data.offer];
-  if (copyFor) {
-    const note = node.querySelector("[data-cart-note]");
-    if (note) note.textContent = t(copyFor.note);
-  }
+  if (copyFor && cartNote) cartNote.textContent = t(copyFor.note);
 
   const cart = node.querySelector("[data-cart]");
   if (cart) {
@@ -234,15 +294,24 @@ function render(kind, data = {}, options = {}) {
     const cartUrl = buildCartUrl(data.offer, data.edition, data.code);
     if (cartUrl) {
       cart.href = cartUrl;
+      // What the href holds, which is what it has to be checked against at the bottom of
+      // this function. Not what the page is showing right now: a repaint draws this panel
+      // again from the keys the flow handed over, so at a repaint those two are exactly
+      // what have come apart, and reading the live selection here would write the
+      // disagreement down as agreement and hand the link a clean bill.
+      cartOnPanel = { link: cart, note: cartNote, offer: data.offer, edition: data.edition };
       cart.addEventListener("click", () => {
         // This link is a road to a cart, so it goes through the choke point like every
         // other one. Its href was ruled on by the endpoint and cannot be re-pointed at
         // the picker, so the page is moved onto what it carts instead, and the two agree
         // at the moment the visitor commits to it.
         //
-        // Not attached only when a caller remembers to ask: this listener is the reason
-        // a panel can be left on screen with the controls free beside it, which is what
-        // the page comes back as after Back. Every road out of here is the same road.
+        // This is the road for the visitor who presses the button, and it is no longer
+        // the thing that keeps the link honest: a link that has stopped agreeing with the
+        // page is not here to be pressed, because retireStaleCart took it away when the
+        // page moved. So this aim has nothing left to correct and moves nothing, which is
+        // also why it cannot pull the anchor out of the document while the browser is
+        // still deciding what to do with the click on it.
         aim({ offer: data.offer, edition: data.edition });
 
         // A caller that is holding the choice has to let go of it here for the same
@@ -262,6 +331,7 @@ function render(kind, data = {}, options = {}) {
       // No link is better than a broken one, but somebody needs to know.
       console.error(`[lp/aboard] no cart url for state "${kind}", hiding the cart button`);
       cart.remove();
+      if (cartNote) cartNote.remove();
     }
   }
 
@@ -301,6 +371,13 @@ function render(kind, data = {}, options = {}) {
   const wasWorkingInPanel = result.contains(document.activeElement);
 
   result.replaceChildren(node);
+
+  // A panel is drawn again whenever the visitor changes language, from the keys the flow
+  // handed over the first time, so a repaint rebuilds the link the flow's claim asks for
+  // on a page that has just moved somewhere else. It is checked here rather than left to
+  // the caller for the same reason everything else on this page is: a check the caller
+  // has to remember is a check that gets forgotten.
+  retireStaleCart();
 
   if (wasWorkingInPanel && state) {
     const heading = state.querySelector("h3");
@@ -741,7 +818,7 @@ function setLanguage(value, { repaint = true } = {}) {
 
   translateDocument(document, language());
   syncLangChips();
-  syncClaimTitle();
+  pageMoved();
   giftJump.relabel();
   if (repaint && repaintPanel) repaintPanel();
 }
@@ -780,7 +857,7 @@ for (const input of editionInputs) {
  */
 function setOffer(value) {
   if (!check("offer", value)) return;
-  syncClaimTitle();
+  pageMoved();
 }
 
 /**
@@ -816,6 +893,24 @@ function aim(target) {
     return null;
   }
   return live;
+}
+
+/**
+ * The page is now showing a different box than it was a moment ago.
+ *
+ * Both halves of the selection end up here, whoever moved them: setLanguage for the
+ * edition, from the chips and from the picker alike, and setOffer plus the gift's own
+ * change event for the gift. That is what makes this the place to put anything that has
+ * to follow the page rather than be remembered by each caller in turn.
+ *
+ * Two things follow it. The heading over the email field names the box that is chosen,
+ * and the panel's cart link is checked against what the page is now showing, because a
+ * link that was built for where the page used to be is a road to a cart the visitor is
+ * no longer looking at.
+ */
+function pageMoved() {
+  syncClaimTitle();
+  retireStaleCart();
 }
 
 /** Keep the heading over the email field naming the box that is currently chosen. */
@@ -863,7 +958,7 @@ for (const input of offerInputs) {
       console.warn("[lp/aboard] gift changed while a claim is in flight, ignoring it");
       return;
     }
-    syncClaimTitle();
+    pageMoved();
     giftJump.chose();
   });
 }
