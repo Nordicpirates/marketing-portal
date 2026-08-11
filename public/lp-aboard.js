@@ -270,19 +270,35 @@ async function completeWith(claim) {
 
   const cart = await loadCart(claim.offer, claim.edition, claim.code);
   if (!cart.ok) {
-    // Nobody is going anywhere now, and the panel that lands has a retry on it. The
-    // page is theirs to steer again.
-    holdChoice(false);
+    // The hold stays. The panel that lands carries a retry, and the retry builds a cart
+    // for THIS claim: the edition that was posted, the one the endpoint agreed it could
+    // ship, and the one the code was issued against. Handing the choice back here would
+    // let the visitor move the page to another language and then press a button that
+    // carts the old one, which is the same disagreement one screen further on. It would
+    // also let them move it to the English Base Game, which is the one combination the
+    // endpoint refuses for a European visitor and the only one it can decide: it knows
+    // where they are and this page never does.
+    //
+    // So the choice comes back when nothing is pending, which here means the cart they
+    // end up on. The retry hands this attempt's hold to the attempt it starts, so
+    // pressing it five times holds once and not five times.
     showCode({
       ...claim,
       titleKey: "state.cartFailed.title",
       leadKey: "state.cartFailed.lead",
-      retry: () => completeWith(claim),
+      retry: () => {
+        holdChoice(false);
+        completeWith(claim);
+      },
     });
     return;
   }
 
   await legible;
+  // The cart is built and the page is leaving. This hold ends with the page it was
+  // taken on: the browser freezes the document as it goes, and a hold still standing at
+  // that moment comes back standing when the visitor presses Back onto it.
+  holdChoice(false);
   goTo(cart.url);
 }
 
@@ -465,8 +481,9 @@ async function submit() {
     submitBtn.disabled = false;
     // Every road out of the block above ends somewhere the visitor has to act: an
     // error to try again from, the blocked choice, the code with its cart link, or a
-    // page that is already navigating. All of those are theirs to steer. The one that
-    // is not is the wait before a redirect, and completeWith holds that itself.
+    // page that is already navigating. All of those are theirs to steer. The two that
+    // are not are the wait before a redirect and the retry left behind by a cart that
+    // would not build, and completeWith holds both itself.
     holdChoice(false);
   }
 }
@@ -497,6 +514,13 @@ const editionInputs = Array.from(form.querySelectorAll('input[name="edition"]'))
  *
  * Holds nest: each step releases only its own, so the wait before a redirect keeps its
  * hold when the submit that started it has already let go of theirs.
+ *
+ * The hold lasts as long as the page owes the visitor a cart for a decision that has
+ * already been made: the claim in flight, the cart being built, and a cart that would
+ * not build with a retry still on screen, which is the same decision waiting to be tried
+ * again. It never outlives the page it was taken on, because a page that navigates while
+ * something is held comes back from the browser's cache exactly that way, with a chip
+ * and a radio the visitor cannot use and nothing left to release them.
  */
 let holds = 0;
 

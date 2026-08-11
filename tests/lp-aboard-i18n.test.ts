@@ -54,6 +54,23 @@ function chip(page: Page, lang: string): any {
 
 const on = (page: Page, selector: string) => page.document.querySelector(selector).textContent.trim();
 
+/**
+ * The Back button onto a page the browser had frozen.
+ *
+ * Nothing re-runs: the document comes back exactly as it was when it left, which is why
+ * anything the flow left behind on it is still there. The one thing a browser does say
+ * is this event, with `persisted` set to mark the document as the frozen one rather than
+ * a fresh load. The page listens for none of it, and these tests are how that stays a
+ * choice: what it hands back has to be usable before anybody presses Back.
+ *
+ * `persisted` is defined by hand because this DOM has no PageTransitionEvent of its own.
+ */
+function restoreFromCache(page: Page) {
+  const event = new page.window.Event("pageshow");
+  Object.defineProperty(event, "persisted", { value: true });
+  page.window.dispatchEvent(event);
+}
+
 test("the English table and the markup say the same thing", async () => {
   // The page has to read correctly before the language module runs, and if it never
   // runs. That only holds while these two agree, so changing the copy in one and not
@@ -497,6 +514,124 @@ test("a claim that is refused hands the language back", async () => {
   await page.click(chip(page, "de"));
   expect(on(page, "#result [data-message]")).toBe(say("de", "error.rateLimited"));
 });
+
+// The hold above covers the wait for the answer. These four are about what is left over
+// once that wait is done: a cart that would not build leaves a retry on screen and a
+// fallback link beside it, both of them made for a decision the visitor took a minute
+// ago, and a cart that DID build leaves a page the browser can hand back.
+
+test(
+  "a retry carts the box the page is showing, whatever was pressed in between",
+  async () => {
+    // The cart failed and the retry is on screen. A tap on a chip lands somewhere in
+    // between, and then they press it.
+    const page = await loadPage({ body: codeAnswer });
+    page.cartStatus = (path) => (path === "/cart/add.js" ? 500 : 200);
+
+    await page.submit();
+    await page.until(() => !!page.document.querySelector("#result [data-retry]"), "the retry button");
+
+    // Dispatched whatever state the chip is in, for the same reason as the race test
+    // above: this is about where the page ends up, not about which mechanism keeps it
+    // there.
+    await page.click(chip(page, "fr"));
+
+    page.cartStatus = () => 200;
+    await page.click(page.document.querySelector("#result [data-retry]"));
+    await page.navigated();
+
+    // The same claim as the race test: whatever box the page is showing is the box in
+    // the cart. Read off the page rather than assumed, so it holds in either direction.
+    const shown = LANGUAGES.find((lang) => page.document.getElementById(`ed-${lang}`).checked);
+    const add = page.cartCalls().filter((c) => c.url === "/cart/add.js").pop();
+    expect(add.body.items[0].id).toBe(BASE_VARIANT_FOR[shown!]);
+
+    // And the box that is kept is the one the claim was made for. It has to be that one
+    // rather than the chip's: only the endpoint knows where the visitor is, and it
+    // agreed to ship THIS edition to them.
+    expect(shown).toBe("en");
+    expect(page.document.documentElement.getAttribute("lang")).toBe("en");
+  },
+  REDIRECT_TEST_MS
+);
+
+test("the fallback cart link on that panel is the box on screen too", async () => {
+  // The other way off the same panel. It carries the variant in its url, so a link
+  // pointing at another edition than the page is the same disagreement with a slower
+  // fuse: the visitor clicks it a minute later and buys a box the page never showed.
+  const page = await loadPage({ body: codeAnswer });
+  page.cartStatus = (path) => (path === "/cart/add.js" ? 500 : 200);
+
+  await page.submit();
+  await page.until(() => !!page.document.querySelector("#result [data-retry]"), "the retry button");
+  await page.click(chip(page, "fr"));
+
+  const shown = LANGUAGES.find((lang) => page.document.getElementById(`ed-${lang}`).checked);
+  expect(page.document.querySelector("#result [data-cart]").href).toContain(BASE_VARIANT_FOR[shown!]);
+
+  // Visibly refused rather than swallowed, which is how the chip says the choice is not
+  // the visitor's while a cart for it is still waiting to be built.
+  expect(chip(page, "fr").disabled).toBe(true);
+});
+
+test(
+  "a page restored from the browser's cache comes back usable",
+  async () => {
+    // The cart was built and the page took the visitor to it. They press Back, and the
+    // browser hands them the frozen document rather than running any of this again. So
+    // whatever was still held when the page left is still held now, and there is nothing
+    // running that could ever release it.
+    const page = await loadPage({ body: codeAnswer });
+    await page.submit();
+    await page.navigated();
+
+    restoreFromCache(page);
+
+    const french = page.document.getElementById("ed-fr");
+    expect(french.disabled).toBe(false);
+    expect(chip(page, "fr").disabled).toBe(false);
+
+    // Alive rather than merely enabled, which is what the visitor tries next.
+    await page.click(chip(page, "fr"));
+    expect(page.document.documentElement.getAttribute("lang")).toBe("fr");
+    expect(french.checked).toBe(true);
+    expect(on(page, "h1")).toBe(say("fr", "hero.title"));
+  },
+  REDIRECT_TEST_MS
+);
+
+test(
+  "a page that took two tries to build its cart comes back usable as well",
+  async () => {
+    // Each attempt takes the hold over from the one before it rather than stacking a new
+    // one on top of it. Stacked, they would not all be let go by the time the page
+    // navigates, and a visitor who had to press the button twice would be the one who
+    // presses Back onto the dead page above.
+    const page = await loadPage({ body: codeAnswer });
+    page.cartStatus = (path) => (path === "/cart/add.js" ? 500 : 200);
+
+    await page.submit();
+    await page.until(() => !!page.document.querySelector("#result [data-retry]"), "the retry button");
+
+    const first = page.document.querySelector("#result [data-retry]");
+    await page.click(first);
+    // The panel is drawn again for the second failure, so the button is a new one. That
+    // is what says the attempt finished, rather than only that its request went out.
+    await page.until(
+      () => page.document.querySelector("#result [data-retry]") !== first,
+      "the second attempt to fail"
+    );
+
+    page.cartStatus = () => 200;
+    await page.click(page.document.querySelector("#result [data-retry]"));
+    await page.navigated();
+
+    restoreFromCache(page);
+    expect(chip(page, "fr").disabled).toBe(false);
+    expect(page.document.getElementById("ed-fr").disabled).toBe(false);
+  },
+  REDIRECT_TEST_MS
+);
 
 test("switching language after a code is issued rewords the panel and nothing else", async () => {
   // The claim is already made. The words follow the visitor; the cart the code was
