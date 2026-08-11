@@ -368,20 +368,52 @@ test("taking a European edition switches the page into that language", async () 
   expect(on(page, "#result [data-code]")).toBe(CODE_BASE);
 });
 
-test("the BIG BOX branch reads in the language on screen and never claims the inbox", async () => {
+test("the BIG BOX branch moves the page onto the box it sells", async () => {
+  // This choice is called "Give me the BIG BOX in English" and there is no other edition
+  // of it on offer, so taking it moves the whole page onto that box: the picker, the
+  // chips and the words with them. It used to leave a visitor reading German while the
+  // cart filled with the English BIG BOX, which is the disagreement this page exists to
+  // make impossible. Losing the German words is what that costs, and it is the honest
+  // way round: the page they are looking at is the box they are buying.
   const page = await loadPage({ body: blockedAnswer }, DEMO);
   await page.submit();
   await page.click(chip(page, "de"));
+
+  // The panel they are answering is still theirs to read. Only the answer moves the page.
+  expect(on(page, "#result h3")).toBe(say("de", "state.blocked.title"));
+
   await page.click(page.document.querySelector('#result [data-choice="package"]'));
 
-  expect(on(page, "#result h3")).toBe(say("de", "state.bigbox.title"));
-  expect(on(page, "#result [data-lead]")).toBe(say("de", "state.bigbox.lead"));
+  expect(page.document.documentElement.getAttribute("lang")).toBe("en");
+  expect(on(page, "h1")).toBe(say("en", "hero.title"));
+  expect(on(page, "#result h3")).toBe(say("en", "state.bigbox.title"));
+  expect(on(page, "#result [data-lead]")).toBe(say("en", "state.bigbox.lead"));
   expect(on(page, "#result [data-code]")).toBe(CODE_BIGBOX);
-
-  // The code we email this visitor is the Base Game one, not this one, so no branch of
-  // this screen may say otherwise. "Postfach" is the German word for the inbox.
-  expect(page.text()).not.toContain("Postfach");
   expect(page.text()).not.toContain("inbox");
+});
+
+test("no language promises the inbox on the BIG BOX branch", async () => {
+  // The code we email this visitor is the Base Game one they were issued, not this one,
+  // so no table may say otherwise. Read off the copy rather than off a rendered panel:
+  // that branch only ever renders in English now, and the promise has to be absent from
+  // all five. Each word is the one that language's own code state uses for the inbox.
+  const INBOX: Record<string, string> = {
+    en: "inbox",
+    de: "Postfach",
+    it: "casella",
+    fr: "boîte mail",
+    es: "bandeja",
+  };
+
+  for (const lang of LANGUAGES) {
+    expect(say(lang, "state.code.lead"), `"${INBOX[lang]}" is not how ${lang} says inbox`).toContain(
+      INBOX[lang]
+    );
+    expect(
+      say(lang, "state.bigbox.lead"),
+      `the ${lang} BIG BOX lead promises an inbox we are not filling`
+    ).not.toContain(INBOX[lang]);
+  }
 });
 
 test("a cart that will not build says so in the language on screen", async () => {
@@ -796,6 +828,121 @@ test(
 
     expect(chip(page, "fr").disabled).toBe(false);
     expect(page.document.getElementById("o-bigbox").disabled).toBe(false);
+  },
+  REDIRECT_TEST_MS
+);
+
+// Three more roads to a cart, all of them older than the language work: the stale
+// fallback link comes from 96a5c04, both blocked mismatches from 8d23637. They are the
+// same shape as everything above - a cart built from a choice the visitor is no longer
+// looking at - and they are the reason the page now moves itself onto the box it is
+// about to cart instead of each road remembering to hold the controls still.
+//
+// Each one reads both halves off the page and compares them against the page's own offer
+// table, so it says what the cart holds rather than what I expected it to.
+
+/** Whatever the page is showing right now, as one gift and one edition. */
+function showing(page: Page): { offer: string; edition: string } {
+  const editions = LANGUAGES.filter((lang) => page.document.getElementById(`ed-${lang}`).checked);
+  const gifts = GIFTS.filter((g) => page.document.getElementById(g.id).checked);
+  expect([editions.length, gifts.length], "the page shows one gift and one edition").toEqual([1, 1]);
+  return { offer: gifts[0].value, edition: editions[0] };
+}
+
+/** Assert that a cart link holds exactly what the page is showing. */
+function linkMatchesPage(page: Page, href: string) {
+  const shown = showing(page);
+  for (const item of cartItems(shown.offer, shown.edition)!.items) {
+    expect(href, `the page shows ${shown.offer}/${shown.edition}, the link carts ${href}`).toContain(
+      item.id
+    );
+  }
+  return shown;
+}
+
+test("the fallback cart link carts the box the page is showing, even after Back", async () => {
+  // The cart would not build, the visitor left through the fallback link, and Back handed
+  // them the frozen page: the hold went out of the door with them, so both controls are
+  // theirs again with that panel still on screen. The retry beside the link answers that
+  // by bringing the page back to the box it is about to cart. The link is the other road
+  // off the same panel and has to answer it the same way, because its href was ruled on
+  // by the endpoint and must not follow the picker: a European re-aiming themselves at
+  // the English Base Game is the one combination the endpoint refuses.
+  const page = await loadPage({ body: codeAnswer });
+  page.cartStatus = (path) => (path === "/cart/add.js" ? 500 : 200);
+
+  await page.submit();
+  await page.until(() => !!page.document.querySelector("#result [data-retry]"), "the retry button");
+
+  page.document
+    .querySelector("#result [data-cart]")
+    .dispatchEvent(new page.window.MouseEvent("click", { bubbles: true, cancelable: true, detail: 1 }));
+  restoreFromCache(page);
+
+  // Both controls moved while the page was theirs again.
+  await page.click(chip(page, "fr"));
+  tapOffer(page, "o-bigbox");
+  expect(page.document.documentElement.getAttribute("lang")).toBe("fr");
+
+  // And then they take the link that was still sitting there.
+  const link = page.document.querySelector("#result [data-cart]");
+  const href = link.href;
+  const followed = link.dispatchEvent(
+    new page.window.MouseEvent("click", { bubbles: true, cancelable: true, detail: 1 })
+  );
+  // Let go of on the way out, not instead of going out: the link is still their road to
+  // the shop, and swallowing the click would cost them the cart it points at.
+  expect(followed).toBe(true);
+
+  // The link the visitor followed and the page they left behind hold the same box.
+  const shown = linkMatchesPage(page, href);
+  expect(shown).toEqual({ offer: "base-kraken", edition: "en" });
+  expect(page.document.documentElement.getAttribute("lang")).toBe("en");
+});
+
+test("taking the BIG BOX moves the page onto the box it carts", async () => {
+  // The blocked panel is read in whatever language the visitor switched to, and the BIG
+  // BOX it offers is the English one: "Give me the BIG BOX in English". So taking it has
+  // to move the picker and the language as well as the cart. Left behind, the page shows
+  // the German base game while the cart holds the English BIG BOX.
+  const page = await loadPage({ body: blockedAnswer }, DEMO);
+  await page.submit();
+  await page.click(chip(page, "de"));
+
+  await page.click(page.document.querySelector('#result [data-choice="package"]'));
+
+  const shown = linkMatchesPage(page, page.document.querySelector("#result [data-cart]").href);
+  expect(shown).toEqual({ offer: "bigbox-both", edition: "en" });
+  expect(page.document.documentElement.getAttribute("lang")).toBe("en");
+});
+
+test(
+  "taking a European edition moves the gift back to the one that was claimed",
+  async () => {
+    // Issue #17, driven the way that issue reproduces it: a real cart rather than the
+    // demo link. The gift radios are the visitor's again while they answer this panel,
+    // because the panel is asking about editions and the gift is not part of the
+    // question, so the picker can be pointing at another box by the time they choose.
+    //
+    // The claim wins. The code they were issued is the Base Game rule and the BIG BOX is
+    // a different one, so the page comes back to the base game rather than the cart
+    // following the box they tapped. That issue weighed holding the gift dim throughout
+    // against reading it off the page at the end; this is neither. The gift moves back at
+    // the moment they commit, visibly, which is the same answer every other road gets.
+    const page = await loadPage({ body: blockedAnswer });
+    await page.submit();
+    tapOffer(page, "o-bigbox");
+
+    await page.click(page.document.querySelector('#result [data-choice="edition"]'));
+    await page.click(page.document.querySelector('#result [data-edition="de"]'));
+    await page.navigated();
+
+    const shown = showing(page);
+    const add = page.cartCalls().filter((c) => c.url === "/cart/add.js").pop();
+    expect(add.body.items).toEqual(cartItems(shown.offer, shown.edition)!.items);
+
+    expect(shown).toEqual({ offer: "base-kraken", edition: "de" });
+    expect(page.document.documentElement.getAttribute("lang")).toBe("de");
   },
   REDIRECT_TEST_MS
 );

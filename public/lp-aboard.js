@@ -12,9 +12,23 @@
 // and the physical edition in the picker are the same choice: pick DE and the page
 // is in German AND the German box is what we ship. Nothing here holds copy of its
 // own, so a state that is on screen when the language changes is rebuilt in the new
-// language rather than being left behind in the old one. Because those two are one
-// choice, both ends of it are held still while a claim is in flight and while the
-// cart is being built: see holdChoice.
+// language rather than being left behind in the old one.
+//
+// There is ONE rule on this page and everything below serves it: WHAT GOES IN THE CART
+// IS WHAT THE VISITOR IS LOOKING AT. Three controls feed a cart - the gift, the edition
+// and the language, and the last two are one control - and five roads lead to one: the
+// plain success, both blocked choices, the retry on a cart that would not build, and the
+// fallback link beside it.
+//
+// The rule used to be kept by holding those controls still on each road in turn, which
+// made every road its own chance to forget, and it was forgotten on road after road. So
+// it is not kept by remembering any more. There is one reading of what the page is
+// showing (`selection`), one way to move it (`aim`), and a cart can only be built from
+// what that reading answers. A road that wants to cart something has to put it on screen
+// first, and a road that forgets cannot cart anything at all. The hold is still here,
+// because a control that moves under a request already in flight is a worse experience
+// than one that is visibly refused, but it is no longer the thing that makes the rule
+// true: see holdChoice and aim.
 
 import { buildCartUrl } from "./offer.js";
 import { loadCart } from "./cart.js";
@@ -54,19 +68,70 @@ const CART_COPY_KEYS = {
   "bigbox-both": { label: "state.cart.bigbox.label", note: "state.cart.bigbox.note" },
 };
 
-// The language the page is in, which is also the edition we will ship. Read once from
-// the radio that is checked in the markup, and from then on every change goes through
-// setLanguage, so the two can never answer differently.
-let language = chosen("edition") || "en";
-
-/** One string, in the language the page is currently in. */
-function t(key) {
-  return text(language, key);
-}
-
 function chosen(name) {
   const el = form.querySelector(`input[name="${name}"]:checked`);
   return el ? el.value : "";
+}
+
+/**
+ * The language the page is in, which is also the edition we will ship.
+ *
+ * There is no variable for it. The edition radio that is checked IS the answer, so the
+ * box in the picker, the words on the page and the box in the cart are one value read
+ * three times rather than three values kept in step. A variable beside the radio is a
+ * second place for the answer to live, and a second place is where the two start to
+ * disagree.
+ */
+function language() {
+  return chosen("edition") || "en";
+}
+
+/**
+ * What the page is showing right now: one gift and one edition.
+ *
+ * This is the only reading of the visitor's current choice on this page, and everything
+ * that builds a cart takes its offer and edition from here. That is what makes "the cart
+ * holds what the page shows" a property of the code rather than a rule each road has to
+ * remember.
+ */
+function selection() {
+  return { offer: chosen("offer"), edition: language() };
+}
+
+/**
+ * Move one radio group onto a value: property and attribute together.
+ *
+ * The attribute goes with the property because `chosen` above reads the group with
+ * ":checked", and that read is where this page keeps what the visitor is looking at. A
+ * browser matches that selector against the live state, so the property alone would do
+ * there; a DOM that matches it against the attribute would keep answering with whatever
+ * the markup shipped with, and the page and a cart built from it would be reading two
+ * different selections again. Moving both makes the one reading true everywhere rather
+ * than true where we happened to test it. There is no reset button on this form, so the
+ * attribute is not carrying anything else.
+ *
+ * False, loudly, when the page has no such box: the caller has asked for something the
+ * visitor cannot be shown, and nothing may be carted for it.
+ */
+function check(name, value) {
+  const wanted = form.querySelector(`input[name="${name}"][value="${value}"]`);
+  if (!wanted) {
+    console.error(`[lp/aboard] the page has no "${name}" called "${value}", leaving the picker alone`);
+    return false;
+  }
+
+  for (const input of form.querySelectorAll(`input[name="${name}"]`)) {
+    const isIt = input === wanted;
+    input.checked = isIt;
+    if (isIt) input.setAttribute("checked", "");
+    else input.removeAttribute("checked");
+  }
+  return true;
+}
+
+/** One string, in the language the page is currently in. */
+function t(key) {
+  return text(language(), key);
 }
 
 function scrollToSection(el) {
@@ -144,7 +209,7 @@ function render(kind, data = {}, options = {}) {
 
   // The template's own wording first, in the current language. Anything this caller
   // has an opinion about is written over it below.
-  translate(node, language);
+  translate(node, language());
 
   if (!options.repaint) repaintPanel = () => render(kind, data, { repaint: true });
 
@@ -169,12 +234,30 @@ function render(kind, data = {}, options = {}) {
     const cartUrl = buildCartUrl(data.offer, data.edition, data.code);
     if (cartUrl) {
       cart.href = cartUrl;
-      // This link is a way off the page, so a caller that is holding the choice has to
-      // let go of it here for the same reason the redirect does: the browser freezes
-      // this document on the way out, and a hold still standing at that moment is
-      // standing again when the visitor presses Back onto it. Nothing is prevented -
-      // the link is their road to the shop and it still has to be walked.
-      if (data.leaving) cart.addEventListener("click", data.leaving);
+      cart.addEventListener("click", () => {
+        // This link is a road to a cart, so it goes through the choke point like every
+        // other one. Its href was ruled on by the endpoint and cannot be re-pointed at
+        // the picker, so the page is moved onto what it carts instead, and the two agree
+        // at the moment the visitor commits to it.
+        //
+        // Not attached only when a caller remembers to ask: this listener is the reason
+        // a panel can be left on screen with the controls free beside it, which is what
+        // the page comes back as after Back. Every road out of here is the same road.
+        aim({ offer: data.offer, edition: data.edition });
+
+        // A caller that is holding the choice has to let go of it here for the same
+        // reason the redirect does: the browser freezes this document on the way out,
+        // and a hold still standing at that moment is standing again when the visitor
+        // presses Back onto it. Nothing is prevented - the link is their road to the
+        // shop and it still has to be walked.
+        if (data.leaving) data.leaving();
+
+        // The panel's own words follow the page, but not in this tick. Replacing #result
+        // takes this anchor out of the document while the browser is still deciding what
+        // to do with the click on it, and no tidiness is worth risking the navigation the
+        // visitor just asked for. One task later the link has been followed.
+        setTimeout(() => { if (repaintPanel) repaintPanel(); }, 0);
+      });
     } else {
       // No link is better than a broken one, but somebody needs to know.
       console.error(`[lp/aboard] no cart url for state "${kind}", hiding the cart button`);
@@ -265,22 +348,42 @@ let attemptWaiting = null;
  *  - a cart that could not be built, where the code stays on screen with the fallback
  *    cart link and a retry. Losing the code because the shop had a bad moment would
  *    be the one unrecoverable outcome here.
+ *
+ * Every road that carts anything comes through here: the plain success, both blocked
+ * choices, and the retry on a page the browser handed back. Each of them arrives with
+ * the page pointing wherever the visitor last left it, so the first thing that happens
+ * is the page moving onto the box this claim is about to cart. One answer, given once,
+ * instead of each road remembering to give it.
  */
 async function completeWith(claim) {
-  if (noRedirect) {
-    console.log("[lp/aboard] no_redirect=1, showing the code instead of loading the cart");
-    showCode(claim);
+  const live = aim(claim);
+  if (!live) {
+    // The code is the one thing that must not be lost, so it stays on screen. It goes up
+    // without a cart: the page cannot show this box, and a cart for a box the visitor is
+    // not looking at is the thing this page exists to prevent. Both the failure to move
+    // and the missing link are already shouted about one call down.
+    showCode({ ...claim, offer: "", edition: "" });
     return;
   }
 
-  render("sending", { code: claim.code, offer: claim.offer, edition: claim.edition });
+  if (noRedirect) {
+    console.log("[lp/aboard] no_redirect=1, showing the code instead of loading the cart");
+    showCode({ ...claim, ...live });
+    return;
+  }
+
+  render("sending", { code: claim.code, ...live });
   // The cart being built is this claim's, and the visitor is about to be moved to it.
   // Same reason as during the claim itself, and this is also the road a retry comes
   // back down, so the hold is here rather than only around the request.
   holdChoice(true);
   const legible = wait(CODE_VISIBLE_MS);
 
-  const cart = await loadCart(claim.offer, claim.edition, claim.code);
+  // Built from what the page is showing, which aim has just made equal to this claim.
+  // Reading it back rather than passing the claim straight through is the point: if the
+  // two ever came apart, the cart would follow the visitor's eyes and not a value that
+  // was captured before they last looked at the page.
+  const cart = await loadCart(live.offer, live.edition, claim.code);
   if (!cart.ok) {
     // The hold stays. The panel that lands carries a retry, and the retry builds a cart
     // for THIS claim: the edition that was posted, the one the endpoint agreed it could
@@ -303,8 +406,9 @@ async function completeWith(claim) {
     //
     // Which leaves the one gap the hold cannot cover: the page that comes back after the
     // link was followed has this panel on it AND the controls free, because the hold went
-    // out of the door with them. So the retry does not lean on the hold being up when it
-    // is pressed. It puts the page back on the box it is about to cart, every time.
+    // out of the door with them. Neither road leans on the hold being up when it is
+    // taken. Both go through aim, which puts the page back on the box it is about to
+    // cart, every time.
     let handedBack = false;
     const handBack = () => {
       if (handedBack) return;
@@ -323,23 +427,16 @@ async function completeWith(claim) {
 
     showCode({
       ...claim,
+      ...live,
       titleKey: "state.cartFailed.title",
       leadKey: "state.cartFailed.lead",
       retry: () => {
-        handBack();
         // The browser may have handed this page back since the attempt failed. The hold
         // ended when they left through the cart link, so both controls have been theirs
         // again in the meantime and can be pointing anywhere by now, while the attempt
-        // this button starts is still the old claim's.
-        //
-        // The claim wins. It is the edition the endpoint agreed it could ship to this
-        // visitor, and it is what the code was issued against, so the page comes back to
-        // it rather than the cart following the picker. Same answer takeEdition gives on
-        // the blocked road, and the visitor sees it happen before the cart is built
-        // rather than reading one box and being sent another. No repaint: the panel this
-        // would redraw is the one completeWith replaces on the next line.
-        setLanguage(claim.edition, { repaint: false });
-        setOffer(claim.offer);
+        // this button starts is still the old claim's. completeWith puts the page back on
+        // the claim before it builds anything, so this button does not have to know that.
+        handBack();
         completeWith(claim);
       },
       leaving: handBack,
@@ -369,6 +466,12 @@ async function completeWith(claim) {
  * said we cannot ship would be the same mistake in a new place.
  */
 function showBlocked({ code, baseCode, offer, edition }) {
+  // Neither of these moves the picker or the language itself. They name the box they are
+  // selling and completeWith puts the page on it, which is the same answer every other
+  // road to a cart gets. Doing it here as well is how the two came apart before: this
+  // panel is answered with both radio groups free, so by the time a choice is made the
+  // picker can be showing another gift and the chips another language, and a road that
+  // only moved the half it happened to be thinking about left the other half behind.
   const takeBigBox = () => {
     completeWith({
       titleKey: "state.bigbox.title",
@@ -378,17 +481,15 @@ function showBlocked({ code, baseCode, offer, edition }) {
       leadKey: "state.bigbox.lead",
       code,
       offer: "bigbox-both",
+      // The English one, which is what this choice is called on the panel that offers it
+      // and the only edition the copy promises. It is the edition that was posted, too:
+      // the English Base Game is the one thing the endpoint blocks, so a blocked answer
+      // is always an English one.
       edition,
     });
   };
 
   const takeEdition = (input) => {
-    // Leave the picker at the top of the page agreeing with what they just chose, so
-    // scrolling back up does not show them the edition we already refused. That is a
-    // language change as much as an edition one, so the panel they are about to read
-    // comes out in the language of the box they just asked for. No repaint: the panel
-    // this would redraw is the one completeWith replaces on the next line.
-    setLanguage(input.value, { repaint: false });
     completeWith({
       titleKey: "state.edition.title",
       leadKey: "state.edition.lead",
@@ -475,10 +576,11 @@ function showBlocked({ code, baseCode, offer, edition }) {
 // nothing about who owns the address in it and must not carry an instruction about
 // somebody's mailing list. Re-subscribing needs a confirmed-email flow, not this.
 async function submit() {
-  const offer = chosen("offer");
-  // The edition we ship is the language the page is in. They are one choice, tracked
-  // in one place, so the box can never disagree with the words the visitor just read.
-  const edition = language;
+  // What the page is showing is what gets posted, from the same reading every cart on
+  // this page is built from. The edition we ship is the language the page is in: one
+  // choice, in one place, so the box cannot disagree with the words the visitor just
+  // read.
+  const { offer, edition } = selection();
   const email = (emailInput.value || "").trim();
 
   const honeypot = form.querySelector('input[name="company"]');
@@ -569,11 +671,15 @@ const offerInputs = Array.from(form.querySelectorAll('input[name="offer"]'));
  * Hold every control that feeds the cart still, or let go of them.
  *
  * A claim is posted with the gift and the edition that were chosen when the button was
- * pressed, and the answer arrives some unknown time later. Without this, a chip or a box
- * tapped during that wait repaints the page and moves the picker while the cart is
- * already being built for what was sent: French words, French radio, English box, or a
- * BIG BOX on screen and the Base Game in the cart. The visitor never sees the
- * disagreement, because the next thing they see is the cart.
+ * pressed, and the answer arrives some unknown time later. A chip or a box tapped during
+ * that wait would repaint the page and move the picker while a cart is already being
+ * built, and the visitor would be steering something that has already been decided.
+ *
+ * This is no longer what keeps the cart and the page in agreement - aim is, and it holds
+ * on every road including the ones this cannot reach, such as a page the browser hands
+ * back with the controls already free. What the hold is for is the experience: a control
+ * that answers a tap by moving and then quietly snapping back is worse than one that is
+ * visibly not the visitor's for the moment.
  *
  * Held, not ignored. The chips and both sets of radios are disabled, so they go the same
  * quiet way the submit button beside them already does, and a tap on one is visibly
@@ -617,7 +723,7 @@ function holdChoice(held) {
 const choiceHeld = () => holds > 0;
 
 function syncLangChips() {
-  for (const btn of langButtons) btn.classList.toggle("is-on", btn.dataset.lang === language);
+  for (const btn of langButtons) btn.classList.toggle("is-on", btn.dataset.lang === language());
 }
 
 /**
@@ -627,19 +733,13 @@ function syncLangChips() {
  * heading over the email field and the sticky button because they are written by this
  * file, and whatever result panel is up because it is drawn again from its keys.
  *
- * `repaint:false` is for the one caller that is about to replace the panel anyway.
+ * `repaint:false` is for the callers that are about to replace the panel anyway, and for
+ * the one that must not touch it: see the cart link in render.
  */
 function setLanguage(value, { repaint = true } = {}) {
-  const input = form.querySelector(`input[name="edition"][value="${value}"]`);
-  if (!input) {
-    console.error(`[lp/aboard] no edition on this page for language "${value}", leaving it alone`);
-    return;
-  }
+  if (!check("edition", value)) return;
 
-  language = value;
-  input.checked = true;
-
-  translateDocument(document, language);
+  translateDocument(document, language());
   syncLangChips();
   syncClaimTitle();
   giftJump.relabel();
@@ -673,20 +773,49 @@ for (const input of editionInputs) {
 /**
  * Put the picker back on one gift, with the heading over the email field following it.
  *
- * setLanguage for the other half of the claim, and it exists for the same one caller:
- * an attempt that has to bring the page back to the box it is about to cart. There is
- * no chip end to this one and no copy of its own to switch, so it is the two lines
- * setLanguage would have had left after the language work was taken out of it.
+ * setLanguage for the other half of the choice, and it has the same one caller: aim,
+ * bringing the page back to the box it is about to cart. There is no chip end to this
+ * one and no copy of its own to switch, so it is the two lines setLanguage would have
+ * had left after the language work was taken out of it.
  */
 function setOffer(value) {
-  const input = form.querySelector(`input[name="offer"][value="${value}"]`);
-  if (!input) {
-    console.error(`[lp/aboard] no gift on this page called "${value}", leaving the picker alone`);
-    return;
-  }
-
-  input.checked = true;
+  if (!check("offer", value)) return;
   syncClaimTitle();
+}
+
+/**
+ * Point the whole page at one target, and hand back what a cart built now would hold.
+ *
+ * This is the choke point, and it is the whole design. Nothing on this page builds a
+ * cart from a target it captured a minute ago; it builds one from what the page is
+ * showing, and the only way to change what the page is showing is here. So a road that
+ * wants to cart something has to put it on screen first, and the visitor sees the box
+ * move before it is carted rather than reading one box and being sent another.
+ *
+ * The target wins over whatever the visitor has since pointed the controls at, and the
+ * PAGE moves to it rather than the cart following them. It has to be that way round.
+ * The endpoint ruled on the edition that was posted, it is the only party that knows
+ * where the visitor is, and it is what the code was issued against. A cart that followed
+ * the picker would let a European re-aim themselves at the English Base Game, which is
+ * the one combination the endpoint refuses and the one thing this page cannot decide.
+ *
+ * Null when the page cannot be moved there. That is a wiring mistake rather than
+ * anything a visitor did, and the answer to it is no cart at all: a cart for a box the
+ * page cannot show is the disagreement this function exists to make impossible.
+ */
+function aim(target) {
+  setOffer(target.offer);
+  setLanguage(target.edition, { repaint: false });
+
+  const live = selection();
+  if (live.offer !== target.offer || live.edition !== target.edition) {
+    console.error(
+      `[lp/aboard] the page could not be moved to offer="${target.offer}" edition="${target.edition}", ` +
+        `it is showing offer="${live.offer}" edition="${live.edition}", so no cart is built for it`
+    );
+    return null;
+  }
+  return live;
 }
 
 /** Keep the heading over the email field naming the box that is currently chosen. */
@@ -818,7 +947,7 @@ const giftJump = (function stickyRouter() {
 // Everything the page writes for itself, said once at load in whichever language the
 // markup starts in. setLanguage repeats these on every switch after that, plus the two
 // things that do not exist yet at load: the sticky button and the result panel.
-translateDocument(document, language);
+translateDocument(document, language());
 syncLangChips();
 syncClaimTitle();
 

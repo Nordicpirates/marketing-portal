@@ -46,6 +46,13 @@ const EUROPE = new Set([
 
 const BLOCKED_OFFERS = new Set(["base-kraken", "base-coins"]);
 
+// What the trusted hop says when it cannot place the visitor. An empty string is a
+// half-configured Worker; XX and T1 are Cloudflare's own, and it uses them for an
+// address that maps to no country and for a Tor exit node. All three mean "we do not
+// know", and none of them is in EUROPE, so believing them as countries sells the
+// English base game to exactly the visitor we decided not to guess about.
+const UNPLACEABLE = new Set(["", "XX", "T1"]);
+
 // Files the public page is allowed to pull. An explicit map, not a directory
 // walk, so a stray file in public/ can never become publicly readable.
 //
@@ -391,22 +398,29 @@ export async function handleClaim(req: Request): Promise<Response> {
   }
 
   // The English Base Game is the one combination we cannot ship into Europe. If the
-  // trusted hop tells us nothing about where the visitor is, we do not know whether
-  // this is allowed, and the honest answer to "we do not know" is not "yes". An
-  // empty country used to read as "not in Europe" and sold them a box that would
-  // never arrive. Unknown now lands on blocked, which offers the BIG BOX instead:
-  // worst case someone outside Europe is offered the wrong thing and can pick
-  // another edition, rather than being charged for something we cannot send.
+  // trusted hop cannot tell us where the visitor is, we do not know whether this is
+  // allowed, and the honest answer to "we do not know" is not "yes". It used to read
+  // as "not in Europe" and sold them a box that would never arrive. Unknown lands on
+  // blocked, which offers the BIG BOX instead: worst case someone outside Europe is
+  // offered the wrong thing and can pick another edition, rather than being charged
+  // for something we cannot send.
+  //
+  // "Cannot tell us" is more than a missing header: see UNPLACEABLE. A country code
+  // that is not a country is the hop saying it does not know, in its own words.
   //
   // Only this combination is affected. A known country, any other edition and the
   // BIG BOX all behave exactly as before.
   const restricted = edition === "en" && BLOCKED_OFFERS.has(offer);
-  const countryKnown = country !== "";
+  const countryKnown = !UNPLACEABLE.has(country);
 
   if (restricted && !countryKnown) {
+    // Which of the two it was, and not the header itself: countries stay out of this
+    // log like everything else identifying. A blank means the Worker is not forwarding
+    // the header at all; a code that is not a country means it is forwarding an answer
+    // Cloudflare could not give, and those need different people to fix them.
     console.warn(
-      "[lp/aboard] country missing from trusted hop, treating the English base game " +
-        "as not shippable: check the Worker forwards x-visitor-country"
+      `[lp/aboard] trusted hop could not place this visitor (${country ? "not a country" : "nothing sent"}), ` +
+        "treating the English base game as not shippable: check the Worker forwards x-visitor-country"
     );
   }
 

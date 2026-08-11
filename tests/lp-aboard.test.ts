@@ -676,6 +676,42 @@ test("an unknown country blocks the English base game rather than guessing", asy
   }
 });
 
+test("Cloudflare's own words for an unplaceable visitor count as unknown too", async () => {
+  // The test above covers the header being absent or empty. Cloudflare does not use
+  // either of those when it cannot place someone: it sends XX for an address it maps to
+  // no country and T1 for a Tor exit node, and the Worker passes on what it was told.
+  // Both mean exactly what a missing header means, and both used to sail past the check
+  // because they are not "": neither is in EUROPE, so the answer came back "code" and we
+  // sold the English base game to a visitor we cannot place. That is the box 77f06f5
+  // stopped guessing about, through a door it did not know was there.
+  for (const country of ["XX", "T1", "xx", "t1"]) {
+    const res = await claim(
+      { email: `cf-${country.toLowerCase()}@example.com`, offer: "base-kraken", edition: "en" },
+      { country }
+    );
+    expect(res.status).toBe(200);
+    expect((await res.json()).state, `"${country}" is not a place we can ship to`).toBe("blocked");
+  }
+
+  // Stored as the hop reported it. What it said is a fact about the request and belongs
+  // in the record; what it MEANS is the decision above, and that is already made.
+  expect(storedLines().find((l) => l.email === "cf-xx@example.com")?.country).toBe("XX");
+});
+
+test("an unplaceable visitor changes nothing for other editions or the BIG BOX", async () => {
+  // Same as for a missing country: only the English base game is restricted.
+  for (const edition of ["de", "fr", "es", "it"]) {
+    const res = await claim({ email: "cfx@example.com", offer: "base-kraken", edition }, { country: "XX" });
+    expect((await res.json()).state).toBe("code");
+  }
+
+  const bigbox = await claim(
+    { email: "cfx-big@example.com", offer: "bigbox-both", edition: "en" },
+    { country: "T1" }
+  );
+  expect((await bigbox.json()).state).toBe("code");
+});
+
 test("an unknown country changes nothing for other editions or the BIG BOX", async () => {
   // Only the English base game is restricted. Everything else ships from Europe, so
   // not knowing where someone is has no bearing on it.
