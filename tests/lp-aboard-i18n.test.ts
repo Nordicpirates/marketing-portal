@@ -384,7 +384,10 @@ test("a cart that will not build says so in the language on screen", async () =>
 // trips bun's default per-test timeout. The hold is the thing under test and does not
 // get shortened for the test's convenience; the test is split so each one waits once,
 // and says how long it is allowed to take.
-const BASE_VARIANT_FOR = { en: "51542813409627", fr: "51542813442395" };
+const BASE_VARIANT_FOR: Record<string, string> = {
+  en: "51542813409627",
+  fr: "51542813442395",
+};
 
 for (const lang of ["en", "fr"]) {
   test(
@@ -411,6 +414,89 @@ for (const lang of ["en", "fr"]) {
     REDIRECT_TEST_MS
   );
 }
+
+// A claim is posted with the edition that was chosen when the button was pressed, and
+// the answer comes back some unknown time later. Everything below is about that gap:
+// the box the visitor is looking at and the box being put in their cart are one choice,
+// and a tap that lands during the wait must not be able to pull them apart.
+
+test(
+  "a chip tapped while the claim is in flight cannot move the box that goes in the cart",
+  async () => {
+    const page = await loadPage({ body: codeAnswer });
+    const release = page.holdClaim();
+
+    await page.submit();
+
+    // The request is out with the English edition on it, and nothing has come back.
+    expect(page.calls[0].body.edition).toBe("en");
+    expect(page.cartCalls()).toEqual([]);
+
+    // The visitor taps FR while the answer is still in the air. The tap is dispatched
+    // whatever state the chip is in: what this test is about is where the page ends up,
+    // not which mechanism keeps it there.
+    await page.click(chip(page, "fr"));
+
+    release();
+    await page.navigated();
+
+    // Whatever box the page ends up showing, that is the box in the cart. This is the
+    // whole claim: the two cannot be read apart, in either direction.
+    const shown = LANGUAGES.find((lang) => page.document.getElementById(`ed-${lang}`).checked);
+    const add = page.cartCalls().find((c) => c.url === "/cart/add.js");
+    expect(add.body.items[0].id).toBe(BASE_VARIANT_FOR[shown!]);
+
+    // And the box that is kept is the one the claim was made for, in the words to match.
+    expect(shown).toBe("en");
+    expect(page.document.documentElement.getAttribute("lang")).toBe("en");
+    expect(on(page, "h1")).toBe(say("en", "hero.title"));
+  },
+  REDIRECT_TEST_MS
+);
+
+test("the edition radios are held with the chips, and both are handed back", async () => {
+  // The chips are not on screen at all below 720px, so the radios are the whole
+  // language control on a phone. Holding one end and not the other would leave the
+  // race exactly where it was for most visitors.
+  const page = await loadPage({ body: codeAnswer }, DEMO);
+  const release = page.holdClaim();
+
+  await page.submit();
+
+  // Visibly held rather than dead: a disabled radio is a control the visitor can see
+  // is not theirs for the moment, which is what the stylesheet dims.
+  const french = page.document.getElementById("ed-fr");
+  expect(french.disabled).toBe(true);
+  expect(chip(page, "fr").disabled).toBe(true);
+
+  // Dispatched anyway, because a held control that still acted on the event would be
+  // the same bug wearing a disabled attribute.
+  french.dispatchEvent(new page.window.Event("change", { bubbles: true }));
+
+  expect(page.document.documentElement.getAttribute("lang")).toBe("en");
+  expect(on(page, "h1")).toBe(say("en", "hero.title"));
+
+  release();
+  await page.until(() => !!page.document.querySelector("#result [data-code]"), "the code");
+
+  // The answer has landed and the visitor has something to act on, so the choice is
+  // theirs again rather than staying dead for the rest of the page's life.
+  expect(french.disabled).toBe(false);
+  expect(chip(page, "fr").disabled).toBe(false);
+});
+
+test("a claim that is refused hands the language back", async () => {
+  // Nothing was issued, so there is nothing to protect. Leaving it held would strand a
+  // visitor who wants to read the page in their own language and try again.
+  const page = await loadPage({ status: 429, body: { error: "Too many attempts" } });
+  await page.submit();
+
+  expect(chip(page, "de").disabled).toBe(false);
+  expect(page.document.getElementById("ed-de").disabled).toBe(false);
+
+  await page.click(chip(page, "de"));
+  expect(on(page, "#result [data-message]")).toBe(say("de", "error.rateLimited"));
+});
 
 test("switching language after a code is issued rewords the panel and nothing else", async () => {
   // The claim is already made. The words follow the visitor; the cart the code was

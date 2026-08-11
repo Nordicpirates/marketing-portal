@@ -159,9 +159,14 @@ margin:1.4rem 0 0;display:flex;gap:.55rem;align-items:baseline;flex-wrap:wrap}
 .ed label{display:block;font-family:var(--sans);font-size:.85rem;font-weight:600;
 border:1px solid var(--line);background:var(--paper);color:var(--ink);
 padding:.6rem 1.05rem;border-radius:2px;cursor:pointer}
-.ed label:hover{border-color:var(--teal-soft)}
+.ed input:enabled + label:hover{border-color:var(--teal-soft)}
 .ed input:checked + label{background:var(--teal-deep);color:#fff;border-color:var(--teal-deep)}
 .ed input:focus-visible + label{outline:3px solid var(--teal-soft);outline-offset:2px}
+/* Held while a claim is in flight and while the cart is being built: the edition that
+   was posted is the one going in the cart, so it may not move under the visitor. The
+   one that is chosen keeps its colour, dimmed, so what is being shipped stays legible.
+   Same treatment as the submit button beside it, which is disabled in the same breath. */
+.ed input:disabled + label{opacity:.5;cursor:not-allowed}
 /* honest pre-submit warning: English Base Game is deliberately not sold in the EU.
    CSS-only via :has(). If :has() is unsupported it stays hidden and the server still answers honestly. */
 .en-warn{display:none;font-family:var(--sans);font-size:.86rem;line-height:1.55;
@@ -255,8 +260,12 @@ text-decoration:none;white-space:nowrap;min-width:0;overflow:hidden;text-overflo
 .np-lang{font-family:var(--sans);font-size:.72rem;font-weight:600;letter-spacing:.06em;color:#8a8f9a;
 text-decoration:none;padding:.28rem .42rem;border-radius:3px;background:none;border:0;cursor:pointer}
 .np-lang.is-on{background:var(--gold);color:#1a1508}
-.np-lang:hover:not(.is-on){color:var(--gold)}
+.np-lang:enabled:hover:not(.is-on){color:var(--gold)}
 .np-lang:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+/* The other end of the same held choice as .ed above. These chips are off the page
+   below 720px, which is why the radios carry the same treatment: on a phone they are
+   the whole language control. */
+.np-lang:disabled{opacity:.5;cursor:not-allowed}
 .np-nav-cta{background:var(--gold);color:#1a1508;font-weight:700;font-size:.84rem;text-decoration:none;
 padding:.6rem 1.05rem;border-radius:4px;white-space:nowrap;flex:none}
 .np-nav-cta:hover{background:var(--gold-light)}

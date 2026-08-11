@@ -202,6 +202,14 @@ export type Page = {
   claimAnswer: { status: number; body: any };
   /** What Shopify answers for a given path. Tests overwrite this to break the cart. */
   cartStatus: (path: string) => number;
+  /**
+   * Hold the claim answer in the air, and hand back the release.
+   *
+   * The request still goes out and is still recorded; only the answer waits. That gap
+   * is a real one on a real connection, and it is where a visitor's next tap lands, so
+   * it is the only way to drive what the page does while a claim is in flight.
+   */
+  holdClaim: () => () => void;
   submit: () => Promise<void>;
   click: (el: any, detail?: number) => Promise<void>;
   text: () => string;
@@ -231,6 +239,11 @@ export async function loadPage(answer: { status?: number; body: any }, url?: str
   const navigations: string[] = [];
   const claimAnswer = { status: answer.status ?? 200, body: answer.body };
   const cart = { status: (_path: string) => 200 };
+
+  // Nothing by default: the claim answers as fast as the process can, which is what
+  // every other test wants. holdClaim below puts a gate in front of it.
+  let claimGate: Promise<void> | null = null;
+  let openClaimGate: (() => void) | null = null;
 
   // Where the page scrolled, which is the only observable half of a smooth scroll.
   window.HTMLElement.prototype.scrollIntoView = function scrollIntoView(this: any, options: any) {
@@ -263,6 +276,7 @@ export async function loadPage(answer: { status?: number; body: any }, url?: str
     calls.push({ url: path, method, body });
 
     if (path === "/gift-offer/claim") {
+      if (claimGate) await claimGate;
       return new Response(JSON.stringify(claimAnswer.body), {
         status: claimAnswer.status,
         headers: { "Content-Type": "application/json" },
@@ -309,6 +323,18 @@ export async function loadPage(answer: { status?: number; body: any }, url?: str
     },
     get cartStatus() {
       return cart.status;
+    },
+    holdClaim() {
+      if (claimGate) throw new Error("the claim answer is already being held");
+      claimGate = new Promise<void>((done) => {
+        openClaimGate = done;
+      });
+      return () => {
+        if (!openClaimGate) throw new Error("this claim answer has already been released");
+        openClaimGate();
+        openClaimGate = null;
+        claimGate = null;
+      };
     },
     async submit() {
       document

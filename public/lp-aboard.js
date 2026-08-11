@@ -12,7 +12,9 @@
 // and the physical edition in the picker are the same choice: pick DE and the page
 // is in German AND the German box is what we ship. Nothing here holds copy of its
 // own, so a state that is on screen when the language changes is rebuilt in the new
-// language rather than being left behind in the old one.
+// language rather than being left behind in the old one. Because those two are one
+// choice, both ends of it are held still while a claim is in flight and while the
+// cart is being built: see holdChoice.
 
 import { buildCartUrl } from "./offer.js";
 import { loadCart } from "./cart.js";
@@ -260,10 +262,17 @@ async function completeWith(claim) {
   }
 
   render("sending", { code: claim.code, offer: claim.offer, edition: claim.edition });
+  // The cart being built is this claim's, and the visitor is about to be moved to it.
+  // Same reason as during the claim itself, and this is also the road a retry comes
+  // back down, so the hold is here rather than only around the request.
+  holdChoice(true);
   const legible = wait(CODE_VISIBLE_MS);
 
   const cart = await loadCart(claim.offer, claim.edition, claim.code);
   if (!cart.ok) {
+    // Nobody is going anywhere now, and the panel that lands has a retry on it. The
+    // page is theirs to steer again.
+    holdChoice(false);
     showCode({
       ...claim,
       titleKey: "state.cartFailed.title",
@@ -414,6 +423,9 @@ async function submit() {
 
   submitBtn.setAttribute("aria-busy", "true");
   submitBtn.disabled = true;
+  // The edition above has just been posted, and the answer decides what goes in the
+  // cart. From here until there is an answer, the choice is made and cannot move.
+  holdChoice(true);
 
   try {
     const res = await fetch("/gift-offer/claim", {
@@ -451,6 +463,11 @@ async function submit() {
   } finally {
     submitBtn.removeAttribute("aria-busy");
     submitBtn.disabled = false;
+    // Every road out of the block above ends somewhere the visitor has to act: an
+    // error to try again from, the blocked choice, the code with its cart link, or a
+    // page that is already navigating. All of those are theirs to steer. The one that
+    // is not is the wait before a redirect, and completeWith holds that itself.
+    holdChoice(false);
   }
 }
 
@@ -464,6 +481,39 @@ form.addEventListener("submit", (event) => {
 // visitor who wants the French box.
 const langButtons = Array.from(document.querySelectorAll(".np-lang"));
 const editionInputs = Array.from(form.querySelectorAll('input[name="edition"]'));
+
+/**
+ * Hold both ends of the language choice still, or let go of them.
+ *
+ * A claim is posted with the edition that was chosen when the button was pressed, and
+ * the answer arrives some unknown time later. Without this, a chip tapped during that
+ * wait repaints the page and moves the picker while the cart is already being built for
+ * the edition that was sent: French words, French radio, English box. The visitor never
+ * sees the disagreement, because the next thing they see is the cart.
+ *
+ * Held, not ignored. The chips and the radios are disabled, so they go the same quiet
+ * way the submit button beside them already does, and a tap on one is visibly refused
+ * rather than swallowed.
+ *
+ * Holds nest: each step releases only its own, so the wait before a redirect keeps its
+ * hold when the submit that started it has already let go of theirs.
+ */
+let holds = 0;
+
+function holdChoice(held) {
+  holds += held ? 1 : -1;
+  if (holds < 0) {
+    console.error("[lp/aboard] the language was released more often than it was held");
+    holds = 0;
+  }
+
+  const frozen = holds > 0;
+  for (const btn of langButtons) btn.disabled = frozen;
+  for (const input of editionInputs) input.disabled = frozen;
+}
+
+/** Whether the choice is being held right now. */
+const choiceHeld = () => holds > 0;
 
 function syncLangChips() {
   for (const btn of langButtons) btn.classList.toggle("is-on", btn.dataset.lang === language);
@@ -495,13 +545,28 @@ function setLanguage(value, { repaint = true } = {}) {
   if (repaint && repaintPanel) repaintPanel();
 }
 
+// A disabled control delivers neither of these events in a browser, so the guard is
+// for anything that arrives another way. It says so rather than returning quietly:
+// somebody reading a log needs to see that a choice was made and refused.
 for (const btn of langButtons) {
-  btn.addEventListener("click", () => setLanguage(btn.dataset.lang));
+  btn.addEventListener("click", () => {
+    if (choiceHeld()) {
+      console.warn("[lp/aboard] language chip pressed while a claim is in flight, ignoring it");
+      return;
+    }
+    setLanguage(btn.dataset.lang);
+  });
 }
 // The picker further down is the same choice from the other end, so it switches the
 // page too. Change, not click, so the keyboard's arrow keys count as well.
 for (const input of editionInputs) {
-  input.addEventListener("change", () => setLanguage(input.value));
+  input.addEventListener("change", () => {
+    if (choiceHeld()) {
+      console.warn("[lp/aboard] edition changed while a claim is in flight, ignoring it");
+      return;
+    }
+    setLanguage(input.value);
+  });
 }
 
 /** Keep the heading over the email field naming the box that is currently chosen. */
