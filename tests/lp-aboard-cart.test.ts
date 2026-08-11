@@ -29,6 +29,8 @@ import {
   CODE_BIGBOX,
   CODE_VISIBLE_MS,
   REDIRECT_TEST_MS,
+  say,
+  tapOffer,
   type Page,
 } from "./page-harness.ts";
 
@@ -121,6 +123,112 @@ test("the BIG BOX loads three items and its own code", async () => {
   expect(cartPaths(page)[2]).toBe(discountPath(CODE_BIGBOX));
   expect(cartPaths(page)[2]).not.toContain(CODE_BASE);
 }, REDIRECT_TEST_MS);
+
+// The gift is posted with the box that was chosen when the button was pressed, and the
+// answer comes back some unknown time later. This is that gap from the picker's end: a
+// box tapped during the wait must not be able to leave the page showing one gift while
+// another one is being carted.
+const CART_FOR: Record<string, string[]> = {
+  "base-kraken": [BASE_EN, KRAKEN],
+  "base-coins": [BASE_EN, COINS],
+  "bigbox-both": [BIGBOX_EN, KRAKEN, COINS],
+};
+
+test(
+  "a box tapped while the claim is in flight cannot move the gift that goes in the cart",
+  async () => {
+    const page = await loadPage({ body: codeAnswer });
+    const release = page.holdClaim();
+
+    // The Kraken box is the one checked in the markup, so that is what goes out.
+    await page.submit();
+    expect(page.calls[0].body.offer).toBe("base-kraken");
+    expect(page.cartCalls()).toEqual([]);
+
+    // They change their mind to the BIG BOX while the answer is still in the air.
+    tapOffer(page, "o-bigbox");
+
+    release();
+    await page.navigated();
+
+    // Whatever box the page ends up showing, that is the box in the cart. This is the
+    // whole claim, and it is read off the page rather than assumed so it holds in
+    // either direction.
+    const shown = page.document.querySelector('input[name="offer"]:checked').value;
+    expect(addedIds(page)).toEqual(CART_FOR[shown]);
+
+    // And the box that is kept is the one the claim was made for, with the heading over
+    // the email field naming that same box rather than the one that was tapped.
+    expect(shown).toBe("base-kraken");
+    expect(page.document.getElementById("claim-title").textContent.trim()).toBe(
+      say("en", "claim.title.kraken")
+    );
+  },
+  REDIRECT_TEST_MS
+);
+
+test("the gift radios are held with the language, and handed back with it", async () => {
+  // How the test above is kept true. no_redirect so the page stays put and the release
+  // can be watched: what happens to the cart afterwards is the test above's business.
+  const page = await loadPage({ body: codeAnswer }, DEMO);
+  const release = page.holdClaim();
+
+  await page.submit();
+
+  // Visibly held rather than dead, the same as the edition radios and the submit button
+  // beside them: a control the visitor can see is not theirs for the moment.
+  const bigbox = page.document.getElementById("o-bigbox");
+  expect(bigbox.disabled).toBe(true);
+
+  // Both events dispatched anyway, because a held control that still acted on them would
+  // be the same bug wearing a disabled attribute.
+  bigbox.dispatchEvent(new page.window.Event("change", { bubbles: true }));
+  await page.click(bigbox.closest(".pick"));
+
+  // The heading still names the box that was posted, and the tap did not answer the
+  // visitor by carrying them to the email field as though it had landed.
+  expect(page.document.getElementById("claim-title").textContent.trim()).toBe(
+    say("en", "claim.title.kraken")
+  );
+  expect(page.scrolledTo(page.document.getElementById("email"))).toBeUndefined();
+
+  release();
+  await page.until(() => !!page.document.querySelector("#result [data-code]"), "the code");
+
+  // The answer has landed and the visitor has something to act on, so the gift is theirs
+  // to change again rather than staying dead for the rest of the page's life.
+  expect(bigbox.disabled).toBe(false);
+});
+
+test(
+  "the wait between a built cart and the redirect cannot move either control",
+  async () => {
+    // The other half of the same window. The claim is answered and the cart is loaded,
+    // but the page is still holding the code on screen long enough to read, and that wait
+    // is the last place a tap can land before the browser leaves. Everything in the cart
+    // is settled by then, so neither control may move.
+    const page = await loadPage({ body: codeAnswer });
+    await page.submit();
+    await page.until(() => page.cartCalls().length === 3, "the cart to finish loading");
+    expect(page.navigations).toEqual([]);
+
+    const bigbox = page.document.getElementById("o-bigbox");
+    const french = page.document.getElementById("ed-fr");
+    expect(bigbox.disabled).toBe(true);
+    expect(french.disabled).toBe(true);
+
+    tapOffer(page, "o-bigbox");
+    french.dispatchEvent(new page.window.Event("change", { bubbles: true }));
+
+    await page.navigated();
+
+    const shown = page.document.querySelector('input[name="offer"]:checked').value;
+    expect(addedIds(page)).toEqual(CART_FOR[shown]);
+    expect(shown).toBe("base-kraken");
+    expect(page.document.querySelector('input[name="edition"]:checked').value).toBe("en");
+  },
+  REDIRECT_TEST_MS
+);
 
 test("a blocked visitor's cart is not touched until they have chosen", async () => {
   const page = await loadPage({ body: blockedAnswer });

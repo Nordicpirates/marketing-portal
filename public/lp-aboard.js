@@ -169,6 +169,12 @@ function render(kind, data = {}, options = {}) {
     const cartUrl = buildCartUrl(data.offer, data.edition, data.code);
     if (cartUrl) {
       cart.href = cartUrl;
+      // This link is a way off the page, so a caller that is holding the choice has to
+      // let go of it here for the same reason the redirect does: the browser freezes
+      // this document on the way out, and a hold still standing at that moment is
+      // standing again when the visitor presses Back onto it. Nothing is prevented -
+      // the link is their road to the shop and it still has to be walked.
+      if (data.leaving) cart.addEventListener("click", data.leaving);
     } else {
       // No link is better than a broken one, but somebody needs to know.
       console.error(`[lp/aboard] no cart url for state "${kind}", hiding the cart button`);
@@ -239,6 +245,12 @@ function goTo(url) {
   window.location.assign(url);
 }
 
+// How to hand back the hold of the attempt that is still waiting on this page, if one
+// is. Only a cart that would not build leaves one waiting: its panel keeps the hold so
+// the retry beside it carts what the page is showing. Null whenever nothing is pending,
+// which is every other moment on this page.
+let attemptWaiting = null;
+
 /**
  * Finish one claim: the code is decided, now put it to work.
  *
@@ -280,16 +292,39 @@ async function completeWith(claim) {
     // where they are and this page never does.
     //
     // So the choice comes back when nothing is pending, which here means the cart they
-    // end up on. The retry hands this attempt's hold to the attempt it starts, so
-    // pressing it five times holds once and not five times.
+    // end up on. There are two roads to it off this panel and the hold is handed back on
+    // whichever one they take: the retry, which hands it straight to the attempt it
+    // starts, and the fallback cart link, which hands it back because the page is about
+    // to leave through it and a hold that leaves with the page comes back with it.
+    //
+    // Once, whichever road, and once no matter how many times they take it. Pressing
+    // retry five times holds once and not five times, and a visitor who follows the link
+    // and then presses Back and retries is not releasing a hold that is already released.
+    let handedBack = false;
+    const handBack = () => {
+      if (handedBack) return;
+      handedBack = true;
+      if (attemptWaiting === handBack) attemptWaiting = null;
+      holdChoice(false);
+    };
+
+    // There is a third road off this panel that is not a button on it: the form is still
+    // up the page and the submit button is live again, so the visitor can start a fresh
+    // claim instead of answering this one. That abandons this attempt, and submit hands
+    // its hold back on the way past. Without that the hold outlives the attempt it was
+    // guarding and rides the next claim's page into the browser's cache, which is the
+    // locked page all over again.
+    attemptWaiting = handBack;
+
     showCode({
       ...claim,
       titleKey: "state.cartFailed.title",
       leadKey: "state.cartFailed.lead",
       retry: () => {
-        holdChoice(false);
+        handBack();
         completeWith(claim);
       },
+      leaving: handBack,
     });
     return;
   }
@@ -439,8 +474,17 @@ async function submit() {
 
   submitBtn.setAttribute("aria-busy", "true");
   submitBtn.disabled = true;
-  // The edition above has just been posted, and the answer decides what goes in the
-  // cart. From here until there is an answer, the choice is made and cannot move.
+  // A claim that starts replaces whatever this page was still waiting on. If a cart that
+  // would not build left its hold standing to guard a retry, the visitor is walking away
+  // from that retry by being here, so its hold goes with it. Two attempts must not leave
+  // two holds behind when only one of them can ever be released.
+  if (attemptWaiting) {
+    console.log("[lp/aboard] a new claim replaces the attempt still waiting, letting go of its hold");
+    attemptWaiting();
+  }
+  // The gift and the edition above have just been posted, and the answer decides what
+  // goes in the cart. From here until there is an answer, the choice is made and cannot
+  // move.
   holdChoice(true);
 
   try {
@@ -498,19 +542,24 @@ form.addEventListener("submit", (event) => {
 // visitor who wants the French box.
 const langButtons = Array.from(document.querySelectorAll(".np-lang"));
 const editionInputs = Array.from(form.querySelectorAll('input[name="edition"]'));
+// The gift is the third control that feeds the cart, and it is posted in the same
+// request as the edition. Everything below holds all three together, because the cart
+// is built from all three and any one of them moving on its own is the same bug.
+const offerInputs = Array.from(form.querySelectorAll('input[name="offer"]'));
 
 /**
- * Hold both ends of the language choice still, or let go of them.
+ * Hold every control that feeds the cart still, or let go of them.
  *
- * A claim is posted with the edition that was chosen when the button was pressed, and
- * the answer arrives some unknown time later. Without this, a chip tapped during that
- * wait repaints the page and moves the picker while the cart is already being built for
- * the edition that was sent: French words, French radio, English box. The visitor never
- * sees the disagreement, because the next thing they see is the cart.
+ * A claim is posted with the gift and the edition that were chosen when the button was
+ * pressed, and the answer arrives some unknown time later. Without this, a chip or a box
+ * tapped during that wait repaints the page and moves the picker while the cart is
+ * already being built for what was sent: French words, French radio, English box, or a
+ * BIG BOX on screen and the Base Game in the cart. The visitor never sees the
+ * disagreement, because the next thing they see is the cart.
  *
- * Held, not ignored. The chips and the radios are disabled, so they go the same quiet
- * way the submit button beside them already does, and a tap on one is visibly refused
- * rather than swallowed.
+ * Held, not ignored. The chips and both sets of radios are disabled, so they go the same
+ * quiet way the submit button beside them already does, and a tap on one is visibly
+ * refused rather than swallowed.
  *
  * Holds nest: each step releases only its own, so the wait before a redirect keeps its
  * hold when the submit that started it has already let go of theirs.
@@ -518,22 +567,32 @@ const editionInputs = Array.from(form.querySelectorAll('input[name="edition"]'))
  * The hold lasts as long as the page owes the visitor a cart for a decision that has
  * already been made: the claim in flight, the cart being built, and a cart that would
  * not build with a retry still on screen, which is the same decision waiting to be tried
- * again. It never outlives the page it was taken on, because a page that navigates while
- * something is held comes back from the browser's cache exactly that way, with a chip
- * and a radio the visitor cannot use and nothing left to release them.
+ * again. A hold must not outlive the attempt it is guarding, because a page that
+ * navigates while something is held comes back from the browser's cache exactly that
+ * way, with controls the visitor cannot use and nothing left running to release them.
+ * So every road that SETTLES the attempt lets go of the hold on the way: the redirect at
+ * the end of completeWith, the retry, the fallback cart link beside it, and a fresh claim
+ * from the form, which walks away from the attempt that was waiting.
+ *
+ * A departure that settles nothing does not, and that is the whole reason this is not a
+ * blanket release on the way in or the way out. A visitor who reads the privacy policy
+ * with a retry still on screen comes back to a page that is still holding, because the
+ * decision it is holding for is still the one in front of them, and the retry is still
+ * how they resolve it.
  */
 let holds = 0;
 
 function holdChoice(held) {
   holds += held ? 1 : -1;
   if (holds < 0) {
-    console.error("[lp/aboard] the language was released more often than it was held");
+    console.error("[lp/aboard] the choice was released more often than it was held");
     holds = 0;
   }
 
   const frozen = holds > 0;
   for (const btn of langButtons) btn.disabled = frozen;
   for (const input of editionInputs) input.disabled = frozen;
+  for (const input of offerInputs) input.disabled = frozen;
 }
 
 /** Whether the choice is being held right now. */
@@ -615,6 +674,12 @@ function syncClaimTitle() {
 for (const pick of form.querySelectorAll(".pick")) {
   pick.addEventListener("click", (event) => {
     if (event.detail === 0) return;
+    // A held box does not become checked, so this click chose nothing. Answering it by
+    // dragging the visitor up to the email field would tell them it landed.
+    if (choiceHeld()) {
+      console.warn("[lp/aboard] a gift was tapped while a claim is in flight, ignoring it");
+      return;
+    }
     // Clicking the box that was already selected fires no change event, and it is
     // still a visitor choosing that box.
     giftJump.chose();
@@ -622,8 +687,16 @@ for (const pick of form.querySelectorAll(".pick")) {
   });
 }
 
-for (const input of form.querySelectorAll('input[name="offer"]')) {
+// Same guard as the two language controls, for the same reason and against the same
+// window: the gift is posted with the edition and the cart is built from both, so a box
+// that moved after the request went out would leave the page showing one gift and the
+// cart holding another.
+for (const input of offerInputs) {
   input.addEventListener("change", () => {
+    if (choiceHeld()) {
+      console.warn("[lp/aboard] gift changed while a claim is in flight, ignoring it");
+      return;
+    }
     syncClaimTitle();
     giftJump.chose();
   });

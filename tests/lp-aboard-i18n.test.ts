@@ -510,6 +510,9 @@ test("a claim that is refused hands the language back", async () => {
 
   expect(chip(page, "de").disabled).toBe(false);
   expect(page.document.getElementById("ed-de").disabled).toBe(false);
+  // The gift with them, since it goes into the same request and is held for the same
+  // reason: a visitor who has to try again may want to try again for another box.
+  expect(page.document.getElementById("o-bigbox").disabled).toBe(false);
 
   await page.click(chip(page, "de"));
   expect(on(page, "#result [data-message]")).toBe(say("de", "error.rateLimited"));
@@ -629,6 +632,103 @@ test(
     restoreFromCache(page);
     expect(chip(page, "fr").disabled).toBe(false);
     expect(page.document.getElementById("ed-fr").disabled).toBe(false);
+  },
+  REDIRECT_TEST_MS
+);
+
+test("a page left through the fallback cart link comes back usable", async () => {
+  // The other way off the cart-failed panel. The retry stays on this page, but the link
+  // beside it goes to the shop, and the browser freezes this document on the way out
+  // exactly as it does for the redirect. A hold still standing at that moment is a hold
+  // that comes back standing, on a page with nothing left running to release it.
+  const page = await loadPage({ body: codeAnswer });
+  page.cartStatus = (path) => (path === "/cart/add.js" ? 500 : 200);
+
+  await page.submit();
+  await page.until(() => !!page.document.querySelector("#result [data-retry]"), "the retry button");
+
+  // Held while the panel is only being looked at, which is what the sibling test above
+  // pins down. This test is about the moment they leave through the link.
+  expect(chip(page, "fr").disabled).toBe(true);
+
+  const link = page.document.querySelector("#result [data-cart]");
+  const followed = link.dispatchEvent(
+    new page.window.MouseEvent("click", { bubbles: true, cancelable: true, detail: 1 })
+  );
+  // Let go of on the way out, not instead of going out: the link is still the visitor's
+  // road to the shop, and swallowing the click would cost them the cart it points at.
+  expect(followed).toBe(true);
+
+  restoreFromCache(page);
+
+  const french = page.document.getElementById("ed-fr");
+  expect(french.disabled).toBe(false);
+  expect(chip(page, "fr").disabled).toBe(false);
+  expect(page.document.getElementById("o-bigbox").disabled).toBe(false);
+
+  // Alive rather than merely enabled, which is what the visitor tries next.
+  await page.click(chip(page, "fr"));
+  expect(page.document.documentElement.getAttribute("lang")).toBe("fr");
+  expect(french.checked).toBe(true);
+  expect(on(page, "h1")).toBe(say("fr", "hero.title"));
+});
+
+test(
+  "a page whose visitor started over instead of retrying comes back usable",
+  async () => {
+    // The third road off the cart-failed panel, and the only one that is not a button on
+    // it. The form is still up the page and the submit button is live again, so a visitor
+    // can walk away from the attempt waiting for them by starting a fresh claim. The
+    // abandoned attempt's hold has to go with it: left behind, it rides the new claim's
+    // page into the browser's cache and Back hands back a page nobody can use.
+    const page = await loadPage({ body: codeAnswer });
+    page.cartStatus = (path) => (path === "/cart/add.js" ? 500 : 200);
+
+    await page.submit();
+    await page.until(() => !!page.document.querySelector("#result [data-retry]"), "the retry button");
+    // The button really is theirs to press again, which is what makes this road real.
+    expect(page.document.getElementById("submit-btn").disabled).toBe(false);
+
+    page.cartStatus = () => 200;
+    await page.submit();
+    await page.navigated();
+
+    restoreFromCache(page);
+    expect(chip(page, "fr").disabled).toBe(false);
+    expect(page.document.getElementById("ed-fr").disabled).toBe(false);
+    expect(page.document.getElementById("o-bigbox").disabled).toBe(false);
+  },
+  REDIRECT_TEST_MS
+);
+
+test(
+  "a page left with a retry still waiting comes back held, and the retry still works",
+  async () => {
+    // The departure that is nobody's exit in particular: the privacy link under the
+    // submit button, the nav, a bookmark. Nothing about the attempt is resolved by any of
+    // those, so unlike the fallback cart link they hand nothing back, and the hold is
+    // right to be standing again on the way in. This is the case a blanket release on
+    // pageshow would break rather than fix.
+    const page = await loadPage({ body: codeAnswer });
+    page.cartStatus = (path) => (path === "/cart/add.js" ? 500 : 200);
+
+    await page.submit();
+    await page.until(() => !!page.document.querySelector("#result [data-retry]"), "the retry button");
+
+    restoreFromCache(page);
+
+    // Still held, because the decision it is guarding is still the one on screen.
+    expect(chip(page, "fr").disabled).toBe(true);
+    expect(page.document.getElementById("o-bigbox").disabled).toBe(true);
+
+    // And held is not stuck: the button that was waiting for them still works, and
+    // taking it hands everything back on the way to the cart.
+    page.cartStatus = () => 200;
+    await page.click(page.document.querySelector("#result [data-retry]"));
+    await page.navigated();
+
+    expect(chip(page, "fr").disabled).toBe(false);
+    expect(page.document.getElementById("o-bigbox").disabled).toBe(false);
   },
   REDIRECT_TEST_MS
 );

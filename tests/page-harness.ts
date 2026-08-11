@@ -155,6 +155,29 @@ export function selectOffer(page: Page, id: string) {
   return input;
 }
 
+/**
+ * A visitor tapping one of the boxes, as a browser would deliver it.
+ *
+ * Two halves, and only one of them is the browser's to refuse. A click on a disabled
+ * radio moves nothing: it stays unchecked, and so does the label wrapped around it. The
+ * change event is dispatched either way, because a held control that still acted on the
+ * event would be the same bug wearing a disabled attribute.
+ *
+ * selectOffer above is the other thing entirely: it puts the page into a state a test
+ * wants to start from. Driving a tap with it would force through a control the page has
+ * said is not the visitor's, and the test would be checking the harness instead.
+ */
+export function tapOffer(page: Page, id: string) {
+  const input = page.document.getElementById(id);
+  if (!input) throw new Error(`no offer input "${id}" on the page`);
+
+  if (input.disabled) {
+    input.dispatchEvent(new page.window.Event("change", { bubbles: true }));
+    return input;
+  }
+  return selectOffer(page, id);
+}
+
 /** A visitor tapping a box: the radio changes, then the click lands on the card. */
 export async function tapPick(page: Page, id: string) {
   const input = selectOffer(page, id);
