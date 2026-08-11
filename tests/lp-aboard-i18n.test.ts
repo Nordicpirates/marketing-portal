@@ -23,8 +23,14 @@ import {
   CODE_BIGBOX,
   HTML,
   say,
+  tapOffer,
   type Page,
 } from "./page-harness.ts";
+// The page's own table of what an offer plus an edition puts in a cart. Asserting
+// against it rather than against a copy is what keeps this test about the pairing the
+// page is supposed to keep, instead of about variant ids it would then own a second
+// copy of.
+import { cartItems } from "../lib/offer.js";
 
 const DEMO = "https://nordicpirates.com/gift-offer?no_redirect=1";
 
@@ -406,6 +412,13 @@ const BASE_VARIANT_FOR: Record<string, string> = {
   fr: "51542813442395",
 };
 
+/** The three gift radios, so a test can read which box the page is showing. */
+const GIFTS = [
+  { id: "o-kraken", value: "base-kraken" },
+  { id: "o-coins", value: "base-coins" },
+  { id: "o-bigbox", value: "bigbox-both" },
+];
+
 for (const lang of ["en", "fr"]) {
   test(
     `the code is on screen, in ${lang.toUpperCase()}, before the redirect`,
@@ -672,6 +685,60 @@ test("a page left through the fallback cart link comes back usable", async () =>
   expect(french.checked).toBe(true);
   expect(on(page, "h1")).toBe(say("fr", "hero.title"));
 });
+
+test(
+  "a retry pressed on a page that came back carts the box the claim was made for",
+  async () => {
+    // What the test above buys, and what it costs. Handing the choice back at the link
+    // means the page that comes back carries a retry AND a picker the visitor can move,
+    // so the two can be pointed at different boxes for the first time since the claim was
+    // made. Pressing the button then has to answer the question this whole page is built
+    // around: which of the two wins.
+    //
+    // The claim does. It is the box the endpoint agreed it could ship to this visitor,
+    // and it is what both codes were issued against, so the page comes back to it rather
+    // than the cart following the chip. Same answer takeEdition already gives on the
+    // blocked road, and the visitor sees it: the words and the picker move back together
+    // before the cart is built.
+    const page = await loadPage({ body: codeAnswer });
+    page.cartStatus = (path) => (path === "/cart/add.js" ? 500 : 200);
+
+    await page.submit();
+    await page.until(() => !!page.document.querySelector("#result [data-retry]"), "the retry button");
+
+    page.document
+      .querySelector("#result [data-cart]")
+      .dispatchEvent(new page.window.MouseEvent("click", { bubbles: true, cancelable: true, detail: 1 }));
+    restoreFromCache(page);
+
+    // Both controls moved while the page was theirs again.
+    await page.click(chip(page, "fr"));
+    tapOffer(page, "o-bigbox");
+    expect(page.document.documentElement.getAttribute("lang")).toBe("fr");
+
+    page.cartStatus = () => 200;
+    await page.click(page.document.querySelector("#result [data-retry]"));
+    await page.navigated();
+
+    // The claim every other test on this page makes, at the one moment it was still
+    // possible to break it: whatever the page ends up showing is what is in the cart.
+    // Both halves read off the page, and against the page's own offer table rather than
+    // a copy of it, so this says what the cart holds and not what I expected it to.
+    const shown = LANGUAGES.filter((lang) => page.document.getElementById(`ed-${lang}`).checked);
+    const gift = GIFTS.filter((g) => page.document.getElementById(g.id).checked);
+    expect([shown.length, gift.length]).toEqual([1, 1]);
+
+    const add = page.cartCalls().filter((c) => c.url === "/cart/add.js").pop();
+    expect(add.body.items).toEqual(cartItems(gift[0].value, shown[0])!.items);
+
+    // And the box it came back to is the claim's, in the words to match.
+    expect(shown[0]).toBe("en");
+    expect(gift[0].value).toBe("base-kraken");
+    expect(page.document.documentElement.getAttribute("lang")).toBe("en");
+    expect(on(page, "h1")).toBe(say("en", "hero.title"));
+  },
+  REDIRECT_TEST_MS
+);
 
 test(
   "a page whose visitor started over instead of retrying comes back usable",

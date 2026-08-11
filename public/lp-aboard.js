@@ -300,6 +300,11 @@ async function completeWith(claim) {
     // Once, whichever road, and once no matter how many times they take it. Pressing
     // retry five times holds once and not five times, and a visitor who follows the link
     // and then presses Back and retries is not releasing a hold that is already released.
+    //
+    // Which leaves the one gap the hold cannot cover: the page that comes back after the
+    // link was followed has this panel on it AND the controls free, because the hold went
+    // out of the door with them. So the retry does not lean on the hold being up when it
+    // is pressed. It puts the page back on the box it is about to cart, every time.
     let handedBack = false;
     const handBack = () => {
       if (handedBack) return;
@@ -322,6 +327,19 @@ async function completeWith(claim) {
       leadKey: "state.cartFailed.lead",
       retry: () => {
         handBack();
+        // The browser may have handed this page back since the attempt failed. The hold
+        // ended when they left through the cart link, so both controls have been theirs
+        // again in the meantime and can be pointing anywhere by now, while the attempt
+        // this button starts is still the old claim's.
+        //
+        // The claim wins. It is the edition the endpoint agreed it could ship to this
+        // visitor, and it is what the code was issued against, so the page comes back to
+        // it rather than the cart following the picker. Same answer takeEdition gives on
+        // the blocked road, and the visitor sees it happen before the cart is built
+        // rather than reading one box and being sent another. No repaint: the panel this
+        // would redraw is the one completeWith replaces on the next line.
+        setLanguage(claim.edition, { repaint: false });
+        setOffer(claim.offer);
         completeWith(claim);
       },
       leaving: handBack,
@@ -650,6 +668,25 @@ for (const input of editionInputs) {
     }
     setLanguage(input.value);
   });
+}
+
+/**
+ * Put the picker back on one gift, with the heading over the email field following it.
+ *
+ * setLanguage for the other half of the claim, and it exists for the same one caller:
+ * an attempt that has to bring the page back to the box it is about to cart. There is
+ * no chip end to this one and no copy of its own to switch, so it is the two lines
+ * setLanguage would have had left after the language work was taken out of it.
+ */
+function setOffer(value) {
+  const input = form.querySelector(`input[name="offer"][value="${value}"]`);
+  if (!input) {
+    console.error(`[lp/aboard] no gift on this page called "${value}", leaving the picker alone`);
+    return;
+  }
+
+  input.checked = true;
+  syncClaimTitle();
 }
 
 /** Keep the heading over the email field naming the box that is currently chosen. */
