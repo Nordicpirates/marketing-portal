@@ -11,6 +11,8 @@
 // tearing the document down. The page harness is tests/page-harness.ts.
 
 import { test, expect } from "bun:test";
+import { readFileSync } from "fs";
+import { join } from "path";
 import {
   loadPage,
   selectOffer,
@@ -345,6 +347,24 @@ test("no_redirect=1 holds for the blocked choices too", async () => {
   expect(page.cartCalls()).toEqual([]);
   expect(page.navigations).toEqual([]);
   expect(page.document.querySelector("#result [data-code]").textContent.trim()).toBe(CODE_BIGBOX);
+});
+
+test("there is one road to a cart, and one to a cart link", async () => {
+  // What keeps every test above true for a road nobody has written yet. Two functions on
+  // this page can produce a cart, and the page calls each of them exactly once: the Ajax
+  // build inside completeWith, which takes what it loads from the page after aim has
+  // moved it, and the fallback link inside render, which moves the page onto what it
+  // carts when the visitor takes it.
+  //
+  // A sixth road that builds its own cart has to add a second call site, and that is this
+  // test failing while it is being written rather than a disagreement somebody finds a
+  // round later. It cannot check that a new call site went through aim, only that adding
+  // one is loud.
+  const source = readFileSync(join(import.meta.dir, "..", "public", "lp-aboard.js"), "utf8");
+  const callsTo = (name: string) => source.split(`${name}(`).length - 1;
+
+  expect(callsTo("loadCart"), "the page builds a cart somewhere new").toBe(1);
+  expect(callsTo("buildCartUrl"), "the page builds a cart link somewhere new").toBe(1);
 });
 
 test("a claim that never issues a code touches no cart at all", async () => {

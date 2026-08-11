@@ -115,6 +115,16 @@ test("all five tables hold exactly the same keys", async () => {
       expect(COPY[lang][key].length, `"${lang}" has nothing for "${key}"`).toBeGreaterThan(0);
     }
   }
+
+  // Named rather than left to the comparison above, which is English against itself for
+  // the other four and would go on passing if this line were dropped from all five at
+  // once. The whole point of this lead is that the five tables moved together.
+  for (const lang of LANGUAGES) {
+    expect(
+      COPY[lang]["state.cartFailedRetired.lead"],
+      `"${lang}" has no lead for the cart-failure panel that has lost its cart link`
+    ).toBeDefined();
+  }
 });
 
 test("no copy is written and then never shown", async () => {
@@ -368,20 +378,52 @@ test("taking a European edition switches the page into that language", async () 
   expect(on(page, "#result [data-code]")).toBe(CODE_BASE);
 });
 
-test("the BIG BOX branch reads in the language on screen and never claims the inbox", async () => {
+test("the BIG BOX branch moves the page onto the box it sells", async () => {
+  // This choice is called "Give me the BIG BOX in English" and there is no other edition
+  // of it on offer, so taking it moves the whole page onto that box: the picker, the
+  // chips and the words with them. It used to leave a visitor reading German while the
+  // cart filled with the English BIG BOX, which is the disagreement this page exists to
+  // make impossible. Losing the German words is what that costs, and it is the honest
+  // way round: the page they are looking at is the box they are buying.
   const page = await loadPage({ body: blockedAnswer }, DEMO);
   await page.submit();
   await page.click(chip(page, "de"));
+
+  // The panel they are answering is still theirs to read. Only the answer moves the page.
+  expect(on(page, "#result h3")).toBe(say("de", "state.blocked.title"));
+
   await page.click(page.document.querySelector('#result [data-choice="package"]'));
 
-  expect(on(page, "#result h3")).toBe(say("de", "state.bigbox.title"));
-  expect(on(page, "#result [data-lead]")).toBe(say("de", "state.bigbox.lead"));
+  expect(page.document.documentElement.getAttribute("lang")).toBe("en");
+  expect(on(page, "h1")).toBe(say("en", "hero.title"));
+  expect(on(page, "#result h3")).toBe(say("en", "state.bigbox.title"));
+  expect(on(page, "#result [data-lead]")).toBe(say("en", "state.bigbox.lead"));
   expect(on(page, "#result [data-code]")).toBe(CODE_BIGBOX);
-
-  // The code we email this visitor is the Base Game one, not this one, so no branch of
-  // this screen may say otherwise. "Postfach" is the German word for the inbox.
-  expect(page.text()).not.toContain("Postfach");
   expect(page.text()).not.toContain("inbox");
+});
+
+test("no language promises the inbox on the BIG BOX branch", async () => {
+  // The code we email this visitor is the Base Game one they were issued, not this one,
+  // so no table may say otherwise. Read off the copy rather than off a rendered panel:
+  // that branch only ever renders in English now, and the promise has to be absent from
+  // all five. Each word is the one that language's own code state uses for the inbox.
+  const INBOX: Record<string, string> = {
+    en: "inbox",
+    de: "Postfach",
+    it: "casella",
+    fr: "boîte mail",
+    es: "bandeja",
+  };
+
+  for (const lang of LANGUAGES) {
+    expect(say(lang, "state.code.lead"), `"${INBOX[lang]}" is not how ${lang} says inbox`).toContain(
+      INBOX[lang]
+    );
+    expect(
+      say(lang, "state.bigbox.lead"),
+      `the ${lang} BIG BOX lead promises an inbox we are not filling`
+    ).not.toContain(INBOX[lang]);
+  }
 });
 
 test("a cart that will not build says so in the language on screen", async () => {
@@ -800,16 +842,323 @@ test(
   REDIRECT_TEST_MS
 );
 
-test("switching language after a code is issued rewords the panel and nothing else", async () => {
-  // The claim is already made. The words follow the visitor; the cart the code was
-  // issued against does not move under them.
+// Three more roads to a cart, all of them older than the language work: the stale
+// fallback link comes from 96a5c04, both blocked mismatches from 8d23637. They are the
+// same shape as everything above - a cart built from a choice the visitor is no longer
+// looking at - and they are the reason the page now moves itself onto the box it is
+// about to cart instead of each road remembering to hold the controls still.
+//
+// Each one reads both halves off the page and compares them against the page's own offer
+// table, so it says what the cart holds rather than what I expected it to.
+
+/** Whatever the page is showing right now, as one gift and one edition. */
+function showing(page: Page): { offer: string; edition: string } {
+  const editions = LANGUAGES.filter((lang) => page.document.getElementById(`ed-${lang}`).checked);
+  const gifts = GIFTS.filter((g) => page.document.getElementById(g.id).checked);
+  expect([editions.length, gifts.length], "the page shows one gift and one edition").toEqual([1, 1]);
+  return { offer: gifts[0].value, edition: editions[0] };
+}
+
+/** Assert that a cart link holds exactly what the page is showing. */
+function linkMatchesPage(page: Page, href: string) {
+  const shown = showing(page);
+  for (const item of cartItems(shown.offer, shown.edition)!.items) {
+    expect(href, `the page shows ${shown.offer}/${shown.edition}, the link carts ${href}`).toContain(
+      item.id
+    );
+  }
+  return shown;
+}
+
+/**
+ * Every road out of this document that ends on a shop cart.
+ *
+ * An href, not a listener. A browser follows an anchor by ways that reach no JavaScript
+ * at all: the middle button, Ctrl or Cmd with a click, Open in new tab out of the context
+ * menu, the keyboard's own menu key. A test that clicked the link would be checking the
+ * one road that DOES reach a listener and calling the class covered, so nothing below
+ * clicks it. Read off the whole document rather than off the panel, because an anchor
+ * anywhere is a road a visitor can walk.
+ *
+ * The attribute rather than the resolved property, because the page writes an absolute
+ * shop url and every other anchor here is an in-page "#offer". This DOM resolves those
+ * against the document url, which the click in the test below moves onto the shop's cart,
+ * so reading the property would report the whole nav as roads to a cart. A real browser
+ * leaves the frozen document with the url it had.
+ */
+function cartRoads(page: Page): string[] {
+  return Array.from(page.document.querySelectorAll("a[href]"))
+    .map((a: any) => a.getAttribute("href"))
+    .filter((href: string) => href.includes("/cart/"));
+}
+
+/** The variants one cart url would put in the cart, in the order it names them. */
+function cartedBy(href: string): string[] {
+  const path = href.split("?")[0].split("/cart/")[1] || "";
+  return path.split(",").map((item) => item.split(":")[0]);
+}
+
+/**
+ * The property, over the whole document: nothing on this page is a road to a cart that
+ * disagrees with what the page is showing.
+ *
+ * A road that agrees and no road at all both satisfy it, which is deliberate. This says
+ * what the visitor may end up with, not how the page arranges for it.
+ */
+function noRoadDisagrees(page: Page) {
+  const shown = showing(page);
+  const wanted = cartItems(shown.offer, shown.edition)!.items.map((item) => item.id);
+  for (const href of cartRoads(page)) {
+    expect(
+      cartedBy(href),
+      `the page shows ${shown.offer}/${shown.edition}, and this road carts ${href}`
+    ).toEqual(wanted);
+  }
+}
+
+// Either control moving takes the page off the claim, so either one has to retire the
+// link. The gift is the half that redraws nothing: a language change repaints the panel
+// around the visitor and a gift change does not, so a page that only checked its own
+// repaints would keep the link standing here and look fixed from the other end.
+const LEAVING_THE_CLAIM: {
+  control: string;
+  move: (page: Page) => unknown;
+  shows: { offer: string; edition: string };
+}[] = [
+  {
+    control: "the language",
+    move: (page) => page.click(chip(page, "fr")),
+    shows: { offer: "base-kraken", edition: "fr" },
+  },
+  {
+    control: "the gift",
+    move: (page) => tapOffer(page, "o-bigbox"),
+    shows: { offer: "bigbox-both", edition: "en" },
+  },
+];
+
+for (const { control, move, shows } of LEAVING_THE_CLAIM) {
+  test(`a cart link the page has moved away from stops being a road out: ${control}`, async () => {
+    // no_redirect hands over the code with its fallback link beside it and lets go of both
+    // controls, so this is a panel the visitor can sit on and change their mind next to.
+    // Nothing is clicked on the link here and nothing has to be: the disagreement is in the
+    // href, and every way a browser has of following an href is a way that never reaches
+    // the correction hanging off its click.
+    const page = await loadPage({ body: codeAnswer }, DEMO);
+    await page.submit();
+
+    expect(cartRoads(page).length, "the panel starts with a cart link on it").toBe(1);
+    noRoadDisagrees(page);
+
+    await move(page);
+
+    expect(showing(page)).toEqual(shows);
+    noRoadDisagrees(page);
+    expect(cartRoads(page), "the link the page has left behind is gone").toEqual([]);
+  });
+}
+
+test(
+  "the fallback link is retired when the page leaves the claim, and the retry is not",
+  async () => {
+    // The cart would not build, the visitor left through the fallback link, and Back
+    // handed them the frozen page: the hold went out of the door with them, so that panel
+    // is on screen with both controls free beside it. The click below is how the page gets
+    // into that state; it is the setup, and the test is everything after it.
+    const page = await loadPage({ body: codeAnswer });
+    page.cartStatus = (path) => (path === "/cart/add.js" ? 500 : 200);
+
+    await page.submit();
+    await page.until(() => !!page.document.querySelector("#result [data-retry]"), "the retry button");
+
+    page.document
+      .querySelector("#result [data-cart]")
+      .dispatchEvent(new page.window.MouseEvent("click", { bubbles: true, cancelable: true, detail: 1 }));
+    restoreFromCache(page);
+
+    // Both halves of the claim move, and neither of them through the link.
+    await page.click(chip(page, "fr"));
+    tapOffer(page, "o-bigbox");
+    expect(showing(page)).toEqual({ offer: "bigbox-both", edition: "fr" });
+
+    noRoadDisagrees(page);
+    // The line under the link says one click loads both items. With no link to click it
+    // describes nothing, so it goes with it.
+    expect(page.document.querySelector("#result [data-cart-note]")).toBeNull();
+
+    // The other road off this panel stays, because it cannot disagree: it goes back
+    // through the page, which puts the claim on screen before anything is built. It is
+    // also the recovery path a visitor needs precisely when the shop's cart is what broke.
+    const retry = page.document.querySelector("#result [data-retry]");
+    expect(retry, "the retry is still there").not.toBeNull();
+
+    page.cartStatus = () => 200;
+    await page.click(retry);
+    await page.navigated();
+
+    const add = page.cartCalls().filter((c) => c.url === "/cart/add.js").pop();
+    expect(showing(page)).toEqual({ offer: "base-kraken", edition: "en" });
+    expect(add.body.items).toEqual(cartItems("base-kraken", "en")!.items);
+  },
+  REDIRECT_TEST_MS
+);
+
+// What that panel SAYS once its link has gone. Each of these is the phrase that
+// language's own cart-failure lead uses for the button, so the assertions below are
+// about the sentence a visitor reads and not about a key having changed.
+const CART_BUTTON: Record<string, string> = {
+  en: "cart button",
+  de: "Warenkorb Button",
+};
+
+for (const lang of Object.keys(CART_BUTTON)) {
+  test(`the panel stops naming a cart button it no longer has: ${lang.toUpperCase()}`, async () => {
+    // The lead on this panel ends by pointing at the link beside it. The link retires
+    // when the page moves off the box it carts, and a line telling the visitor to press
+    // a button that is not there is the panel describing itself wrongly. Two languages,
+    // because all five tables carry that sentence and all five had to move.
+    const page = await loadPage({ body: codeAnswer });
+    page.cartStatus = (path) => (path === "/cart/add.js" ? 500 : 200);
+
+    await page.click(chip(page, lang));
+    await page.submit();
+    await page.until(() => !!page.document.querySelector("#result [data-retry]"), "the retry button");
+
+    // With the link still on the panel, the lead is the one that names it, unchanged.
+    expect(on(page, "#result [data-lead]")).toBe(say(lang, "state.cartFailed.lead"));
+    expect(on(page, "#result [data-lead]")).toContain(CART_BUTTON[lang]);
+
+    // Out through the link and back, which is how this panel ends up on screen with the
+    // controls free beside it: the hold left with the page and came back released.
+    // Awaited, because following the link leaves the panel to redraw itself one task
+    // later, and a test that read the panel before that would be reading it mid-move.
+    await page.click(page.document.querySelector("#result [data-cart]"));
+    restoreFromCache(page);
+
+    // Now the gift moves, so the link is retired. The gift rather than the language on
+    // purpose: it repaints nothing, so the lead has to be corrected where the link is
+    // taken away and not on the way back through a repaint.
+    tapOffer(page, "o-bigbox");
+    expect(page.document.querySelector("#result [data-cart]"), "the link is gone").toBeNull();
+
+    expect(on(page, "#result [data-lead]")).toBe(say(lang, "state.cartFailedRetired.lead"));
+    expect(on(page, "#result [data-lead]")).not.toContain(CART_BUTTON[lang]);
+
+    // Everything else about the panel is untouched: the code is the one thing that must
+    // not be lost, and the retry is the road out that still works.
+    expect(on(page, "#result h3")).toBe(say(lang, "state.cartFailed.title"));
+    expect(on(page, "#result [data-code]")).toBe(CODE_BASE);
+    expect(page.document.querySelector("#result [data-retry]")).not.toBeNull();
+  });
+}
+
+test("the fallback cart link carts the box the page is showing, even after Back", async () => {
+  // The cart would not build, the visitor left through the fallback link, and Back handed
+  // them the frozen page: the hold went out of the door with them, so both controls are
+  // theirs again with that panel still on screen. This is that panel with nothing moved
+  // on it, which is the state the link is meant to be taken from: it carts what the page
+  // is showing, and taking it works, because it is their road to the shop.
+  //
+  // The visitor moving a control first is the test above. That road closes rather than
+  // correcting itself, because an href is followed by ways no listener ever sees.
+  const page = await loadPage({ body: codeAnswer });
+  page.cartStatus = (path) => (path === "/cart/add.js" ? 500 : 200);
+
+  await page.submit();
+  await page.until(() => !!page.document.querySelector("#result [data-retry]"), "the retry button");
+
+  page.document
+    .querySelector("#result [data-cart]")
+    .dispatchEvent(new page.window.MouseEvent("click", { bubbles: true, cancelable: true, detail: 1 }));
+  restoreFromCache(page);
+
+  // Theirs again, and the link is still on the panel they came back to.
+  expect(chip(page, "fr").disabled).toBe(false);
+  expect(page.document.getElementById("o-bigbox").disabled).toBe(false);
+
+  const link = page.document.querySelector("#result [data-cart]");
+  const href = link.getAttribute("href");
+  const followed = link.dispatchEvent(
+    new page.window.MouseEvent("click", { bubbles: true, cancelable: true, detail: 1 })
+  );
+  // Let go of on the way out, not instead of going out: the link is still their road to
+  // the shop, and swallowing the click would cost them the cart it points at.
+  expect(followed).toBe(true);
+
+  // The link the visitor followed and the page they left behind hold the same box.
+  const shown = linkMatchesPage(page, href);
+  expect(shown).toEqual({ offer: "base-kraken", edition: "en" });
+  expect(page.document.documentElement.getAttribute("lang")).toBe("en");
+  noRoadDisagrees(page);
+});
+
+test("taking the BIG BOX moves the page onto the box it carts", async () => {
+  // The blocked panel is read in whatever language the visitor switched to, and the BIG
+  // BOX it offers is the English one: "Give me the BIG BOX in English". So taking it has
+  // to move the picker and the language as well as the cart. Left behind, the page shows
+  // the German base game while the cart holds the English BIG BOX.
+  const page = await loadPage({ body: blockedAnswer }, DEMO);
+  await page.submit();
+  await page.click(chip(page, "de"));
+
+  await page.click(page.document.querySelector('#result [data-choice="package"]'));
+
+  const shown = linkMatchesPage(page, page.document.querySelector("#result [data-cart]").href);
+  expect(shown).toEqual({ offer: "bigbox-both", edition: "en" });
+  expect(page.document.documentElement.getAttribute("lang")).toBe("en");
+});
+
+test(
+  "taking a European edition moves the gift back to the one that was claimed",
+  async () => {
+    // Issue #17, driven the way that issue reproduces it: a real cart rather than the
+    // demo link. The gift radios are the visitor's again while they answer this panel,
+    // because the panel is asking about editions and the gift is not part of the
+    // question, so the picker can be pointing at another box by the time they choose.
+    //
+    // The claim wins. The code they were issued is the Base Game rule and the BIG BOX is
+    // a different one, so the page comes back to the base game rather than the cart
+    // following the box they tapped. That issue weighed holding the gift dim throughout
+    // against reading it off the page at the end; this is neither. The gift moves back at
+    // the moment they commit, visibly, which is the same answer every other road gets.
+    const page = await loadPage({ body: blockedAnswer });
+    await page.submit();
+    tapOffer(page, "o-bigbox");
+
+    await page.click(page.document.querySelector('#result [data-choice="edition"]'));
+    await page.click(page.document.querySelector('#result [data-edition="de"]'));
+    await page.navigated();
+
+    const shown = showing(page);
+    const add = page.cartCalls().filter((c) => c.url === "/cart/add.js").pop();
+    expect(add.body.items).toEqual(cartItems(shown.offer, shown.edition)!.items);
+
+    expect(shown).toEqual({ offer: "base-kraken", edition: "de" });
+    expect(page.document.documentElement.getAttribute("lang")).toBe("de");
+  },
+  REDIRECT_TEST_MS
+);
+
+test("switching language after a code is issued rewords the panel and retires its cart link", async () => {
+  // The claim is already made. The words follow the visitor, and the cart the code was
+  // issued against does not move under them: this link is never re-pointed at the picker,
+  // because the endpoint ruled on the box in it and a European re-aiming themselves at the
+  // English Base Game is the one combination it refuses.
+  //
+  // This test used to assert the link's href was still the one it started with, which is
+  // the other half of the same sentence and was the wrong half to keep. An unchanged href
+  // on a page that has changed is a road to the box they claimed sitting on a page showing
+  // the box they are looking at, and no click is needed to walk it. So the href does not
+  // move, and the link does not stay.
   const page = await loadPage({ body: codeAnswer }, DEMO);
   await page.submit();
 
-  const before = page.document.querySelector("#result [data-cart]").href;
+  const before = page.document.querySelector("#result [data-cart]").getAttribute("href");
+  expect(before).toContain(BASE_VARIANT_FOR.en);
+
   await page.click(chip(page, "de"));
 
   expect(on(page, "#result h3")).toBe(say("de", "state.code.title"));
   expect(on(page, "#result [data-code]")).toBe(CODE_BASE);
-  expect(page.document.querySelector("#result [data-cart]").href).toBe(before);
+  expect(cartRoads(page), "the link is gone rather than re-pointed at the picker").toEqual([]);
 });

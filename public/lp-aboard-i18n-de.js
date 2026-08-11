@@ -153,6 +153,8 @@ export const DE = {
   "state.cartFailed.title": "Dein Code ist sicher, dein Warenkorb ist nicht geladen",
   "state.cartFailed.lead":
     "Wir konnten deinen Warenkorb gerade nicht laden. Dein Code steht unten und gilt weiterhin, es geht also nichts verloren. Versuch es noch einmal oder nimm den Warenkorb Button.",
+  "state.cartFailedRetired.lead":
+    "Wir konnten deinen Warenkorb gerade nicht laden. Dein Code steht unten und gilt weiterhin, es geht also nichts verloren. Versuch es noch einmal.",
 
   "state.blocked.title": "Diese Edition erreicht dich nicht",
   "state.blocked.body":

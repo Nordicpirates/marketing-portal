@@ -284,11 +284,13 @@ test("the European edition choice keeps the code they were issued and carts that
   expect(page.document.getElementById("ed-de").checked).toBe(true);
   expect(page.document.getElementById("ed-en").checked).toBe(false);
 
-  // The nav language chip follows the same change, but that cannot be checked here:
-  // the page finds the current edition with an "input:checked" selector, and this DOM
-  // matches that selector against the checked ATTRIBUTE rather than against the live
-  // state of the radio. A real browser matches the live state, which is why the same
-  // read works on the page today for the nav chips. Checked by hand instead.
+  // The nav chip follows the same change, and this is readable here now. The page finds
+  // its current edition with an "input:checked" selector, which this DOM matches against
+  // the checked ATTRIBUTE rather than the live state of the radio, so moving an edition
+  // moves both. It has to: that selector is where the page keeps what the visitor is
+  // looking at, and everything it carts is built from what it answers.
+  expect(page.document.querySelector('.np-lang[data-lang="de"]').className).toContain("is-on");
+  expect(page.document.querySelector('.np-lang[data-lang="en"]').className).not.toContain("is-on");
 });
 
 test("the BIG BOX choice shows the BIG BOX code and the BIG BOX cart", async () => {

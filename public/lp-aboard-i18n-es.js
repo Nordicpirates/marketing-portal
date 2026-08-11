@@ -156,6 +156,8 @@ export const ES = {
   "state.cartFailed.title": "Tu código está a salvo, tu carrito no se ha cargado",
   "state.cartFailed.lead":
     "No hemos podido cargar tu carrito ahora mismo. Tu código está aquí abajo y sigue funcionando, así que no se pierde nada. Inténtalo otra vez o usa el botón del carrito.",
+  "state.cartFailedRetired.lead":
+    "No hemos podido cargar tu carrito ahora mismo. Tu código está aquí abajo y sigue funcionando, así que no se pierde nada. Inténtalo otra vez.",
 
   "state.blocked.title": "Esa edición no te llegaría",
   "state.blocked.body":
