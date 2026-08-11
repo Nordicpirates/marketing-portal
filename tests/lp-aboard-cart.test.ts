@@ -27,6 +27,7 @@ import {
   CART_CLEAR,
   CODE_BASE,
   CODE_BIGBOX,
+  CODE_VISIBLE_MS,
   type Page,
 } from "./page-harness.ts";
 
@@ -84,22 +85,28 @@ test("every call goes to a bare path, so it reaches the shop and not the portal"
   }
 });
 
-test("the visitor is told what is happening before the page moves under them", async () => {
+test("the code is on screen, and stays there, before the page moves under them", async () => {
+  // Lucas asked for the code to be visible before the redirect, long enough to read.
+  // The page is about to navigate on the visitor's behalf, so a code that flashed past
+  // is a code they never got.
   const page = await loadPage({ body: codeAnswer });
+  const started = Date.now();
   await page.submit();
 
-  // On screen while the cart is being built, and still there once it is: the page
-  // holds the confirmation for long enough to be read rather than blinking through it.
   const text = page.text();
   expect(text).toContain("Code unlocked");
   expect(text.toLowerCase()).toContain("taking you to your cart");
+  expect(page.document.querySelector("#result [data-code]").textContent.trim()).toBe(CODE_BASE);
   expect(page.navigations).toEqual([]);
 
-  // No code on this screen. It is in their inbox and on the cart they are going to,
-  // and a code they could copy invites them to stop here instead of going on.
-  expect(page.document.querySelector("#result [data-code]")).toBeNull();
+  // Still there a second later, with the cart already built underneath it. This is the
+  // half that matters: the hold is a real one, not the incidental gap a fetch leaves.
+  await page.until(() => page.cartCalls().length === 3, "the cart to finish loading");
+  expect(page.navigations).toEqual([]);
+  expect(page.document.querySelector("#result [data-code]").textContent.trim()).toBe(CODE_BASE);
 
   await page.navigated();
+  expect(Date.now() - started).toBeGreaterThanOrEqual(CODE_VISIBLE_MS);
 });
 
 test("the BIG BOX loads three items and its own code", async () => {

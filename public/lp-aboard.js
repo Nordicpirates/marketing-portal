@@ -1,13 +1,22 @@
 // Page behaviour for /gift-offer.
 //
 // The form posts to /gift-offer/claim and the answer decides what happens next. On a
-// plain success that is not a panel to read: the page loads the visitor's real Shopify
-// cart with the game, the gift and the code, then takes them to /cart. The cart calls
-// themselves live in ./cart.js. Codes are never written into this file or the HTML -
-// they rotate, and the only one this page ever knows is the one it was just handed.
+// plain success the page shows the visitor the code it was just handed, holds it on
+// screen long enough to read, and meanwhile loads their real Shopify cart with the
+// game, the gift and the code, then takes them to /cart. The cart calls themselves
+// live in ./cart.js. Codes are never written into this file or the HTML - they
+// rotate, and the only one this page ever knows is the one it was just handed.
+//
+// The page also speaks five languages. Every visitor-facing string comes out of
+// ./i18n.js, keyed by the language the visitor picked in the nav, and the language
+// and the physical edition in the picker are the same choice: pick DE and the page
+// is in German AND the German box is what we ship. Nothing here holds copy of its
+// own, so a state that is on screen when the language changes is rebuilt in the new
+// language rather than being left behind in the old one.
 
 import { buildCartUrl } from "./offer.js";
 import { loadCart } from "./cart.js";
+import { text, translate, translateDocument } from "./i18n.js";
 
 const form = document.getElementById("giftform");
 const result = document.getElementById("result");
@@ -21,38 +30,37 @@ const claimTitle = document.getElementById("claim-title");
 // the real shop without emptying and refilling the reviewer's own basket.
 const noRedirect = new URLSearchParams(window.location.search).get("no_redirect") === "1";
 
-// How long "Code unlocked" stays on screen before the page navigates. Long enough to
-// be read, short enough that nobody wonders whether the button worked. The cart calls
-// run during it, so this is a floor on the wait and not an addition to it.
-const CONFIRM_MS = 800;
+// How long the code stays on screen before the page navigates. The visitor is being
+// moved to another page on their behalf, and they should have read the code they just
+// asked for before that happens. The cart calls run during it, so this is a floor on
+// the wait and not an addition to it.
+const CODE_VISIBLE_MS = 2500;
+
+// The heading over the email field names the gift they just clicked, so the ask reads
+// as the last step of what they were already doing rather than a toll gate. One key
+// per box, because "both gifts are yours" is not "the Kraken is yours" with a word
+// swapped, in any language.
+const CLAIM_TITLE_KEYS = {
+  "base-kraken": "claim.title.kraken",
+  "base-coins": "claim.title.coins",
+  "bigbox-both": "claim.title.bigbox",
+};
 
 // One state serves every offer, so the cart button has to say what it is really
 // loading. A BIG BOX cart is three items, not "the game and the gift".
-const CART_COPY = {
-  "bigbox-both": {
-    label: "Put the BIG BOX and both gifts in my cart",
-    note: "One click loads all three items.",
-  },
+const CART_COPY_KEYS = {
+  "bigbox-both": { label: "state.cart.bigbox.label", note: "state.cart.bigbox.note" },
 };
 
-// The heading over the email field names the gift they just clicked, so the ask reads
-// as the last step of what they were already doing rather than a toll gate. Polly's
-// copy, one line per box, because "both gifts are yours" is not "the Kraken is yours"
-// with a word swapped.
-const CLAIM_TITLES = {
-  "base-kraken": "One step and the Kraken is yours",
-  "base-coins": "One step and the gold coins are yours",
-  "bigbox-both": "One step and both gifts are yours",
-};
-const CLAIM_TITLE_FALLBACK = "One step and your gift is yours";
+// The language the page is in, which is also the edition we will ship. Read once from
+// the radio that is checked in the markup, and from then on every change goes through
+// setLanguage, so the two can never answer differently.
+let language = chosen("edition") || "en";
 
-// Shown instead of the cart when the cart could not be built. It promises nothing
-// about anybody's inbox: on one branch of the blocked flow the code on screen is not
-// the code we mail, and this copy is used by every branch.
-const CART_FAILED = {
-  title: "Your code is safe, your cart is not loaded",
-  lead: "We could not load your cart just now. Your code is below and it still works, so nothing is lost. Try again, or use the cart button.",
-};
+/** One string, in the language the page is currently in. */
+function t(key) {
+  return text(language, key);
+}
 
 function chosen(name) {
   const el = form.querySelector(`input[name="${name}"]:checked`);
@@ -100,49 +108,65 @@ function goToEmail() {
   afterLayout(() => emailInput.scrollIntoView({ behavior: "smooth", block: "center" }));
 }
 
-function showError(message) {
-  render("error", { message });
+function showError(messageKey) {
+  render("error", { messageKey });
 }
 
 const wait = (ms) => new Promise((done) => setTimeout(done, ms));
+
+// How to draw the panel that is on screen right now, again. A language change rebuilds
+// it from this rather than translating what is already there: the copy in a state comes
+// half from the template and half from whichever branch of the flow rendered it, and
+// only the branch knows which half is which. Null before anything has been rendered.
+let repaintPanel = null;
 
 /**
  * Swap #result for one of the <template> states.
  *
  * Returns the element that landed, so a caller can wire up the buttons inside it.
  * Null means the template was missing, and the caller has nothing to wire.
+ *
+ * Everything the caller passes is a KEY, not a sentence. That is what lets the same
+ * call be replayed in another language when the visitor switches mid flow.
  */
-function render(kind, data = {}) {
+function render(kind, data = {}, options = {}) {
   const tpl = document.getElementById(`tpl-${kind}`);
   if (!tpl) {
     console.error(`[lp/aboard] no template for state "${kind}"`);
-    result.textContent = "Something went wrong on our side. Please try again.";
+    result.textContent = t("error.template");
     return null;
   }
 
   const node = tpl.content.cloneNode(true);
   const state = node.firstElementChild;
 
+  // The template's own wording first, in the current language. Anything this caller
+  // has an opinion about is written over it below.
+  translate(node, language);
+
+  if (!options.repaint) repaintPanel = () => render(kind, data, { repaint: true });
+
   const fill = (selector, value) => {
     const el = node.querySelector(selector);
     if (el && value) el.textContent = value;
   };
-  fill("[data-title]", data.title);
-  fill("[data-lead]", data.lead);
-  fill("[data-message]", data.message);
+  fill("[data-title]", data.titleKey && t(data.titleKey));
+  fill("[data-lead]", data.leadKey && t(data.leadKey));
+  fill("[data-message]", data.messageKey && t(data.messageKey));
   fill("[data-code]", data.code);
 
-  const copyFor = CART_COPY[data.offer];
+  const copyFor = CART_COPY_KEYS[data.offer];
   if (copyFor) {
     const note = node.querySelector("[data-cart-note]");
-    if (note) note.textContent = copyFor.note;
+    if (note) note.textContent = t(copyFor.note);
   }
 
   const cart = node.querySelector("[data-cart]");
   if (cart) {
-    if (copyFor) cart.textContent = copyFor.label;
-    if (data.cartUrl) {
-      cart.href = data.cartUrl;
+    if (copyFor) cart.textContent = t(copyFor.label);
+    const cartUrl = buildCartUrl(data.offer, data.edition, data.code);
+    if (cartUrl) {
+      cart.href = cartUrl;
     } else {
       // No link is better than a broken one, but somebody needs to know.
       console.error(`[lp/aboard] no cart url for state "${kind}", hiding the cart button`);
@@ -167,13 +191,13 @@ function render(kind, data = {}) {
     copy.addEventListener("click", async () => {
       try {
         await navigator.clipboard.writeText(data.code);
-        copy.textContent = "Copied";
-        setTimeout(() => { copy.textContent = "Copy"; }, 2000);
+        copy.textContent = t("state.copied");
+        setTimeout(() => { copy.textContent = t("state.copy"); }, 2000);
       } catch (err) {
         // Clipboard is blocked on insecure origins and by some browsers. The code
         // is on screen either way, so say so rather than failing silently.
         console.warn("[lp/aboard] clipboard write refused:", err);
-        copy.textContent = "Select it";
+        copy.textContent = t("state.copySelect");
       }
     });
   }
@@ -195,14 +219,15 @@ function render(kind, data = {}) {
     }
   }
 
-  result.scrollIntoView({ block: "nearest", behavior: "smooth" });
+  // A repaint is the same panel in another language, in the place the visitor already
+  // has on screen. Dragging the page to it would punish them for using the nav.
+  if (!options.repaint) result.scrollIntoView({ block: "nearest", behavior: "smooth" });
   return state;
 }
 
 /** Hand over one code, with the cart link that this exact code fits. */
-function showCode({ title, lead, code, offer, edition, retry }) {
-  const cartUrl = buildCartUrl(offer, edition, code);
-  render("code", { title, lead, code, cartUrl, offer, retry });
+function showCode(claim) {
+  render("code", claim);
 }
 
 function goTo(url) {
@@ -217,7 +242,9 @@ function goTo(url) {
  *
  * The visitor asked for a game, not for a code to copy somewhere, so the page loads
  * their cart and takes them to it. The code goes on the cart on the way in. What they
- * see in between says so, and stays up long enough to be read.
+ * see in between IS the code, in full, and it stays up long enough to be read: the
+ * page is about to navigate on their behalf, and a code that flashed past is a code
+ * they never got.
  *
  * Two ways out of the redirect:
  *  - ?no_redirect=1, which hands over the code and its cart link and touches no cart;
@@ -232,15 +259,15 @@ async function completeWith(claim) {
     return;
   }
 
-  render("sending");
-  const legible = wait(CONFIRM_MS);
+  render("sending", { code: claim.code, offer: claim.offer, edition: claim.edition });
+  const legible = wait(CODE_VISIBLE_MS);
 
   const cart = await loadCart(claim.offer, claim.edition, claim.code);
   if (!cart.ok) {
     showCode({
       ...claim,
-      title: CART_FAILED.title,
-      lead: CART_FAILED.lead,
+      titleKey: "state.cartFailed.title",
+      leadKey: "state.cartFailed.lead",
       retry: () => completeWith(claim),
     });
     return;
@@ -264,16 +291,13 @@ async function completeWith(claim) {
  * said we cannot ship would be the same mistake in a new place.
  */
 function showBlocked({ code, baseCode, offer, edition }) {
-  const warning = render("blocked");
-  if (!warning) return;
-
   const takeBigBox = () => {
     completeWith({
-      title: "The BIG BOX in English it is",
+      titleKey: "state.bigbox.title",
       // No word about the inbox on this branch: the code we mail this visitor is the
       // Base Game one they were issued, not this one. Promising otherwise would be a
       // promise made by the wrong half of the system.
-      lead: "Here is the code that fits it. It loads the box and both gifts together.",
+      leadKey: "state.bigbox.lead",
       code,
       offer: "bigbox-both",
       edition,
@@ -282,72 +306,91 @@ function showBlocked({ code, baseCode, offer, edition }) {
 
   const takeEdition = (input) => {
     // Leave the picker at the top of the page agreeing with what they just chose, so
-    // scrolling back up does not show them the edition we already refused.
-    input.checked = true;
-    syncLangChips();
+    // scrolling back up does not show them the edition we already refused. That is a
+    // language change as much as an edition one, so the panel they are about to read
+    // comes out in the language of the box they just asked for. No repaint: the panel
+    // this would redraw is the one completeWith replaces on the next line.
+    setLanguage(input.value, { repaint: false });
     completeWith({
-      title: "Aboard, in your language",
-      lead: "Your code has not changed, and it is already on its way to your inbox.",
+      titleKey: "state.edition.title",
+      leadKey: "state.edition.lead",
       code: baseCode,
       offer,
       edition: input.value,
     });
   };
 
-  const showEditions = () => {
-    const picker = render("editions");
-    if (!picker) return;
-
-    const list = picker.querySelector("[data-editions]");
-    if (!list) {
-      console.error("[lp/aboard] the edition template has nowhere to put the editions");
-      return;
-    }
-
-    // Built from the edition picker in the form rather than from a second list kept
-    // here, so there is one set of editions on this page and it cannot drift.
-    for (const input of form.querySelectorAll('input[name="edition"]')) {
-      if (input.value === edition) continue; // the one we just said we cannot ship
-
-      const label = form.querySelector(`label[for="${input.id}"]`);
-      if (!label) console.warn(`[lp/aboard] edition "${input.value}" has no label, using its code`);
-
-      const button = document.createElement("button");
-      button.type = "button";
-      button.className = "choice";
-      button.dataset.edition = input.value;
-      button.textContent = label ? label.textContent.trim() : input.value.toUpperCase();
-      button.addEventListener("click", () => takeEdition(input));
-      list.append(button);
-    }
-
-    if (!list.children.length) {
-      console.error("[lp/aboard] no other edition to offer, the form has only the blocked one");
-    }
-    wireChoices(picker);
-  };
-
   const wireChoices = (root) => {
     for (const button of root.querySelectorAll("[data-choice]")) {
       button.addEventListener("click", () => {
         if (button.dataset.choice === "package") takeBigBox();
-        else showEditions();
+        else show("editions");
       });
     }
   };
 
-  if (!baseCode) {
-    // Without it the language choice cannot build a cart carrying a working code, and
-    // a cart with no code hands over no gift. One honest choice beats two where one of
-    // them is quietly broken.
-    console.error(
-      "[lp/aboard] blocked answer carried no base code, so the language choice cannot be offered"
-    );
-    const language = warning.querySelector('[data-choice="edition"]');
-    if (language) language.remove();
-  }
+  const screens = {
+    warning(repaint) {
+      const warning = render("blocked", {}, { repaint });
+      if (!warning) return;
 
-  wireChoices(warning);
+      if (!baseCode) {
+        // Without it the language choice cannot build a cart carrying a working code,
+        // and a cart with no code hands over no gift. One honest choice beats two
+        // where one of them is quietly broken.
+        console.error(
+          "[lp/aboard] blocked answer carried no base code, so the language choice cannot be offered"
+        );
+        const languageChoice = warning.querySelector('[data-choice="edition"]');
+        if (languageChoice) languageChoice.remove();
+      }
+
+      wireChoices(warning);
+    },
+
+    editions(repaint) {
+      const picker = render("editions", {}, { repaint });
+      if (!picker) return;
+
+      const list = picker.querySelector("[data-editions]");
+      if (!list) {
+        console.error("[lp/aboard] the edition template has nowhere to put the editions");
+        return;
+      }
+
+      // Built from the edition picker in the form rather than from a second list kept
+      // here, so there is one set of editions on this page and it cannot drift. The
+      // names are the ones printed on the boxes, so they do not translate.
+      for (const input of form.querySelectorAll('input[name="edition"]')) {
+        if (input.value === edition) continue; // the one we just said we cannot ship
+
+        const label = form.querySelector(`label[for="${input.id}"]`);
+        if (!label) console.warn(`[lp/aboard] edition "${input.value}" has no label, using its code`);
+
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "choice";
+        button.dataset.edition = input.value;
+        button.textContent = label ? label.textContent.trim() : input.value.toUpperCase();
+        button.addEventListener("click", () => takeEdition(input));
+        list.append(button);
+      }
+
+      if (!list.children.length) {
+        console.error("[lp/aboard] no other edition to offer, the form has only the blocked one");
+      }
+      wireChoices(picker);
+    },
+  };
+
+  // Which of the two screens the visitor is on, so a language change redraws the one
+  // they are looking at and not the one they started on.
+  const show = (name) => {
+    screens[name](false);
+    repaintPanel = () => screens[name](true);
+  };
+
+  show("warning");
 }
 
 // No "action" is ever sent. The endpoint refuses one, because a form post proves
@@ -355,7 +398,9 @@ function showBlocked({ code, baseCode, offer, edition }) {
 // somebody's mailing list. Re-subscribing needs a confirmed-email flow, not this.
 async function submit() {
   const offer = chosen("offer");
-  const edition = chosen("edition");
+  // The edition we ship is the language the page is in. They are one choice, tracked
+  // in one place, so the box can never disagree with the words the visitor just read.
+  const edition = language;
   const email = (emailInput.value || "").trim();
 
   const honeypot = form.querySelector('input[name="company"]');
@@ -380,18 +425,17 @@ async function submit() {
     const data = await res.json().catch(() => ({}));
 
     if (!res.ok) {
+      // The endpoint's own wording is English and is not shown: it goes in the log,
+      // where whoever is debugging reads English anyway, and the visitor gets the
+      // same sentence in the language the rest of the page is in.
       console.error(`[lp/aboard] claim failed, status ${res.status}:`, data);
-      showError(
-        res.status === 429
-          ? "That is a lot of tries from one place. Give it an hour and we will be here."
-          : data.error || "We could not issue your code just now."
-      );
+      showError(res.status === 429 ? "error.rateLimited" : "error.generic");
       return;
     }
 
     if (data.state !== "code" && data.state !== "blocked") {
       console.error(`[lp/aboard] claim answered with a state this page does not know: ${data.state}`);
-      showError("We could not issue your code just now.");
+      showError("error.generic");
       return;
     }
 
@@ -403,7 +447,7 @@ async function submit() {
     else await completeWith({ code: data.code, offer, edition });
   } catch (err) {
     console.error("[lp/aboard] claim request never completed:", err);
-    showError("We could not reach the ship. Check your connection and try again.");
+    showError("error.network");
   } finally {
     submitBtn.removeAttribute("aria-busy");
     submitBtn.disabled = false;
@@ -415,30 +459,50 @@ form.addEventListener("submit", (event) => {
   submit();
 });
 
-// The nav language chips pick the edition. There is no translated version of this
-// page, so they scroll to the picker rather than pretending to be a language switch.
+// The nav language chips ARE the language switch, and the same click picks the edition
+// we ship. One control for one decision: a visitor reading the page in French is a
+// visitor who wants the French box.
 const langButtons = Array.from(document.querySelectorAll(".np-lang"));
 const editionInputs = Array.from(form.querySelectorAll('input[name="edition"]'));
 
 function syncLangChips() {
-  const current = chosen("edition");
-  for (const btn of langButtons) btn.classList.toggle("is-on", btn.dataset.lang === current);
+  for (const btn of langButtons) btn.classList.toggle("is-on", btn.dataset.lang === language);
+}
+
+/**
+ * Switch the page, the picker and the chips to one language, all three together.
+ *
+ * Everything that is on screen follows: the markup through its data-i18n keys, the
+ * heading over the email field and the sticky button because they are written by this
+ * file, and whatever result panel is up because it is drawn again from its keys.
+ *
+ * `repaint:false` is for the one caller that is about to replace the panel anyway.
+ */
+function setLanguage(value, { repaint = true } = {}) {
+  const input = form.querySelector(`input[name="edition"][value="${value}"]`);
+  if (!input) {
+    console.error(`[lp/aboard] no edition on this page for language "${value}", leaving it alone`);
+    return;
+  }
+
+  language = value;
+  input.checked = true;
+
+  translateDocument(document, language);
+  syncLangChips();
+  syncClaimTitle();
+  giftJump.relabel();
+  if (repaint && repaintPanel) repaintPanel();
 }
 
 for (const btn of langButtons) {
-  btn.addEventListener("click", () => {
-    const input = form.querySelector(`input[name="edition"][value="${btn.dataset.lang}"]`);
-    if (!input) {
-      console.error(`[lp/aboard] nav chip "${btn.dataset.lang}" has no matching edition input`);
-      return;
-    }
-    input.checked = true;
-    syncLangChips();
-    scrollToSection(offerSection);
-  });
+  btn.addEventListener("click", () => setLanguage(btn.dataset.lang));
 }
-for (const input of editionInputs) input.addEventListener("change", syncLangChips);
-syncLangChips();
+// The picker further down is the same choice from the other end, so it switches the
+// page too. Change, not click, so the keyboard's arrow keys count as well.
+for (const input of editionInputs) {
+  input.addEventListener("change", () => setLanguage(input.value));
+}
 
 /** Keep the heading over the email field naming the box that is currently chosen. */
 function syncClaimTitle() {
@@ -447,9 +511,9 @@ function syncClaimTitle() {
     return;
   }
   const offer = chosen("offer");
-  const title = CLAIM_TITLES[offer];
-  if (!title) console.error(`[lp/aboard] no claim heading written for offer "${offer}"`);
-  claimTitle.textContent = title || CLAIM_TITLE_FALLBACK;
+  const key = CLAIM_TITLE_KEYS[offer];
+  if (!key) console.error(`[lp/aboard] no claim heading written for offer "${offer}"`);
+  claimTitle.textContent = t(key || "claim.title.fallback");
 }
 
 // Choosing a box is the moment the next step has to become unmistakable, so it takes
@@ -475,7 +539,6 @@ for (const input of form.querySelectorAll('input[name="offer"]')) {
     giftJump.chose();
   });
 }
-syncClaimTitle();
 
 // The button that follows the visitor down the page. It has two jobs and knows which
 // one it is doing: before a box is chosen it goes to the picker, after it goes to the
@@ -486,7 +549,7 @@ syncClaimTitle();
 // picker or the claim section was in view, which between them cover nearly the whole
 // page, so on a phone it was never seen at all.
 const giftJump = (function stickyRouter() {
-  const inert = { retire() {}, chose() {} };
+  const inert = { retire() {}, chose() {}, relabel() {} };
 
   const button = document.getElementById("gift-jump");
   if (!button) {
@@ -519,7 +582,7 @@ const giftJump = (function stickyRouter() {
   // is unknown, and the button stays out of the way.
   function paint() {
     button.hidden = retired || !reported || onScreen.size > 0;
-    button.textContent = chose ? "Continue to email" : "Pick your gift!";
+    button.textContent = t(chose ? "sticky.continue" : "sticky.pick");
   }
 
   button.addEventListener("click", () => {
@@ -542,6 +605,9 @@ const giftJump = (function stickyRouter() {
       chose = true;
       paint();
     },
+    relabel() {
+      if (!retired) paint();
+    },
     retire() {
       retired = true;
       watch.disconnect();
@@ -549,6 +615,13 @@ const giftJump = (function stickyRouter() {
     },
   };
 })();
+
+// Everything the page writes for itself, said once at load in whichever language the
+// markup starts in. setLanguage repeats these on every switch after that, plus the two
+// things that do not exist yet at load: the sticky button and the result panel.
+translateDocument(document, language);
+syncLangChips();
+syncClaimTitle();
 
 // Reviews turn themselves over on narrow screens, where they are a swipe strip.
 (function reviewCarousel() {

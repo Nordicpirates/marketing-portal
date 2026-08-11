@@ -333,9 +333,10 @@ background:linear-gradient(180deg,rgba(13,17,23,.62) 0%,rgba(13,17,23,.72) 55%,r
 .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 
 /* Before the form is submitted the result column is empty, so give it a resting
-   state instead of a hole in the layout. */
-.states:empty::before{content:"Your code appears here once you send the form.";
-display:block;font-family:var(--sans);font-size:.85rem;color:var(--muted);
+   state instead of a hole in the layout. A real element rather than CSS content:
+   the page speaks five languages and a generated-content string cannot be one of
+   the things it translates. The first rendered state replaces it. */
+.states-idle{margin:0;display:block;font-family:var(--sans);font-size:.85rem;color:var(--muted);
 border:1px dashed var(--line);border-radius:2px;padding:1.35rem 1.5rem}
 
 .state--error{border-left-color:var(--red)}
@@ -347,9 +348,11 @@ border:1px dashed var(--line);border-radius:2px;padding:1.35rem 1.5rem}
    the retry button in the code state would be on screen for everybody. */
 .btn[hidden]{display:none}
 
-/* The moment between the code and the cart. Second in weight to the code itself: it
-   is there to be read once, not to be looked at. */
+/* The moment between the code and the cart. The code itself is on this screen, so it
+   gets the same block it gets everywhere else; the line under it explains where the
+   page is about to take them. */
 .state--sending{border-left-color:var(--brass)}
+.state--sending .code{margin:0 0 .9rem}
 /* The way back into a cart that did not load. The cart link above it is the other
    way, so this one is the quieter of the two. */
 .btn--retry{background:none;border-color:var(--line);color:var(--ink);margin-top:.85rem}

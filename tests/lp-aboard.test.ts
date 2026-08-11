@@ -26,6 +26,10 @@ process.env.LP_PROXY_SECRET = PROXY_SECRET;
 // read an empty directory while the code under test writes somewhere else.
 let SIGNUPS: string;
 
+// The five Lucas asked for in issue #14. Written out here rather than imported, so
+// this file states the requirement instead of agreeing with whatever the code says.
+const LANGUAGES = ["en", "de", "it", "fr", "es"];
+
 // Variant IDs from the authoritative map in issue #2.
 const BASE_EN = "51542813409627";
 const BASE_FR = "51542813442395";
@@ -229,27 +233,53 @@ test("everything the browser asks for uses the public /gift-offer path", async (
   const js = await handleAsset("/lp/aboard/page.js")!.text();
   const css = await handleAsset("/lp/aboard/style.css")!.text();
 
-  expect(html).toContain('<link rel="canonical" href="https://nordicpirates.com/gift-offer">');
+  // www, because Shopify 301s the bare domain to it and the browser refuses the
+  // redirected cart calls as cross-origin. The head script moves visitors there too.
+  expect(html).toContain('<link rel="canonical" href="https://www.nordicpirates.com/gift-offer">');
   expect(html).toContain('href="/gift-offer/style.css"');
   expect(html).toContain('src="/gift-offer/page.js"');
   expect(js).toContain('fetch("/gift-offer/claim"');
   expect(css).toContain("/gift-offer/media/lp-hero-poster.jpg");
 
   // Not one upstream path may leak into anything the browser receives, comments
-  // included. page.js, cart.js and offer.js are all shipped to the browser.
+  // included. Every module below is shipped to the browser.
   const offerJs = await handleAsset("/lp/aboard/offer.js")!.text();
   const cartJs = await handleAsset("/lp/aboard/cart.js")!.text();
-  for (const delivered of [html, js, css, offerJs, cartJs]) {
+  const i18nJs = await handleAsset("/lp/aboard/i18n.js")!.text();
+  const tables = await Promise.all(
+    LANGUAGES.map((lang) => handleAsset(`/lp/aboard/i18n-${lang}.js`)!.text())
+  );
+  for (const delivered of [html, js, css, offerJs, cartJs, i18nJs, ...tables]) {
     expect(delivered).not.toContain("/lp/aboard");
   }
 
-  // page.js imports "./offer.js" and "./cart.js" relative to itself. Served to the
-  // browser as /gift-offer/page.js, those resolve to /gift-offer/offer.js and
-  // /gift-offer/cart.js, which the Worker rewrites back to the upstream modules. A
-  // path with a directory in it would not.
+  // page.js imports "./offer.js", "./cart.js" and "./i18n.js" relative to itself.
+  // Served to the browser as /gift-offer/page.js, those resolve to /gift-offer/*,
+  // which the Worker rewrites back to the upstream modules. A path with a directory
+  // in it would not.
   expect(js).toContain('from "./offer.js"');
   expect(js).toContain('from "./cart.js"');
+  expect(js).toContain('from "./i18n.js"');
   expect(cartJs).toContain('from "./offer.js"');
+  for (const lang of LANGUAGES) expect(i18nJs).toContain(`from "./i18n-${lang}.js"`);
+});
+
+test("every language the page offers can actually be fetched", async () => {
+  // A chip the page can switch to and cannot load the copy for would be a page with
+  // no words on it. The chips, the edition radios and the served tables are one list.
+  const html = await handleAsset("/lp/aboard")!.text();
+
+  for (const lang of LANGUAGES) {
+    expect(html).toContain(`data-lang="${lang}"`);
+    expect(html).toContain(`id="ed-${lang}" value="${lang}"`);
+
+    const res = handleAsset(`/lp/aboard/i18n-${lang}.js`);
+    expect(res).not.toBeNull();
+    expect(res!.status).toBe(200);
+    expect(res!.headers.get("Content-Type")).toContain("text/javascript");
+  }
+
+  expect(handleAsset("/lp/aboard/i18n-sv.js")).toBeNull();
 });
 
 test("the cart calls go to the shop, not to the portal and not across origins", async () => {
@@ -287,7 +317,7 @@ test("the upstream routes this service answers on are still /lp/aboard", () => {
 
 test("the header CTA sells the game and points at the picker", async () => {
   const html = await handleAsset("/lp/aboard")!.text();
-  expect(html).toContain('<a class="np-nav-cta" href="#offer">Get the Game</a>');
+  expect(html).toContain('<a class="np-nav-cta" href="#offer" data-i18n="nav.cta">Get the Game</a>');
   // The old label sold one box to everybody, including the two thirds of visitors who
   // came for a base game.
   expect(html).not.toContain("Get the Big Box");
@@ -334,14 +364,16 @@ test("the reviewer section is gone from the markup and from the stylesheet", asy
 
 test("the signup step is Polly's copy, and names the gift that is chosen", async () => {
   const html = await handleAsset("/lp/aboard")!.text();
-  const js = await handleAsset("/lp/aboard/page.js")!.text();
+  const en = await handleAsset("/lp/aboard/i18n-en.js")!.text();
 
   // The heading names what they just clicked. One line per box, because "both gifts
-  // are yours" is not "the Kraken is yours" with a word swapped.
+  // are yours" is not "the Kraken is yours" with a word swapped. It is written by the
+  // page rather than carrying a key, because it follows the picker as well as the
+  // language, so the markup holds the wording for the box that starts out chosen.
   expect(html).toContain('<h2 id="claim-title">One step and the Kraken is yours</h2>');
-  expect(js).toContain('"base-kraken": "One step and the Kraken is yours"');
-  expect(js).toContain('"base-coins": "One step and the gold coins are yours"');
-  expect(js).toContain('"bigbox-both": "One step and both gifts are yours"');
+  expect(en).toContain('"claim.title.kraken": "One step and the Kraken is yours"');
+  expect(en).toContain('"claim.title.coins": "One step and the gold coins are yours"');
+  expect(en).toContain('"claim.title.bigbox": "One step and both gifts are yours"');
 
   // Copy is checked with the line breaks flattened: where the markup wraps is a
   // formatting choice, and a test that locks it in only ever fails for the wrong
@@ -350,8 +382,8 @@ test("the signup step is Polly's copy, and names the gift that is chosen", async
   expect(flat).toContain(
     "Tell us where to send your code. It appears on this screen straight away, so you are not waiting on an email to get going."
   );
-  expect(html).toContain('<label for="email">Your email</label>');
-  expect(html).toContain('id="submit-btn">Get my code</button>');
+  expect(html).toContain('<label for="email" data-i18n="claim.emailLabel">Your email</label>');
+  expect(html).toContain('id="submit-btn" data-i18n="claim.submit">Get my code</button>');
   expect(flat).toContain(
     "You are joining the crew list at the same time. We write when there is something worth writing about, and you can step off any time."
   );
@@ -364,9 +396,10 @@ test("the signup step is Polly's copy, and names the gift that is chosen", async
 
 test("the picker says what it is for, right above it", async () => {
   const html = await handleAsset("/lp/aboard")!.text();
-  expect(html).toContain("<h2>Choose your gift</h2>");
+  const heading = '<h2 data-i18n="offer.title">Choose your gift</h2>';
+  expect(html).toContain(heading);
   // Above the picker itself, not somewhere else on the page.
-  expect(html.indexOf("<h2>Choose your gift</h2>")).toBeLessThan(html.indexOf('id="giftform"'));
+  expect(html.indexOf(heading)).toBeLessThan(html.indexOf('id="giftform"'));
 });
 
 test("the sticky gift button is in the markup, starts hidden, and routes to the picker", async () => {
