@@ -4,6 +4,14 @@
 // countries are the English ones word for word, because they are facts about the
 // product and not copy to be improved on. Product names stay as they are printed on
 // the box: BIG BOX, Kraken, Cities of Greed, Lying Pirates, BoardGameGeek.
+//
+// Game vocabulary is the official Italian rulebook's, not a fresh translation of the
+// English page: Fase di Scommessa, Fase di Navigazione, Fase di Azione, dadi Ciurma,
+// dado Navigazione, dadi Battaglia, tessere, carte azione oro e argento, mappa,
+// monete, "a bordo", "Bugiardo!". Checked against 001_IT_150x210_rulebook_retail.pdf
+// in Drive (translation by Alex Giuliani and Salvatore Corrao for The Geeky Pen).
+// The rulebook addresses the table as "voi"; this page addresses one reader as "tu",
+// so the words are the rulebook's and the person is the page's.
 
 export const IT = {
   "meta.title": "Abbiamo preparato qualcosa di speciale | Lying Pirates",
@@ -42,21 +50,21 @@ export const IT = {
   "how.eyebrow": "Si impara in fretta",
   "how.title": "Come si gioca",
   "how.sub": "Tre fasi per turno. Per ognuna c'è un video che la spiega.",
-  "how.1.aria": "Fase delle scommesse, dadi nascosti sotto un bicchiere",
-  "how.1.phase": "Fase delle scommesse",
+  "how.1.aria": "Fase di Scommessa, dadi nascosti sotto un bicchiere",
+  "how.1.phase": "Fase di Scommessa",
   "how.1.title": "Bluffa con la tua ciurma",
   "how.1.body":
-    "Tira i dadi della ciurma nascosti sotto il bicchiere di bambù, poi bluffa sui totali. Alza la posta, fissa un numero oppure dai del bugiardo a qualcuno, esattamente al momento giusto.",
-  "how.2.aria": "Fase di navigazione, navi che si muovono sul tabellone",
-  "how.2.phase": "Fase di navigazione",
+    "Tira i tuoi dadi Ciurma nascosti sotto il bicchiere di bambù, poi bluffa sui totali. Alza la posta, fissa un valore oppure dai del bugiardo a qualcuno, esattamente al momento giusto.",
+  "how.2.aria": "Fase di Navigazione, navi che si muovono sulla mappa",
+  "how.2.phase": "Fase di Navigazione",
   "how.2.title": "Muovi la flotta",
   "how.2.body":
-    "Chi vince il turno tira il dado di navigazione e avanza le navi di 1 o 2 caselle. I dadi da battaglia decidono i combattimenti navali. Gli eventi delle caselle rendono ogni mossa imprevedibile.",
-  "how.3.aria": "Fase delle azioni, carte in gioco",
-  "how.3.phase": "Fase delle azioni",
+    "Chi vince la Fase di Scommessa tira il dado Navigazione e avanza le navi di 1 o 2 tessere. I dadi Battaglia decidono le battaglie. Gli effetti delle tessere rendono ogni mossa imprevedibile.",
+  "how.3.aria": "Fase di Azione, carte in gioco",
+  "how.3.phase": "Fase di Azione",
   "how.3.title": "Gioca la tua mano",
   "how.3.body":
-    "Cala le carte Oro o Argento per attaccare i rivali, difendere la tua posizione o migliorare la ciurma. Ogni carta cambia il tabellone.",
+    "Gioca le carte azione oro o argento per attaccare i rivali, difendere la tua posizione o migliorare la ciurma. Ogni carta cambia la mappa.",
 
   "reviews.eyebrow": "Da chi ce l'ha in casa",
   "reviews.bgg.on": "su BoardGameGeek",

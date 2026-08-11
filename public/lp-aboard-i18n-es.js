@@ -4,6 +4,15 @@
 // countries are the English ones word for word, because they are facts about the
 // product and not copy to be improved on. Product names stay as they are printed on
 // the box: BIG BOX, Kraken, Cities of Greed, Lying Pirates, BoardGameGeek.
+//
+// Game vocabulary is the official Spanish rulebook's, not a fresh translation of the
+// English page: fase de apuestas, fase de navegación, fase de acción, dados de
+// tripulación, dado de navegación, dado de batalla, losetas, cartas de acción
+// doradas y plateadas, mapa, monedas, "a bordo", "¡Mentiroso!". Checked against
+// 001_ES_150x210_rulebook_retail.pdf in Drive (translation by Santiago Domínguez and
+// Jaume de Marcos for The Geeky Pen). The rulebook's heading is "¡Bienvenidos a
+// bordo!"; this page addresses one reader as "tú", so the phrase is the rulebook's
+// and the number is the page's.
 
 export const ES = {
   "meta.title": "Hemos preparado algo especial | Lying Pirates",
@@ -46,17 +55,17 @@ export const ES = {
   "how.1.phase": "Fase de apuestas",
   "how.1.title": "Farolea con tu tripulación",
   "how.1.body":
-    "Tira los dados de tu tripulación escondidos bajo el cubilete de bambú y luego farolea con los totales. Sube la apuesta, fija un número o llama mentiroso a alguien, justo en el momento adecuado.",
-  "how.2.aria": "Fase de navegación, barcos avanzando por el tablero",
+    "Tira tus dados de tripulación escondidos bajo el cubilete de bambú y luego farolea con los totales. Sube la apuesta, fija un valor o llama mentiroso a alguien, justo en el momento adecuado.",
+  "how.2.aria": "Fase de navegación, barcos avanzando por el mapa",
   "how.2.phase": "Fase de navegación",
   "how.2.title": "Mueve la flota",
   "how.2.body":
-    "Quien gana la ronda tira el dado de navegación y avanza los barcos de 1 a 2 casillas. Los dados de batalla deciden los combates navales. Los eventos de las casillas hacen que ningún movimiento sea previsible.",
+    "Quien gana la fase de apuestas lanza el dado de navegación y avanza los barcos de 1 a 2 losetas. Los dados de batalla deciden los combates. Los efectos de las losetas hacen que ningún movimiento sea previsible.",
   "how.3.aria": "Fase de acción, cartas en juego",
   "how.3.phase": "Fase de acción",
   "how.3.title": "Juega tu mano",
   "how.3.body":
-    "Saca cartas de Oro o de Plata para atacar a tus rivales, defender tu posición o mejorar tu tripulación. Cada carta cambia el tablero.",
+    "Juega cartas de acción doradas o plateadas para atacar a tus rivales, defender tu posición o mejorar tu tripulación. Cada carta cambia el mapa.",
 
   "reviews.eyebrow": "De quienes lo tienen en casa",
   "reviews.bgg.on": "en BoardGameGeek",

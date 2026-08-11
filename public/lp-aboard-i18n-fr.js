@@ -4,6 +4,13 @@
 // countries are the English ones word for word, because they are facts about the
 // product and not copy to be improved on. Product names stay as they are printed on
 // the box: BIG BOX, Kraken, Cities of Greed, Lying Pirates, BoardGameGeek.
+//
+// Game vocabulary is the official French rulebook's, not a fresh translation of the
+// English page: phase de paris, phase de navigation, phase d'actions, dés Équipage,
+// dé Navigation, dés Combat, tuiles, cartes Action dorées et argentées, plateau,
+// pièces, "Bienvenue à bord", "menteur". Checked against
+// 001_FR_150x210_rulebook_retail.pdf in Drive (translation by Robin Leplumey and
+// Pauline Fuchs for The Geeky Pen).
 
 export const FR = {
   "meta.title": "On a préparé quelque chose de spécial | Lying Pirates",
@@ -17,7 +24,7 @@ export const FR = {
 
   "hero.title": "Nous n'aurons pas de meilleure offre que celle-ci.",
   "hero.lede":
-    "Un jeu de dés et de bluff. Vous mentez aux gens que vous aimez le plus, puis vous envoyez leurs navires droit sur les rochers.",
+    "Un jeu de dés et de bluff. Vous mentez aux gens que vous aimez le plus, puis vous envoyez leurs bateaux droit sur les rochers.",
   "hero.point1": "Choisissez une boîte ci-dessous",
   "hero.point2": "On y glisse quelque chose que l'on n'offre pas d'habitude",
   "hero.point3": "Vous voyez cette page uniquement parce que vous n'avez pas acheté la première fois",
@@ -42,21 +49,21 @@ export const FR = {
   "how.eyebrow": "Vite appris",
   "how.title": "Comment jouer",
   "how.sub": "Trois phases par tour. Chacune a sa vidéo d'explication.",
-  "how.1.aria": "Phase de pari, dés cachés sous un gobelet",
-  "how.1.phase": "Phase de pari",
+  "how.1.aria": "Phase de paris, dés cachés sous un gobelet",
+  "how.1.phase": "Phase de paris",
   "how.1.title": "Bluffez votre équipage",
   "how.1.body":
-    "Lancez vos dés d'équipage cachés sous le gobelet en bambou, puis bluffez sur les totaux. Montez la mise, verrouillez un chiffre ou traitez quelqu'un de menteur, exactement au bon moment.",
-  "how.2.aria": "Phase de navigation, navires qui avancent sur le plateau",
+    "Lancez vos dés Équipage cachés sous le gobelet en bambou, puis bluffez sur les totaux. Montez la mise, verrouillez une valeur ou traitez quelqu'un de menteur, exactement au bon moment.",
+  "how.2.aria": "Phase de navigation, bateaux qui avancent sur le plateau",
   "how.2.phase": "Phase de navigation",
   "how.2.title": "Faites avancer la flotte",
   "how.2.body":
-    "Le gagnant du tour lance le dé de navigation et avance les navires de 1 à 2 cases. Les dés de combat décident des batailles navales. Les événements des cases rendent chaque déplacement imprévisible.",
-  "how.3.aria": "Phase d'action, cartes jouées",
-  "how.3.phase": "Phase d'action",
+    "Le vainqueur de la phase de paris lance le dé Navigation et avance les bateaux de 1 à 2 tuiles. Les dés Combat décident des combats. Les effets des tuiles rendent chaque déplacement imprévisible.",
+  "how.3.aria": "Phase d'actions, cartes jouées",
+  "how.3.phase": "Phase d'actions",
   "how.3.title": "Jouez votre main",
   "how.3.body":
-    "Posez des cartes Or ou Argent pour attaquer vos rivaux, défendre votre position ou améliorer votre équipage. Chaque carte change le plateau.",
+    "Jouez des cartes Action dorées ou argentées pour attaquer vos rivaux, défendre votre position ou améliorer votre équipage. Chaque carte change le plateau.",
 
   "reviews.eyebrow": "De la part de ceux qui l'ont chez eux",
   "reviews.bgg.on": "sur BoardGameGeek",

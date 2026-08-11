@@ -4,6 +4,12 @@
 // countries are the English ones word for word, because they are facts about the
 // product and not copy to be improved on. Product names stay as they are printed on
 // the box: BIG BOX, Kraken, Cities of Greed, Lying Pirates, BoardGameGeek.
+//
+// Game vocabulary is the official German rulebook's, not a fresh translation of the
+// English page: Wettphase, Segelphase, Aktionsphase, Crew-Würfel, Segelwürfel,
+// Kampfwürfel, Plättchen, Aktionskarten (goldene und silberne), Landkarte, Münzen,
+// "Willkommen an Bord", "Lügner!". Checked against 001_DE_150x210_rulebook_retail.pdf
+// in Drive (translation by Malte Kühle and Markus Jost for The Geeky Pen).
 
 export const DE = {
   "meta.title": "Wir haben etwas Besonderes gemacht | Lying Pirates",
@@ -46,17 +52,17 @@ export const DE = {
   "how.1.phase": "Wettphase",
   "how.1.title": "Bluffe deine Crew",
   "how.1.body":
-    "Würfle deine Crew Würfel verdeckt unter dem Bambusbecher und bluffe dann über die Summen. Erhöhe den Einsatz, leg dich auf eine Zahl fest oder nenne jemanden einen Lügner, genau im richtigen Moment.",
-  "how.2.aria": "Segelphase, Schiffe ziehen über das Brett",
+    "Würfle deine Crew-Würfel verdeckt unter dem Bambusbecher und bluffe dann über die Summen. Erhöhe den Einsatz, leg dich auf eine Zahl fest oder nenne jemanden einen Lügner, genau im richtigen Moment.",
+  "how.2.aria": "Segelphase, Schiffe ziehen über die Landkarte",
   "how.2.phase": "Segelphase",
   "how.2.title": "Bring die Flotte in Fahrt",
   "how.2.body":
-    "Wer die Runde gewinnt, würfelt den Segelwürfel und zieht Schiffe 1 bis 2 Felder weit. Kampfwürfel entscheiden die Seegefechte. Feldereignisse machen jeden Zug unberechenbar.",
+    "Wer die Wettphase gewinnt, wirft den Segelwürfel und zieht Schiffe 1 bis 2 Plättchen weit. Kampfwürfel entscheiden die Seegefechte. Plättcheneffekte machen jeden Zug unberechenbar.",
   "how.3.aria": "Aktionsphase, Karten werden ausgespielt",
   "how.3.phase": "Aktionsphase",
   "how.3.title": "Spiel deine Hand aus",
   "how.3.body":
-    "Setze Gold oder Silber Karten ein, um Rivalen anzugreifen, deine Position zu verteidigen oder deine Crew aufzuwerten. Jede Karte verändert das Brett.",
+    "Spiel goldene oder silberne Aktionskarten aus, um Rivalen anzugreifen, deine Position zu verteidigen oder deine Crew aufzuwerten. Jede Karte verändert die Lage auf der Landkarte.",
 
   "reviews.eyebrow": "Von den Leuten, denen es gehört",
   "reviews.bgg.on": "auf BoardGameGeek",
@@ -95,7 +101,7 @@ export const DE = {
   "pick.bigbox.tag": "Beide Geschenke, keine Wahl nötig",
   "pick.bigbox.title": "Nimm den ganzen Laderaum und du musst dich nicht entscheiden",
   "pick.bigbox.what":
-    "Die BIG BOX bringt die Bambusbecher, die Metallmünzen, die magnetischen Felder, acht Kapitäne und die Erweiterung Cities of Greed mit. Nimm sie, und der Kraken und das Gold kommen beide mit, denn halbe Sachen sind nicht dein Ding.",
+    "Die BIG BOX bringt die Bambusbecher, die Metallmünzen, die magnetischen Plättchen, acht Kapitäne und die Erweiterung Cities of Greed mit. Nimm sie, und der Kraken und das Gold kommen beide mit, denn halbe Sachen sind nicht dein Ding.",
   "pick.bigbox.gift": "+ Geschenke im Wert von €19.90",
   "pick.choose": "Diese wählen",
   "pick.chosen": "✓ In deinem Laderaum",

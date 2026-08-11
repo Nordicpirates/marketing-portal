@@ -13,6 +13,18 @@
 // the page reads correctly before this module runs, and if it never runs. A test
 // asserts the two say the same thing, so a copy change in one is a failure until it
 // is made in the other.
+//
+// Game vocabulary in the four translations comes from the official Lying Pirates
+// rulebooks in Drive (001_<LANG>_150x210_rulebook_retail.pdf), so the page and the box
+// call the same things by the same names. Each table's header lists the terms it took
+// and which file it took them from.
+//
+// Three things the rulebooks could NOT settle, so they are the translator's choice and
+// not the brand's, and a native speaker should still look at them:
+//  - "Liar's dice" as a genre name. No rulebook names the genre in any language.
+//  - "bluffing" as a marketing word. The rulebooks say lie and cheat, never bluff.
+//  - whether the page addresses one reader or a table. The IT and ES rulebooks use
+//    the plural; this page speaks to one visitor, so the translations do too.
 
 import { EN } from "./i18n-en.js";
 import { DE } from "./i18n-de.js";
