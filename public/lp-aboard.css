@@ -245,11 +245,12 @@ video{display:none}}
 
 .hero-points{list-style:none;margin:1.6rem 0 2rem;padding:0;display:grid;gap:.7rem;max-width:44rem}
 .hero-points li{display:flex;align-items:baseline;gap:.85rem;font-size:1.05rem;line-height:1.45;color:#dfeaea}
-/* Only the numbered bullet is a circle. The second span in each li holds the
-   translated sentence, so this must not match it: given width, height and
-   place-items it squashes the whole line into a 1.65rem disc. */
-.hero-points li>span:first-child{flex:none;width:1.65rem;height:1.65rem;border-radius:50%;border:1px solid var(--brass,#c8a96e);
-color:var(--brass,#c8a96e);font-size:.8rem;font-weight:700;display:grid;place-items:center;transform:translateY(.15rem)}
+/* A small filled dot, not a numbered circle: Mikaela's call, 2026-08-14.
+   It is named, not matched by position, because the second span in each li holds
+   the translated sentence and an over-broad selector squashed that sentence into
+   the disc for two days in August. */
+.hero-points .hero-dot{flex:none;width:.42rem;height:.42rem;border-radius:50%;
+background:var(--brass,#c8a96e);transform:translateY(-.3rem)}
 @media(max-width:600px){.hero-points li{font-size:.98rem}}
 
 .np-nav{position:sticky;top:0;z-index:60;background:rgba(13,17,23,.82);backdrop-filter:blur(10px);

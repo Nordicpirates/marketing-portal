@@ -18,9 +18,12 @@ export const EN = {
   "hero.title": "We will not have a better offer than this.",
   "hero.lede":
     "A bluffing dice game. You lie to the people you like most, then race their ships into the rocks.",
-  "hero.point1": "Pick any box below",
-  "hero.point2": "We put something in it we do not normally give away",
-  "hero.point3": "You only see this page because you did not buy the first time",
+  // Rewritten by Mikaela 2026-08-14, her wording, kept verbatim. The other four
+  // tables still carry the older sentences: those are a translation job, not a
+  // copy-paste, and they are deliberately not guessed at here.
+  "hero.point1": "Choose one of the boxes below",
+  "hero.point2": "Something goes in that we would normally charge you for.",
+  "hero.point3": "You left empty-handed once. Here's your second chance!",
   "hero.cta": "See what comes free",
 
   "showcase.alt":

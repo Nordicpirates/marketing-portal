@@ -63,11 +63,13 @@ if (location.hostname === "nordicpirates.com") {
     <p class="eyebrow">Nordic Pirates</p>
     <h1 data-i18n="hero.title">We will not have a better offer than this.</h1>
     <p class="lede" data-i18n="hero.lede">A bluffing dice game. You lie to the people you like most, then race their ships into the rocks.</p>
-    <ol class="hero-points">
-      <li><span>1</span> <span data-i18n="hero.point1">Pick any box below</span></li>
-      <li><span>2</span> <span data-i18n="hero.point2">We put something in it we do not normally give away</span></li>
-      <li><span>3</span> <span data-i18n="hero.point3">You only see this page because you did not buy the first time</span></li>
-    </ol>
+    <!-- A plain list now, not an ordered one: the numbers became dots on 2026-08-14
+         and an ol with nothing numbered in it is a lie to a screen reader. -->
+    <ul class="hero-points">
+      <li><span class="hero-dot" aria-hidden="true"></span> <span data-i18n="hero.point1">Choose one of the boxes below</span></li>
+      <li><span class="hero-dot" aria-hidden="true"></span> <span data-i18n="hero.point2">Something goes in that we would normally charge you for.</span></li>
+      <li><span class="hero-dot" aria-hidden="true"></span> <span data-i18n="hero.point3">You left empty-handed once. Here's your second chance!</span></li>
+    </ul>
     <a class="hero-cta" href="#offer" data-i18n="hero.cta">See what comes free</a>
   </div>
 </section>
