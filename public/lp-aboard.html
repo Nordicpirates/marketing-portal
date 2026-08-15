@@ -245,96 +245,160 @@ if (location.hostname === "nordicpirates.com") {
     </div>
 
     <form id="giftform">
+      <!-- Two products, one column each, and every column reads the same way down: the
+           box, the language it is printed in, the product name, one line under the name,
+           then the gifts. On the left the two gifts are the choice. On the right the whole
+           column is the choice and both gifts come with it.
+
+           The language is chosen on the box and the gift after it, so the edition tiles
+           sit inside each column above the gifts. There is still exactly ONE set of
+           edition radios on this page, in the left column: the tiles on the right are a
+           second <label for> pointing at those same five controls, so the two columns
+           cannot end up holding two answers to one question. -->
       <fieldset>
-        <legend data-i18n="offer.legend">Choose one</legend>
-        <div class="picks">
+        <legend class="vh" data-i18n="offer.legend">Choose one</legend>
+        <div class="prods">
 
-          <div class="pick">
-            <input type="radio" name="offer" id="o-kraken" value="base-kraken" checked>
-            <label for="o-kraken">
-              <span class="pick-media">
-                <img src="https://www.nordicpirates.com/cdn/shop/files/Kraken_1.png?v=1775020469"
-                     data-i18n-alt="pick.kraken.alt"
-                     alt="Kraken Mini-Expansion cards" loading="lazy" width="420" height="315">
-              </span>
-              <span>
-                <span class="pick-title" data-i18n="pick.kraken.title">Base Game, and the Kraken</span>
-                <span class="pick-what" data-i18n="pick.kraken.what">The Kraken Mini-Expansion puts a monster in the water.
-                Somebody is lying about where it is. Probably everybody.</span>
-              </span>
-              <span class="pick-foot">
-                <span class="pick-price">&euro;39.95 <b data-i18n="pick.kraken.gift">+ a &euro;7.95 gift</b></span>
-                <span class="pick-state"><span class="s-off" data-i18n="pick.choose">Choose this</span><span class="s-on" data-i18n="pick.chosen">&#10003; In your hold</span></span>
-              </span>
-            </label>
+          <div class="prod">
+            <span class="prod-shot">
+              <!-- No alt text on purpose. The product is named in words directly under
+                   this picture, and the five copy tables carry no Base Game alt line. An
+                   English sentence written in here would be the one string on the page
+                   that never translates, so the name below does the naming instead. -->
+              <img src="https://www.nordicpirates.com/cdn/shop/files/Skarmavbild2026-03-31kl.12.48.38.png?v=1774954139&width=900"
+                   alt="" loading="lazy" width="900" height="783">
+            </span>
+
+            <!-- The one set of edition radios, named for a screen reader with the words
+                 that used to be the picker's legend. The edition names themselves stay in
+                 their own language: "Deutsch" is what is printed on the box, in every
+                 language this page is read in. -->
+            <span class="eds" role="group"
+                  data-i18n-aria-label="offer.edition.legend" aria-label="Which edition should we ship">
+              <span class="ed"><input type="radio" name="edition" id="ed-en" value="en" checked><label for="ed-en">English</label></span>
+              <span class="ed"><input type="radio" name="edition" id="ed-de" value="de"><label for="ed-de">Deutsch</label></span>
+              <span class="ed"><input type="radio" name="edition" id="ed-fr" value="fr"><label for="ed-fr">Fran&ccedil;ais</label></span>
+              <span class="ed"><input type="radio" name="edition" id="ed-es" value="es"><label for="ed-es">Espa&ntilde;ol</label></span>
+              <span class="ed"><input type="radio" name="edition" id="ed-it" value="it"><label for="ed-it">Italiano</label></span>
+            </span>
+
+            <p class="prod-name">Base Game</p>
+            <p class="prod-line" data-i18n="offer.legend">Choose one</p>
+
+            <div class="gifts">
+              <div class="pick">
+                <input type="radio" name="offer" id="o-kraken" value="base-kraken" checked>
+                <label for="o-kraken">
+                  <span class="gift-shot">
+                    <img src="https://www.nordicpirates.com/cdn/shop/files/Kraken_1.png?v=1775020469"
+                         data-i18n-alt="pick.kraken.alt"
+                         alt="Kraken Mini-Expansion cards" loading="lazy" width="1600" height="1600">
+                  </span>
+                  <span class="pick-title" data-i18n="pick.kraken.title">Base Game, and the Kraken</span>
+                  <span class="pick-what" data-i18n="pick.kraken.what">The Kraken Mini-Expansion puts a monster in the water.
+                  Somebody is lying about where it is. Probably everybody.</span>
+                  <span class="pick-foot">
+                    <span class="pick-price">&euro;39.95 <b data-i18n="pick.kraken.gift">+ a &euro;7.95 gift</b></span>
+                    <span class="pick-state"><span class="s-off" data-i18n="pick.choose">Choose this</span><span class="s-on" data-i18n="pick.chosen">&#10003; In your hold</span></span>
+                  </span>
+                </label>
+              </div>
+
+              <!-- The joining mark between the two gifts. A mark and not a word: the
+                   layout asks for a small joining word here, and none of the five copy
+                   tables has one. Writing an English "or" into a page that speaks five
+                   languages would put my guess in front of four sets of visitors. -->
+              <span class="gift-join" aria-hidden="true"></span>
+
+              <div class="pick">
+                <input type="radio" name="offer" id="o-coins" value="base-coins">
+                <label for="o-coins">
+                  <span class="gift-shot">
+                    <img src="https://www.nordicpirates.com/cdn/shop/files/Goldcoins_20pcs_413e3651-0f5f-4566-a5d6-84ca092fb36c.png?v=1762192283"
+                         data-i18n-alt="pick.coins.alt"
+                         alt="Twenty metal gold coins" loading="lazy" width="2048" height="2048">
+                  </span>
+                  <span class="pick-title" data-i18n="pick.coins.title">Base Game, and the gold</span>
+                  <span class="pick-what" data-i18n="pick.coins.what">Twenty metal coins with real weight. Cardboard tokens never
+                  sounded like this when they hit the table.</span>
+                  <span class="pick-foot">
+                    <span class="pick-price">&euro;39.95 <b data-i18n="pick.coins.gift">+ an &euro;11.95 gift</b></span>
+                    <span class="pick-state"><span class="s-off" data-i18n="pick.choose">Choose this</span><span class="s-on" data-i18n="pick.chosen">&#10003; In your hold</span></span>
+                  </span>
+                </label>
+              </div>
+            </div>
+
+            <p class="stock-note">
+              <strong data-i18n="offer.stock.head">Kraken stock is low.</strong>
+              <span data-i18n="offer.stock.body">When it runs out this choice becomes the gold, and we will say so here.</span>
+            </p>
+
+            <p class="en-warn">
+              <strong data-i18n="offer.warn.head">One thing before you go further.</strong>
+              <span data-i18n="offer.warn.body">The English Base Game ships from our stock in the US and Australia, so we cannot send that
+              edition inside Europe at the moment. The BIG BOX in English is here and ready, and it comes
+              with both gifts. Or pick another edition below and keep your code either way.</span>
+            </p>
           </div>
 
-          <div class="pick">
-            <input type="radio" name="offer" id="o-coins" value="base-coins">
-            <label for="o-coins">
-              <span class="pick-media">
-                <img src="https://www.nordicpirates.com/cdn/shop/files/Goldcoins_20pcs_413e3651-0f5f-4566-a5d6-84ca092fb36c.png?v=1762192283"
-                     data-i18n-alt="pick.coins.alt"
-                     alt="Twenty metal gold coins" loading="lazy" width="420" height="315">
-              </span>
-              <span>
-                <span class="pick-title" data-i18n="pick.coins.title">Base Game, and the gold</span>
-                <span class="pick-what" data-i18n="pick.coins.what">Twenty metal coins with real weight. Cardboard tokens never
-                sounded like this when they hit the table.</span>
-              </span>
-              <span class="pick-foot">
-                <span class="pick-price">&euro;39.95 <b data-i18n="pick.coins.gift">+ an &euro;11.95 gift</b></span>
-                <span class="pick-state"><span class="s-off" data-i18n="pick.choose">Choose this</span><span class="s-on" data-i18n="pick.chosen">&#10003; In your hold</span></span>
-              </span>
-            </label>
-          </div>
-
-          <div class="pick pick--full">
+          <div class="pick prod prod--big">
             <input type="radio" name="offer" id="o-bigbox" value="bigbox-both">
-            <label for="o-bigbox">
-              <span class="pick-media">
+            <!-- Two labels for the one radio, with the edition tiles between them. The
+                 whole column answers a click that way, and the tiles still do not sit
+                 inside a label that answers a different question. -->
+            <label for="o-bigbox" class="prod-face">
+              <span class="prod-shot">
                 <img src="https://www.nordicpirates.com/cdn/shop/files/Bigbox_Lyingpirates.webp?v=1778497083&width=900"
                      data-i18n-alt="pick.bigbox.alt"
-                     alt="Lying Pirates Big Box with all components" loading="lazy" width="900" height="563">
+                     alt="Lying Pirates Big Box with all components" loading="lazy" width="900" height="900">
               </span>
-              <span>
-                <span class="pick-tag" data-i18n="pick.bigbox.tag">Both gifts, no choosing</span>
-                <span class="pick-title" data-i18n="pick.bigbox.title">Take the full hold and we will not make you pick</span>
-                <span class="pick-what" data-i18n="pick.bigbox.what">The BIG BOX carries the bamboo cups, the metal coins, the
-                magnetic tiles, eight captains and the Cities of Greed expansion. Take it and the
-                Kraken and the gold both come along, because you did not do this by halves.</span>
-                <span class="pick-foot">
-                  <span class="pick-price">&euro;124.95 <b data-i18n="pick.bigbox.gift">+ &euro;19.90 of gifts</b></span>
-                  <span class="pick-state"><span class="s-off" data-i18n="pick.choose">Choose this</span><span class="s-on" data-i18n="pick.chosen">&#10003; In your hold</span></span>
+            </label>
+
+            <!-- The same five editions, driving the same five radios in the column beside
+                 this one. Named for a screen reader with the key the picker's own legend
+                 uses, because it is the same question asked in the same words. -->
+            <span class="eds eds--mirror" role="group"
+                  data-i18n-aria-label="offer.edition.legend" aria-label="Which edition should we ship">
+              <span class="ed"><label for="ed-en">English</label></span>
+              <span class="ed"><label for="ed-de">Deutsch</label></span>
+              <span class="ed"><label for="ed-fr">Fran&ccedil;ais</label></span>
+              <span class="ed"><label for="ed-es">Espa&ntilde;ol</label></span>
+              <span class="ed"><label for="ed-it">Italiano</label></span>
+            </span>
+
+            <label for="o-bigbox" class="prod-body">
+              <span class="prod-name">BIG BOX</span>
+              <span class="prod-line" data-i18n="pick.bigbox.tag">Both gifts, no choosing</span>
+              <span class="gifts">
+                <span class="gift">
+                  <span class="gift-shot">
+                    <img src="https://www.nordicpirates.com/cdn/shop/files/Kraken_1.png?v=1775020469"
+                         alt="" loading="lazy" width="1600" height="1600">
+                  </span>
+                  <span class="gift-name">Kraken</span>
                 </span>
+                <span class="gift-join" aria-hidden="true"></span>
+                <span class="gift">
+                  <span class="gift-shot">
+                    <img src="https://www.nordicpirates.com/cdn/shop/files/Goldcoins_20pcs_413e3651-0f5f-4566-a5d6-84ca092fb36c.png?v=1762192283"
+                         alt="" loading="lazy" width="2048" height="2048">
+                  </span>
+                  <span class="gift-name">Coins</span>
+                </span>
+              </span>
+              <span class="pick-title" data-i18n="pick.bigbox.title">Take the full hold and we will not make you pick</span>
+              <span class="pick-what" data-i18n="pick.bigbox.what">The BIG BOX carries the bamboo cups, the metal coins, the
+              magnetic tiles, eight captains and the Cities of Greed expansion. Take it and the
+              Kraken and the gold both come along, because you did not do this by halves.</span>
+              <span class="pick-foot">
+                <span class="pick-price">&euro;124.95 <b data-i18n="pick.bigbox.gift">+ &euro;19.90 of gifts</b></span>
+                <span class="pick-state"><span class="s-off" data-i18n="pick.choose">Choose this</span><span class="s-on" data-i18n="pick.chosen">&#10003; In your hold</span></span>
               </span>
             </label>
           </div>
 
         </div>
-        <p class="stock-note">
-          <strong data-i18n="offer.stock.head">Kraken stock is low.</strong>
-          <span data-i18n="offer.stock.body">When it runs out this choice becomes the gold, and we will say so here.</span>
-        </p>
-      </fieldset>
-
-      <fieldset>
-        <legend data-i18n="offer.edition.legend">Which edition should we ship</legend>
-        <!-- The edition names stay in their own language. "Deutsch" is what is printed
-             on the box, in every language this page is read in. -->
-        <div class="editions">
-          <span class="ed"><input type="radio" name="edition" id="ed-en" value="en" checked><label for="ed-en">English</label></span>
-          <span class="ed"><input type="radio" name="edition" id="ed-de" value="de"><label for="ed-de">Deutsch</label></span>
-          <span class="ed"><input type="radio" name="edition" id="ed-fr" value="fr"><label for="ed-fr">Fran&ccedil;ais</label></span>
-          <span class="ed"><input type="radio" name="edition" id="ed-es" value="es"><label for="ed-es">Espa&ntilde;ol</label></span>
-          <span class="ed"><input type="radio" name="edition" id="ed-it" value="it"><label for="ed-it">Italiano</label></span>
-        </div>
-        <p class="en-warn">
-          <strong data-i18n="offer.warn.head">One thing before you go further.</strong>
-          <span data-i18n="offer.warn.body">The English Base Game ships from our stock in the US and Australia, so we cannot send that
-          edition inside Europe at the moment. The BIG BOX in English is here and ready, and it comes
-          with both gifts. Or pick another edition below and keep your code either way.</span>
-        </p>
       </fieldset>
 
       <!-- Honeypot. Never shown, never filled by a person, and deliberately not

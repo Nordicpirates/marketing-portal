@@ -402,6 +402,31 @@ test("the picker says what it is for, right above it", async () => {
   expect(html.indexOf(heading)).toBeLessThan(html.indexOf('id="giftform"'));
 });
 
+test("the two product columns stack on a narrow screen, and nothing hides the warning", async () => {
+  const css = await handleAsset("/lp/aboard/style.css")!.text();
+  const html = await handleAsset("/lp/aboard")!.text();
+
+  // Side by side on a wide screen, one whole column after the other on a phone.
+  expect(css).toMatch(/\.prods\{display:grid;[^}]*grid-template-columns:repeat\(2/);
+  expect(css).toMatch(/@media \(max-width:860px\)\{[\s\S]*?\.prods\{grid-template-columns:1fr\}/);
+  // And the two gifts inside a column go one above the other before they get too narrow
+  // to read.
+  expect(css).toMatch(/@media \(max-width:460px\)\{[\s\S]*?\.gifts\{grid-template-columns:1fr/);
+
+  // The warning a European reads before they submit is hidden until the picker is
+  // showing the one pairing it is about. Those two rules ARE the warning: without them
+  // it is either never seen or always seen.
+  expect(css).toMatch(/\.en-warn\{display:none/);
+  expect(css).toContain("#giftform:has(#ed-en:checked):has(#o-kraken:checked) .en-warn");
+  expect(css).toContain("#giftform:has(#ed-en:checked):has(#o-coins:checked) .en-warn");
+  expect(html).toContain('class="en-warn"');
+
+  // The mockup's sold-out and not-in-your-location tiles were hand set to illustrate.
+  // This page cannot compute either one, so it ships neither.
+  expect(html).not.toContain("sold out");
+  expect(html).not.toContain("not available in your location");
+});
+
 test("the sticky gift button is in the markup, starts hidden, and routes to the picker", async () => {
   const html = await handleAsset("/lp/aboard")!.text();
   const js = await handleAsset("/lp/aboard/page.js")!.text();

@@ -101,80 +101,147 @@ display:flex;justify-content:space-between;gap:1rem;align-items:baseline}
 blockquote cite{font-style:normal;color:var(--ink);font-weight:600}
 .score{color:var(--teal);font-weight:700;white-space:nowrap}
 
-/* OFFER */
+/* OFFER
+   Two product columns: the Base Game with a choice of gift inside it, and the BIG BOX,
+   which is one choice carrying both gifts. Each column is a card that reads the same way
+   down, and the whole of the BIG BOX card is one control. */
 .offer{background:var(--off-white)}
 .offer-head{max-width:36ch;margin-bottom:clamp(2rem,4vw,3.25rem)}
 .offer-head .eyebrow{color:var(--teal)}
 .offer-head h2{font-size:clamp(1.7rem,3.6vw,2.7rem)}
 form{margin:0}
-fieldset{border:0;padding:0;margin:0 0 2rem}
-legend{font-family:var(--sans);font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;
-color:var(--muted);font-weight:600;margin-bottom:1.25rem;padding:0}
-.picks{display:grid;gap:1.15rem;grid-template-columns:repeat(2,minmax(0,1fr))}
+fieldset{border:0;padding:0;margin:0}
+/* Said to a screen reader, never drawn: the form's legend names a group whose heading is
+   already on screen in words. */
+.vh{position:absolute!important;width:1px;height:1px;margin:-1px;padding:0;
+overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
+
+.prods{display:grid;gap:1.15rem;grid-template-columns:repeat(2,minmax(0,1fr));align-items:start}
+.prod{position:relative;background:var(--paper);border:1px solid var(--line);border-radius:3px;
+padding:1.4rem 1.4rem 1.6rem;text-align:center;transition:border-color .18s,box-shadow .18s}
+.prod--big{background:linear-gradient(150deg,#141b26,#0d1117);border-color:#212936;color:#f1eee8}
+/* The whole BIG BOX column is the control, so the card itself carries the hover and the
+   chosen edge. The state line inside it says the same thing in words, which is what a
+   browser without :has() is left with. */
+.prod--big:has(input:enabled):hover{border-color:var(--brass)}
+.prod--big:has(input:checked){border-color:var(--brass);
+box-shadow:0 0 0 1px var(--brass),0 18px 40px -24px rgba(0,0,0,.7)}
+.prod--big:has(input:focus-visible){outline:3px solid var(--brass-soft);outline-offset:3px}
+/* The card's own two labels, not the whole card: the edition strip between them is held
+   by its own rule and would be dimmed twice over. */
+.prod--big:has(input:disabled) .prod-face,
+.prod--big:has(input:disabled) .prod-body{opacity:.5;cursor:not-allowed}
+
+/* Product shots get room: contained, never cropped. */
+.prod-shot{display:grid;place-items:center;background:#fff;border:1px solid var(--line);
+border-radius:2px;overflow:hidden;padding:1rem;min-height:210px}
+.prod-shot img{max-height:230px;width:auto;object-fit:contain}
+.prod--big .prod-shot{border-color:#242c3a}
+.prod-name{display:block;font-family:var(--serif);font-size:clamp(1.2rem,2.2vw,1.55rem);
+font-weight:700;letter-spacing:.02em;margin:1.05rem 0 .2rem}
+.prod-line{display:block;font-family:var(--sans);font-size:.86rem;color:var(--muted);
+margin:0 0 1.15rem}
+.prod--big .prod-name{color:#fff}
+.prod--big .prod-line{color:var(--brass-soft)}
+
+/* The gifts inside a column, side by side with the joining mark between them. */
+.gifts{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:.8rem;
+align-items:stretch}
+/* Level with the middle of the two pictures beside it, not with the middle of the whole
+   tile: the tiles carry a name and a description under the picture and the mark belongs
+   to the pictures. Both kinds of tile start with the same border and padding above the
+   picture, so one offset is right in both columns. */
+.gift-join{align-self:start;margin-top:calc(3.85rem + 1px);
+width:.4rem;height:.4rem;border-radius:50%;background:var(--brass)}
+.gift{display:block;border:1px solid transparent;padding:.55rem .55rem .7rem}
+.gift-shot{display:grid;place-items:center;background:#fff;border:1px solid var(--line);
+border-radius:2px;height:7rem;overflow:hidden;padding:.5rem;margin:0 0 .55rem}
+/* The picture's own ceiling, in the same unit as the box around it rather than as a
+   percentage of it: a percentage against a padded box lets a square picture out of the
+   bottom of it, and these pictures are square. Both numbers move together. */
+.gift-shot img{max-height:6rem;max-width:100%;width:auto;object-fit:contain}
+.gift-name{display:block;font-family:var(--sans);font-size:.86rem;font-weight:600}
+.prod--big .gift-shot{border-color:#242c3a}
+
+/* A gift the visitor can choose. The label is the card here, because inside the left
+   column there are two of them and only one is chosen. */
 .pick{position:relative}
 .pick input{position:absolute;opacity:0;width:1px;height:1px}
-.pick label{display:grid;grid-template-rows:auto 1fr auto;gap:1rem;height:100%;
-background:var(--paper);border:1px solid var(--line);border-radius:3px;
-padding:1.4rem 1.4rem 1.55rem;cursor:pointer;transition:border-color .18s,transform .18s,box-shadow .18s}
-.pick input:enabled + label:hover{border-color:var(--teal-soft);transform:translateY(-2px)}
+/* A grid rather than a block, so the two gifts beside each other line their prices up
+   with each other however many lines their names and their descriptions take. */
+.gifts .pick label{display:grid;grid-template-rows:auto auto 1fr auto;height:100%;
+border:1px solid transparent;border-radius:3px;
+padding:.55rem .55rem .7rem;cursor:pointer;transition:border-color .18s,background .18s}
+.gifts .pick input:enabled + label:hover{border-color:var(--teal-soft);background:#fff}
+.gifts .pick input:checked + label{border-color:var(--brass);background:rgba(200,169,110,.12)}
+.gifts .pick input:focus-visible + label{outline:3px solid var(--teal-soft);outline-offset:3px}
 /* Held while a claim is in flight and while the cart is being built, alongside the
    edition radios and the submit button: the gift that was posted is the gift going in
    the cart, so it may not move under the visitor. The chosen one keeps its brass edge,
    dimmed, so what is being bought stays legible while it cannot be changed. */
-.pick input:disabled + label{opacity:.5;cursor:not-allowed}
-.pick input:focus-visible + label{outline:3px solid var(--teal-soft);outline-offset:3px}
-.pick input:checked + label{border-color:var(--brass);box-shadow:0 0 0 1px var(--brass),0 14px 32px -22px rgba(11,15,26,.5)}
-/* images get room: contain, never cropped */
-.pick-media{background:#fff;border:1px solid var(--line);border-radius:2px;
-display:grid;place-items:center;overflow:hidden;padding:1rem;min-height:190px}
-.pick-media img{max-height:220px;width:auto;object-fit:contain}
-.pick-title{display:block;font-size:1.15rem;font-weight:700;margin:0 0 .35rem}
-.pick-what{display:block;font-family:var(--sans);font-size:.86rem;color:var(--muted);margin:0}
-.pick-foot{display:flex;align-items:baseline;justify-content:space-between;gap:1rem;
-border-top:1px solid var(--line);padding-top:.9rem;font-family:var(--sans)}
-.pick-price{font-size:.82rem;color:var(--muted)}
-.pick-price b{color:var(--ink);font-size:.95rem}
-.pick-state{font-size:.72rem;letter-spacing:.13em;text-transform:uppercase;font-weight:600;color:#b5ad9b}
+.gifts .pick input:disabled + label{opacity:.5;cursor:not-allowed}
+
+.pick-title{display:block;font-size:.98rem;font-weight:700;margin:0 0 .3rem}
+.pick-what{display:block;font-family:var(--sans);font-size:.8rem;line-height:1.5;
+color:var(--muted);margin:0 0 .7rem}
+.pick-foot{display:block;font-family:var(--sans);border-top:1px solid var(--line);
+padding-top:.6rem}
+.pick-price{display:block;font-size:.8rem;color:var(--muted)}
+.pick-price b{color:var(--ink);font-size:.92rem}
+.pick-state{display:block;font-size:.7rem;letter-spacing:.13em;text-transform:uppercase;
+font-weight:600;color:#b5ad9b;margin-top:.35rem}
 .s-on{display:none}
-.pick input:checked + label .s-off{display:none}
-.pick input:checked + label .s-on{display:inline}
-.pick input:checked + label .pick-state{color:var(--brass)}
-.pick--full{grid-column:1 / -1}
-.pick--full label{grid-template-rows:none;grid-template-columns:minmax(0,1fr) minmax(0,1fr);
-align-items:center;gap:clamp(1.25rem,3vw,2.5rem);background:linear-gradient(150deg,#141b26,#0d1117);
-border-color:#212936;color:#f1eee8}
-.pick--full input:enabled + label:hover{border-color:var(--brass)}
-.pick--full .pick-media{background:#fff;border-color:#242c3a;min-height:240px}
-.pick--full .pick-media img{max-height:300px}
-.pick--full .pick-what{color:#a8a49b}
-.pick--full .pick-foot{border-top-color:#242c3a}
-.pick--full .pick-price{color:#a8a49b}
-.pick--full .pick-price b{color:#fff}
-.pick--full .pick-tag{display:block;font-family:var(--sans);font-size:.68rem;letter-spacing:.16em;
-text-transform:uppercase;color:var(--brass-soft);font-weight:700;margin:0 0 .7rem}
-.pick--full .pick-title{font-size:clamp(1.3rem,2.2vw,1.75rem);color:#fff}
-.pick--full input:checked + label{box-shadow:0 0 0 1px var(--brass),0 18px 40px -24px rgba(0,0,0,.7)}
+.pick input:checked ~ label .s-off{display:none}
+.pick input:checked ~ label .s-on{display:inline}
+.pick input:checked ~ label .pick-state{color:var(--brass)}
+.prod--big .pick-title{display:block;font-size:clamp(1.05rem,1.6vw,1.2rem);color:#fff;
+margin:1.15rem 0 .35rem}
+.prod--big .pick-what{color:#a8a49b;font-size:.84rem}
+.prod--big .pick-foot{border-top-color:#242c3a}
+.prod--big .pick-price{color:#a8a49b}
+.prod--big .pick-price b{color:#fff}
+
 .stock-note{font-family:var(--sans);font-size:.8rem;color:var(--red);
-margin:1.4rem 0 0;display:flex;gap:.55rem;align-items:baseline;flex-wrap:wrap}
+margin:1.4rem 0 0;display:flex;gap:.55rem;align-items:baseline;flex-wrap:wrap;
+justify-content:center;text-align:left}
 .stock-note span{color:var(--muted)}
-/* edition picker - the cart link needs a language */
-.editions{display:flex;gap:.6rem;flex-wrap:wrap}
+
+/* The edition tiles. One set of radios, two strips of labels: the strip in the BIG BOX
+   column points at the same five controls as the strip in the Base Game column. */
+.eds{display:flex;justify-content:center;gap:.4rem;flex-wrap:wrap;margin:1rem 0 0}
 .ed{position:relative}
-.ed input{position:absolute;opacity:0;width:1px;height:1px}
-.ed label{display:block;font-family:var(--sans);font-size:.85rem;font-weight:600;
+/* Fixed rather than merely off screen. A label in the right hand column moves a radio
+   that lives in the left hand one, and a browser scrolls a control it focuses into view,
+   which would drag the visitor to the other box for choosing a language. Fixed, the
+   radio is already in view wherever the page is, so nothing moves under them. */
+.ed input{position:fixed;top:0;left:0;width:1px;height:1px;opacity:0;pointer-events:none}
+.ed label{display:block;font-family:var(--sans);font-size:.8rem;font-weight:600;
 border:1px solid var(--line);background:var(--paper);color:var(--ink);
-padding:.6rem 1.05rem;border-radius:2px;cursor:pointer}
-.ed input:enabled + label:hover{border-color:var(--teal-soft)}
-.ed input:checked + label{background:var(--teal-deep);color:#fff;border-color:var(--teal-deep)}
+padding:.42rem .72rem;border-radius:2px;cursor:pointer;transition:border-color .18s}
+.eds--mirror .ed label{background:rgba(255,255,255,.05);border-color:#2a3242;color:#d9d4c9}
+.ed label:hover{border-color:var(--teal-soft)}
+.eds--mirror .ed label:hover{border-color:var(--brass)}
+/* The chosen edition, in both strips at once. Brass because it has to read on the pale
+   card and on the dark one. The sibling rule under it is the same answer for a browser
+   with no :has(), which reaches the strip the radios themselves live in. */
+#giftform:has(#ed-en:checked) label[for="ed-en"],
+#giftform:has(#ed-de:checked) label[for="ed-de"],
+#giftform:has(#ed-fr:checked) label[for="ed-fr"],
+#giftform:has(#ed-es:checked) label[for="ed-es"],
+#giftform:has(#ed-it:checked) label[for="ed-it"],
+.ed input:checked + label{background:var(--brass);color:#1a1508;border-color:var(--brass)}
 .ed input:focus-visible + label{outline:3px solid var(--teal-soft);outline-offset:2px}
 /* Held while a claim is in flight and while the cart is being built: the edition that
    was posted is the one going in the cart, so it may not move under the visitor. The
    one that is chosen keeps its colour, dimmed, so what is being shipped stays legible.
-   Same treatment as the submit button beside it, which is disabled in the same breath. */
-.ed input:disabled + label{opacity:.5;cursor:not-allowed}
+   Same treatment as the submit button beside it, which is disabled in the same breath.
+   Both strips, because a label whose radio is disabled does nothing when it is pressed
+   and has to look like it. */
+.ed input:disabled + label,
+#giftform:has(input[name="edition"]:disabled) .ed label{opacity:.5;cursor:not-allowed}
 /* honest pre-submit warning: English Base Game is deliberately not sold in the EU.
    CSS-only via :has(). If :has() is unsupported it stays hidden and the server still answers honestly. */
-.en-warn{display:none;font-family:var(--sans);font-size:.86rem;line-height:1.55;
+.en-warn{display:none;font-family:var(--sans);font-size:.86rem;line-height:1.55;text-align:left;
 color:#6a5214;background:#fdf8ec;border:1px solid #e8dcb4;border-left:3px solid var(--brass);
 border-radius:2px;padding:1rem 1.2rem;margin:1.4rem 0 0}
 .en-warn strong{color:#4a380a}
@@ -237,8 +304,20 @@ footer a{color:#9fb0b0}
 
 @media (max-width:860px){
 .game-top,.creed-grid,.claim-grid,.voices-head{grid-template-columns:1fr}
-.picks{grid-template-columns:1fr}
-.pick--full label{grid-template-columns:1fr}
+/* The two products stack, one whole column after the other. */
+.prods{grid-template-columns:1fr}
+}
+/* Narrow enough that two gifts beside each other would be two columns of broken words.
+   They go one above the other, with the joining mark between them where it was. */
+@media (max-width:460px){
+.prods{gap:.9rem}
+.prod{padding:1.1rem 1rem 1.3rem}
+.gifts{grid-template-columns:1fr;gap:.6rem}
+.gift-shot{height:8rem}
+.gift-shot img{max-height:7rem}
+/* Stacked, the mark is between the two of them rather than beside them, so the offset
+   that put it level with the pictures has nothing to line up with any more. */
+.gift-join{align-self:center;justify-self:center;margin-top:0}
 }
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}
 video{display:none}}
@@ -326,9 +405,6 @@ background:linear-gradient(180deg,rgba(13,17,23,.62) 0%,rgba(13,17,23,.72) 55%,r
 .ship-grid span{font-size:.84rem;color:var(--muted)}
 .offer-head{text-align:center;margin-left:auto;margin-right:auto}
 .offer-head .lede{margin-left:auto;margin-right:auto}
-.pick{justify-items:center}
-.pick label{text-align:center}
-.ed{justify-content:center}
 
 @media(max-width:600px){
   .quotes{display:flex;grid-template-columns:none;overflow-x:auto;scroll-snap-type:x mandatory;

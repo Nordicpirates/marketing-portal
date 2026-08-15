@@ -21,6 +21,7 @@ import {
   COINS,
   CODE_BASE,
   CODE_BIGBOX,
+  say,
   type Page,
 } from "./page-harness.ts";
 
@@ -412,4 +413,175 @@ test("a state this page does not know is an error, not a blank panel", async () 
   expect(page.text()).toContain("That did not go through");
   expect(page.text()).not.toContain(CODE_BASE);
   expect(page.cartCalls()).toEqual([]);
+});
+
+// The choosing step is two product columns: the Base Game with a choice of gift inside
+// it, and the BIG BOX, which is one choice carrying both gifts. Everything the page and
+// the claim endpoint read off this markup had to survive that move, and the tests below
+// are the parts that would break quietly rather than loudly.
+
+const flat = (value: string) => value.replace(/\s+/g, " ").trim();
+
+/** The product column one control sits in. */
+const column = (page: Page, id: string): any => page.document.getElementById(id).closest(".prod");
+
+/** Everything one box says, as a visitor reads it. */
+const boxText = (page: Page, id: string): string =>
+  flat(page.document.getElementById(id).closest(".pick").textContent);
+
+test("the choosing step is two product columns, and each box is still selectable", async () => {
+  const page = await loadPage({ body: codeAnswer });
+  const columns = Array.from(page.document.querySelectorAll(".prods > .prod"));
+
+  expect(columns.length).toBe(2);
+
+  // Both gifts are inside the Base Game column and are a choice between them. The BIG
+  // BOX is the other column and is one control from edge to edge.
+  expect(column(page, "o-kraken")).toBe(columns[0]);
+  expect(column(page, "o-coins")).toBe(columns[0]);
+  expect(column(page, "o-bigbox")).toBe(columns[1]);
+  expect(columns[1].className).toContain("pick");
+
+  // Three selectable things, each carrying the class page.js binds the jump to the email
+  // field with. Lose it and a visitor who picks a box is left looking at the picker.
+  expect(page.document.querySelectorAll("#giftform .pick").length).toBe(3);
+  for (const id of ["o-kraken", "o-coins", "o-bigbox"]) {
+    expect(page.document.getElementById(id).closest(".pick")).not.toBeNull();
+  }
+});
+
+test("each of the three boxes still posts the value the claim endpoint knows", async () => {
+  const posted: [string, string][] = [
+    ["o-kraken", "base-kraken"],
+    ["o-coins", "base-coins"],
+    ["o-bigbox", "bigbox-both"],
+  ];
+
+  for (const [id, value] of posted) {
+    const page = await loadPage({ body: codeAnswer }, DEMO);
+    selectOffer(page, id);
+    await page.submit();
+
+    expect(page.calls[0].body).toEqual({
+      email: "crew@example.com",
+      offer: value,
+      edition: "en",
+      company: "",
+    });
+  }
+});
+
+test("every price and every product description is still on the box it belongs to", async () => {
+  // Lucas asked for the prices to stay when the layout changed, so each box still names
+  // what it costs and what the gift on it is worth.
+  const page = await loadPage({ body: codeAnswer });
+
+  expect(boxText(page, "o-kraken")).toContain("€39.95");
+  expect(boxText(page, "o-coins")).toContain("€39.95");
+  expect(boxText(page, "o-bigbox")).toContain("€124.95");
+
+  for (const [id, key] of [
+    ["o-kraken", "pick.kraken.gift"],
+    ["o-coins", "pick.coins.gift"],
+    ["o-bigbox", "pick.bigbox.gift"],
+    ["o-kraken", "pick.kraken.what"],
+    ["o-coins", "pick.coins.what"],
+    ["o-bigbox", "pick.bigbox.what"],
+  ]) {
+    expect(boxText(page, id), `${id} no longer says "${key}"`).toContain(say("en", key));
+  }
+
+  // And they are still the keyed strings rather than English written into the layout:
+  // the same box in German says the German line.
+  await page.click(page.document.querySelector('.np-lang[data-lang="de"]'));
+  expect(boxText(page, "o-kraken")).toContain(say("de", "pick.kraken.what"));
+  expect(boxText(page, "o-bigbox")).toContain(say("de", "pick.bigbox.what"));
+  expect(boxText(page, "o-kraken")).toContain("€39.95");
+});
+
+test("there is one set of five edition radios, with a tile in each column driving it", async () => {
+  const page = await loadPage({ body: codeAnswer });
+  const form = page.document.getElementById("giftform");
+
+  // page.js reads the edition this way, and the blocked flow builds its language list
+  // from the same query. Six radios, or four, and both of those are wrong.
+  const radios = Array.from(form.querySelectorAll('input[name="edition"]'));
+  expect(radios.map((r: any) => r.id)).toEqual(["ed-en", "ed-de", "ed-fr", "ed-es", "ed-it"]);
+  expect(radios.map((r: any) => r.value)).toEqual(["en", "de", "fr", "es", "it"]);
+
+  // Two tiles for each of them, one per column, both pointing at the one radio.
+  for (const radio of radios as any[]) {
+    const labels = Array.from(form.querySelectorAll(`label[for="${radio.id}"]`));
+    expect(labels.length, `"${radio.id}" does not have one tile in each column`).toBe(2);
+    expect(labels.map((l: any) => l.closest(".prod"))).toEqual([
+      column(page, "o-kraken"),
+      column(page, "o-bigbox"),
+    ]);
+  }
+
+  // The name printed on the box, which is what the blocked flow copies into its own
+  // list of editions.
+  expect(form.querySelector('label[for="ed-de"]').textContent.trim()).toBe("Deutsch");
+});
+
+test("a language tile on the BIG BOX chooses the language, and not the box", async () => {
+  const page = await loadPage({ body: codeAnswer });
+  const email = page.document.getElementById("email");
+  const tile = column(page, "o-bigbox").querySelector('label[for="ed-de"]');
+
+  page.scrolls.length = 0;
+  await page.click(tile);
+
+  // The whole page follows, exactly as it does from the tiles in the other column.
+  expect(page.document.getElementById("ed-de").checked).toBe(true);
+  expect(page.document.documentElement.getAttribute("lang")).toBe("de");
+
+  // The gift is untouched, and the visitor is not carried down to the email field as
+  // though they had picked a box. They said which language, not which one they want.
+  expect(page.document.getElementById("o-bigbox").checked).toBe(false);
+  expect(page.scrolledTo(email)).toBeUndefined();
+  expect(page.document.activeElement.id).not.toBe("email");
+});
+
+test("no id is used twice, on the page or in anything it renders", async () => {
+  // Two elements with the same id is a real bug: getElementById answers with one of
+  // them and every "for" attribute pointing at it follows suit. Two sets of edition
+  // tiles is exactly the change that could introduce one.
+  const page = await loadPage({ body: codeAnswer });
+  const roots = [
+    page.document,
+    ...Array.from(page.document.querySelectorAll("template")).map((t: any) => t.content),
+  ];
+
+  const seen = new Map<string, number>();
+  for (const root of roots) {
+    for (const el of root.querySelectorAll("[id]")) {
+      const id = el.getAttribute("id");
+      seen.set(id, (seen.get(id) || 0) + 1);
+    }
+  }
+
+  expect([...seen].filter(([, times]) => times > 1)).toEqual([]);
+});
+
+test("the warning and the stock note are still on the Base Game column", async () => {
+  const page = await loadPage({ body: codeAnswer });
+
+  // The only thing on this page that tells a European about the English Base Game
+  // before they submit. The stylesheet shows it for exactly that pairing, so it has to
+  // be inside the form, which is what those rules key off.
+  const warn = page.document.querySelector("p.en-warn");
+  expect(warn).not.toBeNull();
+  expect(flat(warn.textContent)).toBe(
+    `${say("en", "offer.warn.head")} ${say("en", "offer.warn.body")}`
+  );
+  expect(warn.closest(".prod")).toBe(column(page, "o-kraken"));
+  expect(page.document.getElementById("giftform").contains(warn)).toBe(true);
+
+  const stock = page.document.querySelector("p.stock-note");
+  expect(stock).not.toBeNull();
+  expect(flat(stock.textContent)).toBe(
+    `${say("en", "offer.stock.head")} ${say("en", "offer.stock.body")}`
+  );
+  expect(stock.closest(".prod")).toBe(column(page, "o-kraken"));
 });

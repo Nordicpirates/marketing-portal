@@ -977,6 +977,11 @@ function syncClaimTitle() {
 for (const pick of form.querySelectorAll(".pick")) {
   pick.addEventListener("click", (event) => {
     if (event.detail === 0) return;
+    // The BIG BOX column is one box from edge to edge, and the edition tiles sit inside
+    // it. A tap on a tile is a language choice and not a gift choice, so it is not
+    // answered by carrying the visitor to the email field: that would tell them they had
+    // picked a box when all they did was say which language it is printed in.
+    if (event.target.closest && event.target.closest(".eds")) return;
     // A held box does not become checked, so this click chose nothing. Answering it by
     // dragging the visitor up to the email field would tell them it landed.
     if (choiceHeld()) {
