@@ -1,54 +1,54 @@
 {
-  "generated_at": "2026-08-17",
+  "generated_at": "2026-08-18",
   "owner": "Bengt 🦉 (data) + Polly (analysis)",
   "currency_note": "Revenue in EUR (store currency). Meta and Google Ads spend in SEK. Blended MER needs Shopify revenue and is blank while that connection is down.",
   "gads_alert": {
     "show": true,
-    "title": "Google Ads - 40 days in - 85 conv - 83 792 kr",
-    "sub": "ROAS 3.97x total. Only the two Shopping campaigns are live; brand has been off since 9 Aug and the country-split campaigns are still paused.",
+    "title": "Google Ads - 41 days in - 86 conv - 83 371 kr",
+    "sub": "ROAS 3.88x total. Only the two Shopping campaigns are live; brand has been off since 9 Aug and the country-split campaigns are still paused.",
     "link_gads": "https://ads.google.com/aw/campaigns?__e=7166732500",
     "link_gmc": "https://merchants.google.com"
   },
   "yesterday": {
-    "date": "2026-08-16",
+    "date": "2026-08-17",
     "orders": null,
     "revenue_eur": null,
     "revenue_sek": null,
     "sessions": null,
     "conversions": null,
     "gads_spend": null,
-    "gads_spend_sek": 665,
-    "gads_roas": 0.0,
-    "gads_conv": 0,
-    "meta_spend_sek": 3820
+    "gads_spend_sek": 369,
+    "gads_roas": 2.77,
+    "gads_conv": 2,
+    "meta_spend_sek": 2731
   },
   "gads": {
     "live_since": "8 July",
-    "as_of": "16 August",
-    "note": "40 days (8 Jul-16 Aug). Google Ads API refreshed 17 Aug. Only Shopping US & UK and Shopping AU are enabled; all brand campaigns have been paused since 9 Aug.",
-    "spend_label": "21 110 kr",
-    "yesterday_label": "665 kr",
+    "as_of": "17 August",
+    "note": "41 days (8 Jul-17 Aug). Google Ads API refreshed 18 Aug. Only Shopping US & UK and Shopping AU are enabled; all brand campaigns have been paused since 9 Aug.",
+    "spend_label": "21 478 kr",
+    "yesterday_label": "369 kr",
     "totals": {
-      "spend_sek": 21110,
-      "clicks": 5661,
-      "conversions": 85,
-      "conv_value_sek": 83792,
-      "roas": 3.97
+      "spend_sek": 21478,
+      "clicks": 5764,
+      "conversions": 86,
+      "conv_value_sek": 83371,
+      "roas": 3.88
     },
     "campaigns": [
       {
         "name": "Shopping - US & UK",
-        "spend_label": "14 587 kr",
-        "conv": 46,
-        "value_label": "45 318 kr",
-        "roas": 3.11
+        "spend_label": "14 840 kr",
+        "conv": 47,
+        "value_label": "44 897 kr",
+        "roas": 3.03
       },
       {
         "name": "Shopping - AU",
-        "spend_label": "2 470 kr",
+        "spend_label": "2 585 kr",
         "conv": 9,
         "value_label": "9 126 kr",
-        "roas": 3.7
+        "roas": 3.53
       },
       {
         "name": "Brand Search - All Markets",
@@ -237,7 +237,7 @@
       "note": "Google Ads-data: klick/konv/värde hela live-perioden. Spend 14 020 kr, ROAS 4.15×."
     }
   ],
-  "channels_note": "Google Ads and Meta are both current through Aug 16. Shopify traffic and order data is still stuck at Aug 10 because that connection needs reconnecting. The channel split below still dates from Aug 6.",
+  "channels_note": "Google Ads and Meta are both current through Aug 17. Shopify traffic and order data is still stuck at Aug 10 because that connection needs reconnecting. The channel split below still dates from Aug 6.",
   "dashboard_status": [
     {
       "icon": "✅",
@@ -409,7 +409,7 @@
       "val": "Needs reconnecting",
       "status": "wait",
       "tag": "ACTION NEEDED",
-      "note": "Both routes refuse: the API returns \"Invalid API key or access token\" and the direct connection reports an expired token. Down since 14 Aug. A human has to reconnect it."
+      "note": "Both routes refuse: the API returns \"Invalid API key or access token\" and the direct connection reports an expired token. Down since 14 Aug, re-checked 18 Aug. A human has to reconnect it."
     }
   ],
   "default_period": "7d",
@@ -417,8 +417,8 @@
     {
       "id": "7d",
       "label": "Last 7 days",
-      "range_start": "2026-08-10",
-      "range_end": "2026-08-16",
+      "range_start": "2026-08-11",
+      "range_end": "2026-08-17",
       "days": 7,
       "kpis": {
         "sessions": 2659,
@@ -427,32 +427,32 @@
         "orders": 68
       },
       "meta": {
-        "spend_label": "20 348 kr",
-        "spend_window": "10-16 aug (Meta API, hämtad 17 aug)",
-        "meta_roas": 1.15,
+        "spend_label": "20 879 kr",
+        "spend_window": "11-17 aug (Meta API, hämtad 18 aug)",
+        "meta_roas": 1.1,
         "blended_mer": null,
-        "_note": "Meta API (10-16 aug), hämtad 17 aug. 19 köp, 23 308 kr i värde. Blandad avkastning går inte att räkna ut nu, den behöver Shopifys försäljning och den kopplingen är nere."
+        "_note": "Meta API (11-17 aug), hämtad 18 aug. 20 köp, 22 984 kr i värde. Blandad avkastning går inte att räkna ut nu, den behöver Shopifys försäljning och den kopplingen är nere."
       },
       "gads": {
-        "spend_label": "2 778 kr",
-        "gads_roas": 2.14,
-        "conv": 7,
-        "value_label": "5 942 kr",
-        "_note": "Google Ads API (10-16 Aug), fetched 17 Aug.",
+        "spend_label": "2 773 kr",
+        "gads_roas": 2.35,
+        "conv": 8,
+        "value_label": "6 516 kr",
+        "_note": "Google Ads API (11-17 Aug), fetched 18 Aug.",
         "campaigns": [
           {
             "name": "Shopping - US & UK",
-            "spend_label": "2 142 kr",
-            "conv": 6,
-            "value_label": "5 438 kr",
-            "roas": 2.54
+            "spend_label": "2 069 kr",
+            "conv": 7,
+            "value_label": "6 012 kr",
+            "roas": 2.91
           },
           {
             "name": "Shopping - AU",
-            "spend_label": "636 kr",
+            "spend_label": "703 kr",
             "conv": 1,
             "value_label": "504 kr",
-            "roas": 0.79
+            "roas": 0.72
           }
         ]
       },
@@ -560,6 +560,12 @@
       "flags": [
         {
           "level": "warning",
+          "title": "Meta has been below break-even for a week",
+          "body": "Meta gave back 1.10 kr per krona over 11-17 Aug, against the 1.25 break-even Lucas set on Aug 10. That is a second week under water, and slightly worse than the 1.15 measured yesterday. Longer windows are still healthy (30 days 1.87, 90 days 2.07), so this is a recent slide rather than a chronic state.",
+          "sub": "Yesterday alone was better at 1.72, on lower spend."
+        },
+        {
+          "level": "warning",
           "title": "🚩 Base Game-sidan är största trafikmottagare men konverterar sämst",
           "body": "<b>/products/lying-pirates-base-game</b> tog 934 sessioner 3-9 aug men konverterar på <b>0.75%</b> - mot 4.79% för Big Box och 3.15% för startsidan.",
           "sub": "Värt att kolla vilka annonser som skickar trafiken dit och om Big Box vore bättre mål."
@@ -574,15 +580,15 @@
           "level": "warning",
           "title": "Shopify needs reconnecting - traffic and order data stuck at Aug 10",
           "body": "Shopify has been refusing both routes since Aug 14: the API says \"Invalid API key or access token\" and the direct connection says its token has expired. So sessions, conversion rate, countries, landing pages, orders and sales on this page are still the Aug 10 ones. Somebody has to reconnect Shopify; it will not fix itself.",
-          "sub": "Google Ads and Meta are both current through Aug 16."
+          "sub": "Google Ads and Meta are both current through Aug 17."
         }
       ]
     },
     {
       "id": "30d",
       "label": "Last 30 days",
-      "range_start": "2026-07-18",
-      "range_end": "2026-08-16",
+      "range_start": "2026-07-19",
+      "range_end": "2026-08-17",
       "days": 30,
       "kpis": {
         "sessions": 10431,
@@ -591,39 +597,39 @@
         "orders": 373
       },
       "meta": {
-        "spend_label": "116 112 kr",
-        "spend_window": "18 jul-16 aug (Meta API, hämtad 17 aug)",
-        "meta_roas": 1.91,
+        "spend_label": "113 554 kr",
+        "spend_window": "19 jul-17 aug (Meta API, hämtad 18 aug)",
+        "meta_roas": 1.87,
         "blended_mer": null,
-        "_note": "Meta API (18 jul-16 aug), hämtad 17 aug. 182 köp, 221 803 kr i värde. Blandad avkastning går inte att räkna ut nu, den behöver Shopifys försäljning och den kopplingen är nere."
+        "_note": "Meta API (19 jul-17 aug), hämtad 18 aug. 176 köp, 211 939 kr i värde. Blandad avkastning går inte att räkna ut nu, den behöver Shopifys försäljning och den kopplingen är nere."
       },
       "gads": {
-        "spend_label": "16 979 kr",
-        "gads_roas": 3.92,
-        "conv": 67.73,
-        "value_label": "66 582 kr",
-        "_note": "Google Ads API (18 Jul-16 Aug), fetched 17 Aug.",
+        "spend_label": "16 897 kr",
+        "gads_roas": 3.8,
+        "conv": 66.97,
+        "value_label": "64 250 kr",
+        "_note": "Google Ads API (19 Jul-17 Aug), fetched 18 Aug.",
         "campaigns": [
           {
             "name": "Shopping - US & UK",
-            "spend_label": "11 181 kr",
-            "conv": 38.73,
-            "value_label": "37 339 kr",
-            "roas": 3.34
+            "spend_label": "11 061 kr",
+            "conv": 37.97,
+            "value_label": "35 008 kr",
+            "roas": 3.17
           },
           {
             "name": "Shopping - AU",
-            "spend_label": "2 470 kr",
+            "spend_label": "2 585 kr",
             "conv": 9,
             "value_label": "9 126 kr",
-            "roas": 3.7
+            "roas": 3.53
           },
           {
             "name": "Brand Search - All Markets",
-            "spend_label": "1 696 kr",
+            "spend_label": "1 618 kr",
             "conv": 9,
             "value_label": "10 613 kr",
-            "roas": 6.26
+            "roas": 6.56
           },
           {
             "name": "Brand Search - IT",
@@ -773,16 +779,16 @@
           "level": "warning",
           "title": "Shopify needs reconnecting - traffic and order data stuck at Aug 10",
           "body": "Shopify has been refusing both routes since Aug 14: the API says \"Invalid API key or access token\" and the direct connection says its token has expired. So sessions, conversion rate, countries, landing pages, orders and sales on this page are still the Aug 10 ones. Somebody has to reconnect Shopify; it will not fix itself.",
-          "sub": "Google Ads and Meta are both current through Aug 16."
+          "sub": "Google Ads and Meta are both current through Aug 17."
         }
       ]
     },
     {
       "id": "thismonth",
-      "label": "This month (Aug 1-16)",
+      "label": "This month (Aug 1-17)",
       "range_start": "2026-08-01",
-      "range_end": "2026-08-16",
-      "days": 16,
+      "range_end": "2026-08-17",
+      "days": 17,
       "kpis": {
         "sessions": 3244,
         "conversion_label": "2.68%",
@@ -790,32 +796,32 @@
         "orders": 87
       },
       "meta": {
-        "spend_label": "45 872 kr",
-        "spend_window": "1-16 aug (Meta API, hämtad 17 aug)",
-        "meta_roas": 1.57,
+        "spend_label": "48 608 kr",
+        "spend_window": "1-17 aug (Meta API, hämtad 18 aug)",
+        "meta_roas": 1.58,
         "blended_mer": null,
-        "_note": "Meta API (1-16 aug), hämtad 17 aug. 60 köp, 72 151 kr i värde. Blandad avkastning går inte att räkna ut nu, den behöver Shopifys försäljning och den kopplingen är nere."
+        "_note": "Meta API (1-17 aug), hämtad 18 aug. 65 köp, 76 836 kr i värde. Blandad avkastning går inte att räkna ut nu, den behöver Shopifys försäljning och den kopplingen är nere."
       },
       "gads": {
-        "spend_label": "8 895 kr",
-        "gads_roas": 2.37,
-        "conv": 21.93,
-        "value_label": "21 047 kr",
-        "_note": "Google Ads API (1-16 Aug), fetched 17 Aug.",
+        "spend_label": "9 263 kr",
+        "gads_roas": 2.38,
+        "conv": 23.93,
+        "value_label": "22 069 kr",
+        "_note": "Google Ads API (1-17 Aug), fetched 18 Aug.",
         "campaigns": [
           {
             "name": "Shopping - US & UK",
-            "spend_label": "6 116 kr",
-            "conv": 14.93,
-            "value_label": "15 379 kr",
-            "roas": 2.51
+            "spend_label": "6 369 kr",
+            "conv": 16.93,
+            "value_label": "16 401 kr",
+            "roas": 2.58
           },
           {
             "name": "Shopping - AU",
-            "spend_label": "1 542 kr",
+            "spend_label": "1 658 kr",
             "conv": 2,
             "value_label": "1 006 kr",
-            "roas": 0.65
+            "roas": 0.61
           },
           {
             "name": "Brand Search - All Markets",
@@ -916,15 +922,15 @@
           "level": "warning",
           "title": "Shopify needs reconnecting - traffic and order data stuck at Aug 10",
           "body": "Shopify has been refusing both routes since Aug 14: the API says \"Invalid API key or access token\" and the direct connection says its token has expired. So sessions, conversion rate, countries, landing pages, orders and sales on this page are still the Aug 10 ones. Somebody has to reconnect Shopify; it will not fix itself.",
-          "sub": "Google Ads and Meta are both current through Aug 16."
+          "sub": "Google Ads and Meta are both current through Aug 17."
         }
       ]
     },
     {
       "id": "90d",
       "label": "Last 90 days",
-      "range_start": "2026-05-19",
-      "range_end": "2026-08-16",
+      "range_start": "2026-05-20",
+      "range_end": "2026-08-17",
       "days": 90,
       "kpis": {
         "sessions": 30485,
@@ -933,32 +939,32 @@
         "orders": 1136
       },
       "meta": {
-        "spend_label": "436 091 kr",
-        "spend_window": "19 maj-16 aug (Meta API, hämtad 17 aug)",
+        "spend_label": "436 842 kr",
+        "spend_window": "20 maj-17 aug (Meta API, hämtad 18 aug)",
         "meta_roas": 2.07,
         "blended_mer": null,
-        "_note": "Meta API (19 maj-16 aug), hämtad 17 aug. 731 köp, 902 687 kr i värde. Blandad avkastning går inte att räkna ut nu, den behöver Shopifys försäljning och den kopplingen är nere."
+        "_note": "Meta API (20 maj-17 aug), hämtad 18 aug. 734 köp, 903 735 kr i värde. Blandad avkastning går inte att räkna ut nu, den behöver Shopifys försäljning och den kopplingen är nere."
       },
       "gads": {
-        "spend_label": "21 110 kr",
-        "gads_roas": 3.97,
-        "conv": 85,
-        "value_label": "83 792 kr",
-        "_note": "Google Ads API (live 8 Jul-16 Aug), fetched 17 Aug.",
+        "spend_label": "21 478 kr",
+        "gads_roas": 3.88,
+        "conv": 86,
+        "value_label": "83 371 kr",
+        "_note": "Google Ads API (live 8 Jul-17 Aug), fetched 18 Aug.",
         "campaigns": [
           {
             "name": "Shopping - US & UK",
-            "spend_label": "14 587 kr",
-            "conv": 46,
-            "value_label": "45 318 kr",
-            "roas": 3.11
+            "spend_label": "14 840 kr",
+            "conv": 47,
+            "value_label": "44 897 kr",
+            "roas": 3.03
           },
           {
             "name": "Shopping - AU",
-            "spend_label": "2 470 kr",
+            "spend_label": "2 585 kr",
             "conv": 9,
             "value_label": "9 126 kr",
-            "roas": 3.7
+            "roas": 3.53
           },
           {
             "name": "Brand Search - All Markets",
@@ -1121,15 +1127,15 @@
           "level": "warning",
           "title": "Shopify needs reconnecting - traffic and order data stuck at Aug 10",
           "body": "Shopify has been refusing both routes since Aug 14: the API says \"Invalid API key or access token\" and the direct connection says its token has expired. So sessions, conversion rate, countries, landing pages, orders and sales on this page are still the Aug 10 ones. Somebody has to reconnect Shopify; it will not fix itself.",
-          "sub": "Google Ads and Meta are both current through Aug 16."
+          "sub": "Google Ads and Meta are both current through Aug 17."
         }
       ]
     },
     {
       "id": "yesterday",
-      "label": "Yesterday (Aug 16)",
-      "range_start": "2026-08-16",
-      "range_end": "2026-08-16",
+      "label": "Yesterday (Aug 17)",
+      "range_start": "2026-08-17",
+      "range_end": "2026-08-17",
       "days": 1,
       "kpis": {
         "sessions": null,
@@ -1138,29 +1144,29 @@
         "orders": null
       },
       "meta": {
-        "spend_label": "3 820 kr",
-        "spend_window": "16 aug (Meta API, hämtad 17 aug)",
-        "meta_roas": 0.51,
+        "spend_label": "2 731 kr",
+        "spend_window": "17 aug (Meta API, hämtad 18 aug)",
+        "meta_roas": 1.72,
         "blended_mer": null,
-        "_note": "Meta API (16 aug), hämtad 17 aug. 2 köp, 1 957 kr i värde. Blandad avkastning går inte att räkna ut nu, den behöver Shopifys försäljning och den kopplingen är nere."
+        "_note": "Meta API (17 aug), hämtad 18 aug. 5 köp, 4 685 kr i värde. Blandad avkastning går inte att räkna ut nu, den behöver Shopifys försäljning och den kopplingen är nere."
       },
       "gads": {
-        "spend_label": "665 kr",
-        "gads_roas": 0.0,
-        "conv": 0,
-        "value_label": "0 kr",
-        "_note": "Google Ads API (16 Aug), fetched 17 Aug.",
+        "spend_label": "369 kr",
+        "gads_roas": 2.77,
+        "conv": 2,
+        "value_label": "1 022 kr",
+        "_note": "Google Ads API (17 Aug), fetched 18 Aug.",
         "campaigns": [
           {
             "name": "Shopping - US & UK",
-            "spend_label": "481 kr",
-            "conv": 0,
-            "value_label": "0 kr",
-            "roas": 0.0
+            "spend_label": "253 kr",
+            "conv": 2,
+            "value_label": "1 022 kr",
+            "roas": 4.04
           },
           {
             "name": "Shopping - AU",
-            "spend_label": "184 kr",
+            "spend_label": "116 kr",
             "conv": 0,
             "value_label": "0 kr",
             "roas": 0.0
@@ -1174,7 +1180,7 @@
           "level": "warning",
           "title": "Shopify needs reconnecting - traffic and order data stuck at Aug 10",
           "body": "Shopify has been refusing both routes since Aug 14: the API says \"Invalid API key or access token\" and the direct connection says its token has expired. So sessions, conversion rate, countries, landing pages, orders and sales on this page are still the Aug 10 ones. Somebody has to reconnect Shopify; it will not fix itself.",
-          "sub": "Google Ads and Meta are both current through Aug 16."
+          "sub": "Google Ads and Meta are both current through Aug 17."
         }
       ]
     }
@@ -1467,26 +1473,26 @@
   },
   "gads_periods": {
     "since": "2026-07-08",
-    "until": "2026-08-16",
-    "days": 40,
-    "total_spend_sek": 21110,
-    "total_conv": 85,
-    "total_conv_value_sek": 83792,
-    "roas": 3.97,
+    "until": "2026-08-17",
+    "days": 41,
+    "total_spend_sek": 21478,
+    "total_conv": 86,
+    "total_conv_value_sek": 83371,
+    "roas": 3.88,
     "campaigns": [
       {
         "name": "Shopping - US & UK",
-        "spend_sek": 14587,
-        "conv": 46,
-        "conv_value_sek": 45318,
-        "roas": 3.11
+        "spend_sek": 14840,
+        "conv": 47,
+        "conv_value_sek": 44897,
+        "roas": 3.03
       },
       {
         "name": "Shopping - AU",
-        "spend_sek": 2470,
+        "spend_sek": 2585,
         "conv": 9,
         "conv_value_sek": 9126,
-        "roas": 3.7
+        "roas": 3.53
       },
       {
         "name": "Brand Search - All Markets",
