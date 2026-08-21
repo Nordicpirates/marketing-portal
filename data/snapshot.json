@@ -1,47 +1,47 @@
 {
-  "generated_at": "2026-08-20",
+  "generated_at": "2026-08-21",
   "owner": "Bengt 🦉 (data) + Polly (analysis)",
   "currency_note": "Revenue in EUR (store currency). Meta and Google Ads spend in SEK. Blended MER = the store's whole revenue divided by Meta plus Google spend, at 11.4 SEK/EUR.",
   "gads_alert": {
     "show": true,
-    "title": "Google Ads - 43 days in - 90 conv - 89 352 kr",
-    "sub": "Spend has been near zero since 18 Aug and the cause is still unknown - worth checking billing by hand.",
+    "title": "Google Ads - 44 days in - 91 conv - 91 085 kr",
+    "sub": "ROAS 4.08x total. Spending resumed on 20 Aug after two quiet days.",
     "link_gads": "https://ads.google.com/aw/campaigns?__e=7166732500",
     "link_gmc": "https://merchants.google.com"
   },
   "yesterday": {
-    "date": "2026-08-19",
-    "orders": 8,
-    "revenue_eur": 887,
-    "revenue_sek": 10112,
+    "date": "2026-08-20",
+    "orders": 4,
+    "revenue_eur": 294,
+    "revenue_sek": 3351,
     "sessions": null,
-    "conversions": 8,
+    "conversions": 4,
     "gads_spend": null,
-    "gads_spend_sek": 11,
-    "gads_roas": 167.74,
+    "gads_spend_sek": 830,
+    "gads_roas": 2.09,
     "gads_conv": 1,
-    "meta_spend_sek": 2982
+    "meta_spend_sek": 3661
   },
   "gads": {
     "live_since": "8 July",
-    "as_of": "19 August",
-    "note": "43 days (8 Jul-19 Aug). Refreshed 20 Aug. Shopping US & UK is the only campaign switched on and has barely spent since 18 Aug - see the warning on the period cards.",
-    "spend_label": "21 495 kr",
-    "yesterday_label": "11 kr",
+    "as_of": "20 August",
+    "note": "44 days (8 Jul-20 Aug). Refreshed 21 Aug. Shopping US & UK is the only campaign switched on. It went quiet on 18-19 Aug and started spending again on 20 Aug.",
+    "spend_label": "22 323 kr",
+    "yesterday_label": "830 kr",
     "totals": {
-      "spend_sek": 21495,
-      "clicks": 5779,
-      "conversions": 90,
-      "conv_value_sek": 89352,
-      "roas": 4.16
+      "spend_sek": 22323,
+      "clicks": 5865,
+      "conversions": 91,
+      "conv_value_sek": 91085,
+      "roas": 4.08
     },
     "campaigns": [
       {
         "name": "Shopping - US & UK",
-        "spend_label": "14 856 kr",
-        "conv": 50,
-        "value_label": "49 533 kr",
-        "roas": 3.33
+        "spend_label": "15 685 kr",
+        "conv": 51,
+        "value_label": "51 266 kr",
+        "roas": 3.27
       },
       {
         "name": "Shopping - AU",
@@ -237,7 +237,7 @@
       "note": "Google Ads-data: klick/konv/värde hela live-perioden. Spend 14 020 kr, ROAS 4.15×."
     }
   ],
-  "channels_note": "Google Ads, Meta and Shopify orders are all current through Aug 19. Shopify visitor analytics (sessions, conversion rate, countries, landing pages) still needs its own connection restored and dates from Aug 6.",
+  "channels_note": "Google Ads, Meta and Shopify orders are all current through Aug 20. Shopify visitor analytics (sessions, conversion rate, countries, landing pages) still needs its own connection restored and dates from Aug 6.",
   "dashboard_status": [
     {
       "icon": "✅",
@@ -417,39 +417,39 @@
     {
       "id": "7d",
       "label": "Last 7 days",
-      "range_start": "2026-08-13",
-      "range_end": "2026-08-19",
+      "range_start": "2026-08-14",
+      "range_end": "2026-08-20",
       "days": 7,
       "kpis": {
         "sessions": null,
         "conversion_label": "Unavailable",
-        "sales_label": "€3 830",
-        "orders": 36
+        "sales_label": "€3 890",
+        "orders": 37
       },
       "meta": {
-        "spend_label": "21 726 kr",
-        "spend_window": "13-19 aug (Meta API, hämtad 20 aug)",
-        "meta_roas": 1.42,
-        "blended_mer": 1.83,
-        "_note": "Meta API (13-19 aug), hämtad 20 aug. 24 köp, 30 864 kr i värde. Blandad avkastning = butikens hela försäljning delat med Meta plus Google."
+        "spend_label": "22 405 kr",
+        "spend_window": "14-20 aug (Meta API, hämtad 21 aug)",
+        "meta_roas": 1.34,
+        "blended_mer": 1.77,
+        "_note": "Meta API (14-20 aug), hämtad 21 aug. 25 köp, 29 944 kr i värde. Blandad avkastning = butikens hela försäljning delat med Meta plus Google."
       },
       "gads": {
-        "spend_label": "2 173 kr",
-        "gads_roas": 2.14,
-        "conv": 5,
-        "value_label": "4 652 kr",
-        "_note": "Google Ads API (13-19 Aug), fetched 20 Aug.",
+        "spend_label": "2 703 kr",
+        "gads_roas": 2.36,
+        "conv": 6,
+        "value_label": "6 389 kr",
+        "_note": "Google Ads API (14-20 Aug), fetched 21 Aug.",
         "campaigns": [
           {
             "name": "Shopping - US & UK",
-            "spend_label": "1 592 kr",
-            "conv": 5,
-            "value_label": "4 652 kr",
-            "roas": 2.92
+            "spend_label": "2 192 kr",
+            "conv": 6,
+            "value_label": "6 389 kr",
+            "roas": 2.91
           },
           {
             "name": "Shopping - AU",
-            "spend_label": "581 kr",
+            "spend_label": "512 kr",
             "conv": 0,
             "value_label": "0 kr",
             "roas": 0.0
@@ -559,10 +559,10 @@
       ],
       "flags": [
         {
-          "level": "warning",
-          "title": "Google Ads has barely spent for three days - still unexplained",
-          "body": "Shopping US & UK ran at 250-480 kr a day up to 17 Aug, then 5.99 kr on 18 Aug and 10.86 kr on 19 Aug. The campaign is switched on and its 430 kr daily budget is untouched. Merchant Center looks healthy. Nothing has changed since this was first reported on 19 Aug, so whatever stopped it is still in force. Billing is the most likely place to look and needs checking by hand in the Google Ads interface.",
-          "sub": "Ignore any ROAS figure on the Google side for these days - a single sale against almost no spend produces a meaningless ratio."
+          "level": "info",
+          "title": "Google Ads is spending again",
+          "body": "After two near-dead days (5.99 kr on 18 Aug, 10.86 kr on 19 Aug) Shopping US & UK spent 830 kr on 20 Aug, above its usual 250-480 kr. Whatever stopped it has cleared. The cause was never identified, so it is worth watching in case it repeats.",
+          "sub": "The 7-day and 30-day Google figures still carry the two dead days, so they read lower than normal."
         },
         {
           "level": "warning",
@@ -579,57 +579,57 @@
         {
           "level": "info",
           "title": "Where these numbers come from",
-          "body": "Orders and sales are read straight from Shopify: 36 orders, €3 830 for this period. Visitor numbers, conversion rate, countries and landing pages still cannot refresh - those come from Shopify analytics, a separate connection that still needs reconnecting, and date from Aug 6.",
-          "sub": "Google Ads and Meta are both current through Aug 19."
+          "body": "Orders and sales are read straight from Shopify: 37 orders, €3 890 for this period. Visitor numbers, conversion rate, countries and landing pages still cannot refresh - those come from Shopify analytics, a separate connection that still needs reconnecting, and date from Aug 6.",
+          "sub": "Google Ads and Meta are both current through Aug 20."
         }
       ]
     },
     {
       "id": "30d",
       "label": "Last 30 days",
-      "range_start": "2026-07-21",
-      "range_end": "2026-08-19",
+      "range_start": "2026-07-22",
+      "range_end": "2026-08-20",
       "days": 30,
       "kpis": {
         "sessions": null,
         "conversion_label": "Unavailable",
-        "sales_label": "€28 350",
-        "orders": 281
+        "sales_label": "€26 981",
+        "orders": 270
       },
       "meta": {
-        "spend_label": "108 553 kr",
-        "spend_window": "21 jul-19 aug (Meta API, hämtad 20 aug)",
-        "meta_roas": 1.8,
-        "blended_mer": 2.59,
-        "_note": "Meta API (21 jul-19 aug), hämtad 20 aug. 161 köp, 195 689 kr i värde. Blandad avkastning = butikens hela försäljning delat med Meta plus Google."
+        "spend_label": "106 492 kr",
+        "spend_window": "22 jul-20 aug (Meta API, hämtad 21 aug)",
+        "meta_roas": 1.74,
+        "blended_mer": 2.5,
+        "_note": "Meta API (22 jul-20 aug), hämtad 21 aug. 157 köp, 185 605 kr i värde. Blandad avkastning = butikens hela försäljning delat med Meta plus Google."
       },
       "gads": {
-        "spend_label": "16 074 kr",
-        "gads_roas": 4.08,
-        "conv": 64.97,
-        "value_label": "65 626 kr",
-        "_note": "Google Ads API (21 Jul-19 Aug), fetched 20 Aug.",
+        "spend_label": "16 519 kr",
+        "gads_roas": 3.88,
+        "conv": 62.97,
+        "value_label": "64 139 kr",
+        "_note": "Google Ads API (22 Jul-20 Aug), fetched 21 Aug.",
         "campaigns": [
           {
             "name": "Shopping - US & UK",
-            "spend_label": "10 485 kr",
-            "conv": 36.97,
-            "value_label": "36 857 kr",
-            "roas": 3.52
+            "spend_label": "11 091 kr",
+            "conv": 34.97,
+            "value_label": "35 370 kr",
+            "roas": 3.19
           },
           {
             "name": "Shopping - AU",
-            "spend_label": "2 585 kr",
+            "spend_label": "2 581 kr",
             "conv": 10,
             "value_label": "10 471 kr",
-            "roas": 4.05
+            "roas": 4.06
           },
           {
             "name": "Brand Search - All Markets",
-            "spend_label": "1 396 kr",
+            "spend_label": "1 254 kr",
             "conv": 7,
             "value_label": "8 795 kr",
-            "roas": 6.3
+            "roas": 7.01
           },
           {
             "name": "Brand Search - IT",
@@ -640,17 +640,17 @@
           },
           {
             "name": "Shopping - DE",
-            "spend_label": "546 kr",
+            "spend_label": "539 kr",
             "conv": 0,
             "value_label": "0 kr",
             "roas": 0.0
           },
           {
             "name": "Non-brand Test - US & UK",
-            "spend_label": "320 kr",
+            "spend_label": "313 kr",
             "conv": 1,
             "value_label": "133 kr",
-            "roas": 0.42
+            "roas": 0.43
           },
           {
             "name": "Brand Search - DE",
@@ -770,10 +770,10 @@
       ],
       "flags": [
         {
-          "level": "warning",
-          "title": "Google Ads has barely spent for three days - still unexplained",
-          "body": "Shopping US & UK ran at 250-480 kr a day up to 17 Aug, then 5.99 kr on 18 Aug and 10.86 kr on 19 Aug. The campaign is switched on and its 430 kr daily budget is untouched. Merchant Center looks healthy. Nothing has changed since this was first reported on 19 Aug, so whatever stopped it is still in force. Billing is the most likely place to look and needs checking by hand in the Google Ads interface.",
-          "sub": "Ignore any ROAS figure on the Google side for these days - a single sale against almost no spend produces a meaningless ratio."
+          "level": "info",
+          "title": "Google Ads is spending again",
+          "body": "After two near-dead days (5.99 kr on 18 Aug, 10.86 kr on 19 Aug) Shopping US & UK spent 830 kr on 20 Aug, above its usual 250-480 kr. Whatever stopped it has cleared. The cause was never identified, so it is worth watching in case it repeats.",
+          "sub": "The 7-day and 30-day Google figures still carry the two dead days, so they read lower than normal."
         },
         {
           "level": "warning",
@@ -784,43 +784,43 @@
         {
           "level": "info",
           "title": "Where these numbers come from",
-          "body": "Orders and sales are read straight from Shopify: 281 orders, €28 350 for this period. Visitor numbers, conversion rate, countries and landing pages still cannot refresh - those come from Shopify analytics, a separate connection that still needs reconnecting, and date from Aug 6.",
-          "sub": "Google Ads and Meta are both current through Aug 19."
+          "body": "Orders and sales are read straight from Shopify: 270 orders, €26 981 for this period. Visitor numbers, conversion rate, countries and landing pages still cannot refresh - those come from Shopify analytics, a separate connection that still needs reconnecting, and date from Aug 6.",
+          "sub": "Google Ads and Meta are both current through Aug 20."
         }
       ]
     },
     {
       "id": "thismonth",
-      "label": "This month (Aug 1-19)",
+      "label": "This month (Aug 1-20)",
       "range_start": "2026-08-01",
-      "range_end": "2026-08-19",
-      "days": 19,
+      "range_end": "2026-08-20",
+      "days": 20,
       "kpis": {
         "sessions": null,
         "conversion_label": "Unavailable",
-        "sales_label": "€14 024",
-        "orders": 142
+        "sales_label": "€14 318",
+        "orders": 146
       },
       "meta": {
-        "spend_label": "54 976 kr",
-        "spend_window": "1-19 aug (Meta API, hämtad 20 aug)",
-        "meta_roas": 1.63,
-        "blended_mer": 2.49,
-        "_note": "Meta API (1-19 aug), hämtad 20 aug. 74 köp, 89 780 kr i värde. Blandad avkastning = butikens hela försäljning delat med Meta plus Google."
+        "spend_label": "58 644 kr",
+        "spend_window": "1-20 aug (Meta API, hämtad 21 aug)",
+        "meta_roas": 1.56,
+        "blended_mer": 2.37,
+        "_note": "Meta API (1-20 aug), hämtad 21 aug. 77 köp, 91 203 kr i värde. Blandad avkastning = butikens hela försäljning delat med Meta plus Google."
       },
       "gads": {
-        "spend_label": "9 280 kr",
-        "gads_roas": 3.02,
+        "spend_label": "10 108 kr",
+        "gads_roas": 2.81,
         "conv": 27.93,
-        "value_label": "28 050 kr",
-        "_note": "Google Ads API (1-19 Aug), fetched 20 Aug.",
+        "value_label": "28 406 kr",
+        "_note": "Google Ads API (1-20 Aug), fetched 21 Aug.",
         "campaigns": [
           {
             "name": "Shopping - US & UK",
-            "spend_label": "6 386 kr",
+            "spend_label": "7 214 kr",
             "conv": 19.93,
-            "value_label": "21 037 kr",
-            "roas": 3.29
+            "value_label": "21 393 kr",
+            "roas": 2.97
           },
           {
             "name": "Shopping - AU",
@@ -919,10 +919,10 @@
       ],
       "flags": [
         {
-          "level": "warning",
-          "title": "Google Ads has barely spent for three days - still unexplained",
-          "body": "Shopping US & UK ran at 250-480 kr a day up to 17 Aug, then 5.99 kr on 18 Aug and 10.86 kr on 19 Aug. The campaign is switched on and its 430 kr daily budget is untouched. Merchant Center looks healthy. Nothing has changed since this was first reported on 19 Aug, so whatever stopped it is still in force. Billing is the most likely place to look and needs checking by hand in the Google Ads interface.",
-          "sub": "Ignore any ROAS figure on the Google side for these days - a single sale against almost no spend produces a meaningless ratio."
+          "level": "info",
+          "title": "Google Ads is spending again",
+          "body": "After two near-dead days (5.99 kr on 18 Aug, 10.86 kr on 19 Aug) Shopping US & UK spent 830 kr on 20 Aug, above its usual 250-480 kr. Whatever stopped it has cleared. The cause was never identified, so it is worth watching in case it repeats.",
+          "sub": "The 7-day and 30-day Google figures still carry the two dead days, so they read lower than normal."
         },
         {
           "level": "info",
@@ -933,43 +933,43 @@
         {
           "level": "info",
           "title": "Where these numbers come from",
-          "body": "Orders and sales are read straight from Shopify: 142 orders, €14 024 for this period. Visitor numbers, conversion rate, countries and landing pages still cannot refresh - those come from Shopify analytics, a separate connection that still needs reconnecting, and date from Aug 6.",
-          "sub": "Google Ads and Meta are both current through Aug 19."
+          "body": "Orders and sales are read straight from Shopify: 146 orders, €14 318 for this period. Visitor numbers, conversion rate, countries and landing pages still cannot refresh - those come from Shopify analytics, a separate connection that still needs reconnecting, and date from Aug 6.",
+          "sub": "Google Ads and Meta are both current through Aug 20."
         }
       ]
     },
     {
       "id": "90d",
       "label": "Last 90 days",
-      "range_start": "2026-05-22",
-      "range_end": "2026-08-19",
+      "range_start": "2026-05-23",
+      "range_end": "2026-08-20",
       "days": 90,
       "kpis": {
         "sessions": null,
         "conversion_label": "Unavailable",
-        "sales_label": "€119 896",
-        "orders": 1124
+        "sales_label": "€118 676",
+        "orders": 1112
       },
       "meta": {
-        "spend_label": "439 247 kr",
-        "spend_window": "22 maj-19 aug (Meta API, hämtad 20 aug)",
-        "meta_roas": 2.07,
-        "blended_mer": 2.97,
-        "_note": "Meta API (22 maj-19 aug), hämtad 20 aug. 739 köp, 909 955 kr i värde. Blandad avkastning = butikens hela försäljning delat med Meta plus Google."
+        "spend_label": "438 448 kr",
+        "spend_window": "23 maj-20 aug (Meta API, hämtad 21 aug)",
+        "meta_roas": 2.06,
+        "blended_mer": 2.94,
+        "_note": "Meta API (23 maj-20 aug), hämtad 21 aug. 731 köp, 901 117 kr i värde. Blandad avkastning = butikens hela försäljning delat med Meta plus Google."
       },
       "gads": {
-        "spend_label": "21 495 kr",
-        "gads_roas": 4.16,
-        "conv": 90,
-        "value_label": "89 352 kr",
-        "_note": "Google Ads API (live 8 Jul-19 Aug), fetched 20 Aug.",
+        "spend_label": "22 323 kr",
+        "gads_roas": 4.08,
+        "conv": 91,
+        "value_label": "91 085 kr",
+        "_note": "Google Ads API (live 8 Jul-20 Aug), fetched 21 Aug.",
         "campaigns": [
           {
             "name": "Shopping - US & UK",
-            "spend_label": "14 856 kr",
-            "conv": 50,
-            "value_label": "49 533 kr",
-            "roas": 3.33
+            "spend_label": "15 685 kr",
+            "conv": 51,
+            "value_label": "51 266 kr",
+            "roas": 3.27
           },
           {
             "name": "Shopping - AU",
@@ -1130,10 +1130,10 @@
       ],
       "flags": [
         {
-          "level": "warning",
-          "title": "Google Ads has barely spent for three days - still unexplained",
-          "body": "Shopping US & UK ran at 250-480 kr a day up to 17 Aug, then 5.99 kr on 18 Aug and 10.86 kr on 19 Aug. The campaign is switched on and its 430 kr daily budget is untouched. Merchant Center looks healthy. Nothing has changed since this was first reported on 19 Aug, so whatever stopped it is still in force. Billing is the most likely place to look and needs checking by hand in the Google Ads interface.",
-          "sub": "Ignore any ROAS figure on the Google side for these days - a single sale against almost no spend produces a meaningless ratio."
+          "level": "info",
+          "title": "Google Ads is spending again",
+          "body": "After two near-dead days (5.99 kr on 18 Aug, 10.86 kr on 19 Aug) Shopping US & UK spent 830 kr on 20 Aug, above its usual 250-480 kr. Whatever stopped it has cleared. The cause was never identified, so it is worth watching in case it repeats.",
+          "sub": "The 7-day and 30-day Google figures still carry the two dead days, so they read lower than normal."
         },
         {
           "level": "warning",
@@ -1144,43 +1144,43 @@
         {
           "level": "info",
           "title": "Where these numbers come from",
-          "body": "Orders and sales are read straight from Shopify: 1124 orders, €119 896 for this period. Visitor numbers, conversion rate, countries and landing pages still cannot refresh - those come from Shopify analytics, a separate connection that still needs reconnecting, and date from Aug 6.",
-          "sub": "Google Ads and Meta are both current through Aug 19."
+          "body": "Orders and sales are read straight from Shopify: 1112 orders, €118 676 for this period. Visitor numbers, conversion rate, countries and landing pages still cannot refresh - those come from Shopify analytics, a separate connection that still needs reconnecting, and date from Aug 6.",
+          "sub": "Google Ads and Meta are both current through Aug 20."
         }
       ]
     },
     {
       "id": "yesterday",
-      "label": "Yesterday (Aug 19)",
-      "range_start": "2026-08-19",
-      "range_end": "2026-08-19",
+      "label": "Yesterday (Aug 20)",
+      "range_start": "2026-08-20",
+      "range_end": "2026-08-20",
       "days": 1,
       "kpis": {
         "sessions": null,
         "conversion_label": "Unavailable",
-        "sales_label": "€887",
-        "orders": 8
+        "sales_label": "€294",
+        "orders": 4
       },
       "meta": {
-        "spend_label": "2 982 kr",
-        "spend_window": "19 aug (Meta API, hämtad 20 aug)",
-        "meta_roas": 2.24,
-        "blended_mer": 3.38,
-        "_note": "Meta API (19 aug), hämtad 20 aug. 5 köp, 6 671 kr i värde. Blandad avkastning = butikens hela försäljning delat med Meta plus Google."
+        "spend_label": "3 661 kr",
+        "spend_window": "20 aug (Meta API, hämtad 21 aug)",
+        "meta_roas": 0.39,
+        "blended_mer": 0.75,
+        "_note": "Meta API (20 aug), hämtad 21 aug. 3 köp, 1 423 kr i värde. Blandad avkastning = butikens hela försäljning delat med Meta plus Google."
       },
       "gads": {
-        "spend_label": "11 kr",
-        "gads_roas": 167.74,
+        "spend_label": "830 kr",
+        "gads_roas": 2.09,
         "conv": 1,
-        "value_label": "1 822 kr",
-        "_note": "Google Ads API (19 Aug), fetched 20 Aug.",
+        "value_label": "1 736 kr",
+        "_note": "Google Ads API (20 Aug), fetched 21 Aug.",
         "campaigns": [
           {
             "name": "Shopping - US & UK",
-            "spend_label": "11 kr",
+            "spend_label": "830 kr",
             "conv": 1,
-            "value_label": "1 822 kr",
-            "roas": 167.74
+            "value_label": "1 736 kr",
+            "roas": 2.09
           }
         ]
       },
@@ -1189,15 +1189,21 @@
       "flags": [
         {
           "level": "warning",
-          "title": "Google Ads has barely spent for three days - still unexplained",
-          "body": "Shopping US & UK ran at 250-480 kr a day up to 17 Aug, then 5.99 kr on 18 Aug and 10.86 kr on 19 Aug. The campaign is switched on and its 430 kr daily budget is untouched. Merchant Center looks healthy. Nothing has changed since this was first reported on 19 Aug, so whatever stopped it is still in force. Billing is the most likely place to look and needs checking by hand in the Google Ads interface.",
-          "sub": "Ignore any ROAS figure on the Google side for these days - a single sale against almost no spend produces a meaningless ratio."
+          "title": "Aug 20 was a weak day for the store",
+          "body": "The shop took 4 orders for €294 while Meta spent 3 661 kr and Google 830 kr. That is roughly 4 500 kr of advertising against 3 400 kr of sales. Meta's own figure for the day (0.39 back per krona) will most likely rise, because sales are often credited a day or two late - that is exactly what happened on 13-14 Aug.",
+          "sub": "One day is one day. Worth watching, not worth reacting to on its own."
+        },
+        {
+          "level": "info",
+          "title": "Google Ads is spending again",
+          "body": "After two near-dead days (5.99 kr on 18 Aug, 10.86 kr on 19 Aug) Shopping US & UK spent 830 kr on 20 Aug, above its usual 250-480 kr. Whatever stopped it has cleared. The cause was never identified, so it is worth watching in case it repeats.",
+          "sub": "The 7-day and 30-day Google figures still carry the two dead days, so they read lower than normal."
         },
         {
           "level": "info",
           "title": "Where these numbers come from",
-          "body": "Orders and sales are read straight from Shopify: 8 orders, €887 for this period. Visitor numbers, conversion rate, countries and landing pages still cannot refresh - those come from Shopify analytics, a separate connection that still needs reconnecting, and date from Aug 6.",
-          "sub": "Google Ads and Meta are both current through Aug 19."
+          "body": "Orders and sales are read straight from Shopify: 4 orders, €294 for this period. Visitor numbers, conversion rate, countries and landing pages still cannot refresh - those come from Shopify analytics, a separate connection that still needs reconnecting, and date from Aug 6.",
+          "sub": "Google Ads and Meta are both current through Aug 20."
         }
       ]
     }
@@ -1490,19 +1496,19 @@
   },
   "gads_periods": {
     "since": "2026-07-08",
-    "until": "2026-08-19",
-    "days": 43,
-    "total_spend_sek": 21495,
-    "total_conv": 90,
-    "total_conv_value_sek": 89352,
-    "roas": 4.16,
+    "until": "2026-08-20",
+    "days": 44,
+    "total_spend_sek": 22323,
+    "total_conv": 91,
+    "total_conv_value_sek": 91085,
+    "roas": 4.08,
     "campaigns": [
       {
         "name": "Shopping - US & UK",
-        "spend_sek": 14856,
-        "conv": 50,
-        "conv_value_sek": 49533,
-        "roas": 3.33
+        "spend_sek": 15685,
+        "conv": 51,
+        "conv_value_sek": 51266,
+        "roas": 3.27
       },
       {
         "name": "Shopping - AU",
