@@ -237,7 +237,7 @@
       "note": "Google Ads-data: klick/konv/värde hela live-perioden. Spend 14 020 kr, ROAS 4.15×."
     }
   ],
-  "channels_note": "Google Ads, Meta and Shopify orders are all current through Aug 20. Shopify visitor analytics (sessions, conversion rate, countries, landing pages) still needs its own connection restored and dates from Aug 6.",
+  "channels_note": "Refresh on 22 Aug could not run: the server could not open secure connections, so Meta and Shopify were unreachable. All figures on this page cover up to and including 20 August. Shopify visitor analytics is older still and dates from Aug 6.",
   "dashboard_status": [
     {
       "icon": "✅",
@@ -559,6 +559,12 @@
       ],
       "flags": [
         {
+          "level": "warning",
+          "title": "Today (22 Aug) could not refresh - every number below is from 20 Aug",
+          "body": "The server lost its ability to verify secure connections this morning, so nothing outside could be reached: not Meta, not Shopify. Google Ads was reachable (it goes through a local route) and had figures up to 21 Aug, but publishing one channel a day ahead of the others would have made every card mix two different date ranges, so it was left out on purpose. Everything on this page covers up to and including 20 August.",
+          "sub": "Nothing here is invented and nothing is half-updated. The next run should pick it all up."
+        },
+        {
           "level": "info",
           "title": "Google Ads is spending again",
           "body": "After two near-dead days (5.99 kr on 18 Aug, 10.86 kr on 19 Aug) Shopping US & UK spent 830 kr on 20 Aug, above its usual 250-480 kr. Whatever stopped it has cleared. The cause was never identified, so it is worth watching in case it repeats.",
@@ -770,6 +776,12 @@
       ],
       "flags": [
         {
+          "level": "warning",
+          "title": "Today (22 Aug) could not refresh - every number below is from 20 Aug",
+          "body": "The server lost its ability to verify secure connections this morning, so nothing outside could be reached: not Meta, not Shopify. Google Ads was reachable (it goes through a local route) and had figures up to 21 Aug, but publishing one channel a day ahead of the others would have made every card mix two different date ranges, so it was left out on purpose. Everything on this page covers up to and including 20 August.",
+          "sub": "Nothing here is invented and nothing is half-updated. The next run should pick it all up."
+        },
+        {
           "level": "info",
           "title": "Google Ads is spending again",
           "body": "After two near-dead days (5.99 kr on 18 Aug, 10.86 kr on 19 Aug) Shopping US & UK spent 830 kr on 20 Aug, above its usual 250-480 kr. Whatever stopped it has cleared. The cause was never identified, so it is worth watching in case it repeats.",
@@ -918,6 +930,12 @@
         }
       ],
       "flags": [
+        {
+          "level": "warning",
+          "title": "Today (22 Aug) could not refresh - every number below is from 20 Aug",
+          "body": "The server lost its ability to verify secure connections this morning, so nothing outside could be reached: not Meta, not Shopify. Google Ads was reachable (it goes through a local route) and had figures up to 21 Aug, but publishing one channel a day ahead of the others would have made every card mix two different date ranges, so it was left out on purpose. Everything on this page covers up to and including 20 August.",
+          "sub": "Nothing here is invented and nothing is half-updated. The next run should pick it all up."
+        },
         {
           "level": "info",
           "title": "Google Ads is spending again",
@@ -1130,6 +1148,12 @@
       ],
       "flags": [
         {
+          "level": "warning",
+          "title": "Today (22 Aug) could not refresh - every number below is from 20 Aug",
+          "body": "The server lost its ability to verify secure connections this morning, so nothing outside could be reached: not Meta, not Shopify. Google Ads was reachable (it goes through a local route) and had figures up to 21 Aug, but publishing one channel a day ahead of the others would have made every card mix two different date ranges, so it was left out on purpose. Everything on this page covers up to and including 20 August.",
+          "sub": "Nothing here is invented and nothing is half-updated. The next run should pick it all up."
+        },
+        {
           "level": "info",
           "title": "Google Ads is spending again",
           "body": "After two near-dead days (5.99 kr on 18 Aug, 10.86 kr on 19 Aug) Shopping US & UK spent 830 kr on 20 Aug, above its usual 250-480 kr. Whatever stopped it has cleared. The cause was never identified, so it is worth watching in case it repeats.",
@@ -1187,6 +1211,12 @@
       "orders_by_country": [],
       "landing_pages": [],
       "flags": [
+        {
+          "level": "warning",
+          "title": "Today (22 Aug) could not refresh - every number below is from 20 Aug",
+          "body": "The server lost its ability to verify secure connections this morning, so nothing outside could be reached: not Meta, not Shopify. Google Ads was reachable (it goes through a local route) and had figures up to 21 Aug, but publishing one channel a day ahead of the others would have made every card mix two different date ranges, so it was left out on purpose. Everything on this page covers up to and including 20 August.",
+          "sub": "Nothing here is invented and nothing is half-updated. The next run should pick it all up."
+        },
         {
           "level": "warning",
           "title": "Aug 20 was a weak day for the store",
