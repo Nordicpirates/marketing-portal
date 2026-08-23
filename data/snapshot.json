@@ -4,8 +4,8 @@
   "currency_note": "Revenue in EUR (store currency). Meta and Google Ads spend in SEK. Blended MER = the store's whole revenue divided by Meta plus Google spend, at 11.4 SEK/EUR.",
   "gads_alert": {
     "show": true,
-    "title": "Google Ads - 44 days in - 91 conv - 91 085 kr",
-    "sub": "ROAS 4.08x total. Spending resumed on 20 Aug after two quiet days.",
+    "title": "Google Ads - 46 days in - 94 conv - 95 667 kr",
+    "sub": "ROAS 3.99x total, current through 22 Aug. Last 14 days 2.49, last 30 days 3.77.",
     "link_gads": "https://ads.google.com/aw/campaigns?__e=7166732500",
     "link_gmc": "https://merchants.google.com"
   },
@@ -24,24 +24,24 @@
   },
   "gads": {
     "live_since": "8 July",
-    "as_of": "20 August",
-    "note": "44 days (8 Jul-20 Aug). Refreshed 21 Aug. Shopping US & UK is the only campaign switched on. It went quiet on 18-19 Aug and started spending again on 20 Aug.",
-    "spend_label": "22 323 kr",
-    "yesterday_label": "830 kr",
+    "as_of": "22 August",
+    "note": "46 days (8 Jul-22 Aug). This Google section was refreshed 23 Aug and is current; the period cards above are not, because Meta and Shopify could not be reached. Shopping US & UK is the only campaign switched on. It went quiet 18-19 Aug and has run normally since: 830 kr on 20 Aug, 859 kr on 21 Aug, 766 kr on 22 Aug.",
+    "spend_label": "23 949 kr",
+    "yesterday_label": "766 kr",
     "totals": {
-      "spend_sek": 22323,
-      "clicks": 5865,
-      "conversions": 91,
-      "conv_value_sek": 91085,
-      "roas": 4.08
+      "spend_sek": 23949,
+      "clicks": 6077,
+      "conversions": 94,
+      "conv_value_sek": 95667,
+      "roas": 3.99
     },
     "campaigns": [
       {
         "name": "Shopping - US & UK",
-        "spend_label": "15 685 kr",
-        "conv": 51,
-        "value_label": "51 266 kr",
-        "roas": 3.27
+        "spend_label": "17 310 kr",
+        "conv": 54,
+        "value_label": "55 848 kr",
+        "roas": 3.23
       },
       {
         "name": "Shopping - AU",
@@ -237,7 +237,7 @@
       "note": "Google Ads-data: klick/konv/värde hela live-perioden. Spend 14 020 kr, ROAS 4.15×."
     }
   ],
-  "channels_note": "Refresh on 22 Aug could not run: the server could not open secure connections, so Meta and Shopify were unreachable. All figures on this page cover up to and including 20 August. Shopify visitor analytics is older still and dates from Aug 6.",
+  "channels_note": "Google Ads is current through 22 Aug. Meta and Shopify have not refreshed since the morning of 22 Aug because the server cannot open secure connections, so every figure in the period cards covers up to and including 20 August. Shopify visitor analytics is older still and dates from Aug 6.",
   "dashboard_status": [
     {
       "icon": "✅",
@@ -560,9 +560,9 @@
       "flags": [
         {
           "level": "warning",
-          "title": "Today (22 Aug) could not refresh - every number below is from 20 Aug",
-          "body": "The server lost its ability to verify secure connections this morning, so nothing outside could be reached: not Meta, not Shopify. Google Ads was reachable (it goes through a local route) and had figures up to 21 Aug, but publishing one channel a day ahead of the others would have made every card mix two different date ranges, so it was left out on purpose. Everything on this page covers up to and including 20 August.",
-          "sub": "Nothing here is invented and nothing is half-updated. The next run should pick it all up."
+          "title": "Second day without a full refresh - the figures below are from 20 Aug",
+          "body": "The server still cannot verify secure connections, so Meta and Shopify have been unreachable since the morning of 22 Aug. The cards below still cover up to and including 20 August. The Google Ads section further down IS current through 22 Aug, because Google is reachable by a different route. It is kept separate on purpose: mixing a fresh Google figure into a card whose other numbers stop at 20 Aug would make every total on that card meaningless.",
+          "sub": "Nothing here is invented. Reported to the operators; it is a fault on our side, not at Meta or Shopify."
         },
         {
           "level": "info",
@@ -777,9 +777,9 @@
       "flags": [
         {
           "level": "warning",
-          "title": "Today (22 Aug) could not refresh - every number below is from 20 Aug",
-          "body": "The server lost its ability to verify secure connections this morning, so nothing outside could be reached: not Meta, not Shopify. Google Ads was reachable (it goes through a local route) and had figures up to 21 Aug, but publishing one channel a day ahead of the others would have made every card mix two different date ranges, so it was left out on purpose. Everything on this page covers up to and including 20 August.",
-          "sub": "Nothing here is invented and nothing is half-updated. The next run should pick it all up."
+          "title": "Second day without a full refresh - the figures below are from 20 Aug",
+          "body": "The server still cannot verify secure connections, so Meta and Shopify have been unreachable since the morning of 22 Aug. The cards below still cover up to and including 20 August. The Google Ads section further down IS current through 22 Aug, because Google is reachable by a different route. It is kept separate on purpose: mixing a fresh Google figure into a card whose other numbers stop at 20 Aug would make every total on that card meaningless.",
+          "sub": "Nothing here is invented. Reported to the operators; it is a fault on our side, not at Meta or Shopify."
         },
         {
           "level": "info",
@@ -932,9 +932,9 @@
       "flags": [
         {
           "level": "warning",
-          "title": "Today (22 Aug) could not refresh - every number below is from 20 Aug",
-          "body": "The server lost its ability to verify secure connections this morning, so nothing outside could be reached: not Meta, not Shopify. Google Ads was reachable (it goes through a local route) and had figures up to 21 Aug, but publishing one channel a day ahead of the others would have made every card mix two different date ranges, so it was left out on purpose. Everything on this page covers up to and including 20 August.",
-          "sub": "Nothing here is invented and nothing is half-updated. The next run should pick it all up."
+          "title": "Second day without a full refresh - the figures below are from 20 Aug",
+          "body": "The server still cannot verify secure connections, so Meta and Shopify have been unreachable since the morning of 22 Aug. The cards below still cover up to and including 20 August. The Google Ads section further down IS current through 22 Aug, because Google is reachable by a different route. It is kept separate on purpose: mixing a fresh Google figure into a card whose other numbers stop at 20 Aug would make every total on that card meaningless.",
+          "sub": "Nothing here is invented. Reported to the operators; it is a fault on our side, not at Meta or Shopify."
         },
         {
           "level": "info",
@@ -1149,9 +1149,9 @@
       "flags": [
         {
           "level": "warning",
-          "title": "Today (22 Aug) could not refresh - every number below is from 20 Aug",
-          "body": "The server lost its ability to verify secure connections this morning, so nothing outside could be reached: not Meta, not Shopify. Google Ads was reachable (it goes through a local route) and had figures up to 21 Aug, but publishing one channel a day ahead of the others would have made every card mix two different date ranges, so it was left out on purpose. Everything on this page covers up to and including 20 August.",
-          "sub": "Nothing here is invented and nothing is half-updated. The next run should pick it all up."
+          "title": "Second day without a full refresh - the figures below are from 20 Aug",
+          "body": "The server still cannot verify secure connections, so Meta and Shopify have been unreachable since the morning of 22 Aug. The cards below still cover up to and including 20 August. The Google Ads section further down IS current through 22 Aug, because Google is reachable by a different route. It is kept separate on purpose: mixing a fresh Google figure into a card whose other numbers stop at 20 Aug would make every total on that card meaningless.",
+          "sub": "Nothing here is invented. Reported to the operators; it is a fault on our side, not at Meta or Shopify."
         },
         {
           "level": "info",
@@ -1213,9 +1213,9 @@
       "flags": [
         {
           "level": "warning",
-          "title": "Today (22 Aug) could not refresh - every number below is from 20 Aug",
-          "body": "The server lost its ability to verify secure connections this morning, so nothing outside could be reached: not Meta, not Shopify. Google Ads was reachable (it goes through a local route) and had figures up to 21 Aug, but publishing one channel a day ahead of the others would have made every card mix two different date ranges, so it was left out on purpose. Everything on this page covers up to and including 20 August.",
-          "sub": "Nothing here is invented and nothing is half-updated. The next run should pick it all up."
+          "title": "Second day without a full refresh - the figures below are from 20 Aug",
+          "body": "The server still cannot verify secure connections, so Meta and Shopify have been unreachable since the morning of 22 Aug. The cards below still cover up to and including 20 August. The Google Ads section further down IS current through 22 Aug, because Google is reachable by a different route. It is kept separate on purpose: mixing a fresh Google figure into a card whose other numbers stop at 20 Aug would make every total on that card meaningless.",
+          "sub": "Nothing here is invented. Reported to the operators; it is a fault on our side, not at Meta or Shopify."
         },
         {
           "level": "warning",
@@ -1526,19 +1526,19 @@
   },
   "gads_periods": {
     "since": "2026-07-08",
-    "until": "2026-08-20",
-    "days": 44,
-    "total_spend_sek": 22323,
-    "total_conv": 91,
-    "total_conv_value_sek": 91085,
-    "roas": 4.08,
+    "until": "2026-08-22",
+    "days": 46,
+    "total_spend_sek": 23949,
+    "total_conv": 94,
+    "total_conv_value_sek": 95667,
+    "roas": 3.99,
     "campaigns": [
       {
         "name": "Shopping - US & UK",
-        "spend_sek": 15685,
-        "conv": 51,
-        "conv_value_sek": 51266,
-        "roas": 3.27
+        "spend_sek": 17310,
+        "conv": 54,
+        "conv_value_sek": 55848,
+        "roas": 3.23
       },
       {
         "name": "Shopping - AU",
