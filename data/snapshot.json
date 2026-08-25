@@ -4,8 +4,8 @@
   "currency_note": "Revenue in EUR (store currency). Meta and Google Ads spend in SEK. Blended MER = the store's whole revenue divided by Meta plus Google spend, at 11.4 SEK/EUR.",
   "gads_alert": {
     "show": true,
-    "title": "Google Ads - 47 days in - 96 conv - 97 622 kr",
-    "sub": "ROAS 3.94x total, current through 23 Aug.",
+    "title": "Google Ads - 48 days in - 99 conv - 100 861 kr",
+    "sub": "ROAS 3.97x total through 24 Aug. Last 14 days 2.78, last 30 days 3.81.",
     "link_gads": "https://ads.google.com/aw/campaigns?__e=7166732500",
     "link_gmc": "https://merchants.google.com"
   },
@@ -24,24 +24,24 @@
   },
   "gads": {
     "live_since": "8 July",
-    "as_of": "23 August",
-    "note": "47 days (8 Jul-23 Aug). Refreshed 24 Aug. Shopping US & UK is the only campaign switched on.",
-    "spend_label": "24 802 kr",
-    "yesterday_label": "854 kr",
+    "as_of": "24 August",
+    "note": "48 days (8 Jul-24 Aug). This Google section was refreshed 25 Aug and reaches 24 Aug; the period cards above stop at 23 Aug because Meta could not be reached. Shopping US & UK is the only campaign switched on: 766 kr on 22 Aug, 854 kr on 23 Aug, 615 kr on 24 Aug.",
+    "spend_label": "25 417 kr",
+    "yesterday_label": "615 kr",
     "totals": {
-      "spend_sek": 24802,
-      "clicks": 6160,
-      "conversions": 96,
-      "conv_value_sek": 97622,
-      "roas": 3.94
+      "spend_sek": 25417,
+      "clicks": 6225,
+      "conversions": 99,
+      "conv_value_sek": 100861,
+      "roas": 3.97
     },
     "campaigns": [
       {
         "name": "Shopping - US & UK",
-        "spend_label": "18 164 kr",
-        "conv": 56,
-        "value_label": "57 803 kr",
-        "roas": 3.18
+        "spend_label": "18 778 kr",
+        "conv": 59,
+        "value_label": "61 042 kr",
+        "roas": 3.25
       },
       {
         "name": "Shopping - AU",
@@ -237,7 +237,7 @@
       "note": "Google Ads-data: klick/konv/värde hela live-perioden. Spend 14 020 kr, ROAS 4.15×."
     }
   ],
-  "channels_note": "Google Ads, Meta and Shopify orders all cover the same days, up to and including 23 Aug. Shopify visitor analytics (sessions, conversion rate, countries, landing pages) is the one exception and still dates from Aug 6.",
+  "channels_note": "Google Ads reaches 24 Aug. The period cards cover up to 23 Aug for all three sources together, because Meta could not be reached on 25 Aug. Shopify visitor analytics (sessions, conversion rate, countries, landing pages) is older still and dates from Aug 6.",
   "dashboard_status": [
     {
       "icon": "✅",
@@ -560,6 +560,12 @@
       "flags": [
         {
           "level": "info",
+          "title": "Cards cover up to 23 Aug; the Google section below reaches 24 Aug",
+          "body": "Meta could not be reached this morning, so the cards were left one day back rather than moving orders and Google forward and leaving Meta behind inside the same row. Doing that would have forced the blended return to be blanked, and that figure is the most useful one on this page. One day behind and correct beats one day ahead and inconsistent.",
+          "sub": "The Google-only section further down is separate and self-dated, so it is current through 24 Aug."
+        },
+        {
+          "level": "info",
           "title": "Everything on this page is current again",
           "body": "All three sources cover the same days once more, up to and including 23 August. The gap on 21-23 Aug was a certificate problem on our own server that blocked the shop and Meta; it is understood and worked around. Meta now comes through a second route, so the missing connection no longer stops the daily update.",
           "sub": "Visitor numbers, conversion rate, countries and landing pages are the one exception and still date from Aug 6."
@@ -765,6 +771,12 @@
       "flags": [
         {
           "level": "info",
+          "title": "Cards cover up to 23 Aug; the Google section below reaches 24 Aug",
+          "body": "Meta could not be reached this morning, so the cards were left one day back rather than moving orders and Google forward and leaving Meta behind inside the same row. Doing that would have forced the blended return to be blanked, and that figure is the most useful one on this page. One day behind and correct beats one day ahead and inconsistent.",
+          "sub": "The Google-only section further down is separate and self-dated, so it is current through 24 Aug."
+        },
+        {
+          "level": "info",
           "title": "Everything on this page is current again",
           "body": "All three sources cover the same days once more, up to and including 23 August. The gap on 21-23 Aug was a certificate problem on our own server that blocked the shop and Meta; it is understood and worked around. Meta now comes through a second route, so the missing connection no longer stops the daily update.",
           "sub": "Visitor numbers, conversion rate, countries and landing pages are the one exception and still date from Aug 6."
@@ -906,6 +918,12 @@
         }
       ],
       "flags": [
+        {
+          "level": "info",
+          "title": "Cards cover up to 23 Aug; the Google section below reaches 24 Aug",
+          "body": "Meta could not be reached this morning, so the cards were left one day back rather than moving orders and Google forward and leaving Meta behind inside the same row. Doing that would have forced the blended return to be blanked, and that figure is the most useful one on this page. One day behind and correct beats one day ahead and inconsistent.",
+          "sub": "The Google-only section further down is separate and self-dated, so it is current through 24 Aug."
+        },
         {
           "level": "info",
           "title": "Everything on this page is current again",
@@ -1113,6 +1131,12 @@
       "flags": [
         {
           "level": "info",
+          "title": "Cards cover up to 23 Aug; the Google section below reaches 24 Aug",
+          "body": "Meta could not be reached this morning, so the cards were left one day back rather than moving orders and Google forward and leaving Meta behind inside the same row. Doing that would have forced the blended return to be blanked, and that figure is the most useful one on this page. One day behind and correct beats one day ahead and inconsistent.",
+          "sub": "The Google-only section further down is separate and self-dated, so it is current through 24 Aug."
+        },
+        {
+          "level": "info",
           "title": "Everything on this page is current again",
           "body": "All three sources cover the same days once more, up to and including 23 August. The gap on 21-23 Aug was a certificate problem on our own server that blocked the shop and Meta; it is understood and worked around. Meta now comes through a second route, so the missing connection no longer stops the daily update.",
           "sub": "Visitor numbers, conversion rate, countries and landing pages are the one exception and still date from Aug 6."
@@ -1163,6 +1187,12 @@
       "orders_by_country": [],
       "landing_pages": [],
       "flags": [
+        {
+          "level": "info",
+          "title": "Cards cover up to 23 Aug; the Google section below reaches 24 Aug",
+          "body": "Meta could not be reached this morning, so the cards were left one day back rather than moving orders and Google forward and leaving Meta behind inside the same row. Doing that would have forced the blended return to be blanked, and that figure is the most useful one on this page. One day behind and correct beats one day ahead and inconsistent.",
+          "sub": "The Google-only section further down is separate and self-dated, so it is current through 24 Aug."
+        },
         {
           "level": "info",
           "title": "Everything on this page is current again",
@@ -1460,19 +1490,19 @@
   },
   "gads_periods": {
     "since": "2026-07-08",
-    "until": "2026-08-23",
-    "days": 47,
-    "total_spend_sek": 24802,
-    "total_conv": 96,
-    "total_conv_value_sek": 97622,
-    "roas": 3.94,
+    "until": "2026-08-24",
+    "days": 48,
+    "total_spend_sek": 25417,
+    "total_conv": 99,
+    "total_conv_value_sek": 100861,
+    "roas": 3.97,
     "campaigns": [
       {
         "name": "Shopping - US & UK",
-        "spend_sek": 18164,
-        "conv": 56,
-        "conv_value_sek": 57803,
-        "roas": 3.18
+        "spend_sek": 18778,
+        "conv": 59,
+        "conv_value_sek": 61042,
+        "roas": 3.25
       },
       {
         "name": "Shopping - AU",
