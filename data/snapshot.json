@@ -5,7 +5,7 @@
  "gads_alert": {
   "show": true,
   "title": "Google Ads - 50 days in - 98 conv - 99 441 kr",
-  "sub": "ROAS 3.78x total through 26 Aug. Delivery fell sharply: impressions 10 832 (22 Aug) to 1 198 (26 Aug).",
+  "sub": "ROAS 3.78x totalt t.o.m. 26 aug. Kostnaden per dag har gått från ~850 kr till ~430 kr, vilket är dagsbudgeten som slår igenom efter en period av överleverans.",
   "link_gads": "https://ads.google.com/aw/campaigns?__e=7166732500",
   "link_gmc": "https://merchants.google.com"
  },
@@ -247,10 +247,10 @@
    "status": "done"
   },
   {
-   "icon": "⚠️",
-   "title": "Google Shopping tappar visningar snabbt",
-   "desc": "Visningar föll från 10 832 (22 aug) till 1 198 (26 aug), -89 %. Klick 119 till 11. Kostnad per klick upp från 6,44 kr till 40,81 kr. Dagsbudget är 430 kr och kampanjen drog 830-860 kr/dag tidigare i veckan, så en del är normal utjämning - men det förklarar inte tappet i visningar. Nästa steg: kontrollera Merchant Center (170 underkända produkter sedan tidigare).",
-   "who": "Bengt — kollar",
+   "icon": "👀",
+   "title": "Google Shopping: svag dag 26 aug, normal igen idag",
+   "desc": "Visningarna sjönk successivt under veckan till 1 198 den 26 aug, och den dagen kostade varje klick 40,81 kr mot normala 6-10 kr. Men 27 aug ser normal ut redan efter fem timmar: 1 441 visningar och 9,43 kr per klick, alltså mer än hela gårdagen. Så det var en svag dag, inte ett haveri. Att kostnaden gått från ~850 kr/dag till ~430 kr/dag är dagsbudgeten på 430 kr som slår igenom efter att Google legat på ungefär dubbla. Bevakas, ingen åtgärd nu.",
+   "who": "Bengt — bevakar",
    "status": "queue"
   },
   {
