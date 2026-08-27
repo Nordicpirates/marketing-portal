@@ -1,1545 +1,1576 @@
 {
-  "generated_at": "2026-08-26",
-  "owner": "Bengt 🦉 (data) + Polly (analysis)",
-  "currency_note": "Revenue in EUR (store currency). Meta and Google Ads spend in SEK. Blended MER = the store's whole revenue divided by Meta plus Google spend, at 11.4 SEK/EUR.",
-  "gads_alert": {
-    "show": true,
-    "title": "Google Ads - 49 days in - 101 conv - 101 796 kr",
-    "sub": "ROAS 3.94x total through 25 Aug.",
-    "link_gads": "https://ads.google.com/aw/campaigns?__e=7166732500",
-    "link_gmc": "https://merchants.google.com"
+ "generated_at": "2026-08-27",
+ "owner": "Bengt 🦉 (data) + Polly (analysis)",
+ "currency_note": "Revenue in EUR (store currency). Meta and Google Ads spend in SEK. Blended MER = the store's whole revenue divided by Meta plus Google spend, at 11.4 SEK/EUR.",
+ "gads_alert": {
+  "show": true,
+  "title": "Google Ads - 50 days in - 98 conv - 99 441 kr",
+  "sub": "ROAS 3.78x total through 26 Aug. Delivery fell sharply: impressions 10 832 (22 Aug) to 1 198 (26 Aug).",
+  "link_gads": "https://ads.google.com/aw/campaigns?__e=7166732500",
+  "link_gmc": "https://merchants.google.com"
+ },
+ "yesterday": {
+  "date": "2026-08-26",
+  "orders": 9,
+  "revenue_eur": 896,
+  "revenue_sek": 10210,
+  "sessions": null,
+  "conversions": 9,
+  "gads_spend": null,
+  "gads_spend_sek": 449,
+  "gads_roas": 0.0,
+  "gads_conv": 0,
+  "meta_spend_sek": null
+ },
+ "gads": {
+  "live_since": "8 July",
+  "as_of": "26 August",
+  "note": "50 days (8 Jul-26 Aug). Refreshed 27 Aug. Shopping US & UK is the only campaign switched on. Conversions for this window read 98 today against 101 yesterday - Google revised earlier conversions down, which it does as refunds and corrections settle.",
+  "spend_label": "26 279 kr",
+  "yesterday_label": "449 kr",
+  "totals": {
+   "spend_sek": 26279,
+   "clicks": 6275,
+   "conversions": 98,
+   "conv_value_sek": 99441,
+   "roas": 3.78
   },
-  "yesterday": {
-    "date": "2026-08-25",
-    "orders": 5,
-    "revenue_eur": 538,
-    "revenue_sek": 6128,
+  "campaigns": [
+   {
+    "name": "Shopping - US & UK",
+    "spend_label": "19 641 kr",
+    "conv": 58,
+    "value_label": "59 622 kr",
+    "roas": 3.04
+   },
+   {
+    "name": "Shopping - AU",
+    "spend_label": "2 585 kr",
+    "conv": 10,
+    "value_label": "10 471 kr",
+    "roas": 4.05
+   },
+   {
+    "name": "Brand Search - All Markets",
+    "spend_label": "2 280 kr",
+    "conv": 18,
+    "value_label": "19 410 kr",
+    "roas": 8.51
+   },
+   {
+    "name": "Brand Search - IT",
+    "spend_label": "598 kr",
+    "conv": 10,
+    "value_label": "9 370 kr",
+    "roas": 15.66
+   },
+   {
+    "name": "Shopping - DE",
+    "spend_label": "546 kr",
+    "conv": 0,
+    "value_label": "0 kr",
+    "roas": 0.0
+   },
+   {
+    "name": "Non-brand Test - US & UK",
+    "spend_label": "486 kr",
+    "conv": 2,
+    "value_label": "568 kr",
+    "roas": 1.17
+   },
+   {
+    "name": "Brand Search - DE",
+    "spend_label": "143 kr",
+    "conv": 0,
+    "value_label": "0 kr",
+    "roas": 0.0
+   }
+  ]
+ },
+ "chart_data": {
+  "orders_9d": {
+   "labels": [
+    "1/8",
+    "2/8",
+    "3/8",
+    "4/8",
+    "5/8",
+    "6/8",
+    "7/8",
+    "8/8",
+    "9/8",
+    "10/8"
+   ],
+   "revenue": [
+    930,
+    1068,
+    1188,
+    1031,
+    719,
+    562,
+    1073,
+    638,
+    1231,
+    864
+   ],
+   "orders": [
+    10,
+    9,
+    12,
+    8,
+    7,
+    4,
+    16,
+    9,
+    12,
+    11
+   ]
+  },
+  "organic_14d": {
+   "labels": [
+    "27/7",
+    "28/7",
+    "29/7",
+    "30/7",
+    "31/7",
+    "1/8",
+    "2/8",
+    "3/8",
+    "4/8",
+    "5/8",
+    "6/8",
+    "7/8",
+    "8/8",
+    "9/8"
+   ],
+   "sessions": [
+    353,
+    301,
+    271,
+    246,
+    277,
+    284,
+    301,
+    308,
+    326,
+    301,
+    503,
+    454,
+    404,
+    363
+   ],
+   "conversions": [
+    11,
+    7,
+    13,
+    10,
+    13,
+    9,
+    9,
+    10,
+    8,
+    6,
+    4,
+    10,
+    7,
+    10
+   ]
+  }
+ },
+ "channels_30d": [
+  {
+   "name": "Paid Social · Meta",
+   "dot": "#4a90e2",
+   "sessions": 22659,
+   "conversions": 279,
+   "cvr": 1.23,
+   "revenue_sek": 352624,
+   "source": "meta",
+   "note": "Meta API 5 jul-3 aug · 7d-klick/1d-visning. Spend 149 479 kr, ROAS 2.36. Sessions = länk-klick."
+  },
+  {
+   "name": "Direkt",
+   "dot": "#8b5cf6",
+   "sessions": 4530,
+   "conversions": 251,
+   "cvr": 5.54,
+   "revenue_sek": 301940,
+   "source": "shopify",
+   "cvr_good": true,
+   "note": "Shopify referrer 4 jul-2 aug. Inkluderar Meta-klick där referrer tappades (vanligt på mobil/iOS)."
+  },
+  {
+   "name": "Sökning (organisk + betald)",
+   "dot": "#2f8f4e",
+   "sessions": 3347,
+   "conversions": 53,
+   "cvr": 1.58,
+   "revenue_sek": 65299,
+   "source": "shopify"
+  },
+  {
+   "name": "Social (organisk referrer)",
+   "dot": "#14b8a6",
+   "sessions": 1296,
+   "conversions": 28,
+   "cvr": 2.16,
+   "revenue_sek": 44950,
+   "source": "shopify"
+  },
+  {
+   "name": "Okänd",
+   "dot": "#8a8073",
+   "sessions": 400,
+   "conversions": 16,
+   "cvr": 4.0,
+   "revenue_sek": 56316,
+   "source": "shopify"
+  },
+  {
+   "name": "Google Ads (8 jul-3 aug)",
+   "dot": "#ea4335",
+   "sessions": 3568,
+   "conversions": 59,
+   "cvr": 1.65,
+   "cvr_good": false,
+   "revenue_sek": 58171,
+   "note": "Google Ads-data: klick/konv/värde hela live-perioden. Spend 14 020 kr, ROAS 4.15×."
+  }
+ ],
+ "channels_note": "Orders, sales and Google Ads are current through 26 Aug. Meta stops at 23 Aug because GATE cannot reach it - that is a fault on our side, nothing to fix in the Meta account. Order counts exclude cancelled orders and days are cut at Swedish midnight. Shopify visitor analytics still dates from Aug 6.",
+ "dashboard_status": [
+  {
+   "icon": "✅",
+   "title": "Google Ads Shopping live",
+   "desc": "Kampanj aktiverad 8 juli · AW-10987612665 · €50/dag · Standard Shopping.",
+   "who": "Klart",
+   "status": "done"
+  },
+  {
+   "icon": "⚠️",
+   "title": "Google Shopping tappar visningar snabbt",
+   "desc": "Visningar föll från 10 832 (22 aug) till 1 198 (26 aug), -89 %. Klick 119 till 11. Kostnad per klick upp från 6,44 kr till 40,81 kr. Dagsbudget är 430 kr och kampanjen drog 830-860 kr/dag tidigare i veckan, så en del är normal utjämning - men det förklarar inte tappet i visningar. Nästa steg: kontrollera Merchant Center (170 underkända produkter sedan tidigare).",
+   "who": "Bengt — kollar",
+   "status": "queue"
+  },
+  {
+   "icon": "📦",
+   "title": "170 underkända produkter i Google Merchant Center",
+   "desc": "Sannolikt saknade GTIN/barcodes. GMC-audit i kö.",
+   "who": "Bengt — planerat",
+   "status": "queue"
+  },
+  {
+   "icon": "✅",
+   "title": "GTM-container publicerad (v2 'Bengt Json')",
+   "desc": "Conversion Linker + Remarketing-tag live · nordicpirates.com · All Pages trigger",
+   "who": "Klart",
+   "status": "done"
+  },
+  {
+   "icon": "✅",
+   "title": "Daglig uppdatering lagad 10 aug",
+   "desc": "marketing.nordicpirate.com · uppdateras varje morgon (Meta + Google + Shopify). 4-8 aug kördes jobbet i en miljö utan datakopplingar och stannade - nu flyttat till en miljö där kopplingarna finns.",
+   "who": "Bengt",
+   "status": "done"
+  }
+ ],
+ "tracking_ids": {
+  "ad_account": {
+   "label": "Meta Ad Account",
+   "value": "314601282522803",
+   "name": "Nordic Pirate Games"
+  },
+  "nordicpirates": {
+   "site": "nordicpirates.com",
+   "ids": [
+    {
+     "label": "Meta Pixel / Dataset",
+     "value": "832599113757136",
+     "note": "CAPI server-side active ✅ (named 'lyingpirates.com' from migration)"
+    },
+    {
+     "label": "GA4",
+     "value": "G-LYH6PJYVMZ",
+     "note": "Active"
+    },
+    {
+     "label": "Google Ads",
+     "value": "AW-10987612665",
+     "note": "Active — Shopping live sedan 8 juli"
+    },
+    {
+     "label": "Microsoft Clarity",
+     "value": "wuzvreap5g",
+     "note": "Live via Shopify app"
+    },
+    {
+     "label": "Meta domain verification",
+     "value": "fj386p4mfhx3vsr75bwu3isf3fnsgq",
+     "note": "Verified ✅"
+    }
+   ]
+  },
+  "tap10": {
+   "site": "tap10game.com",
+   "ids": [
+    {
+     "label": "Meta Pixel / Dataset",
+     "value": "26904702632559365",
+     "note": "Goal = Lead, not Purchase"
+    },
+    {
+     "label": "GA4",
+     "value": "G-Y3HYPEG938",
+     "note": "Active w/ Consent Mode v2"
+    },
+    {
+     "label": "Microsoft Clarity",
+     "value": "—",
+     "note": "Pending project ID from agency"
+    },
+    {
+     "label": "Meta domain verification",
+     "value": "chw91c7ue5qggqy4lre0f1bazzdvdr",
+     "note": "Verified ✅"
+    }
+   ]
+  }
+ },
+ "tracking": [
+  {
+   "id": "emq",
+   "label": "Event Match Quality (Purchase)",
+   "val": "8.6 / 10",
+   "status": "ok",
+   "tag": "HEALTHY",
+   "note": "Verified in Events Manager. Email/external_id 100%, phone 96%. Target is 7+."
+  },
+  {
+   "id": "capi",
+   "label": "CAPI · Shopify → Meta",
+   "val": "Real-time",
+   "status": "ok",
+   "tag": "ON",
+   "note": "Server + browser events both firing; dedup handled by native Shopify×Meta integration."
+  },
+  {
+   "id": "np_domain",
+   "label": "Domain verification",
+   "val": "nordicpirates.com",
+   "status": "ok",
+   "tag": "VERIFIED",
+   "note": "Done Jun 24."
+  },
+  {
+   "id": "clarity",
+   "label": "Microsoft Clarity",
+   "val": "nordicpirates.com",
+   "status": "ok",
+   "tag": "LIVE",
+   "note": "Heatmaps + session recordings via Shopify app (ID wuzvreap5g)."
+  },
+  {
+   "id": "aem",
+   "label": "Aggregated Event Measurement",
+   "val": "Auto (Meta)",
+   "status": "ok",
+   "tag": "AUTOMATED",
+   "note": "Meta removed manual AEM config Jun 2025 — events are aggregated automatically."
+  },
+  {
+   "id": "utm",
+   "label": "UTM tags on ads",
+   "val": "Aktiverat",
+   "status": "ok",
+   "tag": "DONE",
+   "note": "UTM-taggar aktiva på alla Meta-annonser."
+  },
+  {
+   "id": "gads_shopping",
+   "label": "Google Ads Shopping",
+   "val": "Live 8 juli",
+   "status": "ok",
+   "tag": "LIVE",
+   "note": "Standard Shopping · AW-10987612665 · €50/dag budget."
+  },
+  {
+   "id": "tap10_capi",
+   "label": "CAPI · tap10game.com",
+   "val": "Browser only",
+   "status": "wait",
+   "tag": "GAP",
+   "note": "Lead event fires client-side; no server-side CAPI yet."
+  },
+  {
+   "id": "meta_auth",
+   "label": "Meta Ads-koppling",
+   "val": "Aktiv (andra vägen)",
+   "status": "ok",
+   "tag": "LIVE",
+   "note": "Meta läses sedan 24 aug via Pipeboard i stället för den direkta kopplingen, som behöver loggas in på nytt. Siffrorna är desamma; det är bara vägen dit som ändrats."
+  },
+  {
+   "id": "shopify_auth",
+   "label": "Shopify-koppling",
+   "val": "Orders yes, analytics no",
+   "status": "wait",
+   "tag": "PARTLY BACK",
+   "note": "Orders and sales are read straight from Shopify again as of 19 Aug. Shopify analytics (sessions, conversion rate, landing pages) is a separate connection and still refuses its login."
+  }
+ ],
+ "default_period": "7d",
+ "periods": [
+  {
+   "id": "7d",
+   "label": "Last 7 days",
+   "range_start": "2026-08-20",
+   "range_end": "2026-08-26",
+   "days": 7,
+   "kpis": {
     "sessions": null,
-    "conversions": 5,
-    "gads_spend": null,
-    "gads_spend_sek": 413,
+    "conversion_label": "Unavailable",
+    "sales_label": "€3 910",
+    "orders": 44
+   },
+   "meta": {
+    "spend_label": "24 274 kr",
+    "spend_window": "17-23 aug (Meta, hämtad 24 aug)",
+    "meta_roas": 1.29,
+    "blended_mer": null,
+    "_note": "Meta (17-23 aug), hämtad 24 aug. 28 köp, 31 384 kr i värde. EJ UPPDATERAD sedan 23 aug - GATE når inte Meta, fjärde dygnet. Blandad avkastning lämnad tom med flit: den skulle blanda försäljning till 26 aug med annonskostnad till 23 aug."
+   },
+   "gads": {
+    "spend_label": "4 786 kr",
+    "gads_roas": 1.44,
+    "conv": 5,
+    "value_label": "6 873 kr",
+    "_note": "Google Ads API (20-26 Aug), fetched 27 Aug.",
+    "campaigns": [
+     {
+      "name": "Shopping - US & UK",
+      "spend_label": "4 786 kr",
+      "conv": 5,
+      "value_label": "6 873 kr",
+      "roas": 1.44
+     }
+    ]
+   },
+   "orders_by_country": [
+    {
+     "name": "USA",
+     "flag": "🇺🇸",
+     "orders": 21,
+     "revenue": "€1 890"
+    },
+    {
+     "name": "UK",
+     "flag": "🇬🇧",
+     "orders": 15,
+     "revenue": "€1 337"
+    },
+    {
+     "name": "France",
+     "flag": "🇫🇷",
+     "orders": 2,
+     "revenue": "€196"
+    },
+    {
+     "name": "Sweden",
+     "flag": "🇸🇪",
+     "orders": 1,
+     "revenue": "€177"
+    },
+    {
+     "name": "Spain",
+     "flag": "🇪🇸",
+     "orders": 1,
+     "revenue": "€156"
+    },
+    {
+     "name": "Italy",
+     "flag": "🇮🇹",
+     "orders": 3,
+     "revenue": "€101"
+    },
+    {
+     "name": "Australia",
+     "flag": "🇦🇺",
+     "orders": 1,
+     "revenue": "€54"
+    }
+   ],
+   "landing_pages": [
+    {
+     "name": "Base Game (product)",
+     "path": "/products/lying-pirates-base-game",
+     "sessions": 934,
+     "conv_pct": 0.75,
+     "alert": true
+    },
+    {
+     "name": "Homepage",
+     "path": "/",
+     "sessions": 572,
+     "conv_pct": 3.15
+    },
+    {
+     "name": "Big Box (product)",
+     "path": "/products/lying-pirates-big-box",
+     "sessions": 459,
+     "conv_pct": 4.79
+    },
+    {
+     "name": "Newsletter signup",
+     "path": "/pages/newslettersignup",
+     "sessions": 233,
+     "conv_pct": 0.0
+    },
+    {
+     "name": "Gold Coins (product)",
+     "path": "/products/gold-coins-20-pcs",
+     "sessions": 58,
+     "conv_pct": 3.45
+    },
+    {
+     "name": "FAQ",
+     "path": "/pages/faq",
+     "sessions": 50,
+     "conv_pct": 0.0
+    }
+   ],
+   "flags": [
+    {
+     "level": "warning",
+     "title": "Meta is two days behind the rest of this page",
+     "body": "Orders, sales and Google Ads are current through 25 August. Meta stops at 23 August, because GATE has not been able to reach it since. Each Meta box prints its own dates, so the gap is visible rather than hidden, and the blended return is left blank rather than dividing 25 Aug sales by 23 Aug ad spend.",
+     "sub": "The fault is in our own tooling, not in the Meta account. Already reported."
+    },
+    {
+     "level": "warning",
+     "title": "🚩 Base Game-sidan är största trafikmottagare men konverterar sämst",
+     "body": "<b>/products/lying-pirates-base-game</b> tog 934 sessioner 3-9 aug men konverterar på <b>0.75%</b> - mot 4.79% för Big Box och 3.15% för startsidan.",
+     "sub": "Värt att kolla vilka annonser som skickar trafiken dit och om Big Box vore bättre mål."
+    },
+    {
+     "level": "info",
+     "title": "✅ Daglig uppdatering lagad 10 aug",
+     "body": "4-8 aug stod dashboarden still (uppdateringsjobbet kördes i en miljö utan datakopplingar). Nu flyttat och igång igen - Meta, Google och Shopify uppdateras varje morgon.",
+     "sub": ""
+    },
+    {
+     "level": "info",
+     "title": "Order counts now exclude cancelled orders, and days are cut in Swedish time",
+     "body": "Two corrections to how these figures are built. Cancelled orders are no longer counted as sales: Shopify's own revenue figure includes them, which is why a number here can read lower than the one in the Shopify app. And each day is now cut at Swedish midnight in our own code, because Shopify's date filter was returning two days' orders as one.",
+     "sub": "Checked against 23 Aug: 8 real orders and €608, plus one cancelled order. Shopify shows €756 for the same day because it counts the cancelled one."
+    }
+   ]
+  },
+  {
+   "id": "30d",
+   "label": "Last 30 days",
+   "range_start": "2026-07-28",
+   "range_end": "2026-08-26",
+   "days": 30,
+   "kpis": {
+    "sessions": null,
+    "conversion_label": "Unavailable",
+    "sales_label": "€23 164",
+    "orders": 236
+   },
+   "meta": {
+    "spend_label": "101 422 kr",
+    "spend_window": "25 jul-23 aug (Meta, hämtad 24 aug)",
+    "meta_roas": 1.7,
+    "blended_mer": null,
+    "_note": "Meta (25 jul-23 aug), hämtad 24 aug. 144 köp, 172 693 kr i värde. EJ UPPDATERAD sedan 23 aug - GATE når inte Meta, fjärde dygnet. Blandad avkastning lämnad tom med flit: den skulle blanda försäljning till 26 aug med annonskostnad till 23 aug."
+   },
+   "gads": {
+    "spend_label": "15 649 kr",
+    "gads_roas": 3.14,
+    "conv": 45,
+    "value_label": "49 113 kr",
+    "_note": "Google Ads API (28 Jul-26 Aug), fetched 27 Aug.",
+    "campaigns": [
+     {
+      "name": "Shopping - US & UK",
+      "spend_label": "12 182 kr",
+      "conv": 29,
+      "value_label": "32 888 kr",
+      "roas": 2.7
+     },
+     {
+      "name": "Shopping - AU",
+      "spend_label": "1 880 kr",
+      "conv": 4,
+      "value_label": "3 703 kr",
+      "roas": 1.97
+     },
+     {
+      "name": "Brand Search - All Markets",
+      "spend_label": "876 kr",
+      "conv": 4,
+      "value_label": "5 602 kr",
+      "roas": 6.39
+     },
+     {
+      "name": "Brand Search - IT",
+      "spend_label": "471 kr",
+      "conv": 7,
+      "value_label": "6 786 kr",
+      "roas": 14.41
+     },
+     {
+      "name": "Non-brand Test - US & UK",
+      "spend_label": "235 kr",
+      "conv": 1,
+      "value_label": "133 kr",
+      "roas": 0.57
+     },
+     {
+      "name": "Shopping - DE",
+      "spend_label": "6 kr",
+      "conv": 0,
+      "value_label": "0 kr",
+      "roas": 0.0
+     }
+    ]
+   },
+   "orders_by_country": [
+    {
+     "name": "USA",
+     "flag": "🇺🇸",
+     "orders": 124,
+     "revenue": "€13 164"
+    },
+    {
+     "name": "UK",
+     "flag": "🇬🇧",
+     "orders": 32,
+     "revenue": "€2 979"
+    },
+    {
+     "name": "Italy",
+     "flag": "🇮🇹",
+     "orders": 30,
+     "revenue": "€2 100"
+    },
+    {
+     "name": "Australia",
+     "flag": "🇦🇺",
+     "orders": 16,
+     "revenue": "€1 669"
+    },
+    {
+     "name": "Netherlands",
+     "flag": "🇳🇱",
+     "orders": 3,
+     "revenue": "€382"
+    },
+    {
+     "name": "Spain",
+     "flag": "🇪🇸",
+     "orders": 4,
+     "revenue": "€377"
+    },
+    {
+     "name": "Germany",
+     "flag": "🇩🇪",
+     "orders": 5,
+     "revenue": "€343"
+    },
+    {
+     "name": "Sweden",
+     "flag": "🇸🇪",
+     "orders": 5,
+     "revenue": "€303"
+    },
+    {
+     "name": "Denmark",
+     "flag": "🇩🇰",
+     "orders": 2,
+     "revenue": "€274"
+    },
+    {
+     "name": "France",
+     "flag": "🇫🇷",
+     "orders": 3,
+     "revenue": "€259"
+    }
+   ],
+   "landing_pages": [
+    {
+     "name": "Big Box (product)",
+     "path": "/products/lying-pirates-big-box",
+     "sessions": 3652,
+     "conv_pct": 3.15
+    },
+    {
+     "name": "Homepage",
+     "path": "/",
+     "sessions": 2307,
+     "conv_pct": 3.42
+    },
+    {
+     "name": "Base Game (product)",
+     "path": "/products/lying-pirates-base-game",
+     "sessions": 983,
+     "conv_pct": 3.46
+    },
+    {
+     "name": "FR — Grande Boîte",
+     "path": "/fr/products/menteurs-pirates-grand-boite",
+     "sessions": 558,
+     "conv_pct": 0.54,
+     "alert": true
+    },
+    {
+     "name": "Cities of Greed",
+     "path": "/products/cities-of-greed",
+     "sessions": 185,
+     "conv_pct": 2.7
+    },
+    {
+     "name": "Custom Insert",
+     "path": "/products/lying-pirates-custom-insert",
+     "sessions": 110,
+     "conv_pct": 1.82
+    },
+    {
+     "name": "8-Player Components",
+     "path": "/products/8-player-components-copy",
+     "sessions": 70,
+     "conv_pct": 4.29
+    },
+    {
+     "name": "Add-on Box",
+     "path": "/products/add-on-box",
+     "sessions": 61,
+     "conv_pct": 1.64
+    }
+   ],
+   "flags": [
+    {
+     "level": "warning",
+     "title": "Meta is two days behind the rest of this page",
+     "body": "Orders, sales and Google Ads are current through 25 August. Meta stops at 23 August, because GATE has not been able to reach it since. Each Meta box prints its own dates, so the gap is visible rather than hidden, and the blended return is left blank rather than dividing 25 Aug sales by 23 Aug ad spend.",
+     "sub": "The fault is in our own tooling, not in the Meta account. Already reported."
+    },
+    {
+     "level": "warning",
+     "title": "🚩 French landing page is leaking traffic",
+     "body": "<b>/fr/products/menteurs-pirates-grand-boite</b> pulled 558 sessions but converts at <b>0.54%</b> — vs 3.1–3.5% for the English equivalents.",
+     "sub": "Action for Polly + agency: audit the French page before spending more on FR/IT. (Landing page-listan för 30d är per 6 aug.)"
+    },
+    {
+     "level": "info",
+     "title": "Order counts now exclude cancelled orders, and days are cut in Swedish time",
+     "body": "Two corrections to how these figures are built. Cancelled orders are no longer counted as sales: Shopify's own revenue figure includes them, which is why a number here can read lower than the one in the Shopify app. And each day is now cut at Swedish midnight in our own code, because Shopify's date filter was returning two days' orders as one.",
+     "sub": "Checked against 23 Aug: 8 real orders and €608, plus one cancelled order. Shopify shows €756 for the same day because it counts the cancelled one."
+    }
+   ]
+  },
+  {
+   "id": "thismonth",
+   "label": "This month (Aug 1-25)",
+   "range_start": "2026-08-01",
+   "range_end": "2026-08-26",
+   "days": 26,
+   "kpis": {
+    "sessions": null,
+    "conversion_label": "Unavailable",
+    "sales_label": "€17 934",
+    "orders": 186
+   },
+   "meta": {
+    "spend_label": "70 151 kr",
+    "spend_window": "1-23 aug (Meta, hämtad 24 aug)",
+    "meta_roas": 1.48,
+    "blended_mer": null,
+    "_note": "Meta (1-23 aug), hämtad 24 aug. 88 köp, 103 535 kr i värde. EJ UPPDATERAD sedan 23 aug - GATE når inte Meta, fjärde dygnet. Blandad avkastning lämnad tom med flit: den skulle blanda försäljning till 26 aug med annonskostnad till 23 aug."
+   },
+   "gads": {
+    "spend_label": "14 064 kr",
+    "gads_roas": 2.61,
+    "conv": 35,
+    "value_label": "36 761 kr",
+    "_note": "Google Ads API (1-26 Aug), fetched 27 Aug.",
+    "campaigns": [
+     {
+      "name": "Shopping - US & UK",
+      "spend_label": "11 170 kr",
+      "conv": 27,
+      "value_label": "29 749 kr",
+      "roas": 2.66
+     },
+     {
+      "name": "Shopping - AU",
+      "spend_label": "1 658 kr",
+      "conv": 3,
+      "value_label": "2 351 kr",
+      "roas": 1.42
+     },
+     {
+      "name": "Brand Search - All Markets",
+      "spend_label": "637 kr",
+      "conv": 2,
+      "value_label": "3 762 kr",
+      "roas": 5.91
+     },
+     {
+      "name": "Brand Search - IT",
+      "spend_label": "404 kr",
+      "conv": 3,
+      "value_label": "899 kr",
+      "roas": 2.23
+     },
+     {
+      "name": "Non-brand Test - US & UK",
+      "spend_label": "196 kr",
+      "conv": 0,
+      "value_label": "0 kr",
+      "roas": 0.0
+     }
+    ]
+   },
+   "orders_by_country": [
+    {
+     "name": "USA",
+     "flag": "🇺🇸",
+     "orders": 100,
+     "revenue": "€10 425"
+    },
+    {
+     "name": "UK",
+     "flag": "🇬🇧",
+     "orders": 31,
+     "revenue": "€2 774"
+    },
+    {
+     "name": "Australia",
+     "flag": "🇦🇺",
+     "orders": 12,
+     "revenue": "€1 151"
+    },
+    {
+     "name": "Italy",
+     "flag": "🇮🇹",
+     "orders": 19,
+     "revenue": "€1 141"
+    },
+    {
+     "name": "Spain",
+     "flag": "🇪🇸",
+     "orders": 3,
+     "revenue": "€330"
+    },
+    {
+     "name": "Sweden",
+     "flag": "🇸🇪",
+     "orders": 4,
+     "revenue": "€272"
+    },
+    {
+     "name": "Unknown",
+     "flag": "🏳️",
+     "orders": 2,
+     "revenue": "€258"
+    },
+    {
+     "name": "Germany",
+     "flag": "🇩🇪",
+     "orders": 3,
+     "revenue": "€249"
+    },
+    {
+     "name": "Netherlands",
+     "flag": "🇳🇱",
+     "orders": 2,
+     "revenue": "€247"
+    },
+    {
+     "name": "Romania",
+     "flag": "🇷🇴",
+     "orders": 1,
+     "revenue": "€197"
+    }
+   ],
+   "landing_pages": [
+    {
+     "name": "Base Game (product)",
+     "path": "/products/lying-pirates-base-game",
+     "sessions": 934,
+     "conv_pct": 0.75,
+     "alert": true
+    },
+    {
+     "name": "Homepage",
+     "path": "/",
+     "sessions": 572,
+     "conv_pct": 3.15
+    },
+    {
+     "name": "Big Box (product)",
+     "path": "/products/lying-pirates-big-box",
+     "sessions": 459,
+     "conv_pct": 4.79
+    }
+   ],
+   "flags": [
+    {
+     "level": "warning",
+     "title": "Meta is two days behind the rest of this page",
+     "body": "Orders, sales and Google Ads are current through 25 August. Meta stops at 23 August, because GATE has not been able to reach it since. Each Meta box prints its own dates, so the gap is visible rather than hidden, and the blended return is left blank rather than dividing 25 Aug sales by 23 Aug ad spend.",
+     "sub": "The fault is in our own tooling, not in the Meta account. Already reported."
+    },
+    {
+     "level": "info",
+     "title": "🌱 Augusti 1–9",
+     "body": "87 ordrar, €8 440, 3 244 sessioner. Meta-spend 26 269 kr (ROAS 1.92×), Google Ads-spend ingår i totalen ovan.",
+     "sub": "Landing page-raderna visar 3-9 aug."
+    },
+    {
+     "level": "info",
+     "title": "Order counts now exclude cancelled orders, and days are cut in Swedish time",
+     "body": "Two corrections to how these figures are built. Cancelled orders are no longer counted as sales: Shopify's own revenue figure includes them, which is why a number here can read lower than the one in the Shopify app. And each day is now cut at Swedish midnight in our own code, because Shopify's date filter was returning two days' orders as one.",
+     "sub": "Checked against 23 Aug: 8 real orders and €608, plus one cancelled order. Shopify shows €756 for the same day because it counts the cancelled one."
+    }
+   ]
+  },
+  {
+   "id": "90d",
+   "label": "Last 90 days",
+   "range_start": "2026-05-29",
+   "range_end": "2026-08-26",
+   "days": 90,
+   "kpis": {
+    "sessions": null,
+    "conversion_label": "Unavailable",
+    "sales_label": "€114 416",
+    "orders": 1076
+   },
+   "meta": {
+    "spend_label": "433 237 kr",
+    "spend_window": "26 maj-23 aug (Meta, hämtad 24 aug)",
+    "meta_roas": 2.02,
+    "blended_mer": null,
+    "_note": "Meta (26 maj-23 aug), hämtad 24 aug. 708 köp, 873 441 kr i värde. EJ UPPDATERAD sedan 23 aug - GATE når inte Meta, fjärde dygnet. Blandad avkastning lämnad tom med flit: den skulle blanda försäljning till 26 aug med annonskostnad till 23 aug."
+   },
+   "gads": {
+    "spend_label": "26 279 kr",
+    "gads_roas": 3.78,
+    "conv": 98,
+    "value_label": "99 441 kr",
+    "_note": "Google Ads API (29 May-26 Aug), fetched 27 Aug.",
+    "campaigns": [
+     {
+      "name": "Shopping - US & UK",
+      "spend_label": "19 641 kr",
+      "conv": 58,
+      "value_label": "59 622 kr",
+      "roas": 3.04
+     },
+     {
+      "name": "Shopping - AU",
+      "spend_label": "2 585 kr",
+      "conv": 10,
+      "value_label": "10 471 kr",
+      "roas": 4.05
+     },
+     {
+      "name": "Brand Search - All Markets",
+      "spend_label": "2 280 kr",
+      "conv": 18,
+      "value_label": "19 410 kr",
+      "roas": 8.51
+     },
+     {
+      "name": "Brand Search - IT",
+      "spend_label": "598 kr",
+      "conv": 10,
+      "value_label": "9 370 kr",
+      "roas": 15.66
+     },
+     {
+      "name": "Shopping - DE",
+      "spend_label": "546 kr",
+      "conv": 0,
+      "value_label": "0 kr",
+      "roas": 0.0
+     },
+     {
+      "name": "Non-brand Test - US & UK",
+      "spend_label": "486 kr",
+      "conv": 2,
+      "value_label": "568 kr",
+      "roas": 1.17
+     },
+     {
+      "name": "Brand Search - DE",
+      "spend_label": "143 kr",
+      "conv": 0,
+      "value_label": "0 kr",
+      "roas": 0.0
+     }
+    ]
+   },
+   "orders_by_country": [
+    {
+     "name": "USA",
+     "flag": "🇺🇸",
+     "orders": 455,
+     "revenue": "€52 185"
+    },
+    {
+     "name": "UK",
+     "flag": "🇬🇧",
+     "orders": 157,
+     "revenue": "€15 756"
+    },
+    {
+     "name": "Italy",
+     "flag": "🇮🇹",
+     "orders": 148,
+     "revenue": "€13 635"
+    },
+    {
+     "name": "Australia",
+     "flag": "🇦🇺",
+     "orders": 73,
+     "revenue": "€7 807"
+    },
+    {
+     "name": "Germany",
+     "flag": "🇩🇪",
+     "orders": 73,
+     "revenue": "€6 917"
+    },
+    {
+     "name": "France",
+     "flag": "🇫🇷",
+     "orders": 36,
+     "revenue": "€3 772"
+    },
+    {
+     "name": "Belgium",
+     "flag": "🇧🇪",
+     "orders": 28,
+     "revenue": "€3 096"
+    },
+    {
+     "name": "Denmark",
+     "flag": "🇩🇰",
+     "orders": 23,
+     "revenue": "€2 879"
+    },
+    {
+     "name": "Netherlands",
+     "flag": "🇳🇱",
+     "orders": 25,
+     "revenue": "€2 639"
+    },
+    {
+     "name": "Sweden",
+     "flag": "🇸🇪",
+     "orders": 19,
+     "revenue": "€1 430"
+    }
+   ],
+   "landing_pages": [
+    {
+     "name": "Big Box (product)",
+     "path": "/products/lying-pirates-big-box",
+     "sessions": 13937,
+     "conv_pct": 1.64
+    },
+    {
+     "name": "Homepage",
+     "path": "/",
+     "sessions": 6462,
+     "conv_pct": 2.31
+    },
+    {
+     "name": "Base Game (product)",
+     "path": "/products/lying-pirates-base-game",
+     "sessions": 1849,
+     "conv_pct": 2.65
+    },
+    {
+     "name": "FR — Grande Boîte",
+     "path": "/fr/products/menteurs-pirates-grand-boite",
+     "sessions": 1085,
+     "conv_pct": 0.28,
+     "alert": true
+    },
+    {
+     "name": "Cities of Greed",
+     "path": "/products/cities-of-greed",
+     "sessions": 247,
+     "conv_pct": 3.24
+    },
+    {
+     "name": "FR — Base Jeu",
+     "path": "/fr/products/menteurs-pirates-base-jeu",
+     "sessions": 239,
+     "conv_pct": 1.67
+    },
+    {
+     "name": "Custom Insert",
+     "path": "/products/lying-pirates-custom-insert",
+     "sessions": 151,
+     "conv_pct": 1.99
+    },
+    {
+     "name": "All collection",
+     "path": "/collections/all",
+     "sessions": 115,
+     "conv_pct": 2.61
+    }
+   ],
+   "flags": [
+    {
+     "level": "warning",
+     "title": "Meta is two days behind the rest of this page",
+     "body": "Orders, sales and Google Ads are current through 25 August. Meta stops at 23 August, because GATE has not been able to reach it since. Each Meta box prints its own dates, so the gap is visible rather than hidden, and the blended return is left blank rather than dividing 25 Aug sales by 23 Aug ad spend.",
+     "sub": "The fault is in our own tooling, not in the Meta account. Already reported."
+    },
+    {
+     "level": "warning",
+     "title": "🚩 French pages chronically underperform",
+     "body": "Over 90 days the French Grande Boîte page took <b>1,085 sessions at 0.28% conversion</b>. The English Big Box did 1.64%+ on far more traffic.",
+     "sub": "Worth a dedicated fix sprint: localized pricing, FR checkout, shipping clarity — or pause FR paid traffic until the page is fixed. (Landing page-listan för 90d är per 6 aug.)"
+    },
+    {
+     "level": "info",
+     "title": "Order counts now exclude cancelled orders, and days are cut in Swedish time",
+     "body": "Two corrections to how these figures are built. Cancelled orders are no longer counted as sales: Shopify's own revenue figure includes them, which is why a number here can read lower than the one in the Shopify app. And each day is now cut at Swedish midnight in our own code, because Shopify's date filter was returning two days' orders as one.",
+     "sub": "Checked against 23 Aug: 8 real orders and €608, plus one cancelled order. Shopify shows €756 for the same day because it counts the cancelled one."
+    }
+   ]
+  },
+  {
+   "id": "yesterday",
+   "label": "Yesterday (Aug 25)",
+   "range_start": "2026-08-26",
+   "range_end": "2026-08-26",
+   "days": 1,
+   "kpis": {
+    "sessions": null,
+    "conversion_label": "Unavailable",
+    "sales_label": "€896",
+    "orders": 9
+   },
+   "meta": {
+    "spend_label": null,
+    "spend_window": "GATE når inte Meta sedan 23 aug",
+    "meta_roas": null,
+    "blended_mer": null,
+    "_note": "Meta utelämnad här med flit: en siffra från 23 aug under rubriken \"i går (26 aug)\" vore vilseledande. GATE når inte Meta, fjärde dygnet."
+   },
+   "gads": {
+    "spend_label": "449 kr",
     "gads_roas": 0.0,
-    "gads_conv": 0,
-    "meta_spend_sek": null
-  },
-  "gads": {
-    "live_since": "8 July",
-    "as_of": "25 August",
-    "note": "49 days (8 Jul-25 Aug). Refreshed 26 Aug. Shopping US & UK is the only campaign switched on.",
-    "spend_label": "25 830 kr",
-    "yesterday_label": "413 kr",
-    "totals": {
-      "spend_sek": 25830,
-      "clicks": 6264,
-      "conversions": 101,
-      "conv_value_sek": 101796,
-      "roas": 3.94
-    },
+    "conv": 0,
+    "value_label": "0 kr",
+    "_note": "Google Ads API (26 Aug), fetched 27 Aug.",
     "campaigns": [
-      {
-        "name": "Shopping - US & UK",
-        "spend_label": "19 192 kr",
-        "conv": 60,
-        "value_label": "61 468 kr",
-        "roas": 3.2
-      },
-      {
-        "name": "Shopping - AU",
-        "spend_label": "2 585 kr",
-        "conv": 11,
-        "value_label": "10 980 kr",
-        "roas": 4.25
-      },
-      {
-        "name": "Brand Search - All Markets",
-        "spend_label": "2 280 kr",
-        "conv": 18,
-        "value_label": "19 410 kr",
-        "roas": 8.51
-      },
-      {
-        "name": "Brand Search - IT",
-        "spend_label": "598 kr",
-        "conv": 10,
-        "value_label": "9 370 kr",
-        "roas": 15.66
-      },
-      {
-        "name": "Shopping - DE",
-        "spend_label": "546 kr",
-        "conv": 0,
-        "value_label": "0 kr",
-        "roas": 0.0
-      },
-      {
-        "name": "Non-brand Test - US & UK",
-        "spend_label": "486 kr",
-        "conv": 2,
-        "value_label": "568 kr",
-        "roas": 1.17
-      },
-      {
-        "name": "Brand Search - DE",
-        "spend_label": "143 kr",
-        "conv": 0,
-        "value_label": "0 kr",
-        "roas": 0.0
-      }
+     {
+      "name": "Shopping - US & UK",
+      "spend_label": "449 kr",
+      "conv": 0,
+      "value_label": "0 kr",
+      "roas": 0.0
+     }
     ]
+   },
+   "orders_by_country": [
+    {
+     "name": "UK",
+     "flag": "🇬🇧",
+     "orders": 5,
+     "revenue": "€461"
+    },
+    {
+     "name": "USA",
+     "flag": "🇺🇸",
+     "orders": 2,
+     "revenue": "€266"
+    },
+    {
+     "name": "Spain",
+     "flag": "🇪🇸",
+     "orders": 1,
+     "revenue": "€156"
+    },
+    {
+     "name": "Italy",
+     "flag": "🇮🇹",
+     "orders": 1,
+     "revenue": "€13"
+    }
+   ],
+   "landing_pages": [],
+   "flags": [
+    {
+     "level": "warning",
+     "title": "Meta is two days behind the rest of this page",
+     "body": "Orders, sales and Google Ads are current through 25 August. Meta stops at 23 August, because GATE has not been able to reach it since. Each Meta box prints its own dates, so the gap is visible rather than hidden, and the blended return is left blank rather than dividing 25 Aug sales by 23 Aug ad spend.",
+     "sub": "The fault is in our own tooling, not in the Meta account. Already reported."
+    },
+    {
+     "level": "info",
+     "title": "Order counts now exclude cancelled orders, and days are cut in Swedish time",
+     "body": "Two corrections to how these figures are built. Cancelled orders are no longer counted as sales: Shopify's own revenue figure includes them, which is why a number here can read lower than the one in the Shopify app. And each day is now cut at Swedish midnight in our own code, because Shopify's date filter was returning two days' orders as one.",
+     "sub": "Checked against 23 Aug: 8 real orders and €608, plus one cancelled order. Shopify shows €756 for the same day because it counts the cancelled one."
+    }
+   ]
+  }
+ ],
+ "inventory_data": {
+  "updated_at": "2026-08-06",
+  "velocity_window_days": 30,
+  "filter_note": "Add-On Box + Upgrade Box exkluderade per Lucas 2026-07-24 (irrelevanta produkter)",
+  "warehouses": [
+   {
+    "id": "bridge",
+    "label": "Bridge (USA)"
+   },
+   {
+    "id": "armarlo",
+    "label": "Armarlo (AU)"
+   },
+   {
+    "id": "meeples",
+    "label": "Meeples (EU)"
+   },
+   {
+    "id": "zatu",
+    "label": "Zatu (UK)"
+   }
+  ],
+  "thresholds": {
+   "critical": 14,
+   "low": 30,
+   "watch": 60
   },
-  "chart_data": {
-    "orders_9d": {
-      "labels": [
-        "1/8",
-        "2/8",
-        "3/8",
-        "4/8",
-        "5/8",
-        "6/8",
-        "7/8",
-        "8/8",
-        "9/8",
-        "10/8"
-      ],
-      "revenue": [
-        930,
-        1068,
-        1188,
-        1031,
-        719,
-        562,
-        1073,
-        638,
-        1231,
-        864
-      ],
-      "orders": [
-        10,
-        9,
-        12,
-        8,
-        7,
-        4,
-        16,
-        9,
-        12,
-        11
-      ]
+  "products": [
+   {
+    "title": "BIG BOX",
+    "variant": "English",
+    "velocity": 6.8,
+    "stock": {
+     "bridge": 198,
+     "armarlo": 126,
+     "meeples": 235,
+     "zatu": 163,
+     "total": 722
     },
-    "organic_14d": {
-      "labels": [
-        "27/7",
-        "28/7",
-        "29/7",
-        "30/7",
-        "31/7",
-        "1/8",
-        "2/8",
-        "3/8",
-        "4/8",
-        "5/8",
-        "6/8",
-        "7/8",
-        "8/8",
-        "9/8"
-      ],
-      "sessions": [
-        353,
-        301,
-        271,
-        246,
-        277,
-        284,
-        301,
-        308,
-        326,
-        301,
-        503,
-        454,
-        404,
-        363
-      ],
-      "conversions": [
-        11,
-        7,
-        13,
-        10,
-        13,
-        9,
-        9,
-        10,
-        8,
-        6,
-        4,
-        10,
-        7,
-        10
-      ]
-    }
-  },
-  "channels_30d": [
-    {
-      "name": "Paid Social · Meta",
-      "dot": "#4a90e2",
-      "sessions": 22659,
-      "conversions": 279,
-      "cvr": 1.23,
-      "revenue_sek": 352624,
-      "source": "meta",
-      "note": "Meta API 5 jul-3 aug · 7d-klick/1d-visning. Spend 149 479 kr, ROAS 2.36. Sessions = länk-klick."
-    },
-    {
-      "name": "Direkt",
-      "dot": "#8b5cf6",
-      "sessions": 4530,
-      "conversions": 251,
-      "cvr": 5.54,
-      "revenue_sek": 301940,
-      "source": "shopify",
-      "cvr_good": true,
-      "note": "Shopify referrer 4 jul-2 aug. Inkluderar Meta-klick där referrer tappades (vanligt på mobil/iOS)."
-    },
-    {
-      "name": "Sökning (organisk + betald)",
-      "dot": "#2f8f4e",
-      "sessions": 3347,
-      "conversions": 53,
-      "cvr": 1.58,
-      "revenue_sek": 65299,
-      "source": "shopify"
-    },
-    {
-      "name": "Social (organisk referrer)",
-      "dot": "#14b8a6",
-      "sessions": 1296,
-      "conversions": 28,
-      "cvr": 2.16,
-      "revenue_sek": 44950,
-      "source": "shopify"
-    },
-    {
-      "name": "Okänd",
-      "dot": "#8a8073",
-      "sessions": 400,
-      "conversions": 16,
-      "cvr": 4.0,
-      "revenue_sek": 56316,
-      "source": "shopify"
-    },
-    {
-      "name": "Google Ads (8 jul-3 aug)",
-      "dot": "#ea4335",
-      "sessions": 3568,
-      "conversions": 59,
-      "cvr": 1.65,
-      "cvr_good": false,
-      "revenue_sek": 58171,
-      "note": "Google Ads-data: klick/konv/värde hela live-perioden. Spend 14 020 kr, ROAS 4.15×."
-    }
-  ],
-  "channels_note": "Orders, sales and Google Ads are current through 25 Aug. Meta stops at 23 Aug because GATE cannot reach it. Order counts exclude cancelled orders and days are cut at Swedish midnight. Shopify visitor analytics still dates from Aug 6.",
-  "dashboard_status": [
-    {
-      "icon": "✅",
-      "title": "Google Ads Shopping live",
-      "desc": "Kampanj aktiverad 8 juli · AW-10987612665 · €50/dag · Standard Shopping.",
-      "who": "Klart",
-      "status": "done"
-    },
-    {
-      "icon": "📦",
-      "title": "170 underkända produkter i Google Merchant Center",
-      "desc": "Sannolikt saknade GTIN/barcodes. GMC-audit i kö.",
-      "who": "Bengt — planerat",
-      "status": "queue"
-    },
-    {
-      "icon": "✅",
-      "title": "GTM-container publicerad (v2 'Bengt Json')",
-      "desc": "Conversion Linker + Remarketing-tag live · nordicpirates.com · All Pages trigger",
-      "who": "Klart",
-      "status": "done"
-    },
-    {
-      "icon": "✅",
-      "title": "Daglig uppdatering lagad 10 aug",
-      "desc": "marketing.nordicpirate.com · uppdateras varje morgon (Meta + Google + Shopify). 4-8 aug kördes jobbet i en miljö utan datakopplingar och stannade - nu flyttat till en miljö där kopplingarna finns.",
-      "who": "Bengt",
-      "status": "done"
-    }
-  ],
-  "tracking_ids": {
-    "ad_account": {
-      "label": "Meta Ad Account",
-      "value": "314601282522803",
-      "name": "Nordic Pirate Games"
-    },
-    "nordicpirates": {
-      "site": "nordicpirates.com",
-      "ids": [
-        {
-          "label": "Meta Pixel / Dataset",
-          "value": "832599113757136",
-          "note": "CAPI server-side active ✅ (named 'lyingpirates.com' from migration)"
-        },
-        {
-          "label": "GA4",
-          "value": "G-LYH6PJYVMZ",
-          "note": "Active"
-        },
-        {
-          "label": "Google Ads",
-          "value": "AW-10987612665",
-          "note": "Active — Shopping live sedan 8 juli"
-        },
-        {
-          "label": "Microsoft Clarity",
-          "value": "wuzvreap5g",
-          "note": "Live via Shopify app"
-        },
-        {
-          "label": "Meta domain verification",
-          "value": "fj386p4mfhx3vsr75bwu3isf3fnsgq",
-          "note": "Verified ✅"
-        }
-      ]
-    },
-    "tap10": {
-      "site": "tap10game.com",
-      "ids": [
-        {
-          "label": "Meta Pixel / Dataset",
-          "value": "26904702632559365",
-          "note": "Goal = Lead, not Purchase"
-        },
-        {
-          "label": "GA4",
-          "value": "G-Y3HYPEG938",
-          "note": "Active w/ Consent Mode v2"
-        },
-        {
-          "label": "Microsoft Clarity",
-          "value": "—",
-          "note": "Pending project ID from agency"
-        },
-        {
-          "label": "Meta domain verification",
-          "value": "chw91c7ue5qggqy4lre0f1bazzdvdr",
-          "note": "Verified ✅"
-        }
-      ]
-    }
-  },
-  "tracking": [
-    {
-      "id": "emq",
-      "label": "Event Match Quality (Purchase)",
-      "val": "8.6 / 10",
-      "status": "ok",
-      "tag": "HEALTHY",
-      "note": "Verified in Events Manager. Email/external_id 100%, phone 96%. Target is 7+."
-    },
-    {
-      "id": "capi",
-      "label": "CAPI · Shopify → Meta",
-      "val": "Real-time",
-      "status": "ok",
-      "tag": "ON",
-      "note": "Server + browser events both firing; dedup handled by native Shopify×Meta integration."
-    },
-    {
-      "id": "np_domain",
-      "label": "Domain verification",
-      "val": "nordicpirates.com",
-      "status": "ok",
-      "tag": "VERIFIED",
-      "note": "Done Jun 24."
-    },
-    {
-      "id": "clarity",
-      "label": "Microsoft Clarity",
-      "val": "nordicpirates.com",
-      "status": "ok",
-      "tag": "LIVE",
-      "note": "Heatmaps + session recordings via Shopify app (ID wuzvreap5g)."
-    },
-    {
-      "id": "aem",
-      "label": "Aggregated Event Measurement",
-      "val": "Auto (Meta)",
-      "status": "ok",
-      "tag": "AUTOMATED",
-      "note": "Meta removed manual AEM config Jun 2025 — events are aggregated automatically."
-    },
-    {
-      "id": "utm",
-      "label": "UTM tags on ads",
-      "val": "Aktiverat",
-      "status": "ok",
-      "tag": "DONE",
-      "note": "UTM-taggar aktiva på alla Meta-annonser."
-    },
-    {
-      "id": "gads_shopping",
-      "label": "Google Ads Shopping",
-      "val": "Live 8 juli",
-      "status": "ok",
-      "tag": "LIVE",
-      "note": "Standard Shopping · AW-10987612665 · €50/dag budget."
-    },
-    {
-      "id": "tap10_capi",
-      "label": "CAPI · tap10game.com",
-      "val": "Browser only",
-      "status": "wait",
-      "tag": "GAP",
-      "note": "Lead event fires client-side; no server-side CAPI yet."
-    },
-    {
-      "id": "meta_auth",
-      "label": "Meta Ads-koppling",
-      "val": "Aktiv (andra vägen)",
-      "status": "ok",
-      "tag": "LIVE",
-      "note": "Meta läses sedan 24 aug via Pipeboard i stället för den direkta kopplingen, som behöver loggas in på nytt. Siffrorna är desamma; det är bara vägen dit som ändrats."
-    },
-    {
-      "id": "shopify_auth",
-      "label": "Shopify-koppling",
-      "val": "Orders yes, analytics no",
-      "status": "wait",
-      "tag": "PARTLY BACK",
-      "note": "Orders and sales are read straight from Shopify again as of 19 Aug. Shopify analytics (sessions, conversion rate, landing pages) is a separate connection and still refuses its login."
-    }
-  ],
-  "default_period": "7d",
-  "periods": [
-    {
-      "id": "7d",
-      "label": "Last 7 days",
-      "range_start": "2026-08-19",
-      "range_end": "2026-08-25",
-      "days": 7,
-      "kpis": {
-        "sessions": null,
-        "conversion_label": "Unavailable",
-        "sales_label": "€3 902",
-        "orders": 43
-      },
-      "meta": {
-        "spend_label": "24 274 kr",
-        "spend_window": "17-23 aug (Meta, hämtad 24 aug)",
-        "meta_roas": 1.29,
-        "blended_mer": null,
-        "_note": "Meta (17-23 aug), hämtad 24 aug. 28 köp, 31 384 kr i värde. EJ UPPDATERAD sedan 23 aug - GATE når inte Meta. Blandad avkastning lämnad tom med flit: den skulle blanda försäljning till 25 aug med annonskostnad till 23 aug."
-      },
-      "gads": {
-        "spend_label": "4 348 kr",
-        "gads_roas": 2.0,
-        "conv": 6,
-        "value_label": "8 694 kr",
-        "_note": "Google Ads API (19-25 Aug), fetched 26 Aug.",
-        "campaigns": [
-          {
-            "name": "Shopping - US & UK",
-            "spend_label": "4 348 kr",
-            "conv": 6,
-            "value_label": "8 694 kr",
-            "roas": 2.0
-          }
-        ]
-      },
-      "orders_by_country": [
-        {
-          "name": "USA",
-          "flag": "🇺🇸",
-          "orders": 32,
-          "revenue": "€3,542"
-        },
-        {
-          "name": "Australia",
-          "flag": "🇦🇺",
-          "orders": 7,
-          "revenue": "€654"
-        },
-        {
-          "name": "UK",
-          "flag": "🇬🇧",
-          "orders": 8,
-          "revenue": "€600"
-        },
-        {
-          "name": "Italy",
-          "flag": "🇮🇹",
-          "orders": 7,
-          "revenue": "€317"
-        },
-        {
-          "name": "Switzerland",
-          "flag": "🇨🇭",
-          "orders": 1,
-          "revenue": "€187"
-        },
-        {
-          "name": "Germany",
-          "flag": "🇩🇪",
-          "orders": 2,
-          "revenue": "€187"
-        },
-        {
-          "name": "Spain",
-          "flag": "🇪🇸",
-          "orders": 2,
-          "revenue": "€174"
-        },
-        {
-          "name": "Austria",
-          "flag": "🇦🇹",
-          "orders": 1,
-          "revenue": "€137"
-        },
-        {
-          "name": "Croatia",
-          "flag": "🇭🇷",
-          "orders": 1,
-          "revenue": "€135"
-        },
-        {
-          "name": "Ireland",
-          "flag": "🇮🇪",
-          "orders": 1,
-          "revenue": "€110"
-        }
-      ],
-      "landing_pages": [
-        {
-          "name": "Base Game (product)",
-          "path": "/products/lying-pirates-base-game",
-          "sessions": 934,
-          "conv_pct": 0.75,
-          "alert": true
-        },
-        {
-          "name": "Homepage",
-          "path": "/",
-          "sessions": 572,
-          "conv_pct": 3.15
-        },
-        {
-          "name": "Big Box (product)",
-          "path": "/products/lying-pirates-big-box",
-          "sessions": 459,
-          "conv_pct": 4.79
-        },
-        {
-          "name": "Newsletter signup",
-          "path": "/pages/newslettersignup",
-          "sessions": 233,
-          "conv_pct": 0.0
-        },
-        {
-          "name": "Gold Coins (product)",
-          "path": "/products/gold-coins-20-pcs",
-          "sessions": 58,
-          "conv_pct": 3.45
-        },
-        {
-          "name": "FAQ",
-          "path": "/pages/faq",
-          "sessions": 50,
-          "conv_pct": 0.0
-        }
-      ],
-      "flags": [
-        {
-          "level": "warning",
-          "title": "Meta is two days behind the rest of this page",
-          "body": "Orders, sales and Google Ads are current through 25 August. Meta stops at 23 August, because GATE has not been able to reach it since. Each Meta box prints its own dates, so the gap is visible rather than hidden, and the blended return is left blank rather than dividing 25 Aug sales by 23 Aug ad spend.",
-          "sub": "The fault is in our own tooling, not in the Meta account. Already reported."
-        },
-        {
-          "level": "warning",
-          "title": "🚩 Base Game-sidan är största trafikmottagare men konverterar sämst",
-          "body": "<b>/products/lying-pirates-base-game</b> tog 934 sessioner 3-9 aug men konverterar på <b>0.75%</b> - mot 4.79% för Big Box och 3.15% för startsidan.",
-          "sub": "Värt att kolla vilka annonser som skickar trafiken dit och om Big Box vore bättre mål."
-        },
-        {
-          "level": "info",
-          "title": "✅ Daglig uppdatering lagad 10 aug",
-          "body": "4-8 aug stod dashboarden still (uppdateringsjobbet kördes i en miljö utan datakopplingar). Nu flyttat och igång igen - Meta, Google och Shopify uppdateras varje morgon.",
-          "sub": ""
-        },
-        {
-          "level": "info",
-          "title": "Order counts now exclude cancelled orders, and days are cut in Swedish time",
-          "body": "Two corrections to how these figures are built. Cancelled orders are no longer counted as sales: Shopify's own revenue figure includes them, which is why a number here can read lower than the one in the Shopify app. And each day is now cut at Swedish midnight in our own code, because Shopify's date filter was returning two days' orders as one.",
-          "sub": "Checked against 23 Aug: 8 real orders and €608, plus one cancelled order. Shopify shows €756 for the same day because it counts the cancelled one."
-        }
-      ]
-    },
-    {
-      "id": "30d",
-      "label": "Last 30 days",
-      "range_start": "2026-07-27",
-      "range_end": "2026-08-25",
-      "days": 30,
-      "kpis": {
-        "sessions": null,
-        "conversion_label": "Unavailable",
-        "sales_label": "€23 674",
-        "orders": 239
-      },
-      "meta": {
-        "spend_label": "101 422 kr",
-        "spend_window": "25 jul-23 aug (Meta, hämtad 24 aug)",
-        "meta_roas": 1.7,
-        "blended_mer": null,
-        "_note": "Meta (25 jul-23 aug), hämtad 24 aug. 144 köp, 172 693 kr i värde. EJ UPPDATERAD sedan 23 aug - GATE når inte Meta. Blandad avkastning lämnad tom med flit: den skulle blanda försäljning till 25 aug med annonskostnad till 23 aug."
-      },
-      "gads": {
-        "spend_label": "15 803 kr",
-        "gads_roas": 3.67,
-        "conv": 54.0,
-        "value_label": "57 940 kr",
-        "_note": "Google Ads API (27 Jul-25 Aug), fetched 26 Aug.",
-        "campaigns": [
-          {
-            "name": "Shopping - US & UK",
-            "spend_label": "12 114 kr",
-            "conv": 32.33,
-            "value_label": "35 696 kr",
-            "roas": 2.95
-          },
-          {
-            "name": "Shopping - AU",
-            "spend_label": "1 970 kr",
-            "conv": 6.67,
-            "value_label": "6 465 kr",
-            "roas": 3.28
-          },
-          {
-            "name": "Brand Search - All Markets",
-            "spend_label": "902 kr",
-            "conv": 6,
-            "value_label": "8 418 kr",
-            "roas": 9.33
-          },
-          {
-            "name": "Brand Search - IT",
-            "spend_label": "492 kr",
-            "conv": 8,
-            "value_label": "7 227 kr",
-            "roas": 14.69
-          },
-          {
-            "name": "Non-brand Test - US & UK",
-            "spend_label": "243 kr",
-            "conv": 1,
-            "value_label": "133 kr",
-            "roas": 0.55
-          },
-          {
-            "name": "Shopping - DE",
-            "spend_label": "62 kr",
-            "conv": 0,
-            "value_label": "0 kr",
-            "roas": 0.0
-          },
-          {
-            "name": "Brand Search - DE",
-            "spend_label": "21 kr",
-            "conv": 0,
-            "value_label": "0 kr",
-            "roas": 0.0
-          }
-        ]
-      },
-      "orders_by_country": [
-        {
-          "name": "USA",
-          "flag": "🇺🇸",
-          "orders": 183,
-          "revenue": "€21,485"
-        },
-        {
-          "name": "UK",
-          "flag": "🇬🇧",
-          "orders": 51,
-          "revenue": "€4,488"
-        },
-        {
-          "name": "Italy",
-          "flag": "🇮🇹",
-          "orders": 48,
-          "revenue": "€4,292"
-        },
-        {
-          "name": "Australia",
-          "flag": "🇦🇺",
-          "orders": 31,
-          "revenue": "€3,406"
-        },
-        {
-          "name": "Germany",
-          "flag": "🇩🇪",
-          "orders": 18,
-          "revenue": "€1,318"
-        },
-        {
-          "name": "Netherlands",
-          "flag": "🇳🇱",
-          "orders": 7,
-          "revenue": "€927"
-        },
-        {
-          "name": "France",
-          "flag": "🇫🇷",
-          "orders": 6,
-          "revenue": "€592"
-        },
-        {
-          "name": "Denmark",
-          "flag": "🇩🇰",
-          "orders": 4,
-          "revenue": "€436"
-        },
-        {
-          "name": "Sweden",
-          "flag": "🇸🇪",
-          "orders": 6,
-          "revenue": "€373"
-        }
-      ],
-      "landing_pages": [
-        {
-          "name": "Big Box (product)",
-          "path": "/products/lying-pirates-big-box",
-          "sessions": 3652,
-          "conv_pct": 3.15
-        },
-        {
-          "name": "Homepage",
-          "path": "/",
-          "sessions": 2307,
-          "conv_pct": 3.42
-        },
-        {
-          "name": "Base Game (product)",
-          "path": "/products/lying-pirates-base-game",
-          "sessions": 983,
-          "conv_pct": 3.46
-        },
-        {
-          "name": "FR — Grande Boîte",
-          "path": "/fr/products/menteurs-pirates-grand-boite",
-          "sessions": 558,
-          "conv_pct": 0.54,
-          "alert": true
-        },
-        {
-          "name": "Cities of Greed",
-          "path": "/products/cities-of-greed",
-          "sessions": 185,
-          "conv_pct": 2.7
-        },
-        {
-          "name": "Custom Insert",
-          "path": "/products/lying-pirates-custom-insert",
-          "sessions": 110,
-          "conv_pct": 1.82
-        },
-        {
-          "name": "8-Player Components",
-          "path": "/products/8-player-components-copy",
-          "sessions": 70,
-          "conv_pct": 4.29
-        },
-        {
-          "name": "Add-on Box",
-          "path": "/products/add-on-box",
-          "sessions": 61,
-          "conv_pct": 1.64
-        }
-      ],
-      "flags": [
-        {
-          "level": "warning",
-          "title": "Meta is two days behind the rest of this page",
-          "body": "Orders, sales and Google Ads are current through 25 August. Meta stops at 23 August, because GATE has not been able to reach it since. Each Meta box prints its own dates, so the gap is visible rather than hidden, and the blended return is left blank rather than dividing 25 Aug sales by 23 Aug ad spend.",
-          "sub": "The fault is in our own tooling, not in the Meta account. Already reported."
-        },
-        {
-          "level": "warning",
-          "title": "🚩 French landing page is leaking traffic",
-          "body": "<b>/fr/products/menteurs-pirates-grand-boite</b> pulled 558 sessions but converts at <b>0.54%</b> — vs 3.1–3.5% for the English equivalents.",
-          "sub": "Action for Polly + agency: audit the French page before spending more on FR/IT. (Landing page-listan för 30d är per 6 aug.)"
-        },
-        {
-          "level": "info",
-          "title": "Order counts now exclude cancelled orders, and days are cut in Swedish time",
-          "body": "Two corrections to how these figures are built. Cancelled orders are no longer counted as sales: Shopify's own revenue figure includes them, which is why a number here can read lower than the one in the Shopify app. And each day is now cut at Swedish midnight in our own code, because Shopify's date filter was returning two days' orders as one.",
-          "sub": "Checked against 23 Aug: 8 real orders and €608, plus one cancelled order. Shopify shows €756 for the same day because it counts the cancelled one."
-        }
-      ]
-    },
-    {
-      "id": "thismonth",
-      "label": "This month (Aug 1-25)",
-      "range_start": "2026-08-01",
-      "range_end": "2026-08-25",
-      "days": 25,
-      "kpis": {
-        "sessions": null,
-        "conversion_label": "Unavailable",
-        "sales_label": "€17 039",
-        "orders": 177
-      },
-      "meta": {
-        "spend_label": "70 151 kr",
-        "spend_window": "1-23 aug (Meta, hämtad 24 aug)",
-        "meta_roas": 1.48,
-        "blended_mer": null,
-        "_note": "Meta (1-23 aug), hämtad 24 aug. 88 köp, 103 535 kr i värde. EJ UPPDATERAD sedan 23 aug - GATE når inte Meta. Blandad avkastning lämnad tom med flit: den skulle blanda försäljning till 25 aug med annonskostnad till 23 aug."
-      },
-      "gads": {
-        "spend_label": "13 615 kr",
-        "gads_roas": 2.74,
-        "conv": 35.33,
-        "value_label": "37 330 kr",
-        "_note": "Google Ads API (1-25 Aug), fetched 26 Aug.",
-        "campaigns": [
-          {
-            "name": "Shopping - US & UK",
-            "spend_label": "10 721 kr",
-            "conv": 27.33,
-            "value_label": "30 317 kr",
-            "roas": 2.83
-          },
-          {
-            "name": "Shopping - AU",
-            "spend_label": "1 658 kr",
-            "conv": 3,
-            "value_label": "2 351 kr",
-            "roas": 1.42
-          },
-          {
-            "name": "Brand Search - All Markets",
-            "spend_label": "637 kr",
-            "conv": 2,
-            "value_label": "3 762 kr",
-            "roas": 5.91
-          },
-          {
-            "name": "Brand Search - IT",
-            "spend_label": "404 kr",
-            "conv": 3,
-            "value_label": "899 kr",
-            "roas": 2.23
-          },
-          {
-            "name": "Non-brand Test - US & UK",
-            "spend_label": "196 kr",
-            "conv": 0,
-            "value_label": "0 kr",
-            "roas": 0.0
-          }
-        ]
-      },
-      "orders_by_country": [
-        {
-          "name": "USA",
-          "flag": "🇺🇸",
-          "orders": 42,
-          "revenue": "€4,550"
-        },
-        {
-          "name": "Italy",
-          "flag": "🇮🇹",
-          "orders": 13,
-          "revenue": "€950"
-        },
-        {
-          "name": "UK",
-          "flag": "🇬🇧",
-          "orders": 10,
-          "revenue": "€830"
-        },
-        {
-          "name": "Australia",
-          "flag": "🇦🇺",
-          "orders": 8,
-          "revenue": "€783"
-        },
-        {
-          "name": "Switzerland",
-          "flag": "🇨🇭",
-          "orders": 1,
-          "revenue": "€187"
-        },
-        {
-          "name": "Germany",
-          "flag": "🇩🇪",
-          "orders": 2,
-          "revenue": "€187"
-        },
-        {
-          "name": "Spain",
-          "flag": "🇪🇸",
-          "orders": 2,
-          "revenue": "€174"
-        }
-      ],
-      "landing_pages": [
-        {
-          "name": "Base Game (product)",
-          "path": "/products/lying-pirates-base-game",
-          "sessions": 934,
-          "conv_pct": 0.75,
-          "alert": true
-        },
-        {
-          "name": "Homepage",
-          "path": "/",
-          "sessions": 572,
-          "conv_pct": 3.15
-        },
-        {
-          "name": "Big Box (product)",
-          "path": "/products/lying-pirates-big-box",
-          "sessions": 459,
-          "conv_pct": 4.79
-        }
-      ],
-      "flags": [
-        {
-          "level": "warning",
-          "title": "Meta is two days behind the rest of this page",
-          "body": "Orders, sales and Google Ads are current through 25 August. Meta stops at 23 August, because GATE has not been able to reach it since. Each Meta box prints its own dates, so the gap is visible rather than hidden, and the blended return is left blank rather than dividing 25 Aug sales by 23 Aug ad spend.",
-          "sub": "The fault is in our own tooling, not in the Meta account. Already reported."
-        },
-        {
-          "level": "info",
-          "title": "🌱 Augusti 1–9",
-          "body": "87 ordrar, €8 440, 3 244 sessioner. Meta-spend 26 269 kr (ROAS 1.92×), Google Ads-spend ingår i totalen ovan.",
-          "sub": "Landing page-raderna visar 3-9 aug."
-        },
-        {
-          "level": "info",
-          "title": "Order counts now exclude cancelled orders, and days are cut in Swedish time",
-          "body": "Two corrections to how these figures are built. Cancelled orders are no longer counted as sales: Shopify's own revenue figure includes them, which is why a number here can read lower than the one in the Shopify app. And each day is now cut at Swedish midnight in our own code, because Shopify's date filter was returning two days' orders as one.",
-          "sub": "Checked against 23 Aug: 8 real orders and €608, plus one cancelled order. Shopify shows €756 for the same day because it counts the cancelled one."
-        }
-      ]
-    },
-    {
-      "id": "90d",
-      "label": "Last 90 days",
-      "range_start": "2026-05-28",
-      "range_end": "2026-08-25",
-      "days": 90,
-      "kpis": {
-        "sessions": null,
-        "conversion_label": "Unavailable",
-        "sales_label": "€114 307",
-        "orders": 1076
-      },
-      "meta": {
-        "spend_label": "433 237 kr",
-        "spend_window": "26 maj-23 aug (Meta, hämtad 24 aug)",
-        "meta_roas": 2.02,
-        "blended_mer": null,
-        "_note": "Meta (26 maj-23 aug), hämtad 24 aug. 708 köp, 873 441 kr i värde. EJ UPPDATERAD sedan 23 aug - GATE når inte Meta. Blandad avkastning lämnad tom med flit: den skulle blanda försäljning till 25 aug med annonskostnad till 23 aug."
-      },
-      "gads": {
-        "spend_label": "25 830 kr",
-        "gads_roas": 3.94,
-        "conv": 101,
-        "value_label": "101 796 kr",
-        "_note": "Google Ads API (live 8 Jul-25 Aug), fetched 26 Aug.",
-        "campaigns": [
-          {
-            "name": "Shopping - US & UK",
-            "spend_label": "19 192 kr",
-            "conv": 60,
-            "value_label": "61 468 kr",
-            "roas": 3.2
-          },
-          {
-            "name": "Shopping - AU",
-            "spend_label": "2 585 kr",
-            "conv": 11,
-            "value_label": "10 980 kr",
-            "roas": 4.25
-          },
-          {
-            "name": "Brand Search - All Markets",
-            "spend_label": "2 280 kr",
-            "conv": 18,
-            "value_label": "19 410 kr",
-            "roas": 8.51
-          },
-          {
-            "name": "Brand Search - IT",
-            "spend_label": "598 kr",
-            "conv": 10,
-            "value_label": "9 370 kr",
-            "roas": 15.66
-          },
-          {
-            "name": "Shopping - DE",
-            "spend_label": "546 kr",
-            "conv": 0,
-            "value_label": "0 kr",
-            "roas": 0.0
-          },
-          {
-            "name": "Non-brand Test - US & UK",
-            "spend_label": "486 kr",
-            "conv": 2,
-            "value_label": "568 kr",
-            "roas": 1.17
-          },
-          {
-            "name": "Brand Search - DE",
-            "spend_label": "143 kr",
-            "conv": 0,
-            "value_label": "0 kr",
-            "roas": 0.0
-          }
-        ]
-      },
-      "orders_by_country": [
-        {
-          "name": "USA",
-          "flag": "🇺🇸",
-          "orders": 403,
-          "revenue": "€46,510"
-        },
-        {
-          "name": "UK",
-          "flag": "🇬🇧",
-          "orders": 176,
-          "revenue": "€17,837"
-        },
-        {
-          "name": "Italy",
-          "flag": "🇮🇹",
-          "orders": 179,
-          "revenue": "€16,800"
-        },
-        {
-          "name": "Germany",
-          "flag": "🇩🇪",
-          "orders": 92,
-          "revenue": "€8,438"
-        },
-        {
-          "name": "Australia",
-          "flag": "🇦🇺",
-          "orders": 73,
-          "revenue": "€8,046"
-        },
-        {
-          "name": "France",
-          "flag": "🇫🇷",
-          "orders": 50,
-          "revenue": "€5,441"
-        },
-        {
-          "name": "Netherlands",
-          "flag": "🇳🇱",
-          "orders": 36,
-          "revenue": "€4,361"
-        },
-        {
-          "name": "Denmark",
-          "flag": "🇩🇰",
-          "orders": 30,
-          "revenue": "€3,849"
-        },
-        {
-          "name": "Belgium",
-          "flag": "🇧🇪",
-          "orders": 31,
-          "revenue": "€3,643"
-        },
-        {
-          "name": "Austria",
-          "flag": "🇦🇹",
-          "orders": 17,
-          "revenue": "€1,873"
-        }
-      ],
-      "landing_pages": [
-        {
-          "name": "Big Box (product)",
-          "path": "/products/lying-pirates-big-box",
-          "sessions": 13937,
-          "conv_pct": 1.64
-        },
-        {
-          "name": "Homepage",
-          "path": "/",
-          "sessions": 6462,
-          "conv_pct": 2.31
-        },
-        {
-          "name": "Base Game (product)",
-          "path": "/products/lying-pirates-base-game",
-          "sessions": 1849,
-          "conv_pct": 2.65
-        },
-        {
-          "name": "FR — Grande Boîte",
-          "path": "/fr/products/menteurs-pirates-grand-boite",
-          "sessions": 1085,
-          "conv_pct": 0.28,
-          "alert": true
-        },
-        {
-          "name": "Cities of Greed",
-          "path": "/products/cities-of-greed",
-          "sessions": 247,
-          "conv_pct": 3.24
-        },
-        {
-          "name": "FR — Base Jeu",
-          "path": "/fr/products/menteurs-pirates-base-jeu",
-          "sessions": 239,
-          "conv_pct": 1.67
-        },
-        {
-          "name": "Custom Insert",
-          "path": "/products/lying-pirates-custom-insert",
-          "sessions": 151,
-          "conv_pct": 1.99
-        },
-        {
-          "name": "All collection",
-          "path": "/collections/all",
-          "sessions": 115,
-          "conv_pct": 2.61
-        }
-      ],
-      "flags": [
-        {
-          "level": "warning",
-          "title": "Meta is two days behind the rest of this page",
-          "body": "Orders, sales and Google Ads are current through 25 August. Meta stops at 23 August, because GATE has not been able to reach it since. Each Meta box prints its own dates, so the gap is visible rather than hidden, and the blended return is left blank rather than dividing 25 Aug sales by 23 Aug ad spend.",
-          "sub": "The fault is in our own tooling, not in the Meta account. Already reported."
-        },
-        {
-          "level": "warning",
-          "title": "🚩 French pages chronically underperform",
-          "body": "Over 90 days the French Grande Boîte page took <b>1,085 sessions at 0.28% conversion</b>. The English Big Box did 1.64%+ on far more traffic.",
-          "sub": "Worth a dedicated fix sprint: localized pricing, FR checkout, shipping clarity — or pause FR paid traffic until the page is fixed. (Landing page-listan för 90d är per 6 aug.)"
-        },
-        {
-          "level": "info",
-          "title": "Order counts now exclude cancelled orders, and days are cut in Swedish time",
-          "body": "Two corrections to how these figures are built. Cancelled orders are no longer counted as sales: Shopify's own revenue figure includes them, which is why a number here can read lower than the one in the Shopify app. And each day is now cut at Swedish midnight in our own code, because Shopify's date filter was returning two days' orders as one.",
-          "sub": "Checked against 23 Aug: 8 real orders and €608, plus one cancelled order. Shopify shows €756 for the same day because it counts the cancelled one."
-        }
-      ]
-    },
-    {
-      "id": "yesterday",
-      "label": "Yesterday (Aug 25)",
-      "range_start": "2026-08-25",
-      "range_end": "2026-08-25",
-      "days": 1,
-      "kpis": {
-        "sessions": null,
-        "conversion_label": "Unavailable",
-        "sales_label": "€538",
-        "orders": 5
-      },
-      "meta": {
-        "spend_label": "Unavailable",
-        "spend_window": "GATE når inte Meta sedan 23 aug",
-        "meta_roas": null,
-        "blended_mer": null,
-        "_note": "Ingen Meta-siffra för 25 aug. Den gamla gällde 23 aug och är borttagen här med flit: ett enskilt dygn från fel datum under rubriken \"i går\" är mer vilseledande än en tom ruta."
-      },
-      "gads": {
-        "spend_label": "413 kr",
-        "gads_roas": 0.0,
-        "conv": 0,
-        "value_label": "0 kr",
-        "_note": "Google Ads API (25 Aug), fetched 26 Aug.",
-        "campaigns": [
-          {
-            "name": "Shopping - US & UK",
-            "spend_label": "413 kr",
-            "conv": 0,
-            "value_label": "0 kr",
-            "roas": 0.0
-          }
-        ]
-      },
-      "orders_by_country": [],
-      "landing_pages": [],
-      "flags": [
-        {
-          "level": "warning",
-          "title": "Meta is two days behind the rest of this page",
-          "body": "Orders, sales and Google Ads are current through 25 August. Meta stops at 23 August, because GATE has not been able to reach it since. Each Meta box prints its own dates, so the gap is visible rather than hidden, and the blended return is left blank rather than dividing 25 Aug sales by 23 Aug ad spend.",
-          "sub": "The fault is in our own tooling, not in the Meta account. Already reported."
-        },
-        {
-          "level": "info",
-          "title": "Order counts now exclude cancelled orders, and days are cut in Swedish time",
-          "body": "Two corrections to how these figures are built. Cancelled orders are no longer counted as sales: Shopify's own revenue figure includes them, which is why a number here can read lower than the one in the Shopify app. And each day is now cut at Swedish midnight in our own code, because Shopify's date filter was returning two days' orders as one.",
-          "sub": "Checked against 23 Aug: 8 real orders and €608, plus one cancelled order. Shopify shows €756 for the same day because it counts the cancelled one."
-        }
-      ]
-    }
-  ],
-  "inventory_data": {
-    "updated_at": "2026-08-06",
-    "velocity_window_days": 30,
-    "filter_note": "Add-On Box + Upgrade Box exkluderade per Lucas 2026-07-24 (irrelevanta produkter)",
-    "warehouses": [
-      {
-        "id": "bridge",
-        "label": "Bridge (USA)"
-      },
-      {
-        "id": "armarlo",
-        "label": "Armarlo (AU)"
-      },
-      {
-        "id": "meeples",
-        "label": "Meeples (EU)"
-      },
-      {
-        "id": "zatu",
-        "label": "Zatu (UK)"
-      }
-    ],
-    "thresholds": {
-      "critical": 14,
-      "low": 30,
-      "watch": 60
-    },
-    "products": [
-      {
-        "title": "BIG BOX",
-        "variant": "English",
-        "velocity": 6.8,
-        "stock": {
-          "bridge": 198,
-          "armarlo": 126,
-          "meeples": 235,
-          "zatu": 163,
-          "total": 722
-        },
-        "days": 106,
-        "status": "ok",
-        "warehouse_scope": [
-          "bridge",
-          "armarlo",
-          "meeples",
-          "zatu"
-        ]
-      },
-      {
-        "title": "BIG BOX",
-        "variant": "Italian",
-        "velocity": 0.77,
-        "stock": {
-          "bridge": 2,
-          "armarlo": 0,
-          "meeples": 0,
-          "zatu": 0,
-          "total": 2
-        },
-        "days": 3,
-        "status": "critical",
-        "warehouse_scope": [
-          "meeples"
-        ]
-      },
-      {
-        "title": "BIG BOX",
-        "variant": "German",
-        "velocity": 0.13,
-        "stock": {
-          "bridge": 0,
-          "armarlo": 0,
-          "meeples": 272,
-          "zatu": 0,
-          "total": 272
-        },
-        "days": 999,
-        "status": "ok",
-        "warehouse_scope": [
-          "meeples"
-        ]
-      },
-      {
-        "title": "BIG BOX",
-        "variant": "French",
-        "velocity": 0.1,
-        "stock": {
-          "bridge": 1,
-          "armarlo": 0,
-          "meeples": 129,
-          "zatu": 0,
-          "total": 130
-        },
-        "days": 999,
-        "status": "ok",
-        "warehouse_scope": [
-          "meeples"
-        ]
-      },
-      {
-        "title": "BIG BOX",
-        "variant": "Spanish",
-        "velocity": 0.0,
-        "stock": {
-          "bridge": 4,
-          "armarlo": 0,
-          "meeples": 27,
-          "zatu": 0,
-          "total": 31
-        },
-        "days": 999,
-        "status": "ok",
-        "warehouse_scope": [
-          "meeples"
-        ]
-      },
-      {
-        "title": "Base Game",
-        "variant": "English",
-        "velocity": 2.37,
-        "stock": {
-          "bridge": 1202,
-          "armarlo": 68,
-          "meeples": 0,
-          "zatu": 0,
-          "total": 1270
-        },
-        "days": 536,
-        "status": "ok",
-        "warehouse_scope": [
-          "bridge",
-          "armarlo",
-          "meeples",
-          "zatu"
-        ]
-      },
-      {
-        "title": "Base Game",
-        "variant": "Italian",
-        "velocity": 0.6,
-        "stock": {
-          "bridge": 0,
-          "armarlo": 0,
-          "meeples": 20,
-          "zatu": 0,
-          "total": 20
-        },
-        "days": 33,
-        "status": "watch",
-        "warehouse_scope": [
-          "meeples"
-        ]
-      },
-      {
-        "title": "Base Game",
-        "variant": "German",
-        "velocity": 0.27,
-        "stock": {
-          "bridge": 0,
-          "armarlo": 0,
-          "meeples": 196,
-          "zatu": 0,
-          "total": 196
-        },
-        "days": 999,
-        "status": "ok",
-        "warehouse_scope": [
-          "meeples"
-        ]
-      },
-      {
-        "title": "Base Game",
-        "variant": "French",
-        "velocity": 0.07,
-        "stock": {
-          "bridge": 0,
-          "armarlo": 0,
-          "meeples": 221,
-          "zatu": 0,
-          "total": 221
-        },
-        "days": 999,
-        "status": "ok",
-        "warehouse_scope": [
-          "meeples"
-        ]
-      },
-      {
-        "title": "Base Game",
-        "variant": "Spanish",
-        "velocity": 0.03,
-        "stock": {
-          "bridge": 12,
-          "armarlo": 0,
-          "meeples": 142,
-          "zatu": 24,
-          "total": 178
-        },
-        "days": 999,
-        "status": "ok",
-        "warehouse_scope": [
-          "meeples"
-        ]
-      },
-      {
-        "title": "Kraken Mini-Expansion",
-        "variant": "Default",
-        "velocity": 3.9,
-        "stock": {
-          "bridge": -8,
-          "armarlo": 0,
-          "meeples": 40,
-          "zatu": 47,
-          "total": 79
-        },
-        "days": 20,
-        "status": "low",
-        "warehouse_scope": [
-          "bridge",
-          "armarlo",
-          "meeples",
-          "zatu"
-        ]
-      },
-      {
-        "title": "Cities of Greed",
-        "variant": "Default",
-        "velocity": 0.73,
-        "stock": {
-          "bridge": 151,
-          "armarlo": 147,
-          "meeples": 14,
-          "zatu": 27,
-          "total": 339
-        },
-        "days": 464,
-        "status": "ok",
-        "warehouse_scope": [
-          "bridge",
-          "armarlo",
-          "meeples",
-          "zatu"
-        ]
-      },
-      {
-        "title": "Custom Insert",
-        "variant": "Default",
-        "velocity": 1.67,
-        "stock": {
-          "bridge": -1,
-          "armarlo": 0,
-          "meeples": 35,
-          "zatu": 76,
-          "total": 110
-        },
-        "days": 66,
-        "status": "ok",
-        "warehouse_scope": [
-          "bridge",
-          "armarlo",
-          "meeples",
-          "zatu"
-        ]
-      },
-      {
-        "title": "8-Player Components",
-        "variant": "Default",
-        "velocity": 2.43,
-        "stock": {
-          "bridge": -21,
-          "armarlo": 0,
-          "meeples": 23,
-          "zatu": 1,
-          "total": 3
-        },
-        "days": 1,
-        "status": "critical",
-        "warehouse_scope": [
-          "bridge",
-          "armarlo",
-          "meeples",
-          "zatu"
-        ]
-      }
+    "days": 106,
+    "status": "ok",
+    "warehouse_scope": [
+     "bridge",
+     "armarlo",
+     "meeples",
+     "zatu"
     ]
-  },
-  "gads_periods": {
-    "since": "2026-07-08",
-    "until": "2026-08-25",
-    "days": 49,
-    "total_spend_sek": 25830,
-    "total_conv": 101,
-    "total_conv_value_sek": 101796,
-    "roas": 3.94,
-    "campaigns": [
-      {
-        "name": "Shopping - US & UK",
-        "spend_sek": 19192,
-        "conv": 60,
-        "conv_value_sek": 61468,
-        "roas": 3.2
-      },
-      {
-        "name": "Shopping - AU",
-        "spend_sek": 2585,
-        "conv": 11,
-        "conv_value_sek": 10980,
-        "roas": 4.25
-      },
-      {
-        "name": "Brand Search - All Markets",
-        "spend_sek": 2280,
-        "conv": 18,
-        "conv_value_sek": 19410,
-        "roas": 8.51
-      },
-      {
-        "name": "Brand Search - IT",
-        "spend_sek": 598,
-        "conv": 10,
-        "conv_value_sek": 9370,
-        "roas": 15.66
-      },
-      {
-        "name": "Shopping - DE",
-        "spend_sek": 546,
-        "conv": 0,
-        "conv_value_sek": 0,
-        "roas": 0.0
-      },
-      {
-        "name": "Non-brand Test - US & UK",
-        "spend_sek": 486,
-        "conv": 2,
-        "conv_value_sek": 568,
-        "roas": 1.17
-      },
-      {
-        "name": "Brand Search - DE",
-        "spend_sek": 143,
-        "conv": 0,
-        "conv_value_sek": 0,
-        "roas": 0.0
-      }
+   },
+   {
+    "title": "BIG BOX",
+    "variant": "Italian",
+    "velocity": 0.77,
+    "stock": {
+     "bridge": 2,
+     "armarlo": 0,
+     "meeples": 0,
+     "zatu": 0,
+     "total": 2
+    },
+    "days": 3,
+    "status": "critical",
+    "warehouse_scope": [
+     "meeples"
     ]
-  },
-  "_n": 4
+   },
+   {
+    "title": "BIG BOX",
+    "variant": "German",
+    "velocity": 0.13,
+    "stock": {
+     "bridge": 0,
+     "armarlo": 0,
+     "meeples": 272,
+     "zatu": 0,
+     "total": 272
+    },
+    "days": 999,
+    "status": "ok",
+    "warehouse_scope": [
+     "meeples"
+    ]
+   },
+   {
+    "title": "BIG BOX",
+    "variant": "French",
+    "velocity": 0.1,
+    "stock": {
+     "bridge": 1,
+     "armarlo": 0,
+     "meeples": 129,
+     "zatu": 0,
+     "total": 130
+    },
+    "days": 999,
+    "status": "ok",
+    "warehouse_scope": [
+     "meeples"
+    ]
+   },
+   {
+    "title": "BIG BOX",
+    "variant": "Spanish",
+    "velocity": 0.0,
+    "stock": {
+     "bridge": 4,
+     "armarlo": 0,
+     "meeples": 27,
+     "zatu": 0,
+     "total": 31
+    },
+    "days": 999,
+    "status": "ok",
+    "warehouse_scope": [
+     "meeples"
+    ]
+   },
+   {
+    "title": "Base Game",
+    "variant": "English",
+    "velocity": 2.37,
+    "stock": {
+     "bridge": 1202,
+     "armarlo": 68,
+     "meeples": 0,
+     "zatu": 0,
+     "total": 1270
+    },
+    "days": 536,
+    "status": "ok",
+    "warehouse_scope": [
+     "bridge",
+     "armarlo",
+     "meeples",
+     "zatu"
+    ]
+   },
+   {
+    "title": "Base Game",
+    "variant": "Italian",
+    "velocity": 0.6,
+    "stock": {
+     "bridge": 0,
+     "armarlo": 0,
+     "meeples": 20,
+     "zatu": 0,
+     "total": 20
+    },
+    "days": 33,
+    "status": "watch",
+    "warehouse_scope": [
+     "meeples"
+    ]
+   },
+   {
+    "title": "Base Game",
+    "variant": "German",
+    "velocity": 0.27,
+    "stock": {
+     "bridge": 0,
+     "armarlo": 0,
+     "meeples": 196,
+     "zatu": 0,
+     "total": 196
+    },
+    "days": 999,
+    "status": "ok",
+    "warehouse_scope": [
+     "meeples"
+    ]
+   },
+   {
+    "title": "Base Game",
+    "variant": "French",
+    "velocity": 0.07,
+    "stock": {
+     "bridge": 0,
+     "armarlo": 0,
+     "meeples": 221,
+     "zatu": 0,
+     "total": 221
+    },
+    "days": 999,
+    "status": "ok",
+    "warehouse_scope": [
+     "meeples"
+    ]
+   },
+   {
+    "title": "Base Game",
+    "variant": "Spanish",
+    "velocity": 0.03,
+    "stock": {
+     "bridge": 12,
+     "armarlo": 0,
+     "meeples": 142,
+     "zatu": 24,
+     "total": 178
+    },
+    "days": 999,
+    "status": "ok",
+    "warehouse_scope": [
+     "meeples"
+    ]
+   },
+   {
+    "title": "Kraken Mini-Expansion",
+    "variant": "Default",
+    "velocity": 3.9,
+    "stock": {
+     "bridge": -8,
+     "armarlo": 0,
+     "meeples": 40,
+     "zatu": 47,
+     "total": 79
+    },
+    "days": 20,
+    "status": "low",
+    "warehouse_scope": [
+     "bridge",
+     "armarlo",
+     "meeples",
+     "zatu"
+    ]
+   },
+   {
+    "title": "Cities of Greed",
+    "variant": "Default",
+    "velocity": 0.73,
+    "stock": {
+     "bridge": 151,
+     "armarlo": 147,
+     "meeples": 14,
+     "zatu": 27,
+     "total": 339
+    },
+    "days": 464,
+    "status": "ok",
+    "warehouse_scope": [
+     "bridge",
+     "armarlo",
+     "meeples",
+     "zatu"
+    ]
+   },
+   {
+    "title": "Custom Insert",
+    "variant": "Default",
+    "velocity": 1.67,
+    "stock": {
+     "bridge": -1,
+     "armarlo": 0,
+     "meeples": 35,
+     "zatu": 76,
+     "total": 110
+    },
+    "days": 66,
+    "status": "ok",
+    "warehouse_scope": [
+     "bridge",
+     "armarlo",
+     "meeples",
+     "zatu"
+    ]
+   },
+   {
+    "title": "8-Player Components",
+    "variant": "Default",
+    "velocity": 2.43,
+    "stock": {
+     "bridge": -21,
+     "armarlo": 0,
+     "meeples": 23,
+     "zatu": 1,
+     "total": 3
+    },
+    "days": 1,
+    "status": "critical",
+    "warehouse_scope": [
+     "bridge",
+     "armarlo",
+     "meeples",
+     "zatu"
+    ]
+   }
+  ]
+ },
+ "gads_periods": {
+  "since": "2026-07-08",
+  "until": "2026-08-26",
+  "days": 50,
+  "total_spend_sek": 26279,
+  "total_conv": 98,
+  "total_conv_value_sek": 99441,
+  "roas": 3.78,
+  "campaigns": [
+   {
+    "name": "Shopping - US & UK",
+    "spend_sek": 19641,
+    "conv": 58,
+    "conv_value_sek": 59622,
+    "roas": 3.04
+   },
+   {
+    "name": "Shopping - AU",
+    "spend_sek": 2585,
+    "conv": 10,
+    "conv_value_sek": 10471,
+    "roas": 4.05
+   },
+   {
+    "name": "Brand Search - All Markets",
+    "spend_sek": 2280,
+    "conv": 18,
+    "conv_value_sek": 19410,
+    "roas": 8.51
+   },
+   {
+    "name": "Brand Search - IT",
+    "spend_sek": 598,
+    "conv": 10,
+    "conv_value_sek": 9370,
+    "roas": 15.66
+   },
+   {
+    "name": "Shopping - DE",
+    "spend_sek": 546,
+    "conv": 0,
+    "conv_value_sek": 0,
+    "roas": 0.0
+   },
+   {
+    "name": "Non-brand Test - US & UK",
+    "spend_sek": 486,
+    "conv": 2,
+    "conv_value_sek": 568,
+    "roas": 1.17
+   },
+   {
+    "name": "Brand Search - DE",
+    "spend_sek": 143,
+    "conv": 0,
+    "conv_value_sek": 0,
+    "roas": 0.0
+   }
+  ]
+ },
+ "_n": 5
 }
