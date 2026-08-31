@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nordic Pirates · Marketing Ideas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Asul:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#f2ede4;--cream-2:#ece4d6;--paper:#fffdf8;--paper-2:#fbf6ec;
+    --ink:#171717;--ink-soft:#3a352e;--muted:#8a8073;
+    --terra:#c96a3d;--terra-deep:#a8512a;--gold:#cf9a2e;--gold-soft:#e7b94b;
+    --green:#2f8f4e;--red:#cf4234;
+    --line:rgba(23,23,23,.09);--shadow:0 1px 2px rgba(23,23,23,.04),0 8px 24px rgba(23,23,23,.05);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Inter',sans-serif;color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased;
+    background:radial-gradient(900px 460px at 88% -8%,rgba(201,106,61,.10),transparent 60%),
+               radial-gradient(760px 420px at -6% 4%,rgba(207,154,46,.12),transparent 58%),
+               var(--cream);
+    padding:0 0 70px}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+  header.top{padding:26px 0 22px;margin-bottom:22px;border-bottom:1px solid var(--line)}
+  .brandrow{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:14px}
+  .logochip{background:var(--ink);border-radius:13px;padding:11px 13px;display:flex;align-items:center;box-shadow:var(--shadow)}
+  .logochip img{height:26px;display:block}
+  h1{font-family:'Asul',serif;font-size:27px;font-weight:700;letter-spacing:.2px;line-height:1.15}
+  .sub{color:var(--muted);font-size:13.5px;margin-top:3px}
+  .header-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+  .logout{font-size:12px;color:var(--muted);text-decoration:none;padding:5px 12px;border:1px solid var(--line);border-radius:20px;background:var(--paper);transition:.15s}
+  .logout:hover{border-color:var(--terra);color:var(--terra)}
+  .view-toggle{display:inline-flex;flex-wrap:wrap;background:var(--paper);border:1.5px solid var(--line);border-radius:24px;padding:4px;margin-top:16px;box-shadow:var(--shadow)}
+  .view-toggle a{font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:var(--muted);text-decoration:none;padding:8px 22px;border-radius:20px;transition:.15s}
+  .view-toggle a:hover{color:var(--ink)}
+  .view-toggle a.active{background:var(--ink);color:#fff}
+  h2{font-family:'Asul',serif;font-size:19px;font-weight:700;margin:0 0 5px;display:flex;align-items:center;gap:9px;color:var(--ink)}
+  h2 .dot{width:9px;height:9px;border-radius:50%;background:var(--terra)}
+  .h2sub{font-size:12.5px;color:var(--muted);margin:0 0 14px 18px}
+  section{margin-bottom:34px}
+  /* Brand picker: one brand at a time, built from the API's brand list */
+  .brandbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+  .brandtab{font-family:'Inter',sans-serif;font-size:13.5px;font-weight:600;color:var(--ink-soft);background:var(--paper);
+    border:1.5px solid var(--line);border-radius:22px;padding:9px 18px;cursor:pointer;transition:.15s;box-shadow:var(--shadow)}
+  .brandtab:hover{border-color:var(--terra);color:var(--terra)}
+  .brandtab.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .brandtab .n{font-weight:400;opacity:.65;margin-left:7px}
+  /* Filter row */
+  .toolbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+  .filter{flex:1;min-width:230px;position:relative}
+  .filter input{width:100%;padding:11px 16px 11px 38px;border:1.5px solid var(--line);border-radius:11px;font-size:14px;
+    font-family:'Inter',sans-serif;background:var(--paper);outline:none;transition:border-color .15s;color:var(--ink)}
+  .filter input:focus{border-color:var(--terra)}
+  .filter .mag{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:13px;color:var(--muted);pointer-events:none}
+  .count{font-size:12.5px;color:var(--ink-soft);font-weight:600;background:var(--paper-2);border:1px solid var(--line);padding:7px 14px;border-radius:20px;white-space:nowrap}
+  .count b{color:var(--terra-deep)}
+  /* Idea cards */
+  .ideas{display:flex;flex-direction:column;gap:11px}
+  .idea{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:17px 20px;
+    box-shadow:var(--shadow);position:relative;overflow:hidden}
+  .idea::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--terra)}
+  .idea h3{font-family:'Asul',serif;font-size:16.5px;font-weight:700;color:var(--ink);line-height:1.35;margin-bottom:7px}
+  .idea p{font-size:13.5px;color:var(--ink-soft);opacity:.92;line-height:1.6}
+  .idea .meta{font-size:11.5px;color:var(--muted);margin-top:11px;display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+  .tpl{font-size:10px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;
+    background:rgba(201,106,61,.14);color:var(--terra-deep);padding:3px 9px;border-radius:20px}
+  .empty{background:var(--paper);border:1px dashed rgba(23,23,23,.16);border-radius:16px;padding:26px 22px;
+    text-align:center;color:var(--muted);font-size:13.5px}
+  /* Add form */
+  .addcard{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:20px 22px;box-shadow:var(--shadow)}
+  .addcard h2{margin-bottom:14px}
+  .field{margin-bottom:13px}
+  .field label{display:block;font-size:12.5px;font-weight:600;color:var(--ink);margin-bottom:6px}
+  .field input,.field textarea{width:100%;padding:11px 14px;border:1.5px solid var(--line);border-radius:10px;font-size:14px;
+    font-family:'Inter',sans-serif;background:var(--paper-2);outline:none;transition:border-color .15s;color:var(--ink);line-height:1.55}
+  .field input:focus,.field textarea:focus{border-color:var(--terra)}
+  .field textarea{min-height:96px;resize:vertical}
+  .addrow{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .savebtn{font-family:'Inter',sans-serif;font-size:14px;font-weight:600;color:#fff;background:var(--ink);border:none;
+    border-radius:10px;padding:12px 22px;cursor:pointer;transition:.15s}
+  .savebtn:hover{background:var(--terra)}
+  .savebtn:disabled{opacity:.55;cursor:default;background:var(--ink)}
+  .formnote{font-size:12.5px;color:var(--muted)}
+  .formnote.bad{color:var(--terra-deep);font-weight:600}
+  .formnote.good{color:var(--green);font-weight:600}
+  footer{border-top:1px solid var(--line);margin-top:42px;padding-top:22px;font-size:12px;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+  footer b{color:var(--ink-soft)}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap brandrow">
+  <div class="brand">
+    <span class="logochip"><img src="https://www.nordicpirates.com/cdn/shop/files/LP_LOGO_vit_e2ed4c01-c782-4abb-8a90-b5cab974fd0a.png?width=120" alt="Nordic Pirates"></span>
+    <div>
+      <h1>Marketing Ideas</h1>
+      <div class="sub">Nordic Pirates · innehållsidéer, krokar och vinklar per varumärke</div>
+      <div class="view-toggle">
+        <a href="/">Marketing HQ</a>
+        <a href="/dashboard">Dashboard</a>
+        <a href="/inventory">Lager</a>
+        <a href="/growth">Growth</a>
+        <a href="/ideas" class="active">Ideas</a>
+      </div>
+    </div>
+  </div>
+  <div class="header-right">
+    <a class="logout" href="/logout">Log out</a>
+  </div>
+</div></header>
+
+<div class="wrap">
+
+  <section>
+    <h2><span class="dot"></span>Idébank</h2>
+    <p class="h2sub">Välj varumärke, sök i idéerna, lägg till nya. Varje varumärke har sin egen lista.</p>
+
+    <div class="brandbar" id="brandbar"></div>
+
+    <div class="toolbar">
+      <div class="filter">
+        <span class="mag">🔍</span>
+        <input type="search" id="filter" placeholder="Filtrera på ord i rubrik eller text" autocomplete="off">
+      </div>
+      <span class="count" id="count"></span>
+    </div>
+
+    <div class="ideas" id="ideas"></div>
+  </section>
+
+  <section>
+    <div class="addcard">
+      <h2><span class="dot"></span>Ny idé <span id="add-brand" style="font-family:'Inter',sans-serif;font-size:12.5px;font-weight:600;color:var(--muted)"></span></h2>
+      <form id="addform">
+        <div class="field">
+          <label for="title">Rubrik</label>
+          <input type="text" id="title" name="title" placeholder="Kroken, i en mening" required>
+        </div>
+        <div class="field">
+          <label for="body">Beskrivning</label>
+          <textarea id="body" name="body" placeholder="Vad man ser, varför det stoppar scrollen, vad det säljer" required></textarea>
+        </div>
+        <div class="addrow">
+          <button type="submit" class="savebtn" id="savebtn">Lägg till idé</button>
+          <span class="formnote" id="formnote"></span>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <footer>
+    <div>🏴‍☠️ <b>Nordic Pirates Marketing Ideas</b> · sparas på servern, överlever deploy</div>
+    <div>En idé hör till ett varumärke och visas bara där</div>
+  </footer>
+</div>
+
+<script>
+// Which brand is on screen. Kept in localStorage so a reload comes back to the same
+// list, and validated against the brand list from the API on every load: a brand that
+// is no longer there must not leave the page showing nothing.
+const BRAND_KEY = 'np-ideas-brand';
+
+let BRANDS = [];
+let IDEAS = [];
+let current = null;
+
+function savedBrand() {
+  try { return window.localStorage.getItem(BRAND_KEY); } catch (e) { return null; }
+}
+function rememberBrand(id) {
+  try { window.localStorage.setItem(BRAND_KEY, id); } catch (e) { /* private mode: the tab still works, it just forgets */ }
+}
+
+function brandLabel(id) {
+  const b = BRANDS.find(x => x.id === id);
+  return b ? b.label : id;
+}
+
+/** Ideas for one brand, newest first. Nothing from another brand ever gets in here. */
+function forBrand(id) {
+  return IDEAS.filter(i => i.brand === id)
+    .slice()
+    .sort((a, b) => String(b.created_at || '').localeCompare(String(a.created_at || '')));
+}
+
+function matches(idea, needle) {
+  if (!needle) return true;
+  const hay = ((idea.title || '') + ' ' + (idea.body || '')).toLowerCase();
+  return hay.includes(needle);
+}
+
+function formatDate(iso) {
+  if (!iso) return '';
+  const d = new Date(iso);
+  if (isNaN(d)) return '';
+  return d.toLocaleDateString('sv-SE', { day: 'numeric', month: 'short', year: 'numeric' });
+}
+
+function plural(n, one, many) {
+  return n + ' ' + (n === 1 ? one : many);
+}
+
+function renderBrands() {
+  const bar = document.getElementById('brandbar');
+  bar.textContent = '';
+  BRANDS.forEach(b => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'brandtab' + (b.id === current ? ' active' : '');
+    btn.textContent = b.label;
+    const n = document.createElement('span');
+    n.className = 'n';
+    n.textContent = forBrand(b.id).length;
+    btn.appendChild(n);
+    btn.onclick = () => {
+      current = b.id;
+      rememberBrand(b.id);
+      renderBrands();
+      renderIdeas();
+    };
+    bar.appendChild(btn);
+  });
+  document.getElementById('add-brand').textContent = current ? 'för ' + brandLabel(current) : '';
+}
+
+// Every idea is built as DOM nodes with textContent, never as an HTML string: this text
+// is typed by people, and a title with a < in it must stay a title.
+function ideaCard(idea) {
+  const card = document.createElement('div');
+  card.className = 'idea';
+
+  const h = document.createElement('h3');
+  h.textContent = idea.title || '';
+  card.appendChild(h);
+
+  const p = document.createElement('p');
+  p.textContent = idea.body || '';
+  card.appendChild(p);
+
+  const meta = document.createElement('div');
+  meta.className = 'meta';
+  if (idea.template !== undefined && idea.template !== null) {
+    const tpl = document.createElement('span');
+    tpl.className = 'tpl';
+    tpl.textContent = 'Mall ' + idea.template;
+    meta.appendChild(tpl);
+  }
+  const when = document.createElement('span');
+  const date = formatDate(idea.created_at);
+  when.textContent = (date ? date : 'okänt datum') + ' · ' + (idea.created_by || 'okänd');
+  meta.appendChild(when);
+  card.appendChild(meta);
+
+  return card;
+}
+
+function renderIdeas() {
+  const list = document.getElementById('ideas');
+  const countEl = document.getElementById('count');
+  list.textContent = '';
+
+  if (!current) {
+    countEl.textContent = '';
+    const none = document.createElement('div');
+    none.className = 'empty';
+    none.textContent = 'Inga varumärken är uppsatta än.';
+    list.appendChild(none);
+    return;
+  }
+
+  const all = forBrand(current);
+  const needle = document.getElementById('filter').value.trim().toLowerCase();
+  const shown = all.filter(i => matches(i, needle));
+
+  countEl.textContent = needle
+    ? shown.length + ' av ' + plural(all.length, 'idé', 'idéer')
+    : plural(all.length, 'idé', 'idéer');
+
+  if (!shown.length) {
+    const none = document.createElement('div');
+    none.className = 'empty';
+    none.textContent = all.length
+      ? 'Ingen idé matchar sökningen.'
+      : 'Inga idéer för ' + brandLabel(current) + ' än. Lägg till den första nedan.';
+    list.appendChild(none);
+    return;
+  }
+
+  shown.forEach(i => list.appendChild(ideaCard(i)));
+}
+
+async function load() {
+  let data;
+  try {
+    const r = await fetch('/api/ideas');
+    if (r.status === 401) { location.href = '/login'; return; }
+    data = await r.json();
+  } catch (e) { console.error(e); return; }
+
+  BRANDS = data.brands || [];
+  IDEAS = data.ideas || [];
+
+  const wanted = savedBrand();
+  current = BRANDS.some(b => b.id === wanted) ? wanted : (BRANDS[0] ? BRANDS[0].id : null);
+
+  renderBrands();
+  renderIdeas();
+}
+
+function note(text, kind) {
+  const el = document.getElementById('formnote');
+  el.textContent = text;
+  el.className = 'formnote' + (kind ? ' ' + kind : '');
+}
+
+document.getElementById('filter').addEventListener('input', renderIdeas);
+
+document.getElementById('addform').addEventListener('submit', async (ev) => {
+  ev.preventDefault();
+  const btn = document.getElementById('savebtn');
+  const titleEl = document.getElementById('title');
+  const bodyEl = document.getElementById('body');
+
+  if (!current) { note('Välj ett varumärke först.', 'bad'); return; }
+  const title = titleEl.value.trim();
+  const body = bodyEl.value.trim();
+  if (!title || !body) { note('Både rubrik och beskrivning behövs.', 'bad'); return; }
+
+  btn.disabled = true;
+  const label = btn.textContent;
+  btn.textContent = 'Sparar…';
+  note('');
+
+  try {
+    const r = await fetch('/api/ideas', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ brand: current, title: title, body: body })
+    });
+    if (r.status === 401) { location.href = '/login'; return; }
+    const answer = await r.json().catch(() => ({}));
+    if (!r.ok) {
+      // Say what the server actually said. A save that failed must never look like one
+      // that worked, and "något gick fel" alone is not enough to act on.
+      note('Idén sparades inte: ' + (answer.error || ('HTTP ' + r.status)), 'bad');
+      return;
+    }
+    titleEl.value = '';
+    bodyEl.value = '';
+    note('Sparad.', 'good');
+    // Re-read from the server rather than pushing the local object into the list, so
+    // what is on screen is what is actually stored.
+    await load();
+  } catch (e) {
+    console.error(e);
+    note('Idén sparades inte: ingen kontakt med servern.', 'bad');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = label;
+  }
+});
+
+load();
+</script>
+</body>
+</html>

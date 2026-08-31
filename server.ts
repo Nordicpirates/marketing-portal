@@ -4,6 +4,7 @@ import { createHash } from "crypto";
 import { STATE_DIR } from "./lib/state-dir.ts";
 import { handleAsset, handleClaim } from "./lib/lp-aboard.ts";
 import { handleMarkSent, handleSignups } from "./lib/lp-aboard-admin.ts";
+import { addIdea, readBrands, readIdeas } from "./lib/ideas-store.ts";
 
 const AUTH_PASSWORD = (process.env.AUTH_PASSWORD || "pirates2024").trim();
 const PORT = parseInt(process.env.PORT || "3000");
@@ -189,6 +190,36 @@ const server = Bun.serve({
         return Response.json(setTask(body.id, body.done));
       }
       return Response.json(readTasks(), { headers: { "Cache-Control": "no-cache" } });
+    }
+
+    // Brands ride along with the ideas so the page can build its tabs from data. A
+    // third brand is then an entry in data/ideas.json and no code change at all.
+    if (path === "/api/ideas") {
+      if (req.method === "POST") {
+        const body = await req.json().catch(() => ({}));
+        const result = addIdea(body);
+        if (!result.ok) {
+          console.warn(`[ideas] refused a POST: ${result.error}`);
+          return Response.json({ error: result.error }, { status: 400 });
+        }
+        return Response.json({ idea: result.idea }, { status: 201 });
+      }
+      if (req.method !== "GET") {
+        return Response.json({ error: "Method not allowed" }, { status: 405, headers: { Allow: "GET, POST" } });
+      }
+      return Response.json(
+        { brands: readBrands(), ideas: readIdeas() },
+        { headers: { "Cache-Control": "no-cache" } }
+      );
+    }
+
+    if (path === "/ideas") {
+      const ideasHtml = join(DIR, "public", "ideas.html");
+      if (existsSync(ideasHtml)) {
+        return new Response(readFileSync(ideasHtml), {
+          headers: { "Content-Type": "text/html; charset=utf-8" },
+        });
+      }
     }
 
     if (path === "/growth") {

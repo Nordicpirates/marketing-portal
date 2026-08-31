@@ -1,0 +1,62 @@
+{
+  "brands": [
+    { "id": "lying-pirates", "label": "Lying Pirates" },
+    { "id": "tap10", "label": "TAP 10: Inventions" }
+  ],
+  "ideas": [
+    {
+      "id": "seed-lying-pirates-1",
+      "brand": "lying-pirates",
+      "title": "Is he lying? You've got three seconds.",
+      "body": "Close-up of a player placing their bid. Freeze the frame, three-second countdown, then the cup comes up. The viewer plays the game inside the feed instead of watching it, and the comments fill with people claiming they knew.",
+      "template": 18,
+      "created_at": "2026-08-31T00:00:00.000Z",
+      "created_by": "seed"
+    },
+    {
+      "id": "seed-lying-pirates-2",
+      "brand": "lying-pirates",
+      "title": "3 signs your game night is dying, even though everyone showed up.",
+      "body": "Phones out. Someone explaining rules for twenty minutes. One person thinking for four minutes while the rest stare at the ceiling. Then the turn: teaches in 90 seconds, almost no downtime, 40-60 minutes.",
+      "template": 26,
+      "created_at": "2026-08-31T00:00:00.000Z",
+      "created_by": "seed"
+    },
+    {
+      "id": "seed-lying-pirates-3",
+      "brand": "lying-pirates",
+      "title": "You already know how to play this. You just don't know it yet.",
+      "body": "Liar's Dice is 70 percent of the game. The rest is the race around the map. Removes the barrier for anyone who assumes a premium box means a thick rulebook.",
+      "template": 31,
+      "created_at": "2026-08-31T00:00:00.000Z",
+      "created_by": "seed"
+    },
+    {
+      "id": "seed-tap10-1",
+      "brand": "tap10",
+      "title": "The dishwasher is older than the airplane.",
+      "body": "Dishwasher 1886, airplane 1903, both from our own deck. Two cards face down, three seconds to guess, then flip. People cannot resist arguing about it in the comments.",
+      "template": 3,
+      "created_at": "2026-08-31T00:00:00.000Z",
+      "created_by": "seed"
+    },
+    {
+      "id": "seed-tap10-2",
+      "brand": "tap10",
+      "title": "I gave the same three cards to a 9-year-old and a 40-year-old.",
+      "body": "The selfie stick is from 1983. Both guess wrong, the kid wins. Sells exactly what makes it a gift: age 8 and up, but adults lose.",
+      "template": 39,
+      "created_at": "2026-08-31T00:00:00.000Z",
+      "created_by": "seed"
+    },
+    {
+      "id": "seed-tap10-3",
+      "brand": "tap10",
+      "title": "Fifteen seconds of Blitz. History games aren't slow.",
+      "body": "No turns, everyone places at once, hands everywhere, someone shouts. Kills the objection that a game about dates sounds like homework.",
+      "template": 18,
+      "created_at": "2026-08-31T00:00:00.000Z",
+      "created_by": "seed"
+    }
+  ]
+}
