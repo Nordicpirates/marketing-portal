@@ -47,13 +47,16 @@ function checkAuth(req: Request): boolean {
 }
 
 /**
- * One host name, lowercased, with any port and any proxy chain removed, so that two
- * spellings of the same host compare equal.
+ * One host name in the single spelling the URL parser gives it, so that two spellings of
+ * the same host compare equal.
  *
- * A proxy header can arrive as "marketing.nordicpirate.com:443" or, once a second proxy
- * has appended itself, as "marketing.nordicpirate.com, 10.0.0.5". A browser's Origin has
- * neither of those. Comparing the raw strings refuses the real portal, which is why both
- * sides go through here first.
+ * Everything here goes through the parser rather than through string slicing, because
+ * slicing normalises less than the parser does and the two sides of the comparison would
+ * then disagree about the same host. The parser collapses IPv6 ([0:0:0:0:0:0:0:1] and
+ * [::1] are one host), converts an international name to its A-label (münchen.de and
+ * xn--mnchen-3ya.de are one host), lowercases, and drops the port. Hand-written slicing
+ * got none of those right, and each one of them was a 403 for a request that genuinely
+ * came from the portal.
  *
  * Dropping the port means a different port on the SAME host name counts as ours. That is
  * the deliberate trade: a live deployment terminates TLS in front of this process, so the
@@ -61,22 +64,29 @@ function checkAuth(req: Request): boolean {
  * be right. Different host names, which is what a hostile page actually has, still differ.
  */
 function bareHost(value: string): string {
-  const first = (value || "").split(",")[0].trim().toLowerCase();
+  // A proxy chain arrives as "first, second". The first entry is the one the client used.
+  const first = (value || "").split(",")[0].trim();
   if (!first) return "";
-  // IPv6 keeps its brackets: [::1]:3000 is host [::1], not "[".
-  if (first.startsWith("[")) {
-    const end = first.indexOf("]");
-    return end === -1 ? first : first.slice(0, end + 1);
+  try {
+    return new URL(`http://${first}`).hostname.toLowerCase();
+  } catch {
+    // Not a host at all. Never returns something that could accidentally match.
+    return "";
   }
-  const colon = first.indexOf(":");
-  return colon === -1 ? first : first.slice(0, colon);
 }
 
-/** The host= parameter of an RFC 7239 Forwarded header, if there is one. */
+/**
+ * The host parameter of an RFC 7239 Forwarded header, if there is one.
+ *
+ * The parameter name is anchored to the start of the header or to a semicolon, so only a
+ * real host= token matches. Without that anchor any parameter whose name merely ENDS in
+ * host counted, and "proto=https;xhost=evil.com" was read as a host of evil.com.
+ */
 function forwardedHost(header: string | null): string {
   if (!header) return "";
-  const match = header.split(",")[0].match(/host\s*=\s*"?([^;,"]+)"?/i);
-  return match ? bareHost(match[1]) : "";
+  const match = header.split(",")[0].match(/(?:^|;)\s*host\s*=\s*("[^"]*"|[^;]+)/i);
+  if (!match) return "";
+  return bareHost(match[1].trim().replace(/^"|"$/g, ""));
 }
 
 /**
@@ -91,20 +101,29 @@ function forwardedHost(header: string | null): string {
  * preflight to fail either, and our JSON.parse reads the body happily. Those two checks
  * are what close that gap.
  *
- * Requiring application/json is the half that does not depend on Origin at all: a
- * cross-origin fetch that sets it is no longer "simple", so the browser must preflight,
- * and nothing here answers OPTIONS with CORS headers. Do not add one.
+ * Which of the two checks is actually load bearing, stated plainly.
  *
- * Origin is compared by host, through bareHost, against every name this request could
- * legitimately have arrived under. A cross-site page cannot set any of those headers, so
- * this is a browser-only defence and costs a server-to-server caller nothing: no Origin
- * at all is allowed through.
+ * Requiring application/json is. It is not a CORS-simple content type, so a cross-origin
+ * fetch that sets it must be preflighted, and nothing here answers OPTIONS with CORS
+ * headers, so the browser never sends the real request. That holds without trusting a
+ * single header value. Do not add an OPTIONS handler.
  *
- * Sec-Fetch-Site: same-origin is accepted on its own, because it is the browser stating
- * the conclusion we are trying to reach and it cannot be set by script. It is the way out
- * when a proxy rewrites Host to something internal and sets no forwarding header, where
- * no host comparison here could ever succeed. Only same-origin: same-site is exactly the
- * sibling-subdomain case being refused.
+ * The Origin comparison is defence in depth, and only against a browser. Every value it
+ * weighs comes from the request itself: the Origin being judged, and all three names it
+ * is judged against (Host, X-Forwarded-Host and Forwarded), plus Sec-Fetch-Site. Nothing
+ * here is pinned to a value this server knows independently, so any client that can set
+ * its own headers, meaning anything that is not a browser, satisfies it trivially. It is
+ * worth keeping because a browser cannot set any of them from script, and a browser is
+ * exactly the attacker this endpoint has: a page on a sibling subdomain whose fetch
+ * carries the cookie. It is not an authorisation check and must not be read as one.
+ * Pinning the host would make it one, and is deliberately not done here.
+ *
+ * Sec-Fetch-Site: same-origin is accepted on its own for the same reason: a browser sets
+ * it and script cannot. It is the way through when a proxy rewrites Host to something
+ * internal and forwards nothing, where no host comparison could ever succeed. Only
+ * same-origin, because same-site is exactly the sibling-subdomain case being refused.
+ *
+ * No Origin at all is allowed through, so a server-to-server caller is unaffected.
  */
 function crossSiteRefusal(req: Request, url: URL): Response | null {
   const jsonRefusal = () => {

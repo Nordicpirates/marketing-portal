@@ -12,6 +12,7 @@
 
 import { afterAll, beforeAll, describe, expect, test } from "bun:test";
 import { existsSync, mkdtempSync, readFileSync, unlinkSync, writeFileSync } from "fs";
+import { connect } from "net";
 import { tmpdir } from "os";
 import { join } from "path";
 
@@ -116,6 +117,38 @@ const rawPost = (path: string, body: unknown, headers: Record<string, string>) =
  * same-site, so it does, which is the gap the Origin check closes.
  */
 const siblingOrigin = () => `http://ideas.${new URL(base).hostname}`;
+
+/**
+ * A request with byte-exact headers, which fetch cannot send.
+ *
+ * fetch encodes a header value as UTF-8 and the server reads header bytes as Latin-1, so
+ * a U-label like "münchen.de" arrives as "mÃ¼nchen.de" and the test would be measuring
+ * that mangling rather than the host comparison. A proxy writes the bytes it was
+ * configured with, so this does the same.
+ */
+function rawRequest(requestLines: string[], body = ""): Promise<{ status: number; raw: string }> {
+  return new Promise((resolve, reject) => {
+    const target = new URL(base);
+    const socket = connect({ host: target.hostname, port: Number(target.port) }, () => {
+      const head = [...requestLines, `Content-Length: ${Buffer.byteLength(body, "latin1")}`, "Connection: close", "", ""].join("\r\n");
+      socket.write(Buffer.from(head + body, "latin1"));
+    });
+
+    let raw = "";
+    socket.setTimeout(10_000, () => {
+      socket.destroy();
+      reject(new Error(`no answer to: ${requestLines[0]}`));
+    });
+    socket.on("data", (chunk) => (raw += chunk.toString("latin1")));
+    socket.on("end", () => resolve({ status: Number(raw.slice(9, 12)), raw }));
+    socket.on("error", reject);
+  });
+}
+
+/** The headers every rawRequest below needs, so each test writes only what it varies. */
+const rawCommon = () => [`Host: ${new URL(base).host}`, "Content-Type: application/json", `Cookie: ${auth}`];
+
+const rawBody = (title: string) => JSON.stringify({ brand: "tap10", title, body: "Sent with byte-exact headers." });
 
 async function ideas(): Promise<{ brands: any[]; ideas: any[] }> {
   const res = await get("/api/ideas", asStaff());
@@ -420,6 +453,90 @@ describe("a POST must come from the portal, and must say it is JSON", () => {
     expect(res.status).toBe(201);
   });
 
+  test("IPv6 expanded and collapsed are one host, in either direction", async () => {
+    // [0:0:0:0:0:0:0:1] and [::1] are the same address. Comparing the strings refuses a
+    // request that came from the portal, which is what slicing the host by hand did.
+    for (const [origin, xfh] of [
+      ["https://[::1]", "[0:0:0:0:0:0:0:1]"],
+      ["https://[0:0:0:0:0:0:0:1]", "[::1]"],
+      ["https://[0:0:0:0:0:0:0:1]", "[0:0:0:0:0:0:0:1]:443"],
+    ]) {
+      const res = await rawPost(
+        "/api/ideas",
+        { brand: "tap10", title: `IPv6 ${xfh}`, body: "Expanded and collapsed are one host." },
+        { "content-type": "application/json", origin, "x-forwarded-host": xfh, cookie: auth }
+      );
+      expect({ origin, xfh, status: res.status }).toEqual({ origin, xfh, status: 201 });
+    }
+  });
+
+  test("an international name matches whichever label form each side uses", async () => {
+    // A browser sends the A-label in Origin. A proxy sends whatever it was configured
+    // with, which is often the name a person typed. Both spellings are one host.
+    const forms = [
+      ["https://xn--mnchen-3ya.de", "münchen.de"],
+      ["https://münchen.de", "xn--mnchen-3ya.de"],
+      ["https://MÜNCHEN.DE", "xn--mnchen-3ya.de"],
+    ];
+
+    for (const [origin, xfh] of forms) {
+      const { status } = await rawRequest(
+        ["POST /api/ideas HTTP/1.1", ...rawCommon(), `Origin: ${origin}`, `X-Forwarded-Host: ${xfh}`],
+        rawBody(`IDN ${origin}`)
+      );
+      expect({ origin, xfh, status }).toEqual({ origin, xfh, status: 201 });
+    }
+  });
+
+  test("an international name that is genuinely a different host is still refused", async () => {
+    const { status } = await rawRequest(
+      ["POST /api/ideas HTTP/1.1", ...rawCommon(), "Origin: https://xn--mnchen-3ya.de", "X-Forwarded-Host: köln.de"],
+      rawBody("Different IDN host")
+    );
+    expect(status).toBe(403);
+  });
+
+  test("only a real host= token in Forwarded counts, not a parameter that ends in host", async () => {
+    // "proto=https;xhost=evil.com" was read as a host of evil.com, which handed the check
+    // to anything that could name its own host.
+    const before = await ideas();
+
+    for (const forwarded of [
+      "proto=https;xhost=evil.example.com",
+      "proto=https;ghost=evil.example.com",
+      "for=203.0.113.7;myhost=evil.example.com",
+      "xhost=evil.example.com",
+    ]) {
+      const res = await rawPost("/api/ideas", attempt, {
+        "content-type": "application/json",
+        origin: "https://evil.example.com",
+        forwarded,
+        cookie: auth,
+      });
+      expect({ forwarded, status: res.status }).toEqual({ forwarded, status: 403 });
+    }
+
+    expect((await ideas()).ideas).toHaveLength(before.ideas.length);
+  });
+
+  test("a real host= in Forwarded is read, quoted or not, with or without a port", async () => {
+    for (const forwarded of [
+      "host=marketing.nordicpirate.com",
+      'host="marketing.nordicpirate.com"',
+      'host="marketing.nordicpirate.com:443"',
+      "for=203.0.113.7;host=marketing.nordicpirate.com;proto=https",
+      "  host = marketing.nordicpirate.com ",
+      'proto=https;host="marketing.nordicpirate.com"',
+    ]) {
+      const res = await rawPost(
+        "/api/ideas",
+        { brand: "tap10", title: `Forwarded ${forwarded}`, body: "A real host token." },
+        { "content-type": "application/json", origin: "https://marketing.nordicpirate.com", forwarded, cookie: auth }
+      );
+      expect({ forwarded, status: res.status }).toEqual({ forwarded, status: 201 });
+    }
+  });
+
   test("GET is unchanged: a foreign origin and no content type still read the list", async () => {
     const res = await get("/api/ideas", { cookie: auth, origin: "https://evil.example.com" });
     expect(res.status).toBe(200);
@@ -618,5 +735,61 @@ describe("a store file the server cannot read back", () => {
     const res = await get("/api/ideas", asStaff());
     expect(res.status).toBe(200);
     expect((await res.json()).ideas).toHaveLength(6);
+  });
+});
+
+describe("a seed file the server cannot read back", () => {
+  // The store reads two files, and checking the rows of one and not the other is the same
+  // defect twice. A single bad row in the committed seed used to make GET answer 503
+  // while POST answered 201 and created the stored file from nothing.
+  const SEED_PATH = join(REPO, "data", "ideas.json");
+  let committed = "";
+
+  beforeAll(() => {
+    committed = readFileSync(SEED_PATH, "utf8");
+  });
+
+  // Belt and braces on top of the finally inside the test: this file must never be left
+  // modified, whatever happens in between.
+  afterAll(() => {
+    if (readFileSync(SEED_PATH, "utf8") !== committed) writeFileSync(SEED_PATH, committed);
+  });
+
+  test("a bad seed row makes GET and POST agree, and no stored file is created", async () => {
+    const savedStore = existsSync(IDEAS_FILE) ? readFileSync(IDEAS_FILE, "utf8") : null;
+    if (existsSync(IDEAS_FILE)) unlinkSync(IDEAS_FILE);
+
+    try {
+      const seed = JSON.parse(committed);
+      for (const badRow of [null, "a string row", { id: "only-an-id" }, 42]) {
+        writeFileSync(SEED_PATH, JSON.stringify({ ...seed, ideas: [...seed.ideas, badRow] }, null, 2));
+
+        const read = await get("/api/ideas", asStaff());
+        const write = await post(
+          "/api/ideas",
+          { brand: "tap10", title: "Should not land", body: "the seed cannot be read" },
+          asStaff()
+        );
+
+        expect({ row: JSON.stringify(badRow), get: read.status, post: write.status }).toEqual({
+          row: JSON.stringify(badRow),
+          get: 503,
+          post: 503,
+        });
+        // The reported symptom: the refused POST used to create the stored file.
+        expect(existsSync(IDEAS_FILE)).toBe(false);
+      }
+    } finally {
+      writeFileSync(SEED_PATH, committed);
+      if (savedStore !== null) writeFileSync(IDEAS_FILE, savedStore);
+    }
+  });
+
+  test("the committed seed is back exactly as it was, and reads normally again", async () => {
+    expect(readFileSync(SEED_PATH, "utf8")).toBe(committed);
+
+    const res = await get("/api/ideas", asStaff());
+    expect(res.status).toBe(200);
+    expect((await res.json()).ideas.length).toBeGreaterThanOrEqual(6);
   });
 });

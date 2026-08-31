@@ -74,6 +74,8 @@ type Page = {
   reload: (next?: Payload) => Promise<Page>;
   /** Let the API answer properly and run load() again on this same page. */
   recover: (next: Payload) => Promise<void>;
+  /** Break every later GET, leaving POST working: an outage that starts mid-session. */
+  failReads: (how: number | "throw") => void;
 };
 
 /** Load the page with whatever /api/ideas should answer. */
@@ -111,7 +113,8 @@ async function loadPage(data: Payload | Failure = payload(), storage = makeStora
 
     if (url !== "/api/ideas") throw new Error(`the page fetched ${url}, which this harness does not answer`);
 
-    if (failure !== undefined) {
+    // Reads only, so a test can let a save go through and then break the reload it does.
+    if (method === "GET" && failure !== undefined) {
       // "throw" is the browser's own failure, what fetch does when nothing answers.
       if (failure === "throw") throw new TypeError("Failed to fetch");
       // A status, with the body the server really sends: JSON, so a page that parses
@@ -195,15 +198,18 @@ async function loadPage(data: Payload | Failure = payload(), storage = makeStora
       el("title").value = title;
       el("body").value = body;
       el("addform").dispatchEvent(new window.Event("submit", { bubbles: true, cancelable: true }));
-      await settle();
-      await settle();
-      await settle();
+      // The handler is a chain of awaits: the POST, its json(), then load() with its own
+      // fetch and json(), then the finally. Settle enough times to get past all of them.
+      for (let n = 0; n < 6; n++) await settle();
     },
     reload: (next?: Payload) => loadPage(next || current, storage),
     async recover(next: Payload) {
       failure = undefined;
       current = next;
       await start();
+    },
+    failReads(how: number | "throw") {
+      failure = how;
     },
   };
 
@@ -444,6 +450,47 @@ describe("when the list cannot be fetched, the page says so instead of going bla
     expect(page.titles()).toHaveLength(3);
     expect(page.text("ideas")).not.toContain("kunde inte hämtas");
     expect(page.tabs()).toEqual(["Lying Pirates", "TAP 10: Inventions"]);
+    expect(page.document.getElementById("savebtn").disabled).toBe(false);
+  });
+
+  test("a recovered load clears the cannot-save warning, not only the button", async () => {
+    // Otherwise the cards come back with a red "you cannot save" line still under them.
+    const page = await loadPage({ fail: 503 });
+    expect(page.text("formnote")).toContain("går inte att spara");
+
+    await page.recover(payload());
+
+    expect(page.text("formnote")).toBe("");
+    expect(page.document.getElementById("savebtn").disabled).toBe(false);
+    expect(page.titles()).toHaveLength(3);
+  });
+
+  test("a save that worked, then a reload that failed, leaves saving shut", async () => {
+    // The save handler re-enables the button in its finally, which runs AFTER the load it
+    // awaits. The failed load has to win, or the error box sits on screen above a live
+    // button that cannot possibly work.
+    const page = await loadPage();
+    await page.pickBrand("TAP 10: Inventions");
+
+    page.failReads(503);
+    await page.add("Saved just before the outage", "The POST worked, the reload did not.");
+
+    // The save itself did go through.
+    expect(page.calls.filter((c) => c.method === "POST")).toHaveLength(1);
+
+    expect(page.text("ideas")).toContain("Idéerna kunde inte hämtas");
+    expect(page.document.getElementById("savebtn").disabled).toBe(true);
+    expect(page.text("formnote")).toContain("går inte att spara");
+    // And the success line is gone, because the page can no longer show what was saved.
+    expect(page.text("formnote")).not.toContain("Sparad");
+  });
+
+  test("a save that worked with a healthy reload still says Sparad and stays open", async () => {
+    // The guard above must not swallow the normal case.
+    const page = await loadPage();
+    await page.add("A hook typed on the portal", "Saved while everything was fine.");
+
+    expect(page.text("formnote")).toBe("Sparad.");
     expect(page.document.getElementById("savebtn").disabled).toBe(false);
   });
 });
