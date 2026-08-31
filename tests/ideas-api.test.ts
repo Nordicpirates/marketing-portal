@@ -11,7 +11,7 @@
 // be stopped and started again inside one test run.
 
 import { afterAll, beforeAll, describe, expect, test } from "bun:test";
-import { existsSync, mkdtempSync, readFileSync } from "fs";
+import { existsSync, mkdtempSync, readFileSync, unlinkSync, writeFileSync } from "fs";
 import { tmpdir } from "os";
 import { join } from "path";
 
@@ -109,8 +109,13 @@ const asStaff = () => ({ cookie: auth });
 const rawPost = (path: string, body: unknown, headers: Record<string, string>) =>
   fetch(base + path, { method: "POST", headers, body: JSON.stringify(body), redirect: "manual" });
 
-/** Same host, different port: a different origin, and the shape a neighbouring app has. */
-const siblingOrigin = () => `http://localhost:${Number(new URL(base).port) + 1}`;
+/**
+ * A sibling subdomain: same site, different origin, and the case the cookie really is
+ * sent for. SameSite=Lax keeps the cookie off a cross-SITE request whatever the method,
+ * so an unrelated domain never had it. A neighbour under the same registrable domain is
+ * same-site, so it does, which is the gap the Origin check closes.
+ */
+const siblingOrigin = () => `http://ideas.${new URL(base).hostname}`;
 
 async function ideas(): Promise<{ brands: any[]; ideas: any[] }> {
   const res = await get("/api/ideas", asStaff());
@@ -224,9 +229,11 @@ describe("adding an idea", () => {
 });
 
 describe("a POST must come from the portal, and must say it is JSON", () => {
-  // The cookie is SameSite=Lax, which does not stop a cross-site fetch(). A fetch
-  // sending text/plain is a "simple" request: no preflight, cookie attached, and a
-  // JSON.parse on the far end reads it happily. That is the vector these close.
+  // SameSite=Lax keeps the cookie off a cross-SITE request, form post or fetch alike,
+  // so a page on an unrelated domain never had it. What Lax does not stop is a
+  // same-site, cross-ORIGIN request: a sibling subdomain is same-site with this portal,
+  // so the cookie rides along. Sending text/plain from there is a "simple" request, so
+  // there is no preflight to fail either. That is the vector these close.
   const attempt = { brand: "tap10", title: "Should not land", body: "Sent from somewhere else" };
 
   test("same origin, application/json: the portal's own request still works", async () => {
@@ -288,6 +295,111 @@ describe("a POST must come from the portal, and must say it is JSON", () => {
       "/api/ideas",
       { brand: "tap10", title: "From a script", body: "curl sends no Origin header." },
       { "content-type": "application/json", cookie: auth }
+    );
+    expect(res.status).toBe(201);
+  });
+
+  test("the same origin spelled in a different case is still ours", async () => {
+    // Host names are case insensitive. A comparison that is not would refuse this.
+    const res = await rawPost(
+      "/api/ideas",
+      { brand: "tap10", title: "Shouty origin", body: "Same host, different case." },
+      { "content-type": "application/json", origin: `http://LOCALHOST:${new URL(base).port}`, cookie: auth }
+    );
+    expect(res.status).toBe(201);
+  });
+
+  test("a proxy header carrying an explicit port still matches an Origin without one", async () => {
+    // The live shape that would have refused every real add: the browser's Origin is
+    // https://host with no port, and the proxy forwards host:443.
+    const res = await rawPost(
+      "/api/ideas",
+      { brand: "tap10", title: "Explicit port", body: "The proxy said :443." },
+      {
+        "content-type": "application/json",
+        origin: "https://marketing.nordicpirate.com",
+        "x-forwarded-host": "marketing.nordicpirate.com:443",
+        cookie: auth,
+      }
+    );
+    expect(res.status).toBe(201);
+  });
+
+  test("a chained proxy list is read as its first entry, not as one long string", async () => {
+    const res = await rawPost(
+      "/api/ideas",
+      { brand: "tap10", title: "Chained proxies", body: "Two hops, one header." },
+      {
+        "content-type": "application/json",
+        origin: "https://marketing.nordicpirate.com",
+        "x-forwarded-host": "marketing.nordicpirate.com, 10.0.0.5:8080",
+        cookie: auth,
+      }
+    );
+    expect(res.status).toBe(201);
+  });
+
+  test("an RFC 7239 Forwarded header counts as well as X-Forwarded-Host", async () => {
+    const res = await rawPost(
+      "/api/ideas",
+      { brand: "tap10", title: "RFC 7239", body: "The standard spelling of the same thing." },
+      {
+        "content-type": "application/json",
+        origin: "https://marketing.nordicpirate.com",
+        forwarded: 'for=203.0.113.7;host=marketing.nordicpirate.com;proto=https',
+        cookie: auth,
+      }
+    );
+    expect(res.status).toBe(201);
+  });
+
+  test("Sec-Fetch-Site: same-origin is accepted even when no host here can match", async () => {
+    // The shape no host comparison can survive: a proxy rewrote Host to something
+    // internal and set no forwarding header, so the browser's Origin matches nothing
+    // this process can see. The browser stating same-origin is the way through, and a
+    // cross-site page cannot set that header.
+    const res = await rawPost(
+      "/api/ideas",
+      { brand: "tap10", title: "Internal host", body: "Only Sec-Fetch-Site can vouch for this." },
+      {
+        "content-type": "application/json",
+        origin: "https://marketing.nordicpirate.com",
+        "sec-fetch-site": "same-origin",
+        cookie: auth,
+      }
+    );
+    expect(res.status).toBe(201);
+  });
+
+  test("Sec-Fetch-Site: same-site is NOT accepted, because that is the sibling subdomain", async () => {
+    const before = await ideas();
+
+    for (const site of ["same-site", "cross-site", "none"]) {
+      const res = await rawPost("/api/ideas", attempt, {
+        "content-type": "application/json",
+        origin: siblingOrigin(),
+        "sec-fetch-site": site,
+        cookie: auth,
+      });
+      expect(res.status).toBe(403);
+    }
+
+    expect((await ideas()).ideas).toHaveLength(before.ideas.length);
+  });
+
+  test("a different port on the same host name counts as ours, which is the deliberate trade", async () => {
+    // Ports are dropped before comparing, because TLS ends in front of this process and
+    // the port seen here is never the port the browser used. The cost is that a
+    // neighbour on another port of the SAME host name is treated as the portal. Host
+    // names, which is what a hostile page actually differs by, still have to match.
+    const res = await rawPost(
+      "/api/ideas",
+      { brand: "tap10", title: "Another port", body: "Same host name, different port." },
+      {
+        "content-type": "application/json",
+        origin: `http://localhost:${Number(new URL(base).port) + 1}`,
+        cookie: auth,
+      }
     );
     expect(res.status).toBe(201);
   });
@@ -425,5 +537,86 @@ describe("a redeploy", () => {
     await start();
     auth = await login();
     expect((await ideas()).ideas).toEqual(before);
+  });
+});
+
+describe("a store file the server cannot read back", () => {
+  // Every one of these is valid JSON, and none of them can be read as a list of ideas.
+  // The first four get past the container and fail on a row, which is the case where a
+  // reader used to throw while a writer carried on appending into the same file.
+  const unreadable = [
+    '{"ideas":[null]}',
+    '{"ideas":[{"id":"this row has no other fields"}]}',
+    '{"ideas":[{"id":7,"brand":"tap10","title":"t","body":"b","created_at":"x","created_by":"p"}]}',
+    '{"ideas":["a string where a row should be"]}',
+    '{"ideas":[[]]}',
+    '{"ideas":{"legacy":{"title":"must survive"}}}',
+    '{"ideas":"not an array"}',
+    '{"ideas":null}',
+    "{}",
+    "[]",
+    "null",
+    "42",
+  ];
+
+  let saved: string | null = null;
+
+  beforeAll(() => {
+    saved = existsSync(IDEAS_FILE) ? readFileSync(IDEAS_FILE, "utf8") : null;
+  });
+
+  afterAll(() => {
+    if (saved === null) {
+      if (existsSync(IDEAS_FILE)) unlinkSync(IDEAS_FILE);
+    } else {
+      writeFileSync(IDEAS_FILE, saved);
+    }
+  });
+
+  test("GET and POST agree on every unreadable shape, and neither writes", async () => {
+    for (const bytes of unreadable) {
+      writeFileSync(IDEAS_FILE, bytes);
+
+      const read = await get("/api/ideas", asStaff());
+      const write = await post(
+        "/api/ideas",
+        { brand: "tap10", title: "Should not land", body: "written over a file nobody can read" },
+        asStaff()
+      );
+
+      // The two must not disagree. A reader that fails while a writer succeeds means the
+      // store is accepting ideas into a file it can never show anybody.
+      expect({ shape: bytes, get: read.status, post: write.status }).toEqual({
+        shape: bytes,
+        get: 503,
+        post: 503,
+      });
+      expect(readFileSync(IDEAS_FILE, "utf8")).toBe(bytes);
+    }
+  });
+
+  test("the 503 is one sentence and gives away nothing about the server", async () => {
+    writeFileSync(IDEAS_FILE, '{"ideas":[null]}');
+
+    const res = await get("/api/ideas", asStaff());
+    expect(res.status).toBe(503);
+    expect(res.headers.get("cache-control")).toBe("no-store");
+
+    const body = await res.text();
+    expect(JSON.parse(body).error).toBe("The ideas store is unavailable. This has been logged for an operator.");
+    // Bun's own error page for an unhandled throw is tens of kilobytes of internals.
+    expect(body.length).toBeLessThan(200);
+    expect(body).not.toMatch(/\n/);
+
+    for (const leak of [SERVER_STATE, REPO, "/home/", "/app/", "ideas-store", "server.ts", ".ts:", "Error:", "at ", "readStored", "JSON.parse", "stack"]) {
+      expect(body).not.toContain(leak);
+    }
+  });
+
+  test("a good file straight after is read normally, so nothing is left broken", async () => {
+    writeFileSync(IDEAS_FILE, JSON.stringify({ ideas: [] }, null, 2));
+    const res = await get("/api/ideas", asStaff());
+    expect(res.status).toBe(200);
+    expect((await res.json()).ideas).toHaveLength(6);
   });
 });

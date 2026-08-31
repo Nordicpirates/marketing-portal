@@ -44,6 +44,9 @@ function makeStorage(seed: Record<string, string> = {}) {
 
 type Payload = { brands: { id: string; label: string }[]; ideas: any[] };
 
+/** Ask the harness to fail the fetch instead of answering it: a status, or no reply at all. */
+type Failure = { fail: number | "throw" };
+
 function payload(extra: any[] = [], brands = SEED.brands): Payload {
   return { brands, ideas: [...SEED.ideas, ...extra] };
 }
@@ -69,10 +72,12 @@ type Page = {
   add: (title: string, body: string) => Promise<void>;
   /** Load the same page again with the same storage: a browser reload. */
   reload: (next?: Payload) => Promise<Page>;
+  /** Let the API answer properly and run load() again on this same page. */
+  recover: (next: Payload) => Promise<void>;
 };
 
 /** Load the page with whatever /api/ideas should answer. */
-async function loadPage(data: Payload = payload(), storage = makeStorage()): Promise<Page> {
+async function loadPage(data: Payload | Failure = payload(), storage = makeStorage()): Promise<Page> {
   const window = new Window({
     url: "https://marketing.nordicpirate.com/ideas",
     settings: {
@@ -89,7 +94,8 @@ async function loadPage(data: Payload = payload(), storage = makeStorage()): Pro
 
   const errors: string[] = [];
   const calls: { url: string; method: string; body: any }[] = [];
-  let current = data;
+  let failure: number | "throw" | undefined = (data as Failure).fail;
+  let current: Payload = failure === undefined ? (data as Payload) : payload();
 
   const fetchStub = async (url: string, init: any = {}) => {
     const method = (init.method || "GET").toUpperCase();
@@ -104,6 +110,17 @@ async function loadPage(data: Payload = payload(), storage = makeStorage()): Pro
     calls.push({ url, method, body });
 
     if (url !== "/api/ideas") throw new Error(`the page fetched ${url}, which this harness does not answer`);
+
+    if (failure !== undefined) {
+      // "throw" is the browser's own failure, what fetch does when nothing answers.
+      if (failure === "throw") throw new TypeError("Failed to fetch");
+      // A status, with the body the server really sends: JSON, so a page that parses
+      // before checking the status gets something that looks like data.
+      return new Response(JSON.stringify({ error: "The ideas store is unavailable. This has been logged for an operator." }), {
+        status: failure,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
 
     if (method === "POST") {
       // Stand in for the store: keep what the page sent, so the next GET shows it.
@@ -183,6 +200,11 @@ async function loadPage(data: Payload = payload(), storage = makeStorage()): Pro
       await settle();
     },
     reload: (next?: Payload) => loadPage(next || current, storage),
+    async recover(next: Payload) {
+      failure = undefined;
+      current = next;
+      await start();
+    },
   };
 
   return page;
@@ -363,6 +385,66 @@ describe("adding an idea from the page", () => {
 
     expect(page.calls.length).toBe(before);
     expect(page.text("formnote")).toContain("Både rubrik och beskrivning behövs");
+  });
+});
+
+describe("when the list cannot be fetched, the page says so instead of going blank", () => {
+  test("a 503 from a store that refuses to read is shown, in Swedish, with the status", async () => {
+    const page = await loadPage({ fail: 503 });
+    const shown = page.text("ideas");
+
+    expect(shown).toContain("Idéerna kunde inte hämtas");
+    expect(shown).toContain("503");
+    expect(shown).toContain("Ladda om sidan");
+
+    // The failure that used to happen: no tabs, no ideas and nothing else either.
+    expect(page.tabs()).toEqual([]);
+    expect(page.titles()).toEqual([]);
+    expect(shown.length).toBeGreaterThan(40);
+  });
+
+  test("the 503 body is not mistaken for data, so the page never claims there are no brands", async () => {
+    // The store's 503 is JSON, so a page that parses before checking the status gets an
+    // object with no brands in it and renders "no brands are set up yet", which is a lie.
+    const page = await loadPage({ fail: 503 });
+    expect(page.text("ideas")).not.toContain("Inga varumärken");
+  });
+
+  test("saving is closed off while the list is unreachable, rather than failing silently", async () => {
+    const page = await loadPage({ fail: 503 });
+    expect(page.document.getElementById("savebtn").disabled).toBe(true);
+    expect(page.text("formnote")).toContain("går inte att spara");
+  });
+
+  test("no reply at all is shown too, not swallowed into a blank page", async () => {
+    const page = await loadPage({ fail: "throw" });
+    const shown = page.text("ideas");
+
+    expect(shown).toContain("Idéerna kunde inte hämtas");
+    expect(shown).toContain("Ingen kontakt med servern");
+    expect(page.document.getElementById("savebtn").disabled).toBe(true);
+    // It was logged as well as shown.
+    expect(page.errors.length).toBeGreaterThan(0);
+  });
+
+  test("every failure leaves something on screen, whatever the status", async () => {
+    for (const fail of [500, 502, 503, "throw"] as const) {
+      const page = await loadPage({ fail });
+      expect(page.text("ideas").trim()).not.toBe("");
+      expect(page.text("ideas")).toContain("Idéerna kunde inte hämtas");
+    }
+  });
+
+  test("a load that works after a failure clears the error and lets people save again", async () => {
+    const page = await loadPage({ fail: 503 });
+    expect(page.document.getElementById("savebtn").disabled).toBe(true);
+
+    await page.recover(payload());
+
+    expect(page.titles()).toHaveLength(3);
+    expect(page.text("ideas")).not.toContain("kunde inte hämtas");
+    expect(page.tabs()).toEqual(["Lying Pirates", "TAP 10: Inventions"]);
+    expect(page.document.getElementById("savebtn").disabled).toBe(false);
   });
 });
 

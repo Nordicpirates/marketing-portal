@@ -47,49 +47,121 @@ function checkAuth(req: Request): boolean {
 }
 
 /**
+ * One host name, lowercased, with any port and any proxy chain removed, so that two
+ * spellings of the same host compare equal.
+ *
+ * A proxy header can arrive as "marketing.nordicpirate.com:443" or, once a second proxy
+ * has appended itself, as "marketing.nordicpirate.com, 10.0.0.5". A browser's Origin has
+ * neither of those. Comparing the raw strings refuses the real portal, which is why both
+ * sides go through here first.
+ *
+ * Dropping the port means a different port on the SAME host name counts as ours. That is
+ * the deliberate trade: a live deployment terminates TLS in front of this process, so the
+ * port seen here is never the port the browser used, and no comparison that keeps it can
+ * be right. Different host names, which is what a hostile page actually has, still differ.
+ */
+function bareHost(value: string): string {
+  const first = (value || "").split(",")[0].trim().toLowerCase();
+  if (!first) return "";
+  // IPv6 keeps its brackets: [::1]:3000 is host [::1], not "[".
+  if (first.startsWith("[")) {
+    const end = first.indexOf("]");
+    return end === -1 ? first : first.slice(0, end + 1);
+  }
+  const colon = first.indexOf(":");
+  return colon === -1 ? first : first.slice(0, colon);
+}
+
+/** The host= parameter of an RFC 7239 Forwarded header, if there is one. */
+function forwardedHost(header: string | null): string {
+  if (!header) return "";
+  const match = header.split(",")[0].match(/host\s*=\s*"?([^;,"]+)"?/i);
+  return match ? bareHost(match[1]) : "";
+}
+
+/**
  * Refuse a state-changing request that a browser made on behalf of another site, or
  * that does not say it is sending JSON. Returns null when the request may proceed.
  *
- * The cookie is SameSite=Lax, which stops a cross-site POST from a form but NOT a
- * cross-site fetch(), and a fetch() sending Content-Type: text/plain is a "simple"
- * request: no preflight, cookie attached, and our JSON.parse reads the body happily.
- * Two checks close that.
+ * What this actually closes. SameSite=Lax keeps the cookie off a cross-SITE request,
+ * whether that is a form post or a fetch, so a page on an unrelated domain never had the
+ * cookie to begin with. What Lax does not stop is a same-site, cross-ORIGIN request: a
+ * page on a sibling subdomain is same-site with this portal, so the cookie rides along.
+ * Sending Content-Type: text/plain from there is a "simple" request, so there is no
+ * preflight to fail either, and our JSON.parse reads the body happily. Those two checks
+ * are what close that gap.
  *
- * Origin is compared by HOST, never by the whole origin string. TLS is terminated in
- * front of this process, so the browser says https:// while this server sees http://,
- * and comparing full origins would refuse every real request from the live portal.
- * A cross-site page cannot set either header, so this is a browser-only defence and
- * costs a server-to-server caller nothing: no Origin at all is allowed through.
+ * Requiring application/json is the half that does not depend on Origin at all: a
+ * cross-origin fetch that sets it is no longer "simple", so the browser must preflight,
+ * and nothing here answers OPTIONS with CORS headers. Do not add one.
  *
- * Requiring application/json is the half that does not depend on Origin: a cross-origin
- * fetch that sets it is no longer "simple", so the browser must preflight, and nothing
- * here answers OPTIONS with CORS headers. Do not add one.
+ * Origin is compared by host, through bareHost, against every name this request could
+ * legitimately have arrived under. A cross-site page cannot set any of those headers, so
+ * this is a browser-only defence and costs a server-to-server caller nothing: no Origin
+ * at all is allowed through.
+ *
+ * Sec-Fetch-Site: same-origin is accepted on its own, because it is the browser stating
+ * the conclusion we are trying to reach and it cannot be set by script. It is the way out
+ * when a proxy rewrites Host to something internal and sets no forwarding header, where
+ * no host comparison here could ever succeed. Only same-origin: same-site is exactly the
+ * sibling-subdomain case being refused.
  */
 function crossSiteRefusal(req: Request, url: URL): Response | null {
+  const jsonRefusal = () => {
+    const type = (req.headers.get("content-type") || "").split(";")[0].trim().toLowerCase();
+    if (type !== "application/json") {
+      console.warn(`[api] refused a ${req.method} to ${url.pathname}: Content-Type "${type || "(none)"}" is not application/json`);
+      return Response.json({ error: "Content-Type must be application/json" }, { status: 415 });
+    }
+    return null;
+  };
+
+  if (req.headers.get("sec-fetch-site") === "same-origin") return jsonRefusal();
+
   const origin = req.headers.get("origin");
   if (origin) {
     let from = "";
     try {
-      from = new URL(origin).host;
+      from = bareHost(new URL(origin).host);
     } catch {
       from = "";
     }
-    // X-Forwarded-Host as well as the Host this process saw, so a proxy that rewrites
-    // Host does not lock the portal out of its own API.
-    const mine = [url.host, req.headers.get("x-forwarded-host") || ""].filter(Boolean);
+
+    const mine = [
+      bareHost(url.host),
+      bareHost(req.headers.get("x-forwarded-host") || ""),
+      forwardedHost(req.headers.get("forwarded")),
+    ].filter(Boolean);
+
     if (!from || !mine.includes(from)) {
       console.warn(`[api] refused a cross-site ${req.method} to ${url.pathname}: Origin "${origin}" is not ${mine.join(" or ")}`);
       return Response.json({ error: "Cross-site request refused" }, { status: 403 });
     }
   }
 
-  const type = (req.headers.get("content-type") || "").split(";")[0].trim().toLowerCase();
-  if (type !== "application/json") {
-    console.warn(`[api] refused a ${req.method} to ${url.pathname}: Content-Type "${type || "(none)"}" is not application/json`);
-    return Response.json({ error: "Content-Type must be application/json" }, { status: 415 });
-  }
+  return jsonRefusal();
+}
 
-  return null;
+/**
+ * Run an ideas handler, and turn a store that cannot be used into a short 503.
+ *
+ * The store throws on purpose rather than reading a file it does not recognise, and an
+ * unhandled throw is answered by Bun itself with a page carrying absolute paths, the
+ * source lines around the throw and a stack trace. That is tens of kilobytes of internals
+ * behind nothing but the staff password. This says one sentence instead, and says it the
+ * same way whatever NODE_ENV happens to be, so the answer does not depend on how the
+ * container was started. The detail goes to the log, where an operator can read it.
+ */
+async function ideasResponse(work: () => Response | Promise<Response>): Promise<Response> {
+  try {
+    return await work();
+  } catch (err) {
+    console.error("[ideas] the store could not be used, so the request was refused:", err);
+    return Response.json(
+      { error: "The ideas store is unavailable. This has been logged for an operator." },
+      { status: 503, headers: { "Cache-Control": "no-store" } }
+    );
+  }
 }
 
 function serveLogin(error = false): Response {
@@ -151,6 +223,11 @@ const MAX_REQUEST_BODY_BYTES = 1024 * 1024;
 const server = Bun.serve({
   port: PORT,
   maxRequestBodySize: MAX_REQUEST_BODY_BYTES,
+  // Bun decides this from NODE_ENV, and nothing in this repo sets NODE_ENV, so an
+  // unhandled throw anywhere in here would be answered with Bun's development page:
+  // absolute paths, the source lines around the throw, and a stack trace. Say it here
+  // rather than depending on how the container happened to be started.
+  development: false,
   async fetch(req) {
     const url = new URL(req.url);
     const path = url.pathname;
@@ -241,34 +318,36 @@ const server = Bun.serve({
     // Brands ride along with the ideas so the page can build its tabs from data. A
     // third brand is then an entry in data/ideas.json and no code change at all.
     if (path === "/api/ideas") {
-      if (req.method === "POST") {
-        const refusal = crossSiteRefusal(req, url);
-        if (refusal) return refusal;
+      return ideasResponse(async () => {
+        if (req.method === "POST") {
+          const refusal = crossSiteRefusal(req, url);
+          if (refusal) return refusal;
 
-        const body = await req.json().catch(() => null);
-        // `null`, `[1,2]`, `"text"` and `7` are all valid JSON, and every one of them
-        // used to reach addIdea, where reading .brand off null threw and answered 500.
-        // A malformed body is the caller's mistake, so say so with a 400 and write
-        // nothing.
-        if (body === null || typeof body !== "object" || Array.isArray(body)) {
-          console.warn(`[ideas] refused a POST: the body is not a JSON object`);
-          return Response.json({ error: "body must be a JSON object" }, { status: 400 });
-        }
+          const body = await req.json().catch(() => null);
+          // `null`, `[1,2]`, `"text"` and `7` are all valid JSON, and every one of them
+          // used to reach addIdea, where reading .brand off null threw and answered 500.
+          // A malformed body is the caller's mistake, so say so with a 400 and write
+          // nothing.
+          if (body === null || typeof body !== "object" || Array.isArray(body)) {
+            console.warn(`[ideas] refused a POST: the body is not a JSON object`);
+            return Response.json({ error: "body must be a JSON object" }, { status: 400 });
+          }
 
-        const result = addIdea(body);
-        if (!result.ok) {
-          console.warn(`[ideas] refused a POST: ${result.error}`);
-          return Response.json({ error: result.error }, { status: result.status });
+          const result = addIdea(body);
+          if (!result.ok) {
+            console.warn(`[ideas] refused a POST: ${result.error}`);
+            return Response.json({ error: result.error }, { status: result.status });
+          }
+          return Response.json({ idea: result.idea }, { status: 201 });
         }
-        return Response.json({ idea: result.idea }, { status: 201 });
-      }
-      if (req.method !== "GET") {
-        return Response.json({ error: "Method not allowed" }, { status: 405, headers: { Allow: "GET, POST" } });
-      }
-      return Response.json(
-        { brands: readBrands(), ideas: readIdeas() },
-        { headers: { "Cache-Control": "no-cache" } }
-      );
+        if (req.method !== "GET") {
+          return Response.json({ error: "Method not allowed" }, { status: 405, headers: { Allow: "GET, POST" } });
+        }
+        return Response.json(
+          { brands: readBrands(), ideas: readIdeas() },
+          { headers: { "Cache-Control": "no-cache" } }
+        );
+      });
     }
 
     if (path === "/ideas") {

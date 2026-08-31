@@ -191,6 +191,7 @@ describe("reading merges the stored file over the seed", () => {
     // The next append then writes one row over whatever was in there. Every shape below
     // must refuse to read, and must survive an attempted add untouched.
     const wrong = [
+      // Wrong container.
       '{"ideas":{"legacy":{"title":"must survive"}}}',
       '{"ideas":"not an array"}',
       '{"ideas":null}',
@@ -201,6 +202,18 @@ describe("reading merges the stored file over the seed", () => {
       "null",
       '"a string"',
       "42",
+      // Right container, wrong rows. These get past the container check, and a reader
+      // that stops there hands back a list whose rows throw the moment anything reads
+      // .id off them, while an append happily writes another row into the same file.
+      '{"ideas":[null]}',
+      '{"ideas":["a string where a row should be"]}',
+      '{"ideas":[[]]}',
+      '{"ideas":[42]}',
+      '{"ideas":[{"id":"this row has no other fields"}]}',
+      '{"ideas":[{"id":7,"brand":"tap10","title":"t","body":"b","created_at":"x","created_by":"p"}]}',
+      '{"ideas":[{"id":"a","brand":"tap10","title":"t","body":"b","created_at":"x"}]}',
+      // One good row and one bad one: the good row must not make the file readable.
+      `{"ideas":[${JSON.stringify(handmade())},null]}`,
     ];
 
     for (const bytes of wrong) {

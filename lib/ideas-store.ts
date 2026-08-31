@@ -109,11 +109,29 @@ function readStored(): Idea[] {
   if (parsed === null || typeof parsed !== "object" || Array.isArray(parsed)) {
     throw new Error(`${IDEAS_FILE} is valid JSON but not an object, so it is not this store's file. Refusing to read it, and nothing will be written over it.`);
   }
-  if (!Array.isArray((parsed as { ideas?: unknown }).ideas)) {
+
+  const ideas = (parsed as { ideas?: unknown }).ideas;
+  if (!Array.isArray(ideas)) {
     throw new Error(`${IDEAS_FILE} has no "ideas" array, so it is not this store's file. Refusing to read it, and nothing will be written over it.`);
   }
 
-  return (parsed as { ideas: Idea[] }).ideas;
+  // Every row, not just the container. A file holding [null] parses, and has an ideas
+  // array, and still cannot be read back: anything that reaches for row.id throws. The
+  // container check alone let a reader fail while a writer carried on appending to it,
+  // which is the worst of the three outcomes, so a bad row is refused exactly like a bad
+  // container. Reading is where this belongs: every path in and out goes through here.
+  ideas.forEach((row, n) => {
+    if (row === null || typeof row !== "object" || Array.isArray(row)) {
+      throw new Error(`${IDEAS_FILE} row ${n} is not an object, so this file cannot be read back. Refusing to read it, and nothing will be written over it.`);
+    }
+    for (const field of ["id", "brand", "title", "body", "created_at", "created_by"] as const) {
+      if (typeof (row as Record<string, unknown>)[field] !== "string") {
+        throw new Error(`${IDEAS_FILE} row ${n} has no string "${field}", so this file cannot be read back. Refusing to read it, and nothing will be written over it.`);
+      }
+    }
+  });
+
+  return ideas as Idea[];
 }
 
 /** The exact bytes the stored file holds for a given list. */
