@@ -23,6 +23,23 @@ import { STATE_DIR } from "./state-dir.ts";
 export const IDEAS_FILE = join(STATE_DIR, "ideas.json");
 export const IDEAS_SEED = join(import.meta.dir, "..", "data", "ideas.json");
 
+// What one idea, and the whole store, may grow to.
+//
+// Without these, one POST could store just under the server's 1 MB body ceiling, and
+// nothing capped how many rows the file grew to. Every append rewrites the entire file
+// synchronously, so an unbounded store is not only a full volume: it is a write that
+// blocks the event loop for every other request on the way there.
+//
+// An idea is a hook and a short paragraph about what it shows, so these are roomy for
+// what people actually type and far below what the endpoint used to take.
+export const MAX_TITLE_CHARS = 200;
+export const MAX_BODY_CHARS = 4000;
+export const MAX_CREATED_BY_CHARS = 100;
+/** How many browser-created ideas the file holds. Seeded ideas live in the seed, not here. */
+export const MAX_IDEAS = 2000;
+/** A backstop under the row count, for rows that are each near the field limits. */
+export const MAX_STORE_BYTES = 2 * 1024 * 1024;
+
 export type Brand = { id: string; label: string };
 
 export type Idea = {
@@ -43,7 +60,13 @@ export type NewIdea = {
   created_by?: unknown;
 };
 
-export type AddResult = { ok: true; idea: Idea } | { ok: false; error: string };
+/**
+ * A refusal carries the status the API should answer with, so the rule and its status
+ * code are decided in one place instead of the route guessing from the message.
+ * 400 means the input was malformed; 413 means it, or the store, was too big.
+ */
+export type AddRefusal = { ok: false; error: string; status: 400 | 413 };
+export type AddResult = { ok: true; idea: Idea } | AddRefusal;
 
 type SeedFile = { brands: Brand[]; ideas: Idea[] };
 
@@ -68,15 +91,34 @@ function readSeed(): SeedFile {
 /**
  * The ideas written in the browser, in the order they were created.
  *
- * A missing file means nobody has added one yet. A file that IS there but cannot be
- * parsed throws, and deliberately: reading it as an empty list would hand the next
- * append a blank slate to write over, which turns one unreadable byte into the loss of
- * every idea in the file.
+ * A missing file means nobody has added one yet. A file that IS there but is not
+ * exactly the shape this store writes throws, and deliberately.
+ *
+ * Unparseable bytes are the obvious case. The dangerous one is a file that parses
+ * perfectly and is still the wrong shape, such as {"ideas":{"legacy":{...}}} or a bare
+ * array: reading `.ideas` off it yields something that is not an array. Answering that
+ * with an empty list would hand the next append a blank slate to write over, so one
+ * file somebody hand-edited, or a row shape from some future version, would be
+ * overwritten by the next idea anybody typed. Refusing to read it keeps the bytes on
+ * disk where a person can look at them.
  */
 function readStored(): Idea[] {
   if (!existsSync(IDEAS_FILE)) return [];
+
   const parsed = JSON.parse(readFileSync(IDEAS_FILE, "utf8"));
-  return Array.isArray(parsed.ideas) ? parsed.ideas : [];
+  if (parsed === null || typeof parsed !== "object" || Array.isArray(parsed)) {
+    throw new Error(`${IDEAS_FILE} is valid JSON but not an object, so it is not this store's file. Refusing to read it, and nothing will be written over it.`);
+  }
+  if (!Array.isArray((parsed as { ideas?: unknown }).ideas)) {
+    throw new Error(`${IDEAS_FILE} has no "ideas" array, so it is not this store's file. Refusing to read it, and nothing will be written over it.`);
+  }
+
+  return (parsed as { ideas: Idea[] }).ideas;
+}
+
+/** The exact bytes the stored file holds for a given list. */
+function serialise(ideas: Idea[]): string {
+  return JSON.stringify({ ideas }, null, 2);
 }
 
 /**
@@ -84,9 +126,9 @@ function readStored(): Idea[] {
  * through cannot leave a truncated ideas.json behind. Only browser-created ideas go in
  * here: seeded ones are merged in on read.
  */
-function writeStored(ideas: Idea[]): void {
+function writeStored(json: string): void {
   const tmp = `${IDEAS_FILE}.tmp`;
-  writeFileSync(tmp, JSON.stringify({ ideas }, null, 2));
+  writeFileSync(tmp, json);
   renameSync(tmp, IDEAS_FILE);
 }
 
@@ -144,10 +186,32 @@ export function addIdea(input: NewIdea): AddResult {
 
   // These strings are the API's, not the page's, so they stay in English like the rest
   // of the code. The page writes its own Swedish sentence around them.
-  if (!brand) return { ok: false, error: "brand is required" };
-  if (!readBrands().some((b) => b.id === brand)) return { ok: false, error: `unknown brand: ${brand}` };
-  if (!title) return { ok: false, error: "title is required" };
-  if (!body) return { ok: false, error: "body is required" };
+  if (!brand) return { ok: false, status: 400, error: "brand is required" };
+  if (!readBrands().some((b) => b.id === brand)) return { ok: false, status: 400, error: `unknown brand: ${brand}` };
+  if (!title) return { ok: false, status: 400, error: "title is required" };
+  if (!body) return { ok: false, status: 400, error: "body is required" };
+
+  // Measured after the trim, so trailing whitespace can never be what pushes a field
+  // over. Length is in UTF-16 code units, the number String.length reports, so an emoji
+  // counts as two. That errs on the small side, which is the right direction for a cap.
+  if (title.length > MAX_TITLE_CHARS)
+    return { ok: false, status: 413, error: `title is ${title.length} characters, the limit is ${MAX_TITLE_CHARS}` };
+  if (body.length > MAX_BODY_CHARS)
+    return { ok: false, status: 413, error: `body is ${body.length} characters, the limit is ${MAX_BODY_CHARS}` };
+  if (created_by.length > MAX_CREATED_BY_CHARS)
+    return {
+      ok: false,
+      status: 413,
+      error: `created_by is ${created_by.length} characters, the limit is ${MAX_CREATED_BY_CHARS}`,
+    };
+
+  // Read the stored list again right here rather than reusing an earlier read, so the
+  // window between reading and writing is as short as it can be.
+  const stored = readStored();
+  if (stored.length >= MAX_IDEAS) {
+    console.error(`[ideas] refused an idea: the store holds ${stored.length} and the limit is ${MAX_IDEAS}.`);
+    return { ok: false, status: 413, error: `the store is full: it holds ${MAX_IDEAS} ideas, which is the limit` };
+  }
 
   const idea: Idea = {
     id: randomUUID(),
@@ -158,9 +222,21 @@ export function addIdea(input: NewIdea): AddResult {
     created_by,
   };
 
-  // Read the stored list again right here rather than reusing an earlier read, so the
-  // window between reading and writing is as short as it can be.
-  writeStored([...readStored(), idea]);
+  // The row count is the limit people will meet. This is the backstop under it, for a
+  // store whose rows are each near the field limits, and it is checked on the exact
+  // bytes that are about to be written rather than on an estimate.
+  const json = serialise([...stored, idea]);
+  const bytes = Buffer.byteLength(json, "utf8");
+  if (bytes > MAX_STORE_BYTES) {
+    console.error(`[ideas] refused an idea: the store would reach ${bytes} bytes and the limit is ${MAX_STORE_BYTES}.`);
+    return {
+      ok: false,
+      status: 413,
+      error: `the store is full: it would reach ${bytes} bytes, the limit is ${MAX_STORE_BYTES}`,
+    };
+  }
+
+  writeStored(json);
   console.log(`[ideas] added ${idea.id} brand=${idea.brand} by=${idea.created_by}`);
   return { ok: true, idea };
 }

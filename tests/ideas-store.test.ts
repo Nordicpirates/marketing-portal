@@ -39,10 +39,17 @@ type Idea = {
   template?: number;
 };
 
-let addIdea: (input: Record<string, unknown>) => { ok: true; idea: Idea } | { ok: false; error: string };
+type Refusal = { ok: false; error: string; status: 400 | 413 };
+
+let addIdea: (input: Record<string, unknown>) => { ok: true; idea: Idea } | Refusal;
 let readIdeas: () => Idea[];
 let readBrands: () => { id: string; label: string }[];
 let IDEAS_FILE: string;
+let MAX_TITLE_CHARS: number;
+let MAX_BODY_CHARS: number;
+let MAX_CREATED_BY_CHARS: number;
+let MAX_IDEAS: number;
+let MAX_STORE_BYTES: number;
 
 let original: string | null = null;
 
@@ -52,6 +59,11 @@ beforeAll(async () => {
   readIdeas = store.readIdeas;
   readBrands = store.readBrands;
   IDEAS_FILE = store.IDEAS_FILE;
+  MAX_TITLE_CHARS = store.MAX_TITLE_CHARS;
+  MAX_BODY_CHARS = store.MAX_BODY_CHARS;
+  MAX_CREATED_BY_CHARS = store.MAX_CREATED_BY_CHARS;
+  MAX_IDEAS = store.MAX_IDEAS;
+  MAX_STORE_BYTES = store.MAX_STORE_BYTES;
 
   original = existsSync(IDEAS_FILE) ? readFileSync(IDEAS_FILE, "utf8") : null;
 });
@@ -172,6 +184,44 @@ describe("reading merges the stored file over the seed", () => {
     expect(() => readIdeas()).toThrow();
     stored(null);
   });
+
+  test("valid JSON of the wrong shape throws too, and adding leaves it byte for byte", () => {
+    // The nastier case than unparseable bytes: the file parses perfectly, so a reader
+    // that only asks "is .ideas an array?" answers "no" and hands back an empty list.
+    // The next append then writes one row over whatever was in there. Every shape below
+    // must refuse to read, and must survive an attempted add untouched.
+    const wrong = [
+      '{"ideas":{"legacy":{"title":"must survive"}}}',
+      '{"ideas":"not an array"}',
+      '{"ideas":null}',
+      '{"notideas":[]}',
+      "{}",
+      "[]",
+      '[{"id":"a-bare-array-of-ideas"}]',
+      "null",
+      '"a string"',
+      "42",
+    ];
+
+    for (const bytes of wrong) {
+      writeFileSync(IDEAS_FILE, bytes);
+      expect(() => readIdeas()).toThrow();
+
+      // Adding must not succeed either. It throws rather than refusing politely, which
+      // is the point: the store will not carry on over a file it does not recognise.
+      // The one thing that must never happen is a write.
+      let added = false;
+      try {
+        added = addIdea({ brand: "tap10", title: "Should not land", body: "The file is the wrong shape." }).ok;
+      } catch {
+        added = false;
+      }
+      expect(added).toBe(false);
+      expect(fileBytes()).toBe(bytes);
+    }
+
+    stored(null);
+  });
 });
 
 describe("brands are data, not code", () => {
@@ -255,6 +305,111 @@ describe("adding an idea", () => {
       expect(result.ok).toBe(false);
     }
     expect(existsSync(IDEAS_FILE)).toBe(false);
+  });
+});
+
+describe("limits, so one idea cannot fill the volume", () => {
+  const ok = { brand: "tap10", title: "A title", body: "A body" };
+
+  test("a title of exactly the limit lands, one character more is refused with 413", () => {
+    stored(null);
+    const atLimit = addIdea({ ...ok, title: "t".repeat(MAX_TITLE_CHARS) });
+    expect(atLimit.ok).toBe(true);
+
+    const before = fileBytes();
+    const over = addIdea({ ...ok, title: "t".repeat(MAX_TITLE_CHARS + 1) }) as Refusal;
+    expect(over.ok).toBe(false);
+    expect(over.status).toBe(413);
+    expect(over.error).toContain("title");
+    expect(fileBytes()).toBe(before);
+  });
+
+  test("a body of exactly the limit lands, one character more is refused with 413", () => {
+    stored(null);
+    const atLimit = addIdea({ ...ok, body: "b".repeat(MAX_BODY_CHARS) });
+    expect(atLimit.ok).toBe(true);
+
+    const before = fileBytes();
+    const over = addIdea({ ...ok, body: "b".repeat(MAX_BODY_CHARS + 1) }) as Refusal;
+    expect(over.ok).toBe(false);
+    expect(over.status).toBe(413);
+    expect(over.error).toContain("body");
+    expect(fileBytes()).toBe(before);
+  });
+
+  test("created_by is capped too, since the API lets a caller name the writer", () => {
+    stored(null);
+    expect(addIdea({ ...ok, created_by: "w".repeat(MAX_CREATED_BY_CHARS) }).ok).toBe(true);
+
+    const before = fileBytes();
+    const over = addIdea({ ...ok, created_by: "w".repeat(MAX_CREATED_BY_CHARS + 1) }) as Refusal;
+    expect(over.ok).toBe(false);
+    expect(over.status).toBe(413);
+    expect(over.error).toContain("created_by");
+    expect(fileBytes()).toBe(before);
+  });
+
+  test("the trim happens first, so trailing spaces never push a field over", () => {
+    stored(null);
+    const padded = addIdea({ ...ok, title: " ".repeat(50) + "t".repeat(MAX_TITLE_CHARS) + " ".repeat(50) });
+    expect(padded.ok).toBe(true);
+    expect((padded as { ok: true; idea: Idea }).idea.title).toHaveLength(MAX_TITLE_CHARS);
+  });
+
+  test("a nearly 1 MB field, which the body ceiling alone used to allow, is refused", () => {
+    stored(null);
+    const before = fileBytes();
+    const huge = addIdea({ ...ok, body: "x".repeat(900_000) }) as Refusal;
+    expect(huge.ok).toBe(false);
+    expect(huge.status).toBe(413);
+    expect(fileBytes()).toBe(before);
+  });
+
+  test("the store stops at MAX_IDEAS rows, and the refused add writes nothing", () => {
+    const full = Array.from({ length: MAX_IDEAS }, (_, n) => handmade({ id: `row-${n}` }));
+    stored(full);
+    const before = fileBytes();
+
+    const over = addIdea(ok) as Refusal;
+    expect(over.ok).toBe(false);
+    expect(over.status).toBe(413);
+    expect(over.error).toContain("full");
+    expect(fileBytes()).toBe(before);
+
+    // One row under the limit still accepts, so the boundary is off-by-one clean.
+    stored(full.slice(0, MAX_IDEAS - 1));
+    expect(addIdea(ok).ok).toBe(true);
+  });
+
+  test("the byte quota refuses an append even when the row count is fine", () => {
+    // Rows near the field limits, enough of them to pass the byte quota while staying
+    // well under MAX_IDEAS, so it is provably the quota doing the refusing.
+    const perRow = MAX_TITLE_CHARS + MAX_BODY_CHARS;
+    const rows = Math.ceil(MAX_STORE_BYTES / perRow) + 20;
+    expect(rows).toBeLessThan(MAX_IDEAS);
+
+    stored(
+      Array.from({ length: rows }, (_, n) =>
+        handmade({ id: `big-${n}`, title: "t".repeat(MAX_TITLE_CHARS), body: "b".repeat(MAX_BODY_CHARS) })
+      )
+    );
+    const before = fileBytes();
+    expect(before!.length).toBeGreaterThan(MAX_STORE_BYTES);
+
+    const over = addIdea(ok) as Refusal;
+    expect(over.ok).toBe(false);
+    expect(over.status).toBe(413);
+    expect(fileBytes()).toBe(before);
+
+    stored(null);
+  });
+
+  test("a refusal never reports 400 for something that was merely too big", () => {
+    stored(null);
+    const tooBig = addIdea({ ...ok, title: "t".repeat(MAX_TITLE_CHARS + 1) }) as Refusal;
+    const malformed = addIdea({ ...ok, brand: "nonsense" }) as Refusal;
+    expect(tooBig.status).toBe(413);
+    expect(malformed.status).toBe(400);
   });
 });
 

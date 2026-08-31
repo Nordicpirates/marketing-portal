@@ -24,6 +24,17 @@ const SERVER_STATE = mkdtempSync(join(tmpdir(), "ideas-api-test-"));
 const IDEAS_FILE = join(SERVER_STATE, "ideas.json");
 const PASSWORD = "test-portal-password-4f21";
 
+// This file imports lib/ideas-store.ts for its limit constants, and that module resolves
+// STATE_DIR and creates it at import time. Point it at this file's own temp directory
+// first, or importing it would make a state/ directory in the repo. Only if no other
+// test file got there ahead of us: bun shares one module cache across the run, so the
+// first file to import it fixes the path for everyone. The import is dynamic, in
+// beforeAll, because a static one would hoist above this line and read the wrong value.
+if (!process.env.STATE_DIR) process.env.STATE_DIR = SERVER_STATE;
+
+let MAX_TITLE_CHARS: number;
+let MAX_BODY_CHARS: number;
+
 let proc: any = null;
 let base = "";
 
@@ -91,6 +102,16 @@ const post = (path: string, body: unknown, headers: Record<string, string> = {})
 
 const asStaff = () => ({ cookie: auth });
 
+/**
+ * A POST with exactly the headers given and nothing added. The `post` helper above puts
+ * application/json on every request, which is the thing these tests need to vary.
+ */
+const rawPost = (path: string, body: unknown, headers: Record<string, string>) =>
+  fetch(base + path, { method: "POST", headers, body: JSON.stringify(body), redirect: "manual" });
+
+/** Same host, different port: a different origin, and the shape a neighbouring app has. */
+const siblingOrigin = () => `http://localhost:${Number(new URL(base).port) + 1}`;
+
 async function ideas(): Promise<{ brands: any[]; ideas: any[] }> {
   const res = await get("/api/ideas", asStaff());
   expect(res.status).toBe(200);
@@ -98,6 +119,10 @@ async function ideas(): Promise<{ brands: any[]; ideas: any[] }> {
 }
 
 beforeAll(async () => {
+  const store = await import("../lib/ideas-store.ts");
+  MAX_TITLE_CHARS = store.MAX_TITLE_CHARS;
+  MAX_BODY_CHARS = store.MAX_BODY_CHARS;
+
   await start();
   auth = await login();
 });
@@ -195,6 +220,182 @@ describe("adding an idea", () => {
     expect(tap.some((i: any) => i.title === "Two cards, three seconds")).toBe(true);
     expect(lp.some((i: any) => i.title === "Two cards, three seconds")).toBe(false);
     expect(tap.length + lp.length).toBe(list.length);
+  });
+});
+
+describe("a POST must come from the portal, and must say it is JSON", () => {
+  // The cookie is SameSite=Lax, which does not stop a cross-site fetch(). A fetch
+  // sending text/plain is a "simple" request: no preflight, cookie attached, and a
+  // JSON.parse on the far end reads it happily. That is the vector these close.
+  const attempt = { brand: "tap10", title: "Should not land", body: "Sent from somewhere else" };
+
+  test("same origin, application/json: the portal's own request still works", async () => {
+    const res = await rawPost(
+      "/api/ideas",
+      { brand: "tap10", title: "Filed from the portal", body: "Typed in the browser on the portal itself." },
+      { "content-type": "application/json", origin: base, cookie: auth }
+    );
+    expect(res.status).toBe(201);
+    expect((await res.json()).idea.title).toBe("Filed from the portal");
+  });
+
+  test("a sibling origin sending text/plain is refused, and nothing is written", async () => {
+    const before = await ideas();
+
+    const res = await rawPost("/api/ideas", attempt, {
+      "content-type": "text/plain;charset=UTF-8",
+      origin: siblingOrigin(),
+      cookie: auth,
+    });
+    expect(res.status).toBe(403);
+
+    const after = await ideas();
+    expect(after.ideas).toHaveLength(before.ideas.length);
+    expect(after.ideas.some((i: any) => i.title === "Should not land")).toBe(false);
+  });
+
+  test("a foreign origin sending application/json is refused, and nothing is written", async () => {
+    const before = await ideas();
+
+    for (const origin of ["https://evil.example.com", "http://marketing.nordicpirate.com.evil.example.com", "null"]) {
+      const res = await rawPost("/api/ideas", attempt, {
+        "content-type": "application/json",
+        origin,
+        cookie: auth,
+      });
+      expect(res.status).toBe(403);
+      expect((await res.json()).error).toContain("Cross-site");
+    }
+
+    expect((await ideas()).ideas).toHaveLength(before.ideas.length);
+  });
+
+  test("same origin but text/plain is refused too, so the content type is its own gate", async () => {
+    const before = await ideas();
+
+    for (const type of ["text/plain", "text/plain;charset=UTF-8", "application/x-www-form-urlencoded", ""]) {
+      const headers: Record<string, string> = { origin: base, cookie: auth };
+      if (type) headers["content-type"] = type;
+      const res = await rawPost("/api/ideas", attempt, headers);
+      expect(res.status).toBe(415);
+    }
+
+    expect((await ideas()).ideas).toHaveLength(before.ideas.length);
+  });
+
+  test("no Origin at all is allowed, so a server side caller is not broken by this", async () => {
+    const res = await rawPost(
+      "/api/ideas",
+      { brand: "tap10", title: "From a script", body: "curl sends no Origin header." },
+      { "content-type": "application/json", cookie: auth }
+    );
+    expect(res.status).toBe(201);
+  });
+
+  test("behind a proxy, the Origin is matched against X-Forwarded-Host", async () => {
+    // The live shape: TLS ends at the proxy, so the browser says https:// while this
+    // server sees http://. Comparing whole origin strings would refuse the real portal.
+    const res = await rawPost(
+      "/api/ideas",
+      { brand: "tap10", title: "Through the proxy", body: "https on the outside, http in here." },
+      {
+        "content-type": "application/json",
+        origin: "https://marketing.nordicpirate.com",
+        "x-forwarded-host": "marketing.nordicpirate.com",
+        cookie: auth,
+      }
+    );
+    expect(res.status).toBe(201);
+  });
+
+  test("GET is unchanged: a foreign origin and no content type still read the list", async () => {
+    const res = await get("/api/ideas", { cookie: auth, origin: "https://evil.example.com" });
+    expect(res.status).toBe(200);
+    expect(res.headers.get("cache-control")).toBe("no-cache");
+    expect((await res.json()).ideas.length).toBeGreaterThan(0);
+  });
+});
+
+describe("a body that is not a JSON object", () => {
+  test("null, arrays, strings and numbers are refused with 400, and nothing is written", async () => {
+    // Every one of these is valid JSON. `null` used to reach the store, where reading
+    // .brand off it threw and the request answered 500.
+    const before = await ideas();
+
+    for (const body of [null, [], [{ brand: "tap10", title: "T", body: "B" }], "a string", 42, true]) {
+      const res = await rawPost("/api/ideas", body, { "content-type": "application/json", cookie: auth });
+      expect(res.status).toBe(400);
+      expect((await res.json()).error).toContain("JSON object");
+    }
+
+    expect((await ideas()).ideas).toHaveLength(before.ideas.length);
+  });
+
+  test("a body that is not JSON at all is refused with 400, not 500", async () => {
+    const before = await ideas();
+
+    const res = await fetch(base + "/api/ideas", {
+      method: "POST",
+      headers: { "content-type": "application/json", cookie: auth },
+      body: "{ this is not json",
+      redirect: "manual",
+    });
+    expect(res.status).toBe(400);
+
+    expect((await ideas()).ideas).toHaveLength(before.ideas.length);
+  });
+
+  test("an empty object is still the store's own 400, naming the missing field", async () => {
+    const res = await rawPost("/api/ideas", {}, { "content-type": "application/json", cookie: auth });
+    expect(res.status).toBe(400);
+    expect((await res.json()).error).toContain("brand");
+  });
+});
+
+describe("size limits at the API", () => {
+  test("a title at exactly the limit lands, one character more answers 413", async () => {
+    const atLimit = await post(
+      "/api/ideas",
+      { brand: "tap10", title: "t".repeat(MAX_TITLE_CHARS), body: "A body" },
+      asStaff()
+    );
+    expect(atLimit.status).toBe(201);
+
+    const before = await ideas();
+    const over = await post(
+      "/api/ideas",
+      { brand: "tap10", title: "t".repeat(MAX_TITLE_CHARS + 1), body: "A body" },
+      asStaff()
+    );
+    expect(over.status).toBe(413);
+    expect((await over.json()).error).toContain("title");
+
+    expect((await ideas()).ideas).toHaveLength(before.ideas.length);
+  });
+
+  test("an over-long body answers 413 and writes nothing", async () => {
+    const before = await ideas();
+    const res = await post(
+      "/api/ideas",
+      { brand: "tap10", title: "A title", body: "b".repeat(MAX_BODY_CHARS + 1) },
+      asStaff()
+    );
+    expect(res.status).toBe(413);
+    expect((await res.json()).error).toContain("body");
+
+    expect((await ideas()).ideas).toHaveLength(before.ideas.length);
+  });
+
+  test("a body near the server's 1 MB ceiling, which used to be storable, answers 413", async () => {
+    const before = await ideas();
+    const res = await post(
+      "/api/ideas",
+      { brand: "tap10", title: "A title", body: "x".repeat(900_000) },
+      asStaff()
+    );
+    expect(res.status).toBe(413);
+
+    expect((await ideas()).ideas).toHaveLength(before.ideas.length);
   });
 });
 
