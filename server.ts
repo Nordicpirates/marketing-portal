@@ -46,6 +46,52 @@ function checkAuth(req: Request): boolean {
   return match ? match[1] === AUTH_TOKEN : false;
 }
 
+/**
+ * Refuse a state-changing request that a browser made on behalf of another site, or
+ * that does not say it is sending JSON. Returns null when the request may proceed.
+ *
+ * The cookie is SameSite=Lax, which stops a cross-site POST from a form but NOT a
+ * cross-site fetch(), and a fetch() sending Content-Type: text/plain is a "simple"
+ * request: no preflight, cookie attached, and our JSON.parse reads the body happily.
+ * Two checks close that.
+ *
+ * Origin is compared by HOST, never by the whole origin string. TLS is terminated in
+ * front of this process, so the browser says https:// while this server sees http://,
+ * and comparing full origins would refuse every real request from the live portal.
+ * A cross-site page cannot set either header, so this is a browser-only defence and
+ * costs a server-to-server caller nothing: no Origin at all is allowed through.
+ *
+ * Requiring application/json is the half that does not depend on Origin: a cross-origin
+ * fetch that sets it is no longer "simple", so the browser must preflight, and nothing
+ * here answers OPTIONS with CORS headers. Do not add one.
+ */
+function crossSiteRefusal(req: Request, url: URL): Response | null {
+  const origin = req.headers.get("origin");
+  if (origin) {
+    let from = "";
+    try {
+      from = new URL(origin).host;
+    } catch {
+      from = "";
+    }
+    // X-Forwarded-Host as well as the Host this process saw, so a proxy that rewrites
+    // Host does not lock the portal out of its own API.
+    const mine = [url.host, req.headers.get("x-forwarded-host") || ""].filter(Boolean);
+    if (!from || !mine.includes(from)) {
+      console.warn(`[api] refused a cross-site ${req.method} to ${url.pathname}: Origin "${origin}" is not ${mine.join(" or ")}`);
+      return Response.json({ error: "Cross-site request refused" }, { status: 403 });
+    }
+  }
+
+  const type = (req.headers.get("content-type") || "").split(";")[0].trim().toLowerCase();
+  if (type !== "application/json") {
+    console.warn(`[api] refused a ${req.method} to ${url.pathname}: Content-Type "${type || "(none)"}" is not application/json`);
+    return Response.json({ error: "Content-Type must be application/json" }, { status: 415 });
+  }
+
+  return null;
+}
+
 function serveLogin(error = false): Response {
   const html = `<!DOCTYPE html>
 <html lang="sv">
@@ -196,11 +242,23 @@ const server = Bun.serve({
     // third brand is then an entry in data/ideas.json and no code change at all.
     if (path === "/api/ideas") {
       if (req.method === "POST") {
-        const body = await req.json().catch(() => ({}));
+        const refusal = crossSiteRefusal(req, url);
+        if (refusal) return refusal;
+
+        const body = await req.json().catch(() => null);
+        // `null`, `[1,2]`, `"text"` and `7` are all valid JSON, and every one of them
+        // used to reach addIdea, where reading .brand off null threw and answered 500.
+        // A malformed body is the caller's mistake, so say so with a 400 and write
+        // nothing.
+        if (body === null || typeof body !== "object" || Array.isArray(body)) {
+          console.warn(`[ideas] refused a POST: the body is not a JSON object`);
+          return Response.json({ error: "body must be a JSON object" }, { status: 400 });
+        }
+
         const result = addIdea(body);
         if (!result.ok) {
           console.warn(`[ideas] refused a POST: ${result.error}`);
-          return Response.json({ error: result.error }, { status: 400 });
+          return Response.json({ error: result.error }, { status: result.status });
         }
         return Response.json({ idea: result.idea }, { status: 201 });
       }
