@@ -170,6 +170,9 @@ const BRAND_KEY = 'np-ideas-brand';
 let BRANDS = [];
 let IDEAS = [];
 let current = null;
+// True while the list could not be fetched. Read by anything that would otherwise hand
+// the save button back, so the state on screen and the state of the button agree.
+let listBroken = false;
 
 function savedBrand() {
   try { return window.localStorage.getItem(BRAND_KEY); } catch (e) { return null; }
@@ -321,6 +324,11 @@ function showProblem(detail) {
   list.appendChild(box);
 
   // Saving would fail too, and would look like the idea was lost rather than never sent.
+  // listBroken, not just the disabled property: the save handler re-enables the button in
+  // its finally, which runs AFTER the load it awaits. Without a flag to read, a save that
+  // worked followed by a reload that failed left this error box on screen with the button
+  // live underneath it. The failed load has to win.
+  listBroken = true;
   document.getElementById('savebtn').disabled = true;
   note('Det går inte att spara nya idéer förrän listan kan hämtas.', 'bad');
 }
@@ -346,7 +354,14 @@ async function load() {
 
   BRANDS = data.brands || [];
   IDEAS = data.ideas || [];
-  // A load that worked clears whatever an earlier failed one left on screen.
+
+  // A load that worked clears whatever an earlier failed one left on screen. The note is
+  // only cleared when recovering from a failure: clearing it every time would wipe the
+  // "Sparad." a successful save has just written, since saving reloads the list.
+  if (listBroken) {
+    listBroken = false;
+    note('');
+  }
   document.getElementById('savebtn').disabled = false;
 
   const wanted = savedBrand();
@@ -404,7 +419,9 @@ document.getElementById('addform').addEventListener('submit', async (ev) => {
     console.error(e);
     note('Idén sparades inte: ingen kontakt med servern.', 'bad');
   } finally {
-    btn.disabled = false;
+    // Not an unconditional false. This runs after the load() above, so if that load
+    // failed the page is showing an error box and saving must stay shut.
+    btn.disabled = listBroken;
     btn.textContent = label;
   }
 });

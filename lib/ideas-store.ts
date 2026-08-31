@@ -70,6 +70,28 @@ export type AddResult = { ok: true; idea: Idea } | AddRefusal;
 
 type SeedFile = { brands: Brand[]; ideas: Idea[] };
 
+/**
+ * Every row in a list of ideas, or an explanation of the first one that is not an idea.
+ *
+ * Both files the store reads go through here. Checking one of them and not the other is
+ * the same defect twice: a reader that reaches for row.id throws, while a writer that
+ * never touches the rows carries on appending, so GET fails and POST succeeds and the
+ * store fills a file nobody can read back.
+ */
+function assertRows(rows: unknown[], file: string): Idea[] {
+  rows.forEach((row, n) => {
+    if (row === null || typeof row !== "object" || Array.isArray(row)) {
+      throw new Error(`${file} row ${n} is not an object, so this file cannot be read back. Refusing to read it, and nothing will be written over it.`);
+    }
+    for (const field of ["id", "brand", "title", "body", "created_at", "created_by"] as const) {
+      if (typeof (row as Record<string, unknown>)[field] !== "string") {
+        throw new Error(`${file} row ${n} has no string "${field}", so this file cannot be read back. Refusing to read it, and nothing will be written over it.`);
+      }
+    }
+  });
+  return rows as Idea[];
+}
+
 function readSeed(): SeedFile {
   if (!existsSync(IDEAS_SEED)) {
     // The seed is committed, so this only happens on a broken deploy. Not fatal, since
@@ -82,9 +104,20 @@ function readSeed(): SeedFile {
   // A seed that exists but will not parse is a deploy bug, and treating it as empty
   // would quietly drop the brand list and the six seeded ideas. Fail loudly instead.
   const parsed = JSON.parse(readFileSync(IDEAS_SEED, "utf8"));
+  if (parsed === null || typeof parsed !== "object" || Array.isArray(parsed)) {
+    throw new Error(`${IDEAS_SEED} is valid JSON but not an object, so it is not the ideas seed.`);
+  }
+
+  const brands = (parsed as { brands?: unknown }).brands;
+  const ideas = (parsed as { ideas?: unknown }).ideas;
+
   return {
-    brands: Array.isArray(parsed.brands) ? parsed.brands : [],
-    ideas: Array.isArray(parsed.ideas) ? parsed.ideas : [],
+    brands: Array.isArray(brands) ? (brands as Brand[]) : [],
+    // The seed's rows get the same check as the stored file's rows. Reading them without
+    // it is how a single null row in data/ideas.json made GET answer 503 while POST
+    // answered 201 and created a stored file: the reader reached row.id and threw, the
+    // writer never looked at a seed row at all.
+    ideas: Array.isArray(ideas) ? assertRows(ideas, IDEAS_SEED) : [],
   };
 }
 
@@ -120,18 +153,7 @@ function readStored(): Idea[] {
   // container check alone let a reader fail while a writer carried on appending to it,
   // which is the worst of the three outcomes, so a bad row is refused exactly like a bad
   // container. Reading is where this belongs: every path in and out goes through here.
-  ideas.forEach((row, n) => {
-    if (row === null || typeof row !== "object" || Array.isArray(row)) {
-      throw new Error(`${IDEAS_FILE} row ${n} is not an object, so this file cannot be read back. Refusing to read it, and nothing will be written over it.`);
-    }
-    for (const field of ["id", "brand", "title", "body", "created_at", "created_by"] as const) {
-      if (typeof (row as Record<string, unknown>)[field] !== "string") {
-        throw new Error(`${IDEAS_FILE} row ${n} has no string "${field}", so this file cannot be read back. Refusing to read it, and nothing will be written over it.`);
-      }
-    }
-  });
-
-  return ideas as Idea[];
+  return assertRows(ideas, IDEAS_FILE);
 }
 
 /** The exact bytes the stored file holds for a given list. */
