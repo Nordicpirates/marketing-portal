@@ -68,6 +68,9 @@
     background:rgba(201,106,61,.14);color:var(--terra-deep);padding:3px 9px;border-radius:20px}
   .empty{background:var(--paper);border:1px dashed rgba(23,23,23,.16);border-radius:16px;padding:26px 22px;
     text-align:center;color:var(--muted);font-size:13.5px}
+  /* The list could not be fetched at all. Never leave the page blank: say so. */
+  .empty.problem{border-style:solid;border-color:rgba(201,106,61,.45);background:rgba(201,106,61,.06);color:var(--ink-soft)}
+  .empty.problem strong{display:block;font-family:'Asul',serif;font-size:15.5px;color:var(--terra-deep);margin-bottom:6px}
   /* Add form */
   .addcard{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:20px 22px;box-shadow:var(--shadow)}
   .addcard h2{margin-bottom:14px}
@@ -293,16 +296,58 @@ function renderIdeas() {
   shown.forEach(i => list.appendChild(ideaCard(i)));
 }
 
+/**
+ * The list could not be fetched. Say that on the page.
+ *
+ * Returning quietly here used to leave a page with a heading, an empty list and no
+ * explanation, which reads as "we have no ideas" rather than "we could not reach them",
+ * and there is nothing on screen to tell somebody what to do next.
+ */
+function showProblem(detail) {
+  document.getElementById('brandbar').textContent = '';
+  document.getElementById('count').textContent = '';
+  document.getElementById('add-brand').textContent = '';
+
+  const list = document.getElementById('ideas');
+  list.textContent = '';
+  const box = document.createElement('div');
+  box.className = 'empty problem';
+  const head = document.createElement('strong');
+  head.textContent = 'Idéerna kunde inte hämtas.';
+  box.appendChild(head);
+  const why = document.createElement('div');
+  why.textContent = detail + ' Ladda om sidan. Håller det i sig, säg till så tittar vi på servern.';
+  box.appendChild(why);
+  list.appendChild(box);
+
+  // Saving would fail too, and would look like the idea was lost rather than never sent.
+  document.getElementById('savebtn').disabled = true;
+  note('Det går inte att spara nya idéer förrän listan kan hämtas.', 'bad');
+}
+
 async function load() {
   let data;
   try {
     const r = await fetch('/api/ideas');
     if (r.status === 401) { location.href = '/login'; return; }
+    if (!r.ok) {
+      // A 503 from the store carries a JSON body, so this must be checked before the
+      // parse: reading it as data would leave the page saying there are no brands.
+      console.error('/api/ideas answered ' + r.status);
+      showProblem('Servern svarade ' + r.status + '.');
+      return;
+    }
     data = await r.json();
-  } catch (e) { console.error(e); return; }
+  } catch (e) {
+    console.error(e);
+    showProblem('Ingen kontakt med servern.');
+    return;
+  }
 
   BRANDS = data.brands || [];
   IDEAS = data.ideas || [];
+  // A load that worked clears whatever an earlier failed one left on screen.
+  document.getElementById('savebtn').disabled = false;
 
   const wanted = savedBrand();
   current = BRANDS.some(b => b.id === wanted) ? wanted : (BRANDS[0] ? BRANDS[0].id : null);
