@@ -1,49 +1,49 @@
 {
- "generated_at": "2026-08-31",
+ "generated_at": "2026-09-01",
  "owner": "Bengt 🦉 (data) + Polly (analysis)",
  "currency_note": "Revenue in EUR (store currency). Meta and Google Ads spend in SEK. Blended MER = the store's whole revenue divided by Meta plus Google spend, at 11.4 SEK/EUR.",
  "gads_alert": {
   "show": true,
-  "title": "Google Ads - 54 dagar in - 101 conv - 101 676 kr",
-  "sub": "ROAS 3.65x totalt t.o.m. 30 aug. Dagskostnaden ligger nu stabilt runt 380-450 kr, i linje med dagsbudgeten.",
+  "title": "Google Ads - 55 dagar in - 102 conv - 102 108 kr",
+  "sub": "ROAS 3.63x totalt t.o.m. 31 aug. Dagskostnaden ligger stabilt runt 300-450 kr, i linje med dagsbudgeten.",
   "link_gads": "https://ads.google.com/aw/campaigns?__e=7166732500",
   "link_gmc": "https://merchants.google.com"
  },
  "yesterday": {
-  "date": "2026-08-30",
-  "orders": 7,
-  "revenue_eur": 559.04,
-  "revenue_sek": 6373,
+  "date": "2026-08-31",
+  "orders": 2,
+  "revenue_eur": 180.77,
+  "revenue_sek": 2061,
   "sessions": null,
-  "conversions": 7,
+  "conversions": 2,
   "gads_spend": null,
-  "gads_spend_sek": 413,
-  "gads_roas": 0.0,
-  "gads_conv": 0,
+  "gads_spend_sek": 304,
+  "gads_roas": 1.42,
+  "gads_conv": 1,
   "meta_spend_sek": null
  },
  "gads": {
   "live_since": "8 July",
-  "as_of": "30 August",
-  "note": "54 days (8 Jul-30 Aug). Refreshed 31 Aug. Shopping US & UK is the only campaign switched on for Shopping; brand + non-brand test campaigns still paused per Lucas's orders. Daily spend has held steady at 376-450 kr since 27 Aug, in line with the 430 kr/day budget.",
-  "spend_label": "27 840 kr",
-  "yesterday_label": "413 kr",
+  "as_of": "31 August",
+  "note": "55 days (8 Jul-31 Aug). Refreshed 1 Sep. Shopping US & UK is the only campaign switched on for Shopping; brand + non-brand test campaigns still paused per Lucas's orders. Daily spend steady at 300-450 kr, in line with the 430 kr/day budget.",
+  "spend_label": "28 144 kr",
+  "yesterday_label": "304 kr",
   "totals": {
-   "spend_sek": 27840,
-   "clicks": 6476,
-   "conversions": 101,
-   "conv_value_sek": 101676,
-   "roas": 3.65
+   "spend_sek": 28144,
+   "clicks": 6550,
+   "conversions": 102,
+   "conv_value_sek": 102108,
+   "roas": 3.63
   },
   "campaigns": [
    {
     "name": "Shopping - US & UK",
-    "spend_label": "21 202 kr",
-    "spend_sek": 21202,
-    "conv": 61,
-    "value_label": "61 857 kr",
-    "conv_value_sek": 61857,
-    "roas": 2.92
+    "spend_label": "21 506 kr",
+    "spend_sek": 21506,
+    "conv": 62,
+    "value_label": "62 289 kr",
+    "conv_value_sek": 62289,
+    "roas": 2.9
    },
    {
     "name": "Shopping - AU",
@@ -438,35 +438,35 @@
   {
    "id": "7d",
    "label": "Last 7 days",
-   "range_start": "2026-08-24",
-   "range_end": "2026-08-30",
+   "range_start": "2026-08-25",
+   "range_end": "2026-08-31",
    "days": 7,
    "kpis": {
     "sessions": null,
     "conversion_label": "Unavailable",
-    "sales_label": "€4 805",
-    "orders": 52
+    "sales_label": "€4 411",
+    "orders": 47
    },
    "meta": {
     "spend_label": "24 274 kr",
     "spend_window": "17-23 aug (Meta, hämtad 24 aug)",
     "meta_roas": 1.29,
     "blended_mer": null,
-    "_note": "Meta (17-23 aug), hämtad 24 aug. 28 köp, 31 384 kr i värde. EJ UPPDATERAD sedan 23 aug - GATE når inte Meta, 8:e dygnet i rad. Blandad avkastning lämnad tom med flit: den skulle blanda försäljning till 26 aug med annonskostnad till 23 aug."
+    "_note": "Meta (17-23 aug), hämtad 24 aug. 28 köp, 31 384 kr i värde. EJ UPPDATERAD sedan 23 aug - GATE når inte Meta, 9:e dygnet i rad. Blandad avkastning lämnad tom med flit: den skulle blanda försäljning till 26 aug med annonskostnad till 23 aug."
    },
    "gads": {
-    "spend_label": "3 038 kr",
-    "gads_roas": 1.66,
-    "conv": 5,
-    "value_label": "5 049 kr",
-    "_note": "Google Ads API (24-30 Aug), fetched 31 Aug.",
+    "spend_label": "2 727 kr",
+    "gads_roas": 0.98,
+    "conv": 4,
+    "value_label": "2 667 kr",
+    "_note": "Google Ads API (25-31 Aug), fetched 1 Sep.",
     "campaigns": [
      {
       "name": "Shopping - US & UK",
-      "spend_label": "3 038 kr",
-      "conv": 5,
-      "value_label": "5 049 kr",
-      "roas": 1.66
+      "spend_label": "2 727 kr",
+      "conv": 4,
+      "value_label": "2 667 kr",
+      "roas": 0.98
      }
     ]
    },
@@ -474,14 +474,14 @@
     {
      "name": "USA",
      "flag": "🇺🇸",
-     "orders": 24,
-     "revenue": "€2477"
+     "orders": 23,
+     "revenue": "€2285"
     },
     {
      "name": "UK",
      "flag": "🇬🇧",
-     "orders": 17,
-     "revenue": "€1578"
+     "orders": 14,
+     "revenue": "€1430"
     },
     {
      "name": "Spain",
@@ -502,12 +502,6 @@
      "revenue": "€137"
     },
     {
-     "name": "Australia",
-     "flag": "🇦🇺",
-     "orders": 2,
-     "revenue": "€108"
-    },
-    {
      "name": "Germany",
      "flag": "🇩🇪",
      "orders": 2,
@@ -518,6 +512,12 @@
      "flag": "🇨🇦",
      "orders": 1,
      "revenue": "€66"
+    },
+    {
+     "name": "Australia",
+     "flag": "🇦🇺",
+     "orders": 1,
+     "revenue": "€54"
     },
     {
      "name": "Italy",
@@ -575,7 +575,7 @@
     {
      "level": "warning",
      "title": "Meta is a week behind the rest of this page",
-     "body": "Orders, sales and Google Ads are current through 30 August. Meta stops at 23 August, because GATE has not been able to reach it since (8 days now). Each Meta box prints its own dates, so the gap is visible rather than hidden, and the blended return is left blank rather than dividing fresh sales by stale ad spend.",
+     "body": "Orders, sales and Google Ads are current through 31 August. Meta stops at 23 August, because GATE has not been able to reach it since (9 days now). Each Meta box prints its own dates, so the gap is visible rather than hidden, and the blended return is left blank rather than dividing fresh sales by stale ad spend.",
      "sub": "The fault is in our own tooling, not in the Meta account. Already reported, still open."
     },
     {
@@ -601,60 +601,60 @@
   {
    "id": "30d",
    "label": "Last 30 days",
-   "range_start": "2026-08-01",
-   "range_end": "2026-08-30",
+   "range_start": "2026-08-02",
+   "range_end": "2026-08-31",
    "days": 30,
    "kpis": {
     "sessions": null,
     "conversion_label": "Unavailable",
-    "sales_label": "€20 731",
-    "orders": 217
+    "sales_label": "€19 981",
+    "orders": 209
    },
    "meta": {
     "spend_label": "101 422 kr",
     "spend_window": "25 jul-23 aug (Meta, hämtad 24 aug)",
     "meta_roas": 1.7,
     "blended_mer": null,
-    "_note": "Meta (25 jul-23 aug), hämtad 24 aug. 144 köp, 172 693 kr i värde. EJ UPPDATERAD sedan 23 aug - GATE når inte Meta, 8:e dygnet i rad. Blandad avkastning lämnad tom med flit: den skulle blanda försäljning till 26 aug med annonskostnad till 23 aug."
+    "_note": "Meta (25 jul-23 aug), hämtad 24 aug. 144 köp, 172 693 kr i värde. EJ UPPDATERAD sedan 23 aug - GATE når inte Meta, 9:e dygnet i rad. Blandad avkastning lämnad tom med flit: den skulle blanda försäljning till 26 aug med annonskostnad till 23 aug."
    },
    "gads": {
-    "spend_label": "15 625 kr",
-    "gads_roas": 2.5,
-    "conv": 38,
-    "value_label": "38 997 kr",
-    "_note": "Google Ads API (1-30 Aug), fetched 31 Aug.",
+    "spend_label": "15 399 kr",
+    "gads_roas": 2.42,
+    "conv": 37,
+    "value_label": "37 254 kr",
+    "_note": "Google Ads API (2-31 Aug), fetched 1 Sep.",
     "campaigns": [
      {
       "name": "Shopping - US & UK",
-      "spend_label": "12 731 kr",
-      "conv": 30,
-      "value_label": "31 984 kr",
-      "roas": 2.51
+      "spend_label": "12 673 kr",
+      "conv": 29,
+      "value_label": "30 242 kr",
+      "roas": 2.39
      },
      {
       "name": "Shopping - AU",
-      "spend_label": "1 658 kr",
+      "spend_label": "1 582 kr",
       "conv": 3,
       "value_label": "2 351 kr",
-      "roas": 1.42
+      "roas": 1.49
      },
      {
       "name": "Brand Search - All Markets",
-      "spend_label": "637 kr",
+      "spend_label": "593 kr",
       "conv": 2,
       "value_label": "3 762 kr",
-      "roas": 5.91
+      "roas": 6.34
      },
      {
       "name": "Brand Search - IT",
-      "spend_label": "404 kr",
+      "spend_label": "379 kr",
       "conv": 3,
       "value_label": "899 kr",
-      "roas": 2.23
+      "roas": 2.37
      },
      {
       "name": "Non-brand Test - US & UK",
-      "spend_label": "196 kr",
+      "spend_label": "173 kr",
       "conv": 0,
       "value_label": "0 kr",
       "roas": 0.0
@@ -665,14 +665,14 @@
     {
      "name": "USA",
      "flag": "🇺🇸",
-     "orders": 116,
-     "revenue": "€12003"
+     "orders": 112,
+     "revenue": "€11594"
     },
     {
      "name": "UK",
      "flag": "🇬🇧",
-     "orders": 39,
-     "revenue": "€3603"
+     "orders": 38,
+     "revenue": "€3567"
     },
     {
      "name": "Australia",
@@ -683,8 +683,8 @@
     {
      "name": "Italy",
      "flag": "🇮🇹",
-     "orders": 20,
-     "revenue": "€1173"
+     "orders": 17,
+     "revenue": "€868"
     },
     {
      "name": "Sweden",
@@ -778,7 +778,7 @@
     {
      "level": "warning",
      "title": "Meta is a week behind the rest of this page",
-     "body": "Orders, sales and Google Ads are current through 30 August. Meta stops at 23 August, because GATE has not been able to reach it since (8 days now). Each Meta box prints its own dates, so the gap is visible rather than hidden, and the blended return is left blank rather than dividing fresh sales by stale ad spend.",
+     "body": "Orders, sales and Google Ads are current through 31 August. Meta stops at 23 August, because GATE has not been able to reach it since (9 days now). Each Meta box prints its own dates, so the gap is visible rather than hidden, and the blended return is left blank rather than dividing fresh sales by stale ad spend.",
      "sub": "The fault is in our own tooling, not in the Meta account. Already reported, still open."
     },
     {
@@ -797,36 +797,36 @@
   },
   {
    "id": "thismonth",
-   "label": "This month (Aug 1-30)",
+   "label": "August (full month)",
    "range_start": "2026-08-01",
-   "range_end": "2026-08-30",
-   "days": 30,
+   "range_end": "2026-08-31",
+   "days": 31,
    "kpis": {
     "sessions": null,
     "conversion_label": "Unavailable",
-    "sales_label": "€20 731",
-    "orders": 217
+    "sales_label": "€20 912",
+    "orders": 219
    },
    "meta": {
     "spend_label": "70 151 kr",
     "spend_window": "1-23 aug (Meta, hämtad 24 aug)",
     "meta_roas": 1.48,
     "blended_mer": null,
-    "_note": "Meta (1-23 aug), hämtad 24 aug. 88 köp, 103 535 kr i värde. EJ UPPDATERAD sedan 23 aug - GATE når inte Meta, 8:e dygnet i rad. Blandad avkastning lämnad tom med flit: den skulle blanda försäljning till 26 aug med annonskostnad till 23 aug."
+    "_note": "Meta (1-23 aug), hämtad 24 aug. 88 köp, 103 535 kr i värde. EJ UPPDATERAD sedan 23 aug - GATE når inte Meta, 9:e dygnet i rad. Blandad avkastning lämnad tom med flit: den skulle blanda försäljning till 26 aug med annonskostnad till 23 aug."
    },
    "gads": {
-    "spend_label": "15 625 kr",
-    "gads_roas": 2.5,
-    "conv": 38,
-    "value_label": "38 997 kr",
-    "_note": "Google Ads API (1-30 Aug), fetched 31 Aug.",
+    "spend_label": "15 929 kr",
+    "gads_roas": 2.48,
+    "conv": 39,
+    "value_label": "39 429 kr",
+    "_note": "Google Ads API (1-31 Aug), fetched 1 Sep.",
     "campaigns": [
      {
       "name": "Shopping - US & UK",
-      "spend_label": "12 731 kr",
-      "conv": 30,
-      "value_label": "31 984 kr",
-      "roas": 2.51
+      "spend_label": "13 035 kr",
+      "conv": 31,
+      "value_label": "32 416 kr",
+      "roas": 2.49
      },
      {
       "name": "Shopping - AU",
@@ -862,8 +862,8 @@
     {
      "name": "USA",
      "flag": "🇺🇸",
-     "orders": 116,
-     "revenue": "€12003"
+     "orders": 118,
+     "revenue": "€12184"
     },
     {
      "name": "UK",
@@ -945,7 +945,7 @@
     {
      "level": "warning",
      "title": "Meta is a week behind the rest of this page",
-     "body": "Orders, sales and Google Ads are current through 30 August. Meta stops at 23 August, because GATE has not been able to reach it since (8 days now). Each Meta box prints its own dates, so the gap is visible rather than hidden, and the blended return is left blank rather than dividing fresh sales by stale ad spend.",
+     "body": "Orders, sales and Google Ads are current through 31 August. Meta stops at 23 August, because GATE has not been able to reach it since (9 days now). Each Meta box prints its own dates, so the gap is visible rather than hidden, and the blended return is left blank rather than dividing fresh sales by stale ad spend.",
      "sub": "The fault is in our own tooling, not in the Meta account. Already reported, still open."
     },
     {
@@ -965,35 +965,35 @@
   {
    "id": "90d",
    "label": "Last 90 days",
-   "range_start": "2026-06-02",
-   "range_end": "2026-08-30",
+   "range_start": "2026-06-03",
+   "range_end": "2026-08-31",
    "days": 90,
    "kpis": {
     "sessions": null,
     "conversion_label": "Unavailable",
-    "sales_label": "€113 061",
-    "orders": 1069
+    "sales_label": "€112 012",
+    "orders": 1061
    },
    "meta": {
     "spend_label": "433 237 kr",
     "spend_window": "26 maj-23 aug (Meta, hämtad 24 aug)",
     "meta_roas": 2.02,
     "blended_mer": null,
-    "_note": "Meta (26 maj-23 aug), hämtad 24 aug. 708 köp, 873 441 kr i värde. EJ UPPDATERAD sedan 23 aug - GATE når inte Meta, 8:e dygnet i rad. Blandad avkastning lämnad tom med flit: den skulle blanda försäljning till 26 aug med annonskostnad till 23 aug."
+    "_note": "Meta (26 maj-23 aug), hämtad 24 aug. 708 köp, 873 441 kr i värde. EJ UPPDATERAD sedan 23 aug - GATE når inte Meta, 9:e dygnet i rad. Blandad avkastning lämnad tom med flit: den skulle blanda försäljning till 26 aug med annonskostnad till 23 aug."
    },
    "gads": {
-    "spend_label": "27 840 kr",
-    "gads_roas": 3.65,
-    "conv": 101,
-    "value_label": "101 676 kr",
-    "_note": "Google Ads API (2 Jun-30 Aug), fetched 31 Aug.",
+    "spend_label": "28 144 kr",
+    "gads_roas": 3.63,
+    "conv": 102,
+    "value_label": "102 108 kr",
+    "_note": "Google Ads API (3 Jun-31 Aug), fetched 1 Sep.",
     "campaigns": [
      {
       "name": "Shopping - US & UK",
-      "spend_label": "21 202 kr",
-      "conv": 61,
-      "value_label": "61 857 kr",
-      "roas": 2.92
+      "spend_label": "21 506 kr",
+      "conv": 62,
+      "value_label": "62 289 kr",
+      "roas": 2.9
      },
      {
       "name": "Shopping - AU",
@@ -1043,44 +1043,38 @@
     {
      "name": "USA",
      "flag": "🇺🇸",
-     "orders": 469,
-     "revenue": "€53453"
+     "orders": 471,
+     "revenue": "€53634"
     },
     {
      "name": "UK",
      "flag": "🇬🇧",
-     "orders": 162,
-     "revenue": "€16491"
+     "orders": 161,
+     "revenue": "€16438"
     },
     {
      "name": "Italy",
      "flag": "🇮🇹",
-     "orders": 135,
-     "revenue": "€12039"
+     "orders": 132,
+     "revenue": "€11634"
     },
     {
      "name": "Australia",
      "flag": "🇦🇺",
-     "orders": 74,
-     "revenue": "€7861"
+     "orders": 73,
+     "revenue": "€7712"
     },
     {
      "name": "Germany",
      "flag": "🇩🇪",
-     "orders": 60,
-     "revenue": "€5337"
+     "orders": 58,
+     "revenue": "€5078"
     },
     {
      "name": "France",
      "flag": "🇫🇷",
      "orders": 36,
      "revenue": "€3772"
-    },
-    {
-     "name": "Belgium",
-     "flag": "🇧🇪",
-     "orders": 27,
-     "revenue": "€2839"
     },
     {
      "name": "Denmark",
@@ -1093,6 +1087,12 @@
      "flag": "🇳🇱",
      "orders": 24,
      "revenue": "€2594"
+    },
+    {
+     "name": "Belgium",
+     "flag": "🇧🇪",
+     "orders": 25,
+     "revenue": "€2537"
     },
     {
      "name": "Sweden",
@@ -1156,7 +1156,7 @@
     {
      "level": "warning",
      "title": "Meta is a week behind the rest of this page",
-     "body": "Orders, sales and Google Ads are current through 30 August. Meta stops at 23 August, because GATE has not been able to reach it since (8 days now). Each Meta box prints its own dates, so the gap is visible rather than hidden, and the blended return is left blank rather than dividing fresh sales by stale ad spend.",
+     "body": "Orders, sales and Google Ads are current through 31 August. Meta stops at 23 August, because GATE has not been able to reach it since (9 days now). Each Meta box prints its own dates, so the gap is visible rather than hidden, and the blended return is left blank rather than dividing fresh sales by stale ad spend.",
      "sub": "The fault is in our own tooling, not in the Meta account. Already reported, still open."
     },
     {
@@ -1175,63 +1175,45 @@
   },
   {
    "id": "yesterday",
-   "label": "Yesterday (Aug 30)",
-   "range_start": "2026-08-30",
-   "range_end": "2026-08-30",
+   "label": "Yesterday (Aug 31)",
+   "range_start": "2026-08-31",
+   "range_end": "2026-08-31",
    "days": 1,
    "kpis": {
     "sessions": null,
     "conversion_label": "Unavailable",
-    "sales_label": "€559",
-    "orders": 7
+    "sales_label": "€181",
+    "orders": 2
    },
    "meta": {
     "spend_label": null,
     "spend_window": "GATE når inte Meta sedan 23 aug",
     "meta_roas": null,
     "blended_mer": null,
-    "_note": "Meta utelämnad här med flit: en siffra från 23 aug under rubriken \"i går (29 aug)\" vore vilseledande. GATE når inte Meta, 8:e dygnet i rad."
+    "_note": "Meta utelämnad här med flit: en siffra från 23 aug under rubriken \"i går (29 aug)\" vore vilseledande. GATE når inte Meta, 9:e dygnet i rad."
    },
    "gads": {
-    "spend_label": "413 kr",
-    "gads_roas": 0.0,
-    "conv": 0,
-    "value_label": "0 kr",
-    "_note": "Google Ads API (30-30 Aug), fetched 31 Aug.",
+    "spend_label": "304 kr",
+    "gads_roas": 1.42,
+    "conv": 1,
+    "value_label": "432 kr",
+    "_note": "Google Ads API (31-31 Aug), fetched 1 Sep.",
     "campaigns": [
      {
       "name": "Shopping - US & UK",
-      "spend_label": "413 kr",
-      "conv": 0,
-      "value_label": "0 kr",
-      "roas": 0.0
+      "spend_label": "304 kr",
+      "conv": 1,
+      "value_label": "432 kr",
+      "roas": 1.42
      }
     ]
    },
    "orders_by_country": [
     {
-     "name": "UK",
-     "flag": "🇬🇧",
-     "orders": 3,
-     "revenue": "€264"
-    },
-    {
      "name": "USA",
      "flag": "🇺🇸",
      "orders": 2,
      "revenue": "€181"
-    },
-    {
-     "name": "Germany",
-     "flag": "🇩🇪",
-     "orders": 1,
-     "revenue": "€60"
-    },
-    {
-     "name": "Australia",
-     "flag": "🇦🇺",
-     "orders": 1,
-     "revenue": "€54"
     }
    ],
    "landing_pages": [],
@@ -1239,7 +1221,7 @@
     {
      "level": "warning",
      "title": "Meta is a week behind the rest of this page",
-     "body": "Orders, sales and Google Ads are current through 30 August. Meta stops at 23 August, because GATE has not been able to reach it since (8 days now). Each Meta box prints its own dates, so the gap is visible rather than hidden, and the blended return is left blank rather than dividing fresh sales by stale ad spend.",
+     "body": "Orders, sales and Google Ads are current through 31 August. Meta stops at 23 August, because GATE has not been able to reach it since (9 days now). Each Meta box prints its own dates, so the gap is visible rather than hidden, and the blended return is left blank rather than dividing fresh sales by stale ad spend.",
      "sub": "The fault is in our own tooling, not in the Meta account. Already reported, still open."
     },
     {
@@ -1539,19 +1521,19 @@
  },
  "gads_periods": {
   "since": "2026-07-08",
-  "until": "2026-08-30",
-  "days": 54,
-  "total_spend_sek": 27840,
-  "total_conv": 101,
-  "total_conv_value_sek": 101676,
-  "roas": 3.65,
+  "until": "2026-08-31",
+  "days": 55,
+  "total_spend_sek": 28144,
+  "total_conv": 102,
+  "total_conv_value_sek": 102108,
+  "roas": 3.63,
   "campaigns": [
    {
     "name": "Shopping - US & UK",
-    "spend_sek": 21202,
-    "conv": 61,
-    "conv_value_sek": 61857,
-    "roas": 2.92
+    "spend_sek": 21506,
+    "conv": 62,
+    "conv_value_sek": 62289,
+    "roas": 2.9
    },
    {
     "name": "Shopping - AU",
