@@ -43,7 +43,7 @@
 
 import { buildCartUrl } from "./offer.js";
 import { loadCart } from "./cart.js";
-import { text, translate, translateDocument } from "./i18n.js";
+import { LANGUAGES, text, translate, translateDocument } from "./i18n.js";
 
 const form = document.getElementById("giftform");
 const result = document.getElementById("result");
@@ -1084,6 +1084,26 @@ const giftJump = (function stickyRouter() {
       button.hidden = true;
     },
   };
+})();
+
+// An ad has to be able to land a German reader on the German page, so ?lang= picks the
+// edition radio before anything is drawn. The radio IS the language on this page, so
+// moving it moves the copy and the box that gets carted together, exactly as clicking
+// the chip would - there is no second place for the answer to live.
+//
+// The value is matched against LANGUAGES and never passed through raw: `check` puts it
+// straight into a CSS selector, so an unchecked URL parameter reaching it is a hole. An
+// unknown value is said out loud and the page stays in English rather than half-applying.
+(function applyLanguageFromUrl() {
+  const asked = new URLSearchParams(window.location.search).get("lang");
+  if (asked === null) return;
+
+  const wanted = asked.trim().toLowerCase();
+  if (!LANGUAGES.includes(wanted)) {
+    console.warn(`[lp/aboard] ?lang=${asked} is not a language this page speaks, staying in English`);
+    return;
+  }
+  check("edition", wanted);
 })();
 
 // Everything the page writes for itself, said once at load in whichever language the
