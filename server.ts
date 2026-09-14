@@ -324,6 +324,16 @@ const server = Bun.serve({
       });
     }
 
+    // The asset directory: media kits, brand books, copy library, creator lists. Plain
+    // data, so a new link is an entry in data/assets.json and no code change at all.
+    if (path === "/api/assets") {
+      const p = join(DIR, "data", "assets.json");
+      if (!existsSync(p)) return Response.json({ groups: [] });
+      return new Response(readFileSync(p), {
+        headers: { "Content-Type": "application/json", "Cache-Control": "no-cache" },
+      });
+    }
+
     if (path === "/api/tasks") {
       if (req.method === "POST") {
         const body = await req.json().catch(() => ({}));
@@ -400,6 +410,15 @@ const server = Bun.serve({
       const invHtml = join(DIR, "public", "inventory.html");
       if (existsSync(invHtml)) {
         return new Response(readFileSync(invHtml), {
+          headers: { "Content-Type": "text/html; charset=utf-8" },
+        });
+      }
+    }
+
+    if (path === "/assets") {
+      const assetsHtml = join(DIR, "public", "assets.html");
+      if (existsSync(assetsHtml)) {
+        return new Response(readFileSync(assetsHtml), {
           headers: { "Content-Type": "text/html; charset=utf-8" },
         });
       }

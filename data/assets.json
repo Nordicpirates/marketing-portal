@@ -1,0 +1,245 @@
+{
+  "reviewed": "2026-09-14",
+  "reviewed_by": "Bengt",
+  "groups": [
+    {
+      "id": "lying-pirates",
+      "label": "Lying Pirates",
+      "blurb": "The game we sell today. Everything below lives inside the Media Kit folder on Drive.",
+      "links": [
+        {
+          "title": "Copy Library",
+          "desc": "Punchlines, video hooks, BGG reviews and YouTube quotes, with what has shipped and what is only a proposal. Built 3 September 2026.",
+          "url": "https://docs.google.com/spreadsheets/d/1vQS0wNcNG7slyW2RLKBkbV2qDNru9lRU/edit?gid=63545549#gid=63545549",
+          "kind": "sheet"
+        },
+        {
+          "title": "Media Kit Lying Pirates",
+          "desc": "The master folder. Product photos, video, ads, music, creator content and the internal asset library.",
+          "url": "https://drive.google.com/drive/folders/1NkEtLIr4HXCETYny5M9Jr_OsLiWNM7sT",
+          "kind": "folder"
+        },
+        {
+          "title": "INTERNAL Assets folder",
+          "desc": "Logos (.ai, .svg), captains, badges, branding, photoshoots, Photoshop files, product photos and video.",
+          "url": "https://drive.google.com/drive/folders/1CYow-nqw0CdeQVWdDJnouIX5SgM_7HRx",
+          "kind": "folder"
+        },
+        {
+          "title": "Product photos",
+          "desc": "Packshots and lifestyle photos of the boxes and components.",
+          "url": "https://drive.google.com/drive/folders/1aRFx6JspyiWx5UtS-2P8gZZrQr53uTnH",
+          "kind": "folder"
+        },
+        {
+          "title": "Product images without background",
+          "desc": "Cut-outs for ads, listings and layouts. Added 31 August 2026.",
+          "url": "https://drive.google.com/drive/folders/1THlCbpTfpAHcAWWGgmZwPF6zBTjd2FMc",
+          "kind": "folder"
+        },
+        {
+          "title": "Video content (Official)",
+          "desc": "Our own produced video: trailers, how-to-play, b-roll.",
+          "url": "https://drive.google.com/drive/folders/1taqI4JkXggdN_bxGe2C8FAGu4c5DdynR",
+          "kind": "folder"
+        },
+        {
+          "title": "In-house content",
+          "desc": "Content made by the team for social and ads.",
+          "url": "https://drive.google.com/drive/folders/17vFeR5AIOn1NydfG-V42k128p4mQK_Pv",
+          "kind": "folder"
+        },
+        {
+          "title": "Ads (in-house)",
+          "desc": "The ads we make ourselves since we took the account back, from 30 August 2026.",
+          "url": "https://drive.google.com/drive/folders/11UnJgv4FMXWiN6ch2nhCw1mQg_AT3G8z",
+          "kind": "folder"
+        },
+        {
+          "title": "Ads made by YMP (agency)",
+          "desc": "The agency's ad files, kept for reference.",
+          "url": "https://drive.google.com/drive/folders/1CXoeqlhTkl5VLmQ8tTZbt3_Ztq5DrcWl",
+          "kind": "folder"
+        },
+        {
+          "title": "Music",
+          "desc": "Tracks cleared for use in our videos and ads.",
+          "url": "https://drive.google.com/drive/folders/1K3U8APAZUPtMi1l4D5TM3AYEBJUqIPCC",
+          "kind": "folder"
+        },
+        {
+          "title": "Branding (logos)",
+          "desc": "LP logo files in black and white, .ai and .svg.",
+          "url": "https://drive.google.com/drive/folders/1r9jjg_tBwDf69SotrbWEcXrnXfpKUpxX",
+          "kind": "folder"
+        },
+        {
+          "title": "Media Kit LP B2B",
+          "desc": "The kit we hand to retailers and distributors.",
+          "url": "https://drive.google.com/drive/folders/1hxqH9soZyGHL5120IHuAb-egBIZv5AzT",
+          "kind": "folder"
+        },
+        {
+          "title": "Retail vs Deluxe comparison",
+          "desc": "One-page PDF on what differs between the two editions.",
+          "url": "https://drive.google.com/file/d/1gH3zZG9AEcAK2NNwS01VTfOUgko9olrD/view",
+          "kind": "pdf"
+        }
+      ]
+    },
+    {
+      "id": "tap10",
+      "label": "TAP 10: Inventions",
+      "blurb": "The Kickstarter launch. Everything below lives inside the TAP10 Media Kit folder on Drive.",
+      "links": [
+        {
+          "title": "Media Kit Tap10",
+          "desc": "The master folder: logos, fonts, icons, brand book, ads, mockups and the Kickstarter material.",
+          "url": "https://drive.google.com/drive/folders/1sib4fYX4dDl_gEakahYM1d7U30xtbpdt",
+          "kind": "folder"
+        },
+        {
+          "title": "Iconography & Brand Book",
+          "desc": "The invention icons (.ai, with and without gold) and the brand book work. Updated 4 September 2026.",
+          "url": "https://drive.google.com/drive/folders/14qkRvvkWoEer6EO3zT5sF9yQlCiStBqM",
+          "kind": "folder"
+        },
+        {
+          "title": "Logos",
+          "desc": "The TAP 10 logotype in every format.",
+          "url": "https://drive.google.com/drive/folders/1s4f2hVIyKQWE_gExBhWqr2QhH1FyZFtk",
+          "kind": "folder"
+        },
+        {
+          "title": "Fonts",
+          "desc": "The typefaces used on the cards and the box.",
+          "url": "https://drive.google.com/drive/folders/1L02HF09CLSpMfQaOD17tIDitt0rm3IHx",
+          "kind": "folder"
+        },
+        {
+          "title": "Icons",
+          "desc": "Icon set for the game and the campaign page.",
+          "url": "https://drive.google.com/drive/folders/16GkNUdILQYHhJKfW4FTdk45qfBqqQGlt",
+          "kind": "folder"
+        },
+        {
+          "title": "Ads",
+          "desc": "TAP 10 ad creatives, statics and video.",
+          "url": "https://drive.google.com/drive/folders/1KyvGyGGWwV3rBNkkKCJqc1Ak1OhYVtOm",
+          "kind": "folder"
+        },
+        {
+          "title": "Mockups",
+          "desc": "Box and card mockups for pages, ads and pitches.",
+          "url": "https://drive.google.com/drive/folders/1qIn2CgKn0Gk60MvmSy7e-AxLSr41MiLY",
+          "kind": "folder"
+        },
+        {
+          "title": "Kickstarter Campaign",
+          "desc": "Campaign page material, pledge images and layouts.",
+          "url": "https://drive.google.com/drive/folders/1iEUTO2N0hNKlmijXwCv1_Y6XnwUJ32jI",
+          "kind": "folder"
+        },
+        {
+          "title": "TAP 10 Campaign Kickstarter V1",
+          "desc": "The campaign page as one PDF, 10 August 2026.",
+          "url": "https://drive.google.com/file/d/1Gp3Z09fJql7RcU-zx6Pd_Jps2Ftv1zTp/view",
+          "kind": "pdf"
+        },
+        {
+          "title": "tap10game.com",
+          "desc": "The public site and the Kickstarter follow page.",
+          "url": "https://tap10game.com",
+          "kind": "site"
+        }
+      ]
+    },
+    {
+      "id": "nordic-pirates",
+      "label": "Nordic Pirates (the company brand)",
+      "blurb": "The publisher identity that sits above the games.",
+      "links": [
+        {
+          "title": "Brand book v2",
+          "desc": "The final brand book from Liezel, 20 August 2026. Colours, type, logo rules, tone.",
+          "url": "https://drive.google.com/file/d/1AHY6Mu3KuFnQqsMtYcbKVGX-zPszFJuU/view",
+          "kind": "pdf"
+        },
+        {
+          "title": "Nordic Pirates - Brand Book (folder)",
+          "desc": "Working files and the final delivery, including the sample layout.",
+          "url": "https://drive.google.com/drive/folders/1piUw9C-XIm0367WEXHP7AcJFV7MZkkiz",
+          "kind": "folder"
+        },
+        {
+          "title": "Media Kit Nordic Pirates",
+          "desc": "The Nordic Pirates logo in every format.",
+          "url": "https://drive.google.com/drive/folders/1aO7LCcYd5ibUtYJj4MQRTp-0kF6ZAA-2",
+          "kind": "folder"
+        },
+        {
+          "title": "Brand Story Assets",
+          "desc": "Carousel backgrounds and the brand story images.",
+          "url": "https://drive.google.com/drive/folders/1OYxkxVqB16i-MwzY4VgaHXzMVlvkmWPZ",
+          "kind": "folder"
+        }
+      ]
+    },
+    {
+      "id": "creators",
+      "label": "Content creators",
+      "blurb": "Who has made content about us, what we may use, and who we are courting for TAP 10.",
+      "links": [
+        {
+          "title": "Creator Content Library (Notion)",
+          "desc": "Every creator post we know of, with usage rights, platform, views and contact. 139 rows, all Lying Pirates so far.",
+          "url": "https://app.notion.com/p/627b4d10506441fc8a4e52dbdbff3a37",
+          "kind": "notion"
+        },
+        {
+          "title": "Content Collaborators (Drive)",
+          "desc": "The creator files themselves, one folder per creator, with the usage-rights folders the library points to.",
+          "url": "https://drive.google.com/drive/folders/1WKJKv9IJ7oF2VNNV6OUKeca3znC3wizD",
+          "kind": "folder"
+        },
+        {
+          "title": "Influencer Tracker - TAP10 (Notion)",
+          "desc": "45 creators for the TAP 10 launch with outreach status: not contacted, contacted, interested, review copy sent, published.",
+          "url": "https://app.notion.com/p/91174e9cd5e749e198c7b8a2e095bdbb",
+          "kind": "notion"
+        },
+        {
+          "title": "TAP 10 - Creator outreach contact list",
+          "desc": "The brief, the warm creators from the library, ten cold prospects and the pitch template.",
+          "url": "https://app.notion.com/p/382a6e88645a8140a715e6f5eda3689b",
+          "kind": "notion"
+        },
+        {
+          "title": "Games sent to creators (LP + TAP 10)",
+          "desc": "Not tracked anywhere yet. The library has a Sent Copy box and the TAP 10 tracker has a Review copy sent status, and both stand at zero. The only list is the Cities of Greed samples checklist from November 2025, linked here.",
+          "url": "https://app.notion.com/p/2b5a6e88645a8119be5aee9609a48d85",
+          "kind": "gap"
+        }
+      ]
+    },
+    {
+      "id": "polytopia",
+      "label": "Polytopia - The Card Game",
+      "blurb": "The licensed title. Design rules come from Midjiwan.",
+      "links": [
+        {
+          "title": "Polytopia design manual",
+          "desc": "Midjiwan's brand book for the Polytopia IP, in the Brand Book folder.",
+          "url": "https://drive.google.com/drive/folders/1ue5sTXWksjT9UkEqjlL7qybxAezWeoPl",
+          "kind": "folder"
+        },
+        {
+          "title": "Polytopia - The Card Game (folder)",
+          "desc": "Everything on the project: media, design, rules.",
+          "url": "https://drive.google.com/drive/folders/1Jot2Jyj1h0gDx-GZnRbHpbkx2NQSJka8",
+          "kind": "folder"
+        }
+      ]
+    }
+  ]
+}

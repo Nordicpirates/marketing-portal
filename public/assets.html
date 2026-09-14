@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nordic Pirates — Marketing assets</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Asul:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#f2ede4;--cream-2:#ece4d6;--paper:#fffdf8;--paper-2:#fbf6ec;
+    --ink:#171717;--ink-soft:#3a352e;--muted:#8a8073;
+    --terra:#c96a3d;--terra-deep:#a8512a;--gold:#cf9a2e;--gold-soft:#e7b94b;
+    --green:#2f8f4e;--red:#cf4234;
+    --line:rgba(23,23,23,.09);--shadow:0 1px 2px rgba(23,23,23,.04),0 8px 24px rgba(23,23,23,.05);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Inter',sans-serif;color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased;
+    background:radial-gradient(900px 460px at 88% -8%,rgba(201,106,61,.10),transparent 60%),
+               radial-gradient(760px 420px at -6% 4%,rgba(207,154,46,.12),transparent 58%),
+               var(--cream);
+    padding:0 0 70px}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+  header.top{padding:22px 0 20px;margin-bottom:20px;border-bottom:1px solid var(--line)}
+  .brandrow{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:14px}
+  .logochip{background:var(--ink);border-radius:13px;padding:11px 13px;display:flex;align-items:center;box-shadow:var(--shadow)}
+  .logochip img{height:26px;display:block}
+  h1{font-family:'Asul',serif;font-size:27px;font-weight:700;letter-spacing:.2px;line-height:1.15}
+  .sub{color:var(--muted);font-size:13.5px;margin-top:3px}
+  .header-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+  .stamp{font-size:12px;color:var(--muted);text-align:right;line-height:1.7}
+  .stamp b{color:var(--ink-soft)}
+  .hr-btns{display:flex;gap:8px;align-items:center}
+  .logout{font-size:12px;color:var(--muted);text-decoration:none;padding:5px 12px;border:1px solid var(--line);border-radius:20px;background:var(--paper);transition:.15s}
+  .logout:hover{border-color:var(--terra);color:var(--terra)}
+  /* View toggle, the same bar every portal page carries */
+  .view-toggle{display:inline-flex;flex-wrap:wrap;background:var(--paper);border:1.5px solid var(--line);border-radius:24px;padding:4px;margin-top:16px;box-shadow:var(--shadow)}
+  .view-toggle a{font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:var(--muted);text-decoration:none;padding:8px 22px;border-radius:20px;transition:.15s}
+  .view-toggle a:hover{color:var(--ink)}
+  .view-toggle a.active{background:var(--ink);color:#fff}
+  /* search */
+  .searchbar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:2px 0 26px}
+  .searchbar input{flex:1;min-width:220px;font-family:'Inter',sans-serif;font-size:16px;padding:13px 16px;border:1.5px solid var(--line);border-radius:14px;background:var(--paper);color:var(--ink);outline:none;box-shadow:var(--shadow);transition:border-color .15s}
+  .searchbar input:focus{border-color:var(--terra)}
+  .searchbar input::placeholder{color:var(--muted)}
+  .count{font-size:12.5px;color:var(--muted);white-space:nowrap}
+  h2{font-family:'Asul',serif;font-size:19px;font-weight:700;margin:0 0 5px;display:flex;align-items:center;gap:9px;color:var(--ink)}
+  h2 .dot{width:9px;height:9px;border-radius:50%;background:var(--terra);flex-shrink:0}
+  .h2sub{font-size:12.5px;color:var(--muted);margin:0 0 14px 18px}
+  section{margin-bottom:34px}
+  /* cards */
+  .links{display:grid;grid-template-columns:repeat(auto-fit,minmax(232px,1fr));gap:13px}
+  a.link{display:flex;align-items:flex-start;gap:14px;text-decoration:none;color:var(--ink);
+    background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:16px 18px;transition:.16s ease;box-shadow:var(--shadow)}
+  a.link:hover{border-color:var(--terra);transform:translateY(-2px);box-shadow:0 10px 26px rgba(201,106,61,.16)}
+  a.link .ic{font-size:21px;line-height:1.25;flex-shrink:0}
+  a.link .t{font-weight:600;font-size:14px}
+  a.link .d{font-size:12px;color:var(--muted);margin-top:3px;line-height:1.5}
+  a.link .k{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--terra-deep);background:rgba(201,106,61,.12);padding:2px 8px;border-radius:20px;margin-top:9px}
+  a.link.gap{border-style:dashed;background:var(--paper-2)}
+  a.link.gap .k{background:rgba(207,154,46,.18);color:#9a7416}
+  .empty{background:var(--paper);border:1px dashed var(--line);border-radius:16px;padding:26px 22px;color:var(--muted);font-size:14px}
+  .errbox{background:linear-gradient(180deg,rgba(201,106,61,.09),var(--paper));border:1px solid rgba(201,106,61,.28);border-radius:18px;padding:20px 22px;box-shadow:var(--shadow);font-size:14px;color:var(--ink-soft)}
+  .errbox b{font-family:'Asul',serif;color:var(--terra-deep);display:block;margin-bottom:6px}
+  .errbox a{color:var(--terra-deep)}
+  footer{border-top:1px solid var(--line);margin-top:42px;padding-top:22px;font-size:12px;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+  footer b{color:var(--ink-soft)}
+  @media(max-width:680px){
+    .wrap{padding:0 16px}
+    header.top{padding:18px 0 16px}
+    .header-right{align-items:flex-start}
+    .view-toggle a{padding:8px 14px}
+    a.link{padding:14px 15px}
+    .searchbar input{width:100%}
+  }
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap brandrow">
+  <div class="brand">
+    <span class="logochip"><img src="https://www.nordicpirates.com/cdn/shop/files/LP_LOGO_vit_e2ed4c01-c782-4abb-8a90-b5cab974fd0a.png?width=120" alt="Nordic Pirates"></span>
+    <div>
+      <h1>Marketing assets</h1>
+      <div class="sub">Every media kit, brand book, copy bank and creator list, in one place</div>
+      <div class="view-toggle">
+        <a href="/">Marketing HQ</a>
+        <a href="/dashboard">Dashboard</a>
+        <a href="/inventory">Lager</a>
+        <a href="/growth">Growth</a>
+        <a href="/ideas">Ideas</a>
+        <a href="/assets" class="active">Assets</a>
+      </div>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="stamp">Links checked <b id="reviewed">…</b></div>
+    <div class="hr-btns">
+      <a class="logout" href="/logout">Log out</a>
+    </div>
+  </div>
+</div></header>
+
+<div class="wrap">
+
+  <div class="searchbar">
+    <input id="filter" type="search" placeholder="Search: brand book, logo, copy, creators…" autocomplete="off" aria-label="Search assets">
+    <span class="count" id="count"></span>
+  </div>
+
+  <div id="groups"></div>
+
+  <footer>
+    <div>🏴‍☠️ <b>Nordic Pirates Marketing assets</b> · for the team, creators and partners</div>
+    <div>Missing a link? Tell Bengt and it goes in.</div>
+  </footer>
+</div>
+
+<script>
+let DATA = null;
+const ICON = { folder:'📁', sheet:'📊', pdf:'📄', notion:'📚', site:'🌐', gap:'🚧' };
+const KIND = { folder:'Drive folder', sheet:'Google Sheet', pdf:'PDF', notion:'Notion', site:'Website', gap:'Not tracked yet' };
+
+// Everything that reaches the page goes through here. A title with markup in it is
+// shown as characters, never run.
+function esc(s){ return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+function errBox(msg){
+  return `<div class="errbox"><b>The asset list could not be fetched.</b>${esc(msg)} <a href="/assets">Reload the page</a>.</div>`;
+}
+
+async function load() {
+  const box = document.getElementById('groups');
+  let r;
+  try { r = await fetch('/api/assets'); }
+  catch (e) { console.error(e); box.innerHTML = errBox('No contact with the server.'); return; }
+  if (r.status === 401) { location.href = '/login'; return; }
+  if (!r.ok) { box.innerHTML = errBox('The server answered ' + r.status + '.'); return; }
+  try { DATA = await r.json(); }
+  catch (e) { console.error(e); box.innerHTML = errBox('The answer could not be read.'); return; }
+
+  document.getElementById('reviewed').textContent = (DATA.reviewed || '—') + (DATA.reviewed_by ? ' by ' + DATA.reviewed_by : '');
+  render('');
+  const f = document.getElementById('filter');
+  f.addEventListener('input', () => render(f.value));
+}
+
+function card(l) {
+  const kind = l.kind || 'folder';
+  return `<a class="link${kind === 'gap' ? ' gap' : ''}" href="${esc(l.url)}" target="_blank" rel="noopener">
+    <span class="ic">${ICON[kind] || '🔗'}</span>
+    <span><div class="t">${esc(l.title)}</div><div class="d">${esc(l.desc || '')}</div><span class="k">${esc(KIND[kind] || kind)}</span></span>
+  </a>`;
+}
+
+function render(q) {
+  const needle = (q || '').trim().toLowerCase();
+  const groups = DATA.groups || [];
+  let shown = 0, total = 0;
+  const html = groups.map(g => {
+    const links = (g.links || []).filter(l => {
+      total++;
+      if (!needle) return true;
+      const hay = (g.label + ' ' + l.title + ' ' + (l.desc || '') + ' ' + (KIND[l.kind] || '')).toLowerCase();
+      return hay.includes(needle);
+    });
+    if (!links.length) return '';
+    shown += links.length;
+    return `<section data-group="${esc(g.id)}">
+      <h2><span class="dot"></span>${esc(g.label)}</h2>
+      ${g.blurb ? `<p class="h2sub">${esc(g.blurb)}</p>` : ''}
+      <div class="links">${links.map(card).join('')}</div>
+    </section>`;
+  }).join('');
+  document.getElementById('groups').innerHTML = html || `<div class="empty">Nothing matches "${esc(q)}". Try one word, like logo or brand.</div>`;
+  document.getElementById('count').textContent = needle ? `${shown} of ${total} links` : `${total} links`;
+}
+
+load();
+</script>
+</body>
+</html>
