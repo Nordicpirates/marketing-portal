@@ -5,6 +5,14 @@ import { STATE_DIR } from "./lib/state-dir.ts";
 import { handleAsset, handleClaim } from "./lib/lp-aboard.ts";
 import { handleMarkSent, handleSignups } from "./lib/lp-aboard-admin.ts";
 import { addIdea, readBrands, readIdeas } from "./lib/ideas-store.ts";
+import {
+  NOTION_URL,
+  NotionError,
+  addShipment,
+  isConfigured as shipmentsConfigured,
+  listShipments,
+  validateInput as validateShipment,
+} from "./lib/shipments.ts";
 
 const AUTH_PASSWORD = (process.env.AUTH_PASSWORD || "pirates2024").trim();
 const PORT = parseInt(process.env.PORT || "3000");
@@ -181,6 +189,28 @@ async function ideasResponse(work: () => Response | Promise<Response>): Promise<
       { status: 503, headers: { "Cache-Control": "no-store" } }
     );
   }
+}
+
+/**
+ * Notion said no, or could not be reached, while serving the shipments page.
+ *
+ * One sentence with Notion's status goes to the caller and to the log; Notion's own
+ * body never does, because it can echo the request back. 502 rather than 500: the
+ * fault is upstream, and an unhandled throw would be answered with Bun's own page.
+ */
+function notionFailure(verb: string, err: unknown): Response {
+  if (err instanceof NotionError) {
+    console.warn(`[shipments] ${verb} failed: Notion status ${err.status}`);
+    return Response.json(
+      { error: err.message, notion_status: err.status, notion_url: NOTION_URL },
+      { status: 502, headers: { "Cache-Control": "no-store" } }
+    );
+  }
+  console.error(`[shipments] ${verb} failed:`, err);
+  return Response.json(
+    { error: "The shipments could not be read. This has been logged for an operator.", notion_status: -1, notion_url: NOTION_URL },
+    { status: 502, headers: { "Cache-Control": "no-store" } }
+  );
 }
 
 function serveLogin(error = false): Response {
@@ -377,6 +407,66 @@ const server = Bun.serve({
           { headers: { "Cache-Control": "no-cache" } }
         );
       });
+    }
+
+    // Creator shipments live in a Notion database, read and written through
+    // lib/shipments.ts. Without the integration key the page still opens, points at
+    // Notion, and refuses to write: nothing here throws for a missing key.
+    if (path === "/api/shipments") {
+      if (req.method === "POST") {
+        const refusal = crossSiteRefusal(req, url);
+        if (refusal) return refusal;
+        if (!shipmentsConfigured()) {
+          console.warn("[shipments] refused a POST: NOTION_PORTAL_TOKEN is not set");
+          return Response.json(
+            {
+              error: "Logging from the portal is not switched on yet: the Notion key is missing. Log it in Notion instead.",
+              notion_url: NOTION_URL,
+            },
+            { status: 503 }
+          );
+        }
+        const body = await req.json().catch(() => null);
+        const checked = validateShipment(body);
+        if (!checked.ok) {
+          console.warn(`[shipments] refused a POST: ${checked.error}`);
+          return Response.json({ error: checked.error }, { status: 400 });
+        }
+        try {
+          const shipment = await addShipment(checked.value);
+          console.log(`[shipments] added ${shipment.id}`);
+          return Response.json({ shipment }, { status: 201 });
+        } catch (err) {
+          return notionFailure("POST", err);
+        }
+      }
+      if (req.method !== "GET") {
+        return Response.json({ error: "Method not allowed" }, { status: 405, headers: { Allow: "GET, POST" } });
+      }
+      if (!shipmentsConfigured()) {
+        return Response.json(
+          { configured: false, notion_url: NOTION_URL, shipments: [] },
+          { headers: { "Cache-Control": "no-cache" } }
+        );
+      }
+      try {
+        const shipments = await listShipments();
+        return Response.json(
+          { configured: true, notion_url: NOTION_URL, shipments },
+          { headers: { "Cache-Control": "no-cache" } }
+        );
+      } catch (err) {
+        return notionFailure("GET", err);
+      }
+    }
+
+    if (path === "/shipments") {
+      const shipmentsHtml = join(DIR, "public", "shipments.html");
+      if (existsSync(shipmentsHtml)) {
+        return new Response(readFileSync(shipmentsHtml), {
+          headers: { "Content-Type": "text/html; charset=utf-8" },
+        });
+      }
     }
 
     if (path === "/ideas") {

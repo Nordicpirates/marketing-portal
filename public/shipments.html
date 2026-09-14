@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nordic Pirates — Creator shipments</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Asul:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#f2ede4;--cream-2:#ece4d6;--paper:#fffdf8;--paper-2:#fbf6ec;
+    --ink:#171717;--ink-soft:#3a352e;--muted:#8a8073;
+    --terra:#c96a3d;--terra-deep:#a8512a;--gold:#cf9a2e;--gold-soft:#e7b94b;
+    --green:#2f8f4e;--red:#cf4234;
+    --line:rgba(23,23,23,.09);--shadow:0 1px 2px rgba(23,23,23,.04),0 8px 24px rgba(23,23,23,.05);
+  }
+  /* Mobile first: everything below is the phone layout. The one media query at the
+     end widens it for a desk. */
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Inter',sans-serif;color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased;
+    background:radial-gradient(900px 460px at 88% -8%,rgba(201,106,61,.10),transparent 60%),
+               radial-gradient(760px 420px at -6% 4%,rgba(207,154,46,.12),transparent 58%),
+               var(--cream);
+    padding:0 0 70px}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 16px}
+  header.top{padding:18px 0 16px;margin-bottom:20px;border-bottom:1px solid var(--line)}
+  .brandrow{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:14px}
+  .logochip{background:var(--ink);border-radius:13px;padding:11px 13px;display:flex;align-items:center;box-shadow:var(--shadow)}
+  .logochip img{height:26px;display:block}
+  h1{font-family:'Asul',serif;font-size:27px;font-weight:700;letter-spacing:.2px;line-height:1.15}
+  .sub{color:var(--muted);font-size:13.5px;margin-top:3px}
+  .header-right{display:flex;flex-direction:column;align-items:flex-start;gap:8px}
+  .hr-btns{display:flex;gap:8px;align-items:center}
+  .logout{font-size:12px;color:var(--muted);text-decoration:none;padding:5px 12px;border:1px solid var(--line);border-radius:20px;background:var(--paper);transition:.15s}
+  .logout:hover{border-color:var(--terra);color:var(--terra)}
+  .notionlink{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--terra-deep);text-decoration:none;padding:9px 16px;border:1px solid rgba(201,106,61,.35);border-radius:20px;background:var(--paper);box-shadow:var(--shadow);transition:.15s}
+  .notionlink:hover{border-color:var(--terra);background:var(--paper-2)}
+  /* View toggle, the same bar every portal page carries */
+  .view-toggle{display:inline-flex;flex-wrap:wrap;background:var(--paper);border:1.5px solid var(--line);border-radius:24px;padding:4px;margin-top:16px;box-shadow:var(--shadow)}
+  .view-toggle a{font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:var(--muted);text-decoration:none;padding:8px 14px;border-radius:20px;transition:.15s}
+  .view-toggle a:hover{color:var(--ink)}
+  .view-toggle a.active{background:var(--ink);color:#fff}
+  h2{font-family:'Asul',serif;font-size:19px;font-weight:700;margin:0 0 5px;display:flex;align-items:center;gap:9px;color:var(--ink)}
+  h2 .dot{width:9px;height:9px;border-radius:50%;background:var(--terra);flex-shrink:0}
+  .h2sub{font-size:12.5px;color:var(--muted);margin:0 0 14px 18px}
+  section{margin-bottom:32px}
+  /* The notice: waiting for the key, or Notion could not be reached */
+  .notice{background:linear-gradient(180deg,rgba(201,106,61,.09),var(--paper));border:1px solid rgba(201,106,61,.28);border-radius:18px;padding:18px 20px;box-shadow:var(--shadow);font-size:14px;color:var(--ink-soft);margin-bottom:24px;line-height:1.55}
+  .notice b{font-family:'Asul',serif;color:var(--terra-deep);display:block;margin-bottom:6px}
+  .notice a{color:var(--terra-deep);font-weight:600}
+  .notice.quiet{background:var(--paper-2);border-color:var(--line)}
+  .notice.quiet b{color:var(--ink)}
+  /* Counters */
+  .tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+  .tile{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:14px 16px;box-shadow:var(--shadow);min-width:0}
+  .tile .n{font-family:'Asul',serif;font-size:26px;font-weight:700;line-height:1.1}
+  .tile .l{font-size:12px;color:var(--muted);margin-top:4px;line-height:1.35}
+  .tile .u{font-size:11.5px;color:var(--ink-soft);margin-top:2px}
+  .tile.total{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .tile.total .l,.tile.total .u{color:rgba(255,255,255,.72)}
+  /* The form */
+  .card{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:18px 16px;box-shadow:var(--shadow)}
+  fieldset{border:0;min-width:0;padding:0;margin:0}
+  .grid{display:grid;grid-template-columns:1fr;gap:12px}
+  .field label{display:block;font-size:12.5px;font-weight:600;color:var(--ink);margin-bottom:6px}
+  /* 16px in the fields: anything smaller makes an iPhone zoom in when a field is tapped */
+  .field input,.field select,.field textarea{width:100%;font-family:'Inter',sans-serif;font-size:16px;padding:12px 14px;border:1.5px solid var(--line);border-radius:10px;background:var(--paper-2);color:var(--ink);outline:none;transition:border-color .15s;line-height:1.4}
+  .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--terra)}
+  .field textarea{min-height:84px;resize:vertical}
+  .field input::placeholder,.field textarea::placeholder{color:var(--muted)}
+  fieldset:disabled .field input,fieldset:disabled .field select,fieldset:disabled .field textarea{opacity:.5}
+  .actions{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:16px}
+  .savebtn{font-family:'Inter',sans-serif;font-size:15px;font-weight:600;color:#fff;background:var(--ink);border:none;border-radius:10px;padding:13px 22px;cursor:pointer;transition:.15s;width:100%}
+  .savebtn:hover{background:var(--terra)}
+  .savebtn:disabled{opacity:.5;cursor:default;background:var(--ink)}
+  .formnote{font-size:13px;color:var(--muted)}
+  .formnote.bad{color:var(--terra-deep);font-weight:600}
+  .formnote.good{color:var(--green);font-weight:600}
+  /* The list */
+  .searchbar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:2px 0 16px}
+  .searchbar input{flex:1;min-width:0;width:100%;font-family:'Inter',sans-serif;font-size:16px;padding:13px 16px;border:1.5px solid var(--line);border-radius:14px;background:var(--paper);color:var(--ink);outline:none;box-shadow:var(--shadow);transition:border-color .15s}
+  .searchbar input:focus{border-color:var(--terra)}
+  .searchbar input::placeholder{color:var(--muted)}
+  .count{font-size:12.5px;color:var(--muted);white-space:nowrap}
+  .rows{display:flex;flex-direction:column;gap:10px}
+  .row{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:14px 16px 14px 18px;box-shadow:var(--shadow);position:relative;overflow:hidden;min-width:0}
+  .row::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--terra)}
+  .row .head{display:flex;justify-content:space-between;gap:10px;align-items:baseline;flex-wrap:wrap}
+  .row .who{font-family:'Asul',serif;font-size:16.5px;font-weight:700;line-height:1.3;overflow-wrap:anywhere}
+  .row .when{font-size:12px;color:var(--muted);white-space:nowrap}
+  .row .what{font-size:13.5px;color:var(--ink-soft);margin-top:4px}
+  .row .what b{color:var(--ink)}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+  .chip{font-size:10.5px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;padding:3px 9px;border-radius:20px;background:rgba(23,23,23,.06);color:var(--ink-soft)}
+  .chip.status{background:rgba(201,106,61,.14);color:var(--terra-deep)}
+  .chip.ok{background:rgba(47,143,78,.14);color:var(--green)}
+  .row .notes{font-size:13px;color:var(--ink-soft);margin-top:8px;line-height:1.5;white-space:pre-line;overflow-wrap:anywhere}
+  .row .foot{font-size:11.5px;color:var(--muted);margin-top:9px;display:flex;gap:12px;flex-wrap:wrap}
+  .row .foot a{color:var(--terra-deep);font-weight:600;text-decoration:none}
+  .row .foot a:hover{text-decoration:underline}
+  .empty{background:var(--paper);border:1px dashed var(--line);border-radius:16px;padding:24px 20px;color:var(--muted);font-size:14px;text-align:center}
+  footer{border-top:1px solid var(--line);margin-top:42px;padding-top:22px;font-size:12px;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+  footer b{color:var(--ink-soft)}
+  @media(min-width:680px){
+    .wrap{padding:0 20px}
+    header.top{padding:22px 0 20px}
+    .header-right{align-items:flex-end}
+    .view-toggle a{padding:8px 22px}
+    .tiles{grid-template-columns:repeat(4,1fr)}
+    .card{padding:20px 22px}
+    .grid{grid-template-columns:repeat(2,1fr)}
+    .grid .wide{grid-column:1 / -1}
+    .savebtn{width:auto}
+    .searchbar input{width:auto;min-width:220px}
+    .row{padding:16px 20px 16px 22px}
+  }
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap brandrow">
+  <div class="brand">
+    <span class="logochip"><img src="https://www.nordicpirates.com/cdn/shop/files/LP_LOGO_vit_e2ed4c01-c782-4abb-8a90-b5cab974fd0a.png?width=120" alt="Nordic Pirates"></span>
+    <div>
+      <h1>Creator shipments</h1>
+      <div class="sub">Which games went to which creator, when, and what came back</div>
+      <div class="view-toggle">
+        <a href="/">Marketing HQ</a>
+        <a href="/dashboard">Dashboard</a>
+        <a href="/inventory">Lager</a>
+        <a href="/growth">Growth</a>
+        <a href="/ideas">Ideas</a>
+        <a href="/assets">Assets</a>
+        <a href="/shipments" class="active">Shipments</a>
+      </div>
+    </div>
+  </div>
+  <div class="header-right">
+    <a class="notionlink" id="notion-top" href="https://app.notion.com/p/e13c793a116742dca45f3264a145b808" target="_blank" rel="noopener">📚 Open in Notion</a>
+    <div class="hr-btns">
+      <a class="logout" href="/logout">Log out</a>
+    </div>
+  </div>
+</div></header>
+
+<div class="wrap">
+
+  <div id="notice"></div>
+
+  <section id="overview">
+    <h2><span class="dot"></span>Sent so far</h2>
+    <p class="h2sub">Every row in the database, per game. Lying Pirates and TAP 10 alike.</p>
+    <div class="tiles" id="counters"></div>
+  </section>
+
+  <section>
+    <h2><span class="dot"></span>Log a shipment</h2>
+    <p class="h2sub">One row per parcel. It lands in Notion the moment you save.</p>
+    <div class="card">
+      <form id="logform" novalidate>
+        <fieldset id="fields">
+          <div class="grid">
+            <div class="field">
+              <label for="creator">Creator</label>
+              <input id="creator" name="creator" type="text" maxlength="120" placeholder="Channel or person, as they appear online" required autocomplete="off">
+            </div>
+            <div class="field">
+              <label for="game">Game</label>
+              <select id="game" name="game" required></select>
+            </div>
+            <div class="field">
+              <label for="quantity">Quantity</label>
+              <input id="quantity" name="quantity" type="number" min="1" max="500" step="1" value="1" inputmode="numeric" required>
+            </div>
+            <div class="field">
+              <label for="sent">Sent</label>
+              <input id="sent" name="sent" type="date" required>
+            </div>
+            <div class="field">
+              <label for="shipped_from">Shipped from</label>
+              <select id="shipped_from" name="shipped_from"></select>
+            </div>
+            <div class="field">
+              <label for="platform">Platform</label>
+              <select id="platform" name="platform"></select>
+            </div>
+            <div class="field">
+              <label for="contact_email">Contact email</label>
+              <input id="contact_email" name="contact_email" type="email" maxlength="254" placeholder="Optional" autocomplete="off">
+            </div>
+            <div class="field">
+              <label for="tracking">Tracking link</label>
+              <input id="tracking" name="tracking" type="url" maxlength="2000" placeholder="Optional, https://..." autocomplete="off">
+            </div>
+            <div class="field wide">
+              <label for="notes">Notes</label>
+              <textarea id="notes" name="notes" maxlength="2000" placeholder="Optional: what was agreed, what they asked for, paid or not"></textarea>
+            </div>
+            <div class="field">
+              <label for="logged_by">Logged by</label>
+              <input id="logged_by" name="logged_by" type="text" maxlength="60" placeholder="Your name" required autocomplete="off">
+            </div>
+          </div>
+          <div class="actions">
+            <button type="submit" class="savebtn" id="savebtn">Save to Notion</button>
+            <span class="formnote" id="formnote"></span>
+          </div>
+        </fieldset>
+      </form>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="dot"></span>Every shipment</h2>
+    <p class="h2sub">Newest first. Search by creator, game, platform or a word in the notes.</p>
+    <div class="searchbar">
+      <input id="filter" type="search" placeholder="Search: creator, game, platform…" autocomplete="off" aria-label="Search shipments">
+      <span class="count" id="count"></span>
+    </div>
+    <div class="rows" id="list"></div>
+  </section>
+
+  <footer>
+    <div>🏴‍☠️ <b>Nordic Pirates Creator shipments</b> · the same rows as the Notion database</div>
+    <div>Missing a game or a warehouse in the lists? Tell Bengt and it goes in.</div>
+  </footer>
+</div>
+
+<script>
+const NOTION_URL = 'https://app.notion.com/p/e13c793a116742dca45f3264a145b808';
+// The select options exactly as the Notion database has them, the same lists as
+// lib/shipments.ts. A new option is added in Notion first, then in both places.
+const GAMES = ['Lying Pirates - Big Box', 'Lying Pirates - Base Game', 'Cities of Greed', 'Kraken Mini', 'TAP 10: Inventions', 'Accessories', 'Other'];
+const SHIPPED_FROM = ['Stockholm office', 'US warehouse', 'UK warehouse', 'EU warehouse', 'AU warehouse', 'Other'];
+const PLATFORMS = ['YouTube', 'Instagram', 'TikTok', 'Blog', 'Podcast', 'Other'];
+const NAME_KEY = 'np-shipments-logged-by';
+
+let ROWS = [];
+// True once the list has loaded from a configured server. Saving stays shut until then.
+let ready = false;
+
+const el = id => document.getElementById(id);
+
+// Everything that reaches the page goes through here. A creator name with markup in it
+// is shown as characters, never run.
+function esc(s){ return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+// Only an http(s) address goes into an href. Anything else in the data is dropped, so a
+// javascript: address typed into a Notion cell can never become a link here.
+function safeUrl(u){ return /^https?:\/\/\S+$/i.test(String(u || '')) ? String(u) : ''; }
+function today(){
+  try { return new Date().toLocaleDateString('sv-SE'); }
+  catch (e) { return new Date().toISOString().slice(0, 10); }
+}
+function fmtDate(d){
+  if (!d) return 'no date';
+  const t = new Date(d + 'T00:00:00Z');
+  if (isNaN(t)) return d;
+  return t.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
+}
+
+function fill(sel, list, blank){
+  sel.textContent = '';
+  if (blank) { const o = document.createElement('option'); o.value = ''; o.textContent = blank; sel.appendChild(o); }
+  list.forEach(v => { const o = document.createElement('option'); o.value = v; o.textContent = v; sel.appendChild(o); });
+}
+
+function setForm(open){ el('fields').disabled = !open; }
+function notionLink(url){ return '<a href="' + esc(safeUrl(url) || NOTION_URL) + '" target="_blank" rel="noopener">Creator Shipments in Notion</a>'; }
+function notice(html, quiet){ el('notice').innerHTML = html ? '<div class="notice' + (quiet ? ' quiet' : '') + '">' + html + '</div>' : ''; }
+
+/** Nothing to show and nothing to save into: shut the form and hide the counters. */
+function closed(){
+  ready = false;
+  setForm(false);
+  el('overview').style.display = 'none';
+  el('count').textContent = '';
+}
+
+function showWaiting(url){
+  closed();
+  notice('<b>Logging from here opens as soon as the Notion key is in place.</b>Until then, log in Notion: ' + notionLink(url) + '.', true);
+  el('list').innerHTML = '<div class="empty">The list shows here once the key is in place.</div>';
+}
+
+function showProblem(text, url){
+  closed();
+  notice('<b>The shipments could not be fetched.</b>' + esc(text) + ' Log in Notion meanwhile: ' + notionLink(url) + '. <a href="/shipments">Reload the page</a>.');
+  el('list').innerHTML = '';
+}
+
+async function load(){
+  let r, data = null;
+  try { r = await fetch('/api/shipments'); }
+  catch (e) { console.error(e); showProblem('No contact with the server.'); return; }
+  if (r.status === 401) { location.href = '/login'; return; }
+  try { data = await r.json(); } catch (e) { data = null; }
+  if (!r.ok) {
+    console.error('/api/shipments answered ' + r.status);
+    showProblem((data && data.error) ? data.error : ('The server answered ' + r.status + '.'), data && data.notion_url);
+    return;
+  }
+  if (!data || typeof data !== 'object') { showProblem('The answer could not be read.'); return; }
+  if (data.configured === false) { showWaiting(data.notion_url); return; }
+
+  ROWS = Array.isArray(data.shipments) ? data.shipments : [];
+  if (safeUrl(data.notion_url)) el('notion-top').href = data.notion_url;
+  notice('');
+  el('overview').style.display = '';
+  ready = true;
+  setForm(true);
+  renderCounters();
+  renderList();
+}
+
+function renderCounters(){
+  const by = new Map();
+  ROWS.forEach(r => {
+    const g = r.game || 'Other';
+    const c = by.get(g) || { rows: 0, units: 0 };
+    c.rows++;
+    c.units += typeof r.quantity === 'number' ? r.quantity : 0;
+    by.set(g, c);
+  });
+  const order = GAMES.filter(g => by.has(g)).concat([...by.keys()].filter(g => !GAMES.includes(g)));
+  const units = [...by.values()].reduce((a, c) => a + c.units, 0);
+  const tiles = ['<div class="tile total"><div class="n">' + ROWS.length + '</div><div class="l">' + (ROWS.length === 1 ? 'shipment' : 'shipments') + ' in total</div><div class="u">' + units + ' ' + (units === 1 ? 'unit' : 'units') + '</div></div>']
+    .concat(order.map(g => {
+      const c = by.get(g);
+      return '<div class="tile" data-game="' + esc(g) + '"><div class="n">' + c.rows + '</div><div class="l">' + esc(g) + '</div><div class="u">' + c.units + ' ' + (c.units === 1 ? 'unit' : 'units') + '</div></div>';
+    }));
+  el('counters').innerHTML = tiles.join('');
+}
+
+/** Newest Sent first; rows with no date go last, newest created first among them. */
+function sorted(rows){
+  return rows.slice().sort((a, b) =>
+    String(b.sent || '').localeCompare(String(a.sent || '')) || String(b.created || '').localeCompare(String(a.created || '')));
+}
+
+function matches(r, needle){
+  if (!needle) return true;
+  const hay = [r.creator, r.game, r.platform, r.shipped_from, r.status, r.notes, r.logged_by, r.sent].map(v => String(v || '')).join(' ').toLowerCase();
+  return hay.includes(needle);
+}
+
+function rowCard(r){
+  const track = safeUrl(r.tracking), content = safeUrl(r.content_link), page = safeUrl(r.url);
+  const qty = typeof r.quantity === 'number' ? r.quantity : 1;
+  const chips = [];
+  if (r.status) chips.push('<span class="chip status' + (r.status === 'Content published' ? ' ok' : '') + '">' + esc(r.status) + '</span>');
+  if (r.platform) chips.push('<span class="chip">' + esc(r.platform) + '</span>');
+  if (typeof r.paid_usd === 'number' && r.paid_usd > 0) chips.push('<span class="chip">Paid $' + esc(r.paid_usd) + '</span>');
+  const foot = [];
+  if (track) foot.push('<a href="' + esc(track) + '" target="_blank" rel="noopener">Tracking</a>');
+  if (content) foot.push('<a href="' + esc(content) + '" target="_blank" rel="noopener">Content</a>');
+  if (page) foot.push('<a href="' + esc(page) + '" target="_blank" rel="noopener">Notion row</a>');
+  if (r.logged_by) foot.push('<span>logged by ' + esc(r.logged_by) + '</span>');
+  return '<div class="row">'
+    + '<div class="head"><div class="who">' + esc(r.creator || 'Unnamed creator') + '</div><div class="when">' + esc(fmtDate(r.sent)) + '</div></div>'
+    + '<div class="what"><b>' + qty + ' × ' + esc(r.game || 'Other') + '</b>' + (r.shipped_from ? ' · from ' + esc(r.shipped_from) : '') + '</div>'
+    + (chips.length ? '<div class="chips">' + chips.join('') + '</div>' : '')
+    + (r.notes ? '<div class="notes">' + esc(r.notes) + '</div>' : '')
+    + (foot.length ? '<div class="foot">' + foot.join('') + '</div>' : '')
+    + '</div>';
+}
+
+function renderList(){
+  const needle = el('filter').value.trim().toLowerCase();
+  const all = sorted(ROWS);
+  const shown = all.filter(r => matches(r, needle));
+  el('count').textContent = needle
+    ? shown.length + ' of ' + all.length + ' shipments'
+    : all.length + ' ' + (all.length === 1 ? 'shipment' : 'shipments');
+  el('list').innerHTML = shown.length
+    ? shown.map(rowCard).join('')
+    : '<div class="empty">' + (all.length ? 'Nothing matches "' + esc(needle) + '".' : 'No shipments logged yet. The first one goes in above.') + '</div>';
+}
+
+function note(text, kind){
+  const n = el('formnote');
+  n.textContent = text;
+  n.className = 'formnote' + (kind ? ' ' + kind : '');
+}
+
+async function onSave(ev){
+  ev.preventDefault();
+  if (!ready) { note('Saving is closed until the list can be fetched.', 'bad'); return; }
+  const v = id => el(id).value;
+  const creator = v('creator').trim();
+  const game = v('game');
+  const quantity = Number(v('quantity'));
+  const sent = v('sent');
+  const logged_by = v('logged_by').trim();
+  if (!creator) { note('Creator is required.', 'bad'); return; }
+  if (!game) { note('Pick a game.', 'bad'); return; }
+  if (!Number.isInteger(quantity) || quantity < 1) { note('Quantity must be a whole number, at least 1.', 'bad'); return; }
+  if (!sent) { note('Sent needs a date.', 'bad'); return; }
+  if (!logged_by) { note('Logged by is required: write your name.', 'bad'); return; }
+
+  const body = {
+    creator: creator, game: game, quantity: quantity, sent: sent,
+    shipped_from: v('shipped_from'), platform: v('platform'),
+    contact_email: v('contact_email').trim(), tracking: v('tracking').trim(), notes: v('notes').trim(),
+    logged_by: logged_by
+  };
+
+  const btn = el('savebtn');
+  const label = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = 'Saving…';
+  note('');
+  try {
+    const r = await fetch('/api/shipments', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+    if (r.status === 401) { location.href = '/login'; return; }
+    const answer = await r.json().catch(() => ({}));
+    if (!r.ok) {
+      // Say what the server actually said. A save that failed must never look like one
+      // that worked.
+      note('Not saved: ' + (answer.error || ('HTTP ' + r.status)), 'bad');
+      return;
+    }
+    try { window.localStorage.setItem(NAME_KEY, logged_by); } catch (e) { /* private mode: the name is typed again next time */ }
+    ['creator', 'contact_email', 'tracking', 'notes'].forEach(id => { el(id).value = ''; });
+    el('quantity').value = '1';
+    note('Saved.', 'good');
+    // Re-read from the server rather than pushing the local object into the list, so
+    // what is on screen is what is actually in Notion.
+    await load();
+  } catch (e) {
+    console.error(e);
+    note('Not saved: no contact with the server.', 'bad');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = label;
+  }
+}
+
+fill(el('game'), GAMES);
+fill(el('shipped_from'), SHIPPED_FROM, 'Not sure yet');
+fill(el('platform'), PLATFORMS, 'Not sure yet');
+el('sent').value = today();
+try { const n = window.localStorage.getItem(NAME_KEY); if (n) el('logged_by').value = n; } catch (e) { /* no storage: fine */ }
+el('filter').addEventListener('input', renderList);
+el('logform').addEventListener('submit', onSave);
+setForm(false);
+
+load();
+</script>
+</body>
+</html>

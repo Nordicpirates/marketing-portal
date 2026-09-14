@@ -215,10 +215,10 @@
           "kind": "notion"
         },
         {
-          "title": "Games sent to creators (LP + TAP 10)",
-          "desc": "Not tracked anywhere yet. The library has a Sent Copy box and the TAP 10 tracker has a Review copy sent status, and both stand at zero. The only list is the Cities of Greed samples checklist from November 2025, linked here.",
-          "url": "https://app.notion.com/p/2b5a6e88645a8119be5aee9609a48d85",
-          "kind": "gap"
+          "title": "Creator Shipments (Notion)",
+          "desc": "Which games went to which creator, when, and what came back. Log new ones here or on the portal's Shipments page.",
+          "url": "https://app.notion.com/p/e13c793a116742dca45f3264a145b808",
+          "kind": "notion"
         }
       ]
     },

@@ -117,7 +117,7 @@ describe("the data itself", () => {
 
   test("the things he named by name are all there", () => {
     const titles = LINKS.map((l) => l.title.toLowerCase());
-    for (const wanted of ["media kit lying pirates", "media kit tap10", "brand book v2", "creator content library", "games sent to creators"]) {
+    for (const wanted of ["media kit lying pirates", "media kit tap10", "brand book v2", "creator content library", "creator shipments"]) {
       expect(titles.some((t) => t.includes(wanted))).toBe(true);
     }
   });
@@ -152,11 +152,21 @@ describe("everything in the data is on the page, and nothing else", () => {
     }
   });
 
-  test("the gap card is marked as a gap, so nobody mistakes it for a tracker", async () => {
+  test("a gap card is marked as a gap, so nobody mistakes it for a tracker", async () => {
+    // The data has no gap today: the last one, games sent to creators, became the
+    // Creator Shipments database on 14 September 2026. The rendering stays for the next
+    // gap, so it is driven with a payload that has one.
     const page = await loadPage();
     const gaps = page.cards().filter((a: any) => a.classList.contains("gap"));
     expect(gaps.length).toBe(LINKS.filter((l) => l.kind === "gap").length);
-    expect(page.document.body.textContent).toContain("Not tracked yet");
+
+    const withGap = {
+      ...SEED,
+      groups: [{ id: "g", label: "G", links: [{ title: "Something nobody tracks", desc: "A gap, for this test only.", url: "https://example.com/gap", kind: "gap" }] }],
+    };
+    const gapPage = await loadPage(withGap);
+    expect(gapPage.cards().filter((a: any) => a.classList.contains("gap"))).toHaveLength(1);
+    expect(gapPage.document.body.textContent).toContain("Not tracked yet");
   });
 
   test("a title with markup in it is shown, not run", async () => {
@@ -245,7 +255,7 @@ describe("it looks like the portal, and every portal page can reach it", () => {
   });
 
   test("the Assets tab is on every page of the portal", () => {
-    for (const page of ["index", "dashboard", "inventory", "growth", "ideas", "assets"]) {
+    for (const page of ["index", "dashboard", "inventory", "growth", "ideas", "assets", "shipments"]) {
       const html = readFileSync(join(REPO, "public", `${page}.html`), "utf8");
       expect(html).toContain('href="/assets"');
     }
