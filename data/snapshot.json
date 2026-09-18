@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-17",
+ "generated_at": "2026-09-18",
  "owner": "Bengt 🦉 (data) + Polly (analysis)",
  "currency_note": "Revenue in EUR (store currency). Meta and Google Ads spend in SEK. Blended MER = the store's whole revenue divided by Meta plus Google spend, at 11.4 SEK/EUR.",
  "gads_alert": {
@@ -10,18 +10,18 @@
   "link_gmc": "https://merchants.google.com"
  },
  "yesterday": {
-  "date": "2026-09-16",
-  "orders": 5,
-  "revenue_eur": 551.42,
-  "revenue_sek": 6286,
+  "date": "2026-09-17",
+  "orders": 7,
+  "revenue_eur": 711.38,
+  "revenue_sek": 8110,
   "sessions": null,
-  "conversions": 5,
+  "conversions": 7,
   "gads_spend": null,
   "gads_spend_sek": 0,
   "gads_roas": 0.0,
   "gads_conv": 0,
   "meta_spend_sek": null,
-  "_note": "Shopify verifierat 17 sep. Meta kunde inte läsas: kopplingen föll 17 sep 00:16 och var fortfarande nere 07:15. Sista egna mätningen av 16 sep gjordes 22:16 CET och stod då på 4 552 kr - dygnet hann inte stängas, så någon slutsiffra för 16 sep finns inte."
+  "_note": "Shopify verifierat 18 sep. Meta gick INTE att läsa någon gång under 17 september - kopplingen har varit nere sedan 17 sep 00:16 och var fortfarande nere 07:17 den 18:e. Det finns därför ingen annonssiffra alls för den 17:e, inte ens en delsiffra."
  },
  "gads": {
   "live_since": "8 July",
@@ -105,7 +105,6 @@
  "chart_data": {
   "orders_9d": {
    "labels": [
-    "7/9",
     "8/9",
     "9/9",
     "10/9",
@@ -114,10 +113,10 @@
     "13/9",
     "14/9",
     "15/9",
-    "16/9"
+    "16/9",
+    "17/9"
    ],
    "revenue": [
-    208,
     281,
     146,
     244,
@@ -126,10 +125,10 @@
     901,
     484,
     398,
-    551
+    551,
+    711
    ],
    "orders": [
-    4,
     4,
     4,
     3,
@@ -138,7 +137,8 @@
     6,
     7,
     3,
-    5
+    5,
+    7
    ]
   },
   "organic_14d": {
@@ -252,13 +252,20 @@
    "note": "Google Ads-data: klick/konv/värde hela live-perioden. Spend 14 020 kr, ROAS 4.15×."
   }
  ],
- "channels_note": "Perioderna 7d/30d/månad/90d står kvar t.o.m. 15 september: Meta gick inte att läsa den 17:e, så de frystes hellre än att blandas ihop av färska butikssiffror och gamla annonssiffror. Gårdagen (16 sep) är däremot uppdaterad och verifierad mot Shopify. Google Ads är pausat sedan 12 september på Lucas beslut, så nollorna där är avsiktliga. Ordrar räknas exklusive annullerade och dygnet bryts vid svensk midnatt.",
+ "channels_note": "Perioderna 7d/30d/månad/90d står kvar t.o.m. 15 september: Meta har inte gått att läsa sedan 17 september 00:16, så de frystes hellre än att blandas ihop av färska butikssiffror och gamla annonssiffror. Gårdagen (17 sep) är uppdaterad och verifierad mot Shopify, men saknar annonssiffror helt. Google Ads är pausat sedan 12 september på Lucas beslut, så nollorna där är avsiktliga. Ordrar räknas exklusive annullerade och dygnet bryts vid svensk midnatt.",
  "dashboard_status": [
   {
    "icon": "📡",
-   "title": "Meta gick inte att läsa 17 september",
-   "desc": "Kopplingen föll 00:16 och var nere 07:15. Ingen reservväg finns: GATE:s egen Meta-koppling har inget konto tilldelat och nycklarna i kassaskåpet avvisas av Facebook. Felet är vårt, inte Lucas Meta-konto - ingen inloggning behövs. Följden: annonssiffrorna för 16 september saknas och perioderna står kvar t.o.m. 15 sep.",
+   "title": "Meta har inte gått att läsa sedan 17 september 00:16",
+   "desc": "Drygt 31 timmar nu. Reservvägen via webbläsaren fungerar bara när Lucas sitter vid datorn med fliken öppen. Felet är vårt, inte Lucas Meta-konto - ingen inloggning behövs. Följden: inga annonssiffror för 17 september, och perioderna står kvar t.o.m. 15 sep.",
    "who": "Bengt - felanmälan väntar på Lucas ja",
+   "status": "queue"
+  },
+  {
+   "icon": "🤝",
+   "title": "YMP tar över Meta-styrningen 18 september",
+   "desc": "Your Marketing Partners, kontakt Cayman Dredge, 1 000 pund i månaden för strategi, övervakning och daglig optimering. Creatives in-house. Mått: avkastning per marknad mot Shopify-intäkt, mål över 2,0 på rullande fjorton dagar. Frysningen från 15 september står kvar tills Lucas säger annat.",
+   "who": "Bengt - bevakar",
    "status": "queue"
   },
   {
@@ -467,7 +474,7 @@
     "spend_window": "9-15 sep (Meta, hämtad 16 sep)",
     "meta_roas": 0.85,
     "blended_mer": 1.65,
-    "_note": "Meta (9-15 sep), hämtad 16 sep. 12 köp, 17 395 kr i värde, 1 400 klick. Blandad avkastning = butikens hela försäljning (35 866 kr) delad med Meta plus Google (21 748 kr). Ej uppdaterad 17 sep: Meta-kopplingen var nere, så hela perioden står kvar på sitt eget fönster t.o.m. 15 september."
+    "_note": "Meta (9-15 sep), hämtad 16 sep. 12 köp, 17 395 kr i värde, 1 400 klick. Blandad avkastning = butikens hela försäljning (35 866 kr) delad med Meta plus Google (21 748 kr). Ej uppdaterad 18 sep heller: Meta-kopplingen har varit nere sedan 17 sep 00:16, så perioden står kvar på sitt eget fönster t.o.m. 15 september. Butikens egna siffror är färskare än så - se Gårdagen."
    },
    "gads": {
     "spend_label": "1 346 kr",
@@ -642,7 +649,7 @@
     "spend_window": "17 aug-15 sep (Meta, hämtad 16 sep)",
     "meta_roas": 1.1,
     "blended_mer": 1.9,
-    "_note": "Meta (17 aug-15 sep), hämtad 16 sep. 66 köp, 81 856 kr i värde, 5 000 klick. Blandad avkastning = butikens hela försäljning (164 459 kr) delad med Meta plus Google (86 461 kr). Ej uppdaterad 17 sep: Meta-kopplingen var nere, så hela perioden står kvar på sitt eget fönster t.o.m. 15 september."
+    "_note": "Meta (17 aug-15 sep), hämtad 16 sep. 66 köp, 81 856 kr i värde, 5 000 klick. Blandad avkastning = butikens hela försäljning (164 459 kr) delad med Meta plus Google (86 461 kr). Ej uppdaterad 18 sep heller: Meta-kopplingen har varit nere sedan 17 sep 00:16, så perioden står kvar på sitt eget fönster t.o.m. 15 september. Butikens egna siffror är färskare än så - se Gårdagen."
    },
    "gads": {
     "spend_label": "12 042 kr",
@@ -830,7 +837,7 @@
     "spend_window": "1-15 sep (Meta, hämtad 16 sep)",
     "meta_roas": 0.99,
     "blended_mer": 2.0,
-    "_note": "Meta (1-15 sep), hämtad 16 sep. 19 köp, 24 882 kr i värde, 1 763 klick. Blandad avkastning = butikens hela försäljning (60 407 kr) delad med Meta plus Google (30 259 kr). Ej uppdaterad 17 sep: Meta-kopplingen var nere, så hela perioden står kvar på sitt eget fönster t.o.m. 15 september."
+    "_note": "Meta (1-15 sep), hämtad 16 sep. 19 köp, 24 882 kr i värde, 1 763 klick. Blandad avkastning = butikens hela försäljning (60 407 kr) delad med Meta plus Google (30 259 kr). Ej uppdaterad 18 sep heller: Meta-kopplingen har varit nere sedan 17 sep 00:16, så perioden står kvar på sitt eget fönster t.o.m. 15 september. Butikens egna siffror är färskare än så - se Gårdagen."
    },
    "gads": {
     "spend_label": "5 007 kr",
@@ -975,7 +982,7 @@
     "spend_window": "18 jun-15 sep (Meta, hämtad 16 sep)",
     "meta_roas": 2.01,
     "blended_mer": 2.81,
-    "_note": "Meta (18 jun-15 sep), hämtad 16 sep. 583 köp, 722 000 kr i värde, 34 704 klick. Blandad avkastning = butikens hela försäljning (1 102 066 kr) delad med Meta plus Google (391 516 kr). Ej uppdaterad 17 sep: Meta-kopplingen var nere, så hela perioden står kvar på sitt eget fönster t.o.m. 15 september."
+    "_note": "Meta (18 jun-15 sep), hämtad 16 sep. 583 köp, 722 000 kr i värde, 34 704 klick. Blandad avkastning = butikens hela försäljning (1 102 066 kr) delad med Meta plus Google (391 516 kr). Ej uppdaterad 18 sep heller: Meta-kopplingen har varit nere sedan 17 sep 00:16, så perioden står kvar på sitt eget fönster t.o.m. 15 september. Butikens egna siffror är färskare än så - se Gårdagen."
    },
    "gads": {
     "spend_label": "33 152 kr",
@@ -1183,43 +1190,43 @@
   },
   {
    "id": "yesterday",
-   "label": "Yesterday (Sep 16)",
-   "range_start": "2026-09-16",
-   "range_end": "2026-09-16",
+   "label": "Yesterday (Sep 17)",
+   "range_start": "2026-09-17",
+   "range_end": "2026-09-17",
    "days": 1,
    "kpis": {
     "sessions": null,
     "conversion_label": "Unavailable",
-    "sales_label": "€551",
-    "orders": 5
+    "sales_label": "€711",
+    "orders": 7
    },
    "meta": {
-    "spend_label": "4 552 kr+",
-    "spend_window": "16 sep, delvis: läst 22:16 CET, dygnet hann inte stängas innan Meta-kopplingen föll",
+    "spend_label": null,
+    "spend_window": "17 sep: ingen mätning alls, Meta-kopplingen var nere hela dygnet",
     "meta_roas": null,
     "blended_mer": null,
-    "_note": "Meta kunde INTE läsas 17 sep. Siffran är min egen mätning 16 sep 22:16 CET (4 552 kr, 2 köp, 2 136 kr i värde) och är därför ett golv, inte dygnets slutsiffra. Avkastning lämnas tom hellre än gissad."
+    "_note": "Meta kunde inte läsas en enda gång under 17 september. Rutorna lämnas tomma hellre än att fyllas med en gissning. Annonserna har rullat vidare hela tiden - tomt här betyder att vi inte kan se dem, inte att de stått stilla."
    },
    "gads": {
     "spend_label": "0 kr",
     "gads_roas": 0.0,
     "conv": 0,
     "value_label": "0 kr",
-    "_note": "Google Ads: kontot är pausat sedan 12 sep (senast verifierat 16 sep). Kopplingen till Google Ads står som utgången 17 sep, så nollan är låst på senaste verifierade läget, inte nyhämtad.",
+    "_note": "Google Ads: kontot är pausat sedan 12 sep (senast verifierat 16 sep). Kopplingen står som utgången, så nollan är låst på senaste verifierade läget.",
     "campaigns": []
    },
    "orders_by_country": [
     {
-     "name": "Netherlands",
-     "flag": "🇳🇱",
-     "orders": 2,
-     "revenue": "€331"
+     "name": "UK",
+     "flag": "🇬🇧",
+     "orders": 3,
+     "revenue": "€417"
     },
     {
-     "name": "Belgium",
-     "flag": "🇧🇪",
-     "orders": 1,
-     "revenue": "€135"
+     "name": "USA",
+     "flag": "🇺🇸",
+     "orders": 2,
+     "revenue": "€193"
     },
     {
      "name": "Australia",
@@ -1228,31 +1235,31 @@
      "revenue": "€54"
     },
     {
-     "name": "Sweden",
-     "flag": "🇸🇪",
+     "name": "Austria",
+     "flag": "🇦🇹",
      "orders": 1,
-     "revenue": "€31"
+     "revenue": "€47"
     }
    ],
    "landing_pages": [],
    "flags": [
     {
      "level": "warning",
-     "title": "Meta gick inte att läsa i morse - annonssiffrorna för 16 september saknas",
-     "body": "Kopplingen som bär Meta föll klockan 00:16 natten till den 17:e och var fortfarande nere 07:15. Den har ingen reservväg: GATE:s egen Meta-koppling har inget konto tilldelat och nycklarna i kassaskåpet avvisas av Facebook. Felet ligger hos oss, inte i Meta-kontot.",
-     "sub": "Sista egna mätningen av den 16:e gjordes 22:16 CET och stod då på 4 552 kr mot 2 136 kr i värde. Dygnet hann inte stängas, så rutan ovan visar ett golv och avkastningen lämnas tom. Butikens siffror nedan är däremot fullt verifierade mot Shopify i morse."
+     "title": "Andra dygnet utan Meta-siffror - annonserna syns inte, men de rullar",
+     "body": "Kopplingen till Meta föll 17 september 00:16 och var fortfarande nere 07:17 den 18:e, alltså drygt 31 timmar. Under hela 17 september gick kontot inte att läsa en enda gång. Felet ligger hos oss, inte i Meta-kontot, och ingen inloggning behövs.",
+     "sub": "Butikens siffror är däremot fullt verifierade: 17 september stängde på 7 ordrar och 711 EUR, bästa dygnet på fyra. Perioderna ovanför står kvar t.o.m. 15 september av samma skäl som i går - hellre frusna och märkta än blandade."
     },
     {
      "level": "warning",
-     "title": "Meta: skalningen är fortfarande fryst",
-     "body": "Frysningen slog till natten till den 15:e och har hållits: inga budgethöjningar och inga nya kampanjer. Senast räknade siffror, på stängda dygn till och med den 15:e: <b>0,85</b> tillbaka per krona på sju dagar (gräns 1,6), <b>1,11</b> på fjorton (gräns 1,25) och <b>1,10</b> på trettio. Alla tre under golvet.",
-     "sub": "De talen räknades natten till den 16:e och har inte kunnat räknas om, eftersom Meta inte går att läsa. Beslutet om den dyraste videoannonsen ligger fortfarande hos Lucas."
+     "title": "YMP tar över styrningen av Meta-kontot från i dag",
+     "body": "Your Marketing Partners (kontakt Cayman Dredge) sköter strategi, övervakning och daglig optimering från 18 september för 1 000 pund i månaden. Creatives gör vi själva. Måttet är avkastning per marknad mot Shopify-intäkt, mål över 2,0 på rullande fjorton dagar när det satt sig.",
+     "sub": "Frysningen från 15 september står formellt kvar: ingen höjd dagsbudget förrän sjudagarssiffran är över 1,6. Så länge Meta inte går att läsa är ändringsloggen de för det enda spåret av vad som görs i kontot."
     },
     {
      "level": "warning",
      "title": "Google Ads står pausat sedan 12 september",
      "body": "Alla kampanjer i kontot är avstängda sedan Lucas beslut 12 september 20:47, medan klickpriset utreds. Nollorna i Google-rutorna är alltså avsiktliga.",
-     "sub": "Kopplingen till Google Ads står dessutom som utgången sedan 17 september, så läget ovan är senast verifierat den 16:e och inte nyhämtat. Facit för 8 juli-12 september, då kanalen levererade: 33 152 kr in, 107 634 kr ut, 3.25x."
+     "sub": "Kopplingen står dessutom som utgången, så läget är senast verifierat den 16:e. Facit för 8 juli-12 september, då kanalen levererade: 33 152 kr in, 107 634 kr ut, 3.25x."
     },
     {
      "level": "info",
