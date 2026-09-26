@@ -18,6 +18,19 @@ const AUTH_PASSWORD = (process.env.AUTH_PASSWORD || "pirates2024").trim();
 const PORT = parseInt(process.env.PORT || "3000");
 const DIR = import.meta.dir;
 
+// Markup and data both change on every refresh, and a page cached apart from the script
+// it loads is a page running old markup under new code. docs/FRESHNESS.md
+const NO_CACHE = "no-cache";
+
+/** One portal page, or null when the file is not there. */
+function htmlPage(file: string): Response | null {
+  const full = join(DIR, "public", file);
+  if (!existsSync(full)) return null;
+  return new Response(readFileSync(full), {
+    headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": NO_CACHE },
+  });
+}
+
 const TASKS_FILE = join(STATE_DIR, "tasks.json");
 const TASKS_SEED = join(DIR, "data", "tasks.json");
 
@@ -260,7 +273,7 @@ function serveLogin(error = false): Response {
 </html>`;
   return new Response(html, {
     status: error ? 401 : 200,
-    headers: { "Content-Type": "text/html; charset=utf-8" },
+    headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": NO_CACHE },
   });
 }
 
@@ -466,71 +479,43 @@ const server = Bun.serve({
       const fresh = join(DIR, "public", "freshness.js");
       if (existsSync(fresh)) {
         return new Response(readFileSync(fresh), {
-          headers: { "Content-Type": "text/javascript; charset=utf-8", "Cache-Control": "no-cache" },
+          headers: { "Content-Type": "text/javascript; charset=utf-8", "Cache-Control": NO_CACHE },
         });
       }
     }
 
     if (path === "/shipments") {
-      const shipmentsHtml = join(DIR, "public", "shipments.html");
-      if (existsSync(shipmentsHtml)) {
-        return new Response(readFileSync(shipmentsHtml), {
-          headers: { "Content-Type": "text/html; charset=utf-8" },
-        });
-      }
+      const page = htmlPage("shipments.html");
+      if (page) return page;
     }
 
     if (path === "/ideas") {
-      const ideasHtml = join(DIR, "public", "ideas.html");
-      if (existsSync(ideasHtml)) {
-        return new Response(readFileSync(ideasHtml), {
-          headers: { "Content-Type": "text/html; charset=utf-8" },
-        });
-      }
+      const page = htmlPage("ideas.html");
+      if (page) return page;
     }
 
     if (path === "/growth") {
-      const growthHtml = join(DIR, "public", "growth.html");
-      if (existsSync(growthHtml)) {
-        return new Response(readFileSync(growthHtml), {
-          headers: { "Content-Type": "text/html; charset=utf-8" },
-        });
-      }
+      const page = htmlPage("growth.html");
+      if (page) return page;
     }
 
     if (path === "/dashboard") {
-      const dashHtml = join(DIR, "public", "dashboard.html");
-      if (existsSync(dashHtml)) {
-        return new Response(readFileSync(dashHtml), {
-          headers: { "Content-Type": "text/html; charset=utf-8" },
-        });
-      }
+      const page = htmlPage("dashboard.html");
+      if (page) return page;
     }
 
     if (path === "/inventory") {
-      const invHtml = join(DIR, "public", "inventory.html");
-      if (existsSync(invHtml)) {
-        return new Response(readFileSync(invHtml), {
-          headers: { "Content-Type": "text/html; charset=utf-8" },
-        });
-      }
+      const page = htmlPage("inventory.html");
+      if (page) return page;
     }
 
     if (path === "/assets") {
-      const assetsHtml = join(DIR, "public", "assets.html");
-      if (existsSync(assetsHtml)) {
-        return new Response(readFileSync(assetsHtml), {
-          headers: { "Content-Type": "text/html; charset=utf-8" },
-        });
-      }
+      const page = htmlPage("assets.html");
+      if (page) return page;
     }
 
-    const html = join(DIR, "public", "index.html");
-    if (existsSync(html)) {
-      return new Response(readFileSync(html), {
-        headers: { "Content-Type": "text/html; charset=utf-8" },
-      });
-    }
+    const index = htmlPage("index.html");
+    if (index) return index;
 
     return new Response("Not found", { status: 404 });
   },

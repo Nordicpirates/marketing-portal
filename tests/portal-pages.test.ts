@@ -131,3 +131,30 @@ describe("lager", () => {
     expect(page.errors).toEqual([]);
   });
 });
+
+describe("serving", () => {
+  test("markup and the shared script are both no-cache, so they cannot drift apart", () => {
+    const server = readFileSync(join(import.meta.dir, "..", "server.ts"), "utf8");
+    // One helper for every page, so a cache header can never be set on six of seven.
+    expect(server).toContain('function htmlPage(file: string): Response | null');
+    expect(server).toContain('"Cache-Control": NO_CACHE');
+    for (const page of ["index.html", "dashboard.html", "inventory.html", "growth.html", "ideas.html", "assets.html", "shipments.html"]) {
+      expect(server, `${page} is not served through htmlPage`).toContain(`htmlPage("${page}")`);
+    }
+    // Only two places answer with HTML at all, htmlPage and the login form, and both
+    // must carry the cache directive. A third would be a route with its own headers.
+    const htmlHeaders = [...server.matchAll(/"Content-Type": "text\/html; charset=utf-8"([^\n]*)/g)];
+    expect(htmlHeaders).toHaveLength(2);
+    for (const [, rest] of htmlHeaders) expect(rest).toContain("NO_CACHE");
+    expect(server).toContain('"Cache-Control": NO_CACHE');
+  });
+
+  test("markup older than the script says so instead of quietly losing every date", async () => {
+    // A page cached from before the pills existed has none of the containers. The old
+    // behaviour was to drop every date without a word.
+    const html = readFileSync(join(import.meta.dir, "..", "public", "dashboard.html"), "utf8");
+    expect(html).toContain("this markup is older than freshness.js");
+    const index = readFileSync(join(import.meta.dir, "..", "public", "index.html"), "utf8");
+    expect(index).toContain("this markup is older than freshness.js");
+  });
+});

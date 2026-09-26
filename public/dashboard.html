@@ -231,7 +231,9 @@ const SECTION_SOURCES = {
 function paintFreshness(DATA) {
   if (!window.Freshness) { console.error('freshness.js did not load, so no section can show how old its data is'); return; }
   window.Freshness.render(document, 'fr-snapshot', { snapshot: { as_of: DATA.generated_at } }, ['snapshot']);
-  for (const id in SECTION_SOURCES) window.Freshness.render(document, id, DATA.sources, SECTION_SOURCES[id]);
+  let painted = 0;
+  for (const id in SECTION_SOURCES) if (window.Freshness.render(document, id, DATA.sources, SECTION_SOURCES[id])) painted++;
+  if (!painted) console.error('no section had a place to show its date: this markup is older than freshness.js');
 }
 
 async function load() {
