@@ -55,3 +55,24 @@ There is no Amazon API access in GATE. Mailbox shipment notices undercount and F
 overcounts (memory note amazon-forsaljning-leveransnotiser-feedbackfive-2026-09-18), so the sheet
 is the only trustworthy daily source until Seller Central's SP-API is authorised. Amazon Ads
 spend is not in the blended figures; say so when quoting them.
+
+## Amazon through the Selling Partner API (prepared 26 Sep 2026, waiting for Amazon's approval)
+
+`scripts/amazon_spapi_daily.py` pulls the Sales and Traffic Business Report
+(`GET_SALES_AND_TRAFFIC_REPORT`, by DAY, US marketplace `ATVPDKIKX0DER`) and writes the same day
+rows the sheet gives: `{date, orders, units, sales_usd, sessions}`. It needs the role
+**Brand Analytics** on a private, self-authorised app, and three secrets in the vault at org scope:
+`AMAZON_SPAPI_CLIENT_ID`, `AMAZON_SPAPI_CLIENT_SECRET`, `AMAZON_SPAPI_REFRESH_TOKEN`.
+
+```
+gate vault exec --env AMZ_LWA_CLIENT_ID=AMAZON_SPAPI_CLIENT_ID \
+  --env AMZ_LWA_CLIENT_SECRET=AMAZON_SPAPI_CLIENT_SECRET \
+  --env AMZ_LWA_REFRESH_TOKEN=AMAZON_SPAPI_REFRESH_TOKEN -- \
+  python3 scripts/amazon_spapi_daily.py --days 35 --out amazon_spapi_daily.json
+python3 scripts/build_snapshot_extras.py --repo . ... --amazon-json amazon_spapi_daily.json
+```
+
+API rows win over sheet rows for the same date (`source: spapi` vs `sheet`); the sheet stays as
+the fallback. `--check` only exchanges the refresh token, for the day the credentials arrive.
+Not yet run against a live account: Amazon has to approve the developer profile first. The
+application steps for Lucas are on the internal page amazon-spapi-ansokan-2026-09-26.

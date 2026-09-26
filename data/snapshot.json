@@ -1723,7 +1723,11 @@
     "days_total": 1
    }
   },
-  "sheet_id": "1BhaN6Xq8_K41ufkE0ypeU6CA-HLKbpgVBmd_leEmwx0"
+  "sheet_id": "1BhaN6Xq8_K41ufkE0ypeU6CA-HLKbpgVBmd_leEmwx0",
+  "source_mix": {
+   "spapi": 0,
+   "sheet": 0
+  }
  },
  "roas_series": {
   "as_of": "2026-09-25",

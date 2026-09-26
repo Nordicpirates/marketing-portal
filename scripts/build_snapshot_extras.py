@@ -55,6 +55,7 @@ def main():
     ap.add_argument("--meta-daily", required=True, help="JSON with days[{date,spend,roas,purchases}] in SEK")
     ap.add_argument("--shopify-daily", required=True, help="JSON with days[{date,orders,revenue_eur}]")
     ap.add_argument("--amazon-xlsx", help="Export of the 'Amazon daily sales' sheet; merged into data/amazon-daily.json")
+    ap.add_argument("--amazon-json", help="Output of scripts/amazon_spapi_daily.py; API rows win over sheet rows for the same date")
     ap.add_argument("--no-ecb", action="store_true", help="Keep the fx block already in the snapshot")
     a = ap.parse_args()
 
@@ -66,11 +67,20 @@ def main():
     amz = json.load(open(amz_path)) if os.path.exists(amz_path) else {"sheet_url": None, "days": []}
 
     if a.amazon_xlsx:
-        new = {r["date"]: r for r in read_amazon_xlsx(a.amazon_xlsx)}
+        new = {r["date"]: dict(r, source="sheet") for r in read_amazon_xlsx(a.amazon_xlsx)}
         old = {r["date"]: r for r in amz.get("days", [])}
-        old.update(new)
+        for k, r in new.items():
+            if old.get(k, {}).get("source") != "spapi": old[k] = r
         amz["days"] = [old[k] for k in sorted(old)]
         amz["sheet_read_at"] = datetime.now(timezone.utc).isoformat(timespec="seconds")
+    if a.amazon_json:
+        api_rows = json.load(open(a.amazon_json)).get("days", [])
+        old = {r["date"]: r for r in amz.get("days", [])}
+        for r in api_rows:
+            if r.get("sales_usd") is None: continue
+            old[r["date"]] = {"date": r["date"], "orders": r.get("orders"), "sales_usd": round(float(r["sales_usd"]), 2), "source": "spapi"}
+        amz["days"] = [old[k] for k in sorted(old)]
+        amz["api_read_at"] = datetime.now(timezone.utc).isoformat(timespec="seconds")
 
     fx = snap.get("fx") if a.no_ecb else None
     if not fx:
@@ -90,6 +100,7 @@ def main():
     amz["as_of"] = amz["days"][-1]["date"] if amz["days"] else None
     amz["pending"] = not amz["days"]
     amz["fx_used"] = {"usd_per_eur": usd_per_eur, "date": fx.get("date"), "source": fx.get("source")}
+    amz["source_mix"] = {k: sum(1 for r in amz["days"] if r.get("source", "sheet") == k) for k in ("spapi", "sheet")}
     amz["note"] = ("Amazon US gross sales per day in USD, typed into the sheet from Seller Central > Business Reports, "
                    "converted at the ECB reference rate on the day the portal refreshed. No rows yet = no number shown; nothing is estimated.")
     snap["amazon"] = amz
