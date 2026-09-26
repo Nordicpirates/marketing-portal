@@ -10,7 +10,7 @@ three additions from 26 Sep 2026: Amazon sales in EUR, total sales, and the per-
 2. Meta per day, account level, last 30 days: a JSON `{"days":[{"date","spend","roas","purchases"}]}`
    in SEK. Source: META ADs MCP `ads_get_ad_entities`, level `ad_account`, fields
    `amount_spent, purchase_roas, omni_purchase`, `date_preset last_30d`, `time_increment "1"`.
-3. Shopify per day: `python3 ~/tmp/mp_shopify_daily.py <since> <out.json>` run through
+3. Shopify per day: `python3 scripts/shopify_daily.py <since> <out.json>` run through
    `gate vault exec --env CID=Shopify_client_ID --env CS=SHOPIFYFULL -- ...`. Stockholm days,
    cancelled orders skipped, EUR.
 4. Amazon per day (USD): the Google Sheet "Amazon daily sales (Seller Central) - Nordic Pirates",
