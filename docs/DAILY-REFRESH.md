@@ -49,6 +49,29 @@ and the period cards agree; the ECB SEK rate is stored in `fx` for the day the r
 Sessions), a sales note with the rate and the sheet link, a fourth Meta stat "Blended incl.
 Amazon", and the section "ROAS per day · last 30 days" (Chart.js, spend bars, two or three lines).
 
+## Landing pages (GA4)
+
+```
+python3 scripts/ga_landing_pages.py
+```
+
+Reads each period's own range out of the snapshot, asks GA4 through `gate ga report` for
+sessions and purchases per landing page, and writes `periods[].landing_pages` plus
+`sources.landing_pages`. Property 250338585.
+
+Use the `landingPage` dimension, never `landingPagePlusQueryString`: the latter splits one
+campaign page across every `fbclid` it was hit with, which is how the two busiest pages on
+the site stayed missing from this table for seven weeks.
+
+GA4 purchases undercount against Shopify (consent mode, blockers, iOS), so the conversion
+column is GA4's own rate and the page caption says so.
+
+## Still not in this refresh
+
+`inventory_data`, `chart_data.organic_14d` and `channels_30d` are written by hand and are
+the sections that go stale. The freshness pills now say how old each one is
+(docs/FRESHNESS.md); making them daily is open work.
+
 ## Amazon: the honest limits
 
 There is no Amazon API access in GATE. Mailbox shipment notices undercount and FeedbackFive

@@ -30,9 +30,9 @@
    "note": "the 14-day sessions chart is still the GA4 pull of 10 August and has not moved since"
   },
   "landing_pages": {
-   "as_of": "2026-08-09",
-   "pulled": "2026-08-10",
-   "note": "frozen: the GA4 landing-page pull stopped after 9 August, so these rows are NOT the selected window"
+   "as_of": "2026-09-25",
+   "pulled": "2026-09-26",
+   "note": "GA4 property 250338585, sessions and purchases per landing page"
   },
   "channels": {
    "as_of": "2026-08-03",
@@ -618,41 +618,54 @@
    ],
    "landing_pages": [
     {
-     "name": "Base Game (product)",
-     "path": "/products/lying-pirates-base-game",
-     "sessions": 934,
-     "conv_pct": 0.75,
+     "name": "CoG Big Box LP (B)",
+     "path": "/lp/lying-pirates-cities-of-greed-big-box-b",
+     "sessions": 979,
+     "conv_pct": 0.51,
+     "alert": true
+    },
+    {
+     "name": "CoG Big Box LP (A)",
+     "path": "/lp/lying-pirates-cities-of-greed-big-box",
+     "sessions": 899,
+     "conv_pct": 0.33,
      "alert": true
     },
     {
      "name": "Homepage",
      "path": "/",
-     "sessions": 572,
-     "conv_pct": 3.15
+     "sessions": 285,
+     "conv_pct": 1.05
     },
     {
      "name": "Big Box (product)",
      "path": "/products/lying-pirates-big-box",
-     "sessions": 459,
-     "conv_pct": 4.79
+     "sessions": 101,
+     "conv_pct": 0.99
     },
     {
-     "name": "Newsletter signup",
-     "path": "/pages/newslettersignup",
-     "sessions": 233,
-     "conv_pct": 0.0
+     "name": "Custom Insert (product)",
+     "path": "/products/lying-pirates-custom-insert",
+     "sessions": 98,
+     "conv_pct": 1.02
+    },
+    {
+     "name": "Base Game (product)",
+     "path": "/products/lying-pirates-base-game",
+     "sessions": 90,
+     "conv_pct": 3.33
     },
     {
      "name": "Gold Coins (product)",
      "path": "/products/gold-coins-20-pcs",
-     "sessions": 58,
-     "conv_pct": 3.45
+     "sessions": 30,
+     "conv_pct": 3.33
     },
     {
      "name": "FAQ",
      "path": "/pages/faq",
-     "sessions": 50,
-     "conv_pct": 0.0
+     "sessions": 19,
+     "conv_pct": 5.26
     }
    ],
    "flags": [
@@ -815,53 +828,56 @@
    ],
    "landing_pages": [
     {
-     "name": "Big Box (product)",
-     "path": "/products/lying-pirates-big-box",
-     "sessions": 3652,
-     "conv_pct": 3.15
+     "name": "CoG Big Box LP (B)",
+     "path": "/lp/lying-pirates-cities-of-greed-big-box-b",
+     "sessions": 2916,
+     "conv_pct": 0.69,
+     "alert": true
+    },
+    {
+     "name": "CoG Big Box LP (A)",
+     "path": "/lp/lying-pirates-cities-of-greed-big-box",
+     "sessions": 2604,
+     "conv_pct": 0.38,
+     "alert": true
     },
     {
      "name": "Homepage",
      "path": "/",
-     "sessions": 2307,
-     "conv_pct": 3.42
+     "sessions": 1269,
+     "conv_pct": 1.18
     },
     {
      "name": "Base Game (product)",
      "path": "/products/lying-pirates-base-game",
-     "sessions": 983,
-     "conv_pct": 3.46
-    },
-    {
-     "name": "FR — Grande Boîte",
-     "path": "/fr/products/menteurs-pirates-grand-boite",
-     "sessions": 558,
-     "conv_pct": 0.54,
+     "sessions": 914,
+     "conv_pct": 0.88,
      "alert": true
     },
     {
-     "name": "Cities of Greed",
-     "path": "/products/cities-of-greed",
-     "sessions": 185,
-     "conv_pct": 2.7
+     "name": "Big Box (product)",
+     "path": "/products/lying-pirates-big-box",
+     "sessions": 800,
+     "conv_pct": 1.0
     },
     {
-     "name": "Custom Insert",
+     "name": "Custom Insert (product)",
      "path": "/products/lying-pirates-custom-insert",
-     "sessions": 110,
-     "conv_pct": 1.82
+     "sessions": 240,
+     "conv_pct": 1.67
     },
     {
-     "name": "8-Player Components",
-     "path": "/products/8-player-components-copy",
-     "sessions": 70,
-     "conv_pct": 4.29
+     "name": "Gold Coins (product)",
+     "path": "/products/gold-coins-20-pcs",
+     "sessions": 200,
+     "conv_pct": 0.5,
+     "alert": true
     },
     {
-     "name": "Add-on Box",
-     "path": "/products/add-on-box",
-     "sessions": 61,
-     "conv_pct": 1.64
+     "name": "FAQ",
+     "path": "/pages/faq",
+     "sessions": 94,
+     "conv_pct": 2.13
     }
    ],
    "flags": [
@@ -1018,23 +1034,55 @@
    ],
    "landing_pages": [
     {
-     "name": "Base Game (product)",
-     "path": "/products/lying-pirates-base-game",
-     "sessions": 934,
-     "conv_pct": 0.75,
+     "name": "CoG Big Box LP (B)",
+     "path": "/lp/lying-pirates-cities-of-greed-big-box-b",
+     "sessions": 2616,
+     "conv_pct": 0.57,
+     "alert": true
+    },
+    {
+     "name": "CoG Big Box LP (A)",
+     "path": "/lp/lying-pirates-cities-of-greed-big-box",
+     "sessions": 2367,
+     "conv_pct": 0.42,
      "alert": true
     },
     {
      "name": "Homepage",
      "path": "/",
-     "sessions": 572,
-     "conv_pct": 3.15
+     "sessions": 1000,
+     "conv_pct": 1.1
+    },
+    {
+     "name": "Base Game (product)",
+     "path": "/products/lying-pirates-base-game",
+     "sessions": 715,
+     "conv_pct": 1.12
     },
     {
      "name": "Big Box (product)",
      "path": "/products/lying-pirates-big-box",
-     "sessions": 459,
-     "conv_pct": 4.79
+     "sessions": 558,
+     "conv_pct": 0.9,
+     "alert": true
+    },
+    {
+     "name": "Custom Insert (product)",
+     "path": "/products/lying-pirates-custom-insert",
+     "sessions": 154,
+     "conv_pct": 1.3
+    },
+    {
+     "name": "FAQ",
+     "path": "/pages/faq",
+     "sessions": 83,
+     "conv_pct": 2.41
+    },
+    {
+     "name": "Gold Coins (product)",
+     "path": "/products/gold-coins-20-pcs",
+     "sessions": 81,
+     "conv_pct": 1.23
     }
    ],
    "flags": [
@@ -1181,53 +1229,58 @@
    ],
    "landing_pages": [
     {
-     "name": "Big Box (product)",
-     "path": "/products/lying-pirates-big-box",
-     "sessions": 13937,
-     "conv_pct": 1.64
+     "name": "CoG Big Box LP (A)",
+     "path": "/lp/lying-pirates-cities-of-greed-big-box",
+     "sessions": 12256,
+     "conv_pct": 0.91,
+     "alert": true
+    },
+    {
+     "name": "CoG Big Box LP (B)",
+     "path": "/lp/lying-pirates-cities-of-greed-big-box-b",
+     "sessions": 12117,
+     "conv_pct": 0.9,
+     "alert": true
     },
     {
      "name": "Homepage",
      "path": "/",
-     "sessions": 6462,
-     "conv_pct": 2.31
+     "sessions": 5552,
+     "conv_pct": 1.64
     },
     {
      "name": "Base Game (product)",
      "path": "/products/lying-pirates-base-game",
-     "sessions": 1849,
-     "conv_pct": 2.65
-    },
-    {
-     "name": "FR — Grande Boîte",
-     "path": "/fr/products/menteurs-pirates-grand-boite",
-     "sessions": 1085,
-     "conv_pct": 0.28,
+     "sessions": 5537,
+     "conv_pct": 0.74,
      "alert": true
     },
     {
-     "name": "Cities of Greed",
-     "path": "/products/cities-of-greed",
-     "sessions": 247,
-     "conv_pct": 3.24
+     "name": "Big Box (product)",
+     "path": "/products/lying-pirates-big-box",
+     "sessions": 3764,
+     "conv_pct": 1.57
     },
     {
-     "name": "FR — Base Jeu",
-     "path": "/fr/products/menteurs-pirates-base-jeu",
-     "sessions": 239,
-     "conv_pct": 1.67
+     "name": "Lying Pirates LP (IT)",
+     "path": "/lp/lying-pirates-it",
+     "sessions": 1928,
+     "conv_pct": 0.57,
+     "alert": true
     },
     {
-     "name": "Custom Insert",
-     "path": "/products/lying-pirates-custom-insert",
-     "sessions": 151,
-     "conv_pct": 1.99
+     "name": "CoG Big Box LP (A, IT)",
+     "path": "/lp/lying-pirates-cities-of-greed-big-box-it",
+     "sessions": 667,
+     "conv_pct": 0.15,
+     "alert": true
     },
     {
-     "name": "All collection",
-     "path": "/collections/all",
-     "sessions": 115,
-     "conv_pct": 2.61
+     "name": "CoG Big Box LP (B, IT)",
+     "path": "/lp/lying-pirates-cities-of-greed-big-box-b-it",
+     "sessions": 632,
+     "conv_pct": 0.32,
+     "alert": true
     }
    ],
    "flags": [
@@ -1342,7 +1395,58 @@
      "revenue": "€55"
     }
    ],
-   "landing_pages": [],
+   "landing_pages": [
+    {
+     "name": "CoG Big Box LP (B)",
+     "path": "/lp/lying-pirates-cities-of-greed-big-box-b",
+     "sessions": 342,
+     "conv_pct": 0.29,
+     "alert": true
+    },
+    {
+     "name": "CoG Big Box LP (A)",
+     "path": "/lp/lying-pirates-cities-of-greed-big-box",
+     "sessions": 319,
+     "conv_pct": 0.63,
+     "alert": true
+    },
+    {
+     "name": "Homepage",
+     "path": "/",
+     "sessions": 38,
+     "conv_pct": 5.26
+    },
+    {
+     "name": "Base Game (product)",
+     "path": "/products/lying-pirates-base-game",
+     "sessions": 19,
+     "conv_pct": 10.53
+    },
+    {
+     "name": "Collections",
+     "path": "/collections",
+     "sessions": 17,
+     "conv_pct": 0.0
+    },
+    {
+     "name": "Big Box (product)",
+     "path": "/products/lying-pirates-big-box",
+     "sessions": 15,
+     "conv_pct": 0.0
+    },
+    {
+     "name": "Cities of Greed (product)",
+     "path": "/products/cities-of-greed",
+     "sessions": 11,
+     "conv_pct": 0.0
+    },
+    {
+     "name": "Kraken Mini (product)",
+     "path": "/products/kraken-mini-expansion",
+     "sessions": 11,
+     "conv_pct": 0.0
+    }
+   ],
    "flags": [
     {
      "level": "warning",
