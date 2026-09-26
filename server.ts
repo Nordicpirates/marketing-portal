@@ -460,6 +460,17 @@ const server = Bun.serve({
       }
     }
 
+    // The freshness pills every page draws. One file so two pages cannot disagree
+    // about how old a number is: public/freshness.js, docs/FRESHNESS.md.
+    if (path === "/freshness.js") {
+      const fresh = join(DIR, "public", "freshness.js");
+      if (existsSync(fresh)) {
+        return new Response(readFileSync(fresh), {
+          headers: { "Content-Type": "text/javascript; charset=utf-8", "Cache-Control": "no-cache" },
+        });
+      }
+    }
+
     if (path === "/shipments") {
       const shipmentsHtml = join(DIR, "public", "shipments.html");
       if (existsSync(shipmentsHtml)) {

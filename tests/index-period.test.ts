@@ -1,116 +1,52 @@
-// The real Marketing HQ page, loaded into a DOM and driven through its period toggle.
-//
-// Nothing here re-implements the page. Its script is inline, so it is lifted out of the
-// HTML and evaluated against the DOM, fetch and console this file controls. The only
-// rewrite is dropping the trailing load() call, so the test can await the first render
-// instead of racing it. Both liftings fail loudly if the page stops looking that way.
-//
-// The data is the repo's own data/snapshot.json, so these tests read the same Google
-// and Meta numbers a person looking at the deployed page reads.
+// The Marketing HQ page through its period toggle. Loading is tests/portal-harness.ts.
+// Every expectation is DERIVED from data/snapshot.json: a typed date goes red on a refresh.
 
 import { describe, expect, test } from "bun:test";
-import { Window } from "happy-dom";
 import { readFileSync } from "fs";
 import { join } from "path";
+import { SNAPSHOT, freshness, loadPortalPage, snapshotWith, type PortalPage } from "./portal-harness.ts";
 
 const REPO = join(import.meta.dir, "..");
 const HTML = readFileSync(join(REPO, "public", "index.html"), "utf8");
-const SNAPSHOT = JSON.parse(readFileSync(join(REPO, "data", "snapshot.json"), "utf8"));
 const EXPERIMENTS = JSON.parse(readFileSync(join(REPO, "data", "experiments.json"), "utf8"));
 const TASKS = JSON.parse(readFileSync(join(REPO, "data", "tasks.json"), "utf8"));
 
-/** The page's own script, ready to evaluate, with its self-start call removed. */
-function pageScript(): string {
-  const tag = HTML.match(/<script>([\s\S]*?)<\/script>/);
-  if (!tag) throw new Error("public/index.html has no inline <script> any more, this harness is stale");
-  const withStart = tag[1];
-  const src = withStart.replace(/\nload\(\);\s*$/, "\n");
-  if (src === withStart) throw new Error("the page no longer ends by calling load(), this harness is stale");
-  return src;
-}
-
-type Page = {
-  document: any;
-  /** Everything the page sent to console.error. Expected to stay empty. */
-  errors: string[];
+type Page = PortalPage & {
   /** Click a period button by its visible label, and let the page re-render. */
   pick: (label: string) => void;
   presets: () => string[];
-  text: (id: string) => string;
-  shown: (id: string) => boolean;
-  rows: (id: string) => string[][];
 };
 
 /** Load the page with the snapshot a test wants /api/data to answer. */
 async function loadPage(snapshot: any = SNAPSHOT): Promise<Page> {
-  const window = new Window({
-    url: "https://marketing.nordicpirate.com/",
-    settings: {
-      disableJavaScriptFileLoading: true,
-      disableJavaScriptEvaluation: true,
-      disableCSSFileLoading: true,
-    },
-  });
-  const document = window.document;
-  document.write(HTML);
-
-  const errors: string[] = [];
-  const answers: Record<string, any> = {
+  const page = await loadPortalPage("index.html", {
     "/api/data": snapshot,
     "/api/experiments": EXPERIMENTS,
     "/api/tasks": TASKS,
-  };
-  const fetchStub = async (path: string) => {
-    if (!(path in answers)) throw new Error(`the page fetched ${path}, which this harness does not answer`);
-    return new Response(JSON.stringify(answers[path]), { headers: { "Content-Type": "application/json" } });
-  };
-  const consoleStub = {
-    ...console,
-    error: (...args: any[]) => void errors.push(args.map(String).join(" ")),
-  };
-
-  const start = new Function(
-    "window",
-    "document",
-    "fetch",
-    "console",
-    "navigator",
-    pageScript() + "\nreturn load;",
-  )(window, document, fetchStub, consoleStub, window.navigator);
-  await start();
-
-  const el = (id: string) => {
-    const found = document.getElementById(id);
-    if (!found) throw new Error(`no #${id} on the page`);
-    return found;
-  };
-
+  });
+  const { document, window } = page;
   return {
-    document,
-    errors,
+    ...page,
     presets: () => [...document.querySelectorAll(".preset")].map((b: any) => b.textContent),
     pick(label: string) {
       const button = [...document.querySelectorAll(".preset")].find((b: any) => b.textContent === label);
       if (!button) throw new Error(`no period button labelled "${label}"`);
       button.dispatchEvent(new window.MouseEvent("click", { bubbles: true, cancelable: true }));
     },
-    text: (id: string) => el(id).textContent.replace(/\s+/g, " ").trim(),
-    shown: (id: string) => el(id).style.display !== "none",
-    rows: (id: string) =>
-      [...el(id).querySelectorAll("tr")].map((tr: any) =>
-        [...tr.querySelectorAll("td")].map((td: any) => td.textContent.trim()),
-      ),
   };
 }
 
 /** A copy of the snapshot, so a test can take a key away without spoiling the next one. */
-function snapshotWithout(mutate: (copy: any) => void): any {
-  const copy = JSON.parse(JSON.stringify(SNAPSHOT));
-  mutate(copy);
-  return copy;
-}
+const snapshotWithout = snapshotWith;
 
 const PERIOD_LABELS = SNAPSHOT.periods.map((p: any) => p.label);
+const PERIODS = SNAPSHOT.periods as any[];
+
+/** The shared module's own day formatter, so the test does not re-implement it. */
+const F_SHORT = freshness().short as (iso: string) => string;
+
+/** The single-day period, whichever one it is today. */
+const ONE_DAY = PERIODS.find((p) => p.days === 1);
 
 describe("period toggle", () => {
   test("offers every period in the snapshot, in snapshot order", async () => {
@@ -118,40 +54,54 @@ describe("period toggle", () => {
     expect(page.presets()).toEqual(PERIOD_LABELS);
   });
 
-  test("Yesterday is the fifth option, after Last 90 days", async () => {
+  test("the one-day period is offered last, after the long windows", async () => {
+    expect(ONE_DAY).toBeDefined();
     const page = await loadPage();
     const presets = page.presets();
-    expect(presets).toHaveLength(5);
-    expect(presets[3]).toBe("Last 90 days");
-    expect(presets[4]).toBe("Yesterday (Aug 9)");
+    expect(presets).toHaveLength(PERIODS.length);
+    expect(presets[presets.length - 1]).toBe(ONE_DAY.label);
+    expect(PERIODS[PERIODS.length - 2].days).toBeGreaterThan(1);
   });
 
-  test("the Yesterday label is read from the data, never written into the page", async () => {
-    expect(HTML).not.toContain("Yesterday");
-    expect(HTML).not.toContain("Aug 9");
+  test("no period label is written into the page, they all come from the data", async () => {
+    for (const label of PERIOD_LABELS) expect(HTML).not.toContain(label);
   });
 
   test("a one-day period is not captioned '1 days'", async () => {
     const page = await loadPage();
-    page.pick("Yesterday (Aug 9)");
+    page.pick(ONE_DAY.label);
     expect(page.text("range-caption")).toContain("1 day");
     expect(page.text("range-caption")).not.toContain("1 days");
   });
 });
 
+/** ROAS the way the page prints it: Swedish decimal comma, trailing multiplication sign. */
+function roasText(v: any): string {
+  return v === null || v === undefined ? "—" : String(v).replace(".", ",") + "×";
+}
+
+/** Whitespace-normalised the same way Page.text() reads the DOM, so a stray space in the data is not a failure. */
+function asRendered(v: any): string {
+  return String(v ?? "").replace(/\s+/g, " ").trim();
+}
+
 describe("Google Ads follows the period", () => {
   test("Meta and Google both move when the period changes", async () => {
+    // Two different windows, whichever two the snapshot carries, so this stays a test
+    // of "the numbers follow the toggle" and not a copy of today's figures.
+    const [first, second] = PERIODS;
+    expect(first.meta.spend_label).not.toBe(second.meta.spend_label);
     const page = await loadPage();
 
-    page.pick("Last 7 days");
-    expect(page.text("meta-grid")).toContain("18 913 kr");
-    expect(page.text("pgads-grid")).toContain("4 929 kr");
-    expect(page.text("pgads-grid")).toContain("1,89×");
+    page.pick(first.label);
+    expect(page.text("meta-grid")).toContain(first.meta.spend_label);
+    expect(page.text("pgads-grid")).toContain(first.gads.spend_label);
+    expect(page.text("pgads-grid")).toContain(roasText(first.gads.gads_roas));
 
-    page.pick("Last 30 days");
-    expect(page.text("meta-grid")).toContain("132 956 kr");
-    expect(page.text("pgads-grid")).toContain("18 019 kr");
-    expect(page.text("pgads-grid")).toContain("3,9×");
+    page.pick(second.label);
+    expect(page.text("meta-grid")).toContain(second.meta.spend_label);
+    expect(page.text("pgads-grid")).toContain(second.gads.spend_label);
+    expect(page.text("pgads-grid")).toContain(roasText(second.gads.gads_roas));
   });
 
   test("every period shows its own Google numbers", async () => {
@@ -161,44 +111,49 @@ describe("Google Ads follows the period", () => {
       const grid = page.text("pgads-grid");
       expect(grid).toContain(period.gads.spend_label);
       expect(grid).toContain(period.gads.value_label);
-      expect(page.text("pgads-note")).toBe(period.gads._note);
+      expect(page.text("pgads-note")).toBe(asRendered(period.gads._note));
       expect(page.text("pgads-period")).toContain(period.label);
     }
   });
 
   test("the campaign table is the selected period's campaigns", async () => {
     const page = await loadPage();
-
-    page.pick("Last 7 days");
-    expect(page.rows("pgads-body")).toEqual([
-      ["Shopping - US & UK", "3 152 kr", "4", "4 593 kr", "1,46×"],
-      ["Shopping - AU", "726 kr", "1", "503 kr", "0,69×"],
-      ["Brand Search - All Markets", "524 kr", "2", "3 762 kr", "7,18×"],
-      ["Brand Search - IT", "362 kr", "2", "460 kr", "1,27×"],
-      ["Non-brand Test - US & UK", "165 kr", "0", "0 kr", "0×"],
-    ]);
-
-    page.pick("Yesterday (Aug 9)");
-    expect(page.rows("pgads-body")).toEqual([
-      ["Shopping - US & UK", "469 kr", "1", "448 kr", "0,95×"],
-      ["Shopping - AU", "82 kr", "0", "0 kr", "0×"],
-      ["Brand Search - IT", "55 kr", "0", "0 kr", "0×"],
-      ["Brand Search - All Markets", "38 kr", "0", "0 kr", "0×"],
-    ]);
+    for (const period of PERIODS) {
+      page.pick(period.label);
+      const camps = period.gads.campaigns || [];
+      expect(page.rows("pgads-body")).toEqual(
+        camps.map((c: any) => [
+          c.name,
+          c.spend_label || "—",
+          String(c.conv ?? 0),
+          c.value_label || "—",
+          roasText(c.roas),
+        ]),
+      );
+    }
   });
 
-  test("Yesterday renders the same sections as the other periods", async () => {
+  test("the one-day period renders the same sections as the long windows", async () => {
     const page = await loadPage();
-    page.pick("Yesterday (Aug 9)");
+    page.pick(ONE_DAY.label);
 
-    expect(page.text("kpi-grid")).toContain("€1,231");
-    expect(page.text("meta-grid")).toContain("2 887 kr");
-    expect(page.text("pgads-grid")).toContain("645 kr");
-    expect(page.rows("oc-body")[0]).toEqual(["🇺🇸 USA", "5", "€411"]);
-    expect(page.text("lp-panel")).toContain("Base Game (product)");
-    for (const id of ["pgads-section", "lp-section", "orders-country-section"]) {
-      expect(page.shown(id)).toBe(true);
+    expect(page.text("kpi-grid")).toContain(ONE_DAY.kpis.sales_label);
+    expect(page.text("meta-grid")).toContain(ONE_DAY.meta.spend_label);
+    expect(page.text("pgads-grid")).toContain(ONE_DAY.gads.spend_label);
+
+    // Each of these is drawn only when the period actually carries its rows, so the
+    // expectation is "shown exactly when there is something to show".
+    const oc = ONE_DAY.orders_by_country || [];
+    expect(page.shown("orders-country-section")).toBe(oc.length > 0);
+    if (oc.length) {
+      expect(page.rows("oc-body")[0]).toEqual([`${oc[0].flag} ${oc[0].name}`, String(oc[0].orders), oc[0].revenue]);
     }
+
+    const lps = ONE_DAY.landing_pages || [];
+    expect(page.shown("lp-section")).toBe(lps.length > 0);
+    if (lps.length) expect(page.text("lp-panel")).toContain(lps[0].name);
+
+    expect(page.shown("pgads-section")).toBe(true);
   });
 
   test("the since-start summary keeps its own numbers whatever the period", async () => {
@@ -230,28 +185,90 @@ describe("snapshots without per-period Google data", () => {
 
   test("the rest of the period, and the since-start summary, still render", async () => {
     const page = await loadPage(snapshotWithout((s) => s.periods.forEach((p: any) => delete p.gads)));
-    page.pick("Last 30 days");
+    page.pick(PERIODS[1].label);
     expect(page.shown("pgads-section")).toBe(false);
-    expect(page.text("meta-grid")).toContain("132 956 kr");
+    expect(page.text("meta-grid")).toContain(PERIODS[1].meta.spend_label);
     expect(page.shown("gads-section")).toBe(true);
-    expect(page.text("gads-grid")).toContain("18 339 kr");
+    expect(page.text("gads-grid")).toContain(SNAPSHOT.gads.spend_label);
   });
 
   test("one period missing gads does not hide it for the others", async () => {
     const page = await loadPage(snapshotWithout((s) => delete s.periods[1].gads));
-    page.pick("Last 30 days");
+    page.pick(PERIODS[1].label);
     expect(page.shown("pgads-section")).toBe(false);
-    page.pick("Last 7 days");
+    page.pick(PERIODS[0].label);
     expect(page.shown("pgads-section")).toBe(true);
-    expect(page.text("pgads-grid")).toContain("4 929 kr");
+    expect(page.text("pgads-grid")).toContain(PERIODS[0].gads.spend_label);
   });
 
   test("Google spend with no campaign breakdown drops the table, not the numbers", async () => {
     const page = await loadPage(snapshotWithout((s) => delete s.periods[0].gads.campaigns));
-    page.pick("Last 7 days");
+    page.pick(PERIODS[0].label);
     expect(page.shown("pgads-section")).toBe(true);
-    expect(page.text("pgads-grid")).toContain("4 929 kr");
+    expect(page.text("pgads-grid")).toContain(PERIODS[0].gads.spend_label);
     expect(page.shown("pgads-panel")).toBe(false);
+    expect(page.errors).toEqual([]);
+  });
+});
+
+describe("every section says how old its own numbers are", () => {
+  test("each freshness slot on the page is filled, none is left blank", async () => {
+    const page = await loadPage();
+    const ids = page.freshnessIds();
+    expect(ids.length).toBeGreaterThan(10);
+    for (const id of ids) {
+      expect(page.html(id), `#${id} has no freshness pill`).toContain("fr-");
+    }
+  });
+
+  test("a section is never labelled with the page's own generated date", async () => {
+    // The whole point of the issue: one global date reused everywhere let a 48-day-old
+    // landing-page table look as current as this morning's Shopify pull.
+    const stale = snapshotWithout((s) => {
+      s.sources.landing_pages = { as_of: "2026-01-02", pulled: "2026-01-02", note: "frozen in January" };
+    });
+    const page = await loadPage(stale);
+    expect(page.text("fr-lp")).toContain("2 Jan");
+    expect(page.text("fr-lp")).toContain("frozen in January");
+    expect(page.html("fr-lp")).toContain("fr-stale");
+    expect(page.text("fr-lp")).not.toContain(stale.generated_at);
+  });
+
+  test("a source with no date shows unknown, not a borrowed one", async () => {
+    const page = await loadPage();
+    expect(SNAPSHOT.sources.sessions.as_of).toBeNull();
+    expect(page.text("fr-store")).toContain("as of unknown");
+    expect(page.text("fr-store")).toContain("Sessions");
+  });
+
+  test("a snapshot with no sources block at all shrugs rather than lying", async () => {
+    const page = await loadPage(snapshotWithout((s) => delete s.sources));
+    // fr-snapshot reads generated_at and fr-exp reads experiments.json, so neither is
+    // affected by the snapshot losing its sources index.
+    for (const id of page.freshnessIds()) {
+      if (id === "fr-snapshot" || id === "fr-exp") continue;
+      expect(page.html(id), `#${id}`).toContain("fr-unknown");
+    }
+    expect(page.errors).toEqual([]);
+  });
+
+  test("the experiments section is dated from its own file, not from the snapshot", async () => {
+    const page = await loadPage();
+    expect(page.text("fr-exp")).toContain("Experiments");
+    expect(page.text("fr-exp")).toContain(F_SHORT(EXPERIMENTS.updated));
+  });
+
+  test("the header still carries the snapshot's own date, separate from the sections", async () => {
+    const page = await loadPage();
+    expect(page.text("snap-date")).toBe(SNAPSHOT.generated_at);
+    expect(page.html("fr-snapshot")).toContain("fr-");
+  });
+
+  test("switching periods does not wipe the pills", async () => {
+    const page = await loadPage();
+    for (const label of PERIOD_LABELS) page.pick(label);
+    expect(page.html("fr-store")).toContain("fr-");
+    expect(page.html("fr-lp")).toContain("fr-");
     expect(page.errors).toEqual([]);
   });
 });

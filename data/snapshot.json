@@ -1,5 +1,72 @@
 {
  "generated_at": "2026-09-26",
+ "sources": {
+  "shopify": {
+   "as_of": "2026-09-25",
+   "pulled": "2026-09-26"
+  },
+  "meta": {
+   "as_of": "2026-09-25",
+   "pulled": "2026-09-26"
+  },
+  "gads": {
+   "as_of": "2026-09-25",
+   "pulled": "2026-09-26",
+   "note": "the account is paused since 12 September on Lucas's decision, so the zeros are deliberate and verified, not a gap"
+  },
+  "amazon": {
+   "as_of": null,
+   "pulled": null,
+   "note": "no daily rows in the sheet yet, so Total sales is Shopify only"
+  },
+  "sessions": {
+   "as_of": null,
+   "pulled": null,
+   "note": "sessions are not in the daily pull, so every Sessions figure shows a dash rather than an old number"
+  },
+  "sessions_chart": {
+   "as_of": "2026-08-09",
+   "pulled": "2026-08-10",
+   "note": "the 14-day sessions chart is still the GA4 pull of 10 August and has not moved since"
+  },
+  "landing_pages": {
+   "as_of": "2026-08-09",
+   "pulled": "2026-08-10",
+   "note": "frozen: the GA4 landing-page pull stopped after 9 August, so these rows are NOT the selected window"
+  },
+  "channels": {
+   "as_of": "2026-08-03",
+   "pulled": "2026-08-10",
+   "note": "Meta 5 July-3 August and Shopify referrer 4 July-2 August, so the 30-day heading is the old window, not the last 30 days"
+  },
+  "inventory": {
+   "as_of": "2026-08-06",
+   "pulled": "2026-08-06"
+  },
+  "roas_series": {
+   "as_of": "2026-09-25",
+   "pulled": "2026-09-26"
+  },
+  "fx": {
+   "as_of": "2026-09-25",
+   "pulled": "2026-09-26"
+  },
+  "tracking": {
+   "as_of": null,
+   "text": "kept by hand",
+   "note": "checked by hand in Events Manager, not pulled, so confirm a pill in the tool before acting on it"
+  },
+  "tracking_ids": {
+   "as_of": null,
+   "text": "kept by hand",
+   "note": "a reference list, not a measurement"
+  },
+  "status_list": {
+   "as_of": null,
+   "text": "kept by hand",
+   "note": "written when something changes, so no pull date applies"
+  }
+ },
  "owner": "Bengt 🦉 (data) + Polly (analysis)",
  "currency_note": "Revenue in EUR (store currency). Meta and Google Ads spend in SEK. Blended MER = the store's whole revenue divided by Meta plus Google spend, at 11.4 SEK/EUR.",
  "gads_alert": {

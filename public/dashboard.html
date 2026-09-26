@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Asul:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="/freshness.js"></script>
 <style>
   :root{
     --cream:#f2ede4;--cream-2:#ece4d6;--paper:#fffdf8;--paper-2:#fbf6ec;
@@ -130,6 +131,7 @@
   </div>
   <div class="header-right">
     <div class="stamp">Data per <b id="snap-date">…</b><br><span id="owner-stamp">…</span></div>
+    <div id="fr-snapshot"></div>
     <div class="hr-btns">
       <a class="logout" href="/logout">Log out</a>
     </div>
@@ -154,6 +156,7 @@
   <section>
     <h2><span class="dot"></span>Igår <span id="yest-date-label">…</span> — nyckeltal</h2>
     <p class="h2sub">Daglig snapshot · Shopify + GA4</p>
+    <div id="fr-yest"></div>
     <div class="kpis" id="yest-kpis"></div>
   </section>
 
@@ -165,11 +168,13 @@
       <div class="chart-card">
         <div class="chart-title">Shopify ordrar & intäkt</div>
         <div class="chart-sub" id="orders-chart-sub">9-dagars daglig intäkt (€) och antal ordrar</div>
+        <div id="fr-orders-chart"></div>
         <div class="chart-wrap"><canvas id="ordersChart"></canvas></div>
       </div>
       <div class="chart-card">
         <div class="chart-title">Butikssessioner (Shopify) · 14 dagar</div>
         <div class="chart-sub">Sessioner & konverteringar per dag</div>
+        <div id="fr-sessions-chart"></div>
         <div class="chart-wrap"><canvas id="organicChart"></canvas></div>
       </div>
     </div>
@@ -179,6 +184,7 @@
   <section id="channels-section">
     <h2><span class="dot"></span>Kanaler · 30 dagar</h2>
     <p class="h2sub" id="channels-sub">GA4 · sessioner, konverteringar, CVR & intäkt per kanal</p>
+    <div id="fr-channels"></div>
     <div class="panel">
       <table>
         <thead>
@@ -199,6 +205,7 @@
   <section id="status-section">
     <h2><span class="dot"></span>Status — åtgärder</h2>
     <p class="h2sub">Öppna och avklarade punkter · uppdateras vid förändring</p>
+    <div id="fr-status"></div>
     <div class="status-list" id="status-list"></div>
   </section>
 
@@ -211,6 +218,22 @@
 <script>
 function fmt(n){ return (n===null||n===undefined)?'—':Number(n).toLocaleString('sv-SE'); }
 
+// Which sources each section's numbers come from. Pills are drawn from snapshot.sources
+// by /freshness.js; docs/FRESHNESS.md says what each key covers.
+const SECTION_SOURCES = {
+  'fr-yest': ['shopify','sessions'],
+  'fr-orders-chart': ['shopify'],
+  'fr-sessions-chart': ['sessions_chart'],
+  'fr-channels': ['channels'],
+  'fr-status': ['status_list'],
+};
+
+function paintFreshness(DATA) {
+  if (!window.Freshness) { console.error('freshness.js did not load, so no section can show how old its data is'); return; }
+  window.Freshness.render(document, 'fr-snapshot', { snapshot: { as_of: DATA.generated_at } }, ['snapshot']);
+  for (const id in SECTION_SOURCES) window.Freshness.render(document, id, DATA.sources, SECTION_SOURCES[id]);
+}
+
 async function load() {
   let DATA;
   try {
@@ -222,6 +245,7 @@ async function load() {
   // Header stamp
   document.getElementById('snap-date').textContent = DATA.generated_at || '–';
   document.getElementById('owner-stamp').textContent = DATA.owner || '–';
+  paintFreshness(DATA);
 
   // Google Ads alert banner
   const ga = DATA.gads_alert;
@@ -274,10 +298,10 @@ async function load() {
       <div class="d">${y.gads_roas !== null && y.gads_roas !== undefined ? 'Mål >400%' : 'Data synkas'}</div>
     </div>`;
 
-  // Charts
+  // Charts. A CDN that did not answer must cost the charts, not the whole page.
   const cd = DATA.chart_data || {};
-  renderOrdersChart(cd.orders_9d);
-  renderOrganicChart(cd.organic_14d);
+  if (typeof Chart === 'undefined') console.error('Chart.js did not load, so the trend charts are missing');
+  else { renderOrdersChart(cd.orders_9d); renderOrganicChart(cd.organic_14d); }
 
   // Channel table
   const ch = DATA.channels_30d || [];

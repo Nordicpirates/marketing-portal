@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Lagerstatus · Nordic Pirates Marketing HQ</title>
   <link href="https://fonts.googleapis.com/css2?family=Asul:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="/freshness.js"></script>
   <style>
     *{box-sizing:border-box;margin:0;padding:0}
     :root{
@@ -144,6 +145,7 @@
   </nav>
   <div class="topbar-right">
     <span class="upd-badge" id="updBadge">Hämtar...</span>
+    <span id="fr-snapshot"></span>
     <a href="/logout" class="logout-btn">Logga ut</a>
   </div>
 </div>
@@ -153,6 +155,8 @@
     <h1>Lagerstatus <span>&</span> Prognos</h1>
     <div class="header-meta" id="headerMeta">Velocity baserat på 30d försäljning · 4 lager</div>
   </div>
+
+  <div id="fr-inventory"></div>
 
   <!-- ALERTS -->
   <div class="alert-grid" id="alertGrid"></div>
@@ -206,17 +210,39 @@
 let DATA = null;
 let currentWh = 'total';
 
-fetch('/api/data').then(r=>r.json()).then(d=>{
+// Stock is its own source and moves on its own schedule, so the age shown here is the
+// stock pull's, never the snapshot's. docs/FRESHNESS.md
+function paintFreshness(d) {
+  if (!window.Freshness) { console.error('freshness.js did not load, so the stock figures cannot show how old they are'); return; }
+  window.Freshness.render(document, 'fr-snapshot', { snapshot: { as_of: d.generated_at } }, ['snapshot']);
+  window.Freshness.render(document, 'fr-inventory', d.sources, ['inventory']);
+}
+
+/** The variant, when it is a real one. "Default" is a placeholder and only adds noise. */
+function variantOf(p) {
+  return p.variant && p.variant !== 'Default' && p.variant !== 'Default Title' ? p.variant : '';
+}
+
+async function load() {
+  let d;
+  try { d = await (await fetch('/api/data')).json(); }
+  catch(e) { console.error(e); return; }
   DATA = d;
-  if (!d.inventory_data) { document.getElementById('prodRows').innerHTML='<tr><td colspan="9" style="padding:32px;text-align:center;color:#8a8073">Inventory data saknas — kontakta Bengt.</td></tr>'; return; }
+
+  if (!d.inventory_data) {
+    document.getElementById('prodRows').innerHTML='<tr><td colspan="9" style="padding:32px;text-align:center;color:#8a8073">Inventory data saknas — kontakta Bengt.</td></tr>';
+    document.getElementById('updBadge').textContent = 'Lager: ingen data';
+    paintFreshness(d);
+    return;
+  }
   const inv = d.inventory_data;
 
-  // Updated badge
   document.getElementById('updBadge').textContent = 'Uppdaterad ' + inv.updated_at;
   document.getElementById('headerMeta').textContent = 'Velocity baserat på ' + inv.velocity_window_days + 'd försäljning · ' + inv.warehouses.length + ' lager';
+  paintFreshness(d);
 
   render(inv, 'total');
-}).catch(e=>{ console.error(e); });
+}
 
 function getStatus(p, wh) {
   if (wh === 'total') return p.status;
@@ -312,7 +338,7 @@ function render(inv, wh) {
       const dStr = daysLabel(d, st);
       return `<div class="alert-card ${st}">
         <div class="a-badge">${labels[st]||st}</div>
-        <div class="a-title">${p.title} · ${p.variant}</div>
+        <div class="a-title">${p.title}${variantOf(p) ? ' · ' + variantOf(p) : ''}</div>
         <div class="a-sub">${stock < 0 ? Math.abs(stock)+' övers. · ' : stock+' i lager · '}${p.velocity}/dag</div>
         <div class="a-days">${dStr}</div>
       </div>`;
@@ -329,7 +355,7 @@ function render(inv, wh) {
     return `<tr>
       <td>
         <div class="prod-name">${p.title}</div>
-        <div class="prod-variant">${p.variant}</div>
+        ${variantOf(p) ? `<div class="prod-variant">${variantOf(p)}</div>` : ''}
       </td>
       <td class="right"><span class="stock-num ${stockClass(mainStock)}">${mainStock}</span></td>
       <td class="right col-hide"><span class="stock-num ${stockClass(p.stock.bridge)}">${p.stock.bridge}</span></td>
@@ -359,6 +385,8 @@ function selectWh(wh, btn) {
   btn.classList.add('active');
   if (DATA && DATA.inventory_data) render(DATA.inventory_data, wh);
 }
+
+load();
 </script>
 </body>
 </html>

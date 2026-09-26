@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Asul:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="/freshness.js"></script>
 <style>
   :root{
     --cream:#f2ede4;--cream-2:#ece4d6;--paper:#fffdf8;--paper-2:#fbf6ec;
@@ -214,6 +215,7 @@
   </div>
   <div class="header-right">
     <div class="stamp">Data as of <b id="snap-date">…</b> · <span id="last-checked">…</span><br><span id="owner">…</span></div>
+    <div id="fr-snapshot"></div>
     <div class="hr-btns">
       <button class="refresh-btn" id="refresh-btn" onclick="doRefresh()">↻ Refresh</button>
       <a class="logout" href="/logout">Log out</a>
@@ -231,6 +233,7 @@
   <section>
     <h2><span class="dot"></span>Store performance</h2>
     <p class="h2sub" id="kpi-period">…</p>
+    <div id="fr-store"></div>
     <div class="kpis" id="kpi-grid"></div>
     <p class="h2sub" id="sales-note" style="margin-top:10px;font-style:italic"></p>
   </section>
@@ -239,6 +242,7 @@
   <section>
     <h2><span class="dot"></span>Paid (Meta) & efficiency</h2>
     <p class="h2sub" id="meta-period">…</p>
+    <div id="fr-meta"></div>
     <div class="stats" id="meta-grid"></div>
   </section>
 
@@ -246,6 +250,7 @@
   <section id="roas-trend-section">
     <h2><span class="dot"></span>ROAS per day · last 30 days</h2>
     <p class="h2sub" id="roas-trend-sub">…</p>
+    <div id="fr-roas"></div>
     <div class="chart-card"><div class="chart-wrap"><canvas id="roasChart"></canvas></div>
       <div class="legend"><span><i style="background:rgba(201,106,61,.55)"></i>Meta spend (kr)</span><span><i style="background:#cf9a2e"></i>Meta ROAS</span><span><i style="background:#2f8f4e"></i>Blended (Shopify / ads)</span><span><i style="background:#171717"></i>Blended incl. Amazon</span></div>
     </div>
@@ -256,6 +261,7 @@
   <section id="pgads-section">
     <h2><span class="dot"></span>Paid (Google Ads)</h2>
     <p class="h2sub" id="pgads-period">…</p>
+    <div id="fr-pgads"></div>
     <div class="stats" id="pgads-grid"></div>
     <div class="panel" id="pgads-panel" style="margin-top:14px"><table>
       <thead><tr><th>Kampanj</th><th>Spend</th><th>Köp</th><th>Värde</th><th>ROAS</th></tr></thead>
@@ -268,6 +274,7 @@
   <section id="gads-section">
     <h2><span class="dot"></span>Google Ads — sedan start</h2>
     <p class="h2sub" id="gads-sub">…</p>
+    <div id="fr-gads"></div>
     <div class="stats" id="gads-grid"></div>
     <div class="panel" id="gads-panel" style="margin-top:14px"><table>
       <thead><tr><th>Kampanj</th><th>Spend</th><th>Köp</th><th>Värde</th><th>ROAS</th></tr></thead>
@@ -280,6 +287,7 @@
   <section id="lp-section">
     <h2><span class="dot"></span>Landing pages — traffic & conversion</h2>
     <p class="h2sub" id="lp-period">Ranked by sessions. Conversion rate from Shopify.</p>
+    <div id="fr-lp"></div>
     <div id="lp-panel"></div>
   </section>
 
@@ -287,6 +295,7 @@
   <section id="orders-country-section">
     <h2><span class="dot"></span>Real orders by country</h2>
     <p class="h2sub" id="oc-period">Actual Shopify orders (billing country) — the ground truth behind the funnel.</p>
+    <div id="fr-oc"></div>
     <div class="panel"><table>
       <thead><tr><th>Country</th><th>Orders</th><th>Revenue</th></tr></thead>
       <tbody id="oc-body"></tbody>
@@ -297,12 +306,14 @@
   <section id="exp-section">
     <h2><span class="dot"></span>Landing-page experiments (A/B) — by Polly</h2>
     <p class="h2sub">Variants Polly built and is testing. Winner highlighted once there's a clear result.</p>
+    <div id="fr-exp"></div>
     <div id="exp-wrap"></div>
   </section>
 
   <!-- FLAGS -->
   <section id="flags-section">
     <h2><span class="dot"></span>Flags</h2>
+    <div id="fr-flags"></div>
     <div id="flags-wrap"></div>
   </section>
 
@@ -322,6 +333,7 @@
   <section>
     <h2><span class="dot"></span>Tracking health</h2>
     <p class="h2sub">Live status of our measurement stack.</p>
+    <div id="fr-tracking"></div>
     <div class="health" id="tracking-grid"></div>
   </section>
 
@@ -329,6 +341,7 @@
   <section id="countries-section">
     <h2><span class="dot"></span>By country</h2>
     <p class="h2sub" id="countries-period">…</p>
+    <div id="fr-countries"></div>
     <div class="panel"><table>
       <thead><tr><th>Country</th><th>Meta spend</th><th>Meta ROAS</th><th>Shopify revenue</th><th>Orders</th></tr></thead>
       <tbody id="countries-body"></tbody>
@@ -339,6 +352,7 @@
   <section id="creative-section">
     <h2><span class="dot"></span>Creative — static vs video</h2>
     <p class="h2sub" id="creative-period">…</p>
+    <div id="fr-creative"></div>
     <div class="bars" id="creative-bars"></div>
   </section>
 
@@ -346,6 +360,7 @@
   <section>
     <h2><span class="dot"></span>Tracking IDs & accounts</h2>
     <p class="h2sub">Click any value to copy. Reference for the agency.</p>
+    <div id="fr-ids"></div>
     <div class="id-grid" id="id-grid"></div>
   </section>
 
@@ -374,6 +389,29 @@
 let DATA = null;
 let CUR = 0;
 
+// Which sources each section's numbers actually come from. The pills are drawn from
+// snapshot.sources by /freshness.js; docs/FRESHNESS.md says what each key covers.
+const SECTION_SOURCES = {
+  'fr-store': ['shopify','amazon','sessions'],
+  'fr-meta': ['meta','shopify'],
+  'fr-roas': ['roas_series','fx'],
+  'fr-pgads': ['gads'],
+  'fr-gads': ['gads'],
+  'fr-lp': ['landing_pages'],
+  'fr-oc': ['shopify'],
+  'fr-flags': ['shopify','meta'],
+  'fr-tracking': ['tracking'],
+  'fr-countries': ['meta','shopify'],
+  'fr-creative': ['meta'],
+  'fr-ids': ['tracking_ids'],
+};
+
+function paintFreshness() {
+  if (!window.Freshness) { console.error('freshness.js did not load, so no section can show how old its data is'); return; }
+  window.Freshness.render(document, 'fr-snapshot', { snapshot: { as_of: DATA.generated_at } }, ['snapshot']);
+  for (const id in SECTION_SOURCES) window.Freshness.render(document, id, DATA.sources, SECTION_SOURCES[id]);
+}
+
 function fmtInt(n){ return (n===null||n===undefined)?'—':Number(n).toLocaleString('en-US'); }
 // ROAS the way the rest of the page writes it: Swedish decimal comma, trailing ×.
 function fmtRoas(v){ return (v===null||v===undefined)?'—':String(v).replace('.',',')+'×'; }
@@ -394,6 +432,7 @@ async function load() {
   rb.innerHTML = (DATA.periods||[]).map((p,i)=>`<button class="preset" data-i="${i}">${p.label}</button>`).join('');
   rb.querySelectorAll('.preset').forEach(b=>b.onclick=()=>renderPeriod(parseInt(b.dataset.i)));
 
+  paintFreshness();
   renderTracking();
   renderGads();
   renderRoasTrend();
@@ -421,6 +460,7 @@ async function renderExperiments() {
   const sec = document.getElementById('exp-section');
   if (!exps.length){ sec.style.display='none'; return; }
   sec.style.display='';
+  if (window.Freshness) window.Freshness.render(document, 'fr-exp', { experiments: { as_of: e.updated } }, ['experiments']);
   document.getElementById('exp-wrap').innerHTML = exps.map(x=>`
     <div class="exp">
       <div class="exp-head">
@@ -591,8 +631,7 @@ function renderRoasTrend() {
     } } });
 }
 
-// Google Ads numbers for the period the user picked, from that period's own `gads`
-// block. Snapshots written before per-period Google data existed have no such block,
+// The period's own `gads` block. A snapshot from before per-period Google data has none,
 // and for those the section is hidden rather than drawn empty.
 function renderPeriodGads(g) {
   const sec = document.getElementById('pgads-section');
