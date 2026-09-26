@@ -443,17 +443,8 @@ export async function handleClaim(req: Request): Promise<Response> {
   // Every submission is stored, blocked ones included. Blocked people still asked
   // for a code, and Bengt still needs to mail it to them.
   //
-  // "code" and "shownCode" are two fields more than issue #2 asked for. The codes are
-  // meant to rotate and the emailer reads this file later, so it cannot re-derive
-  // them: without them, a rotation means everyone who signed up before it gets mailed
-  // a code they never saw. They differ only for a blocked visitor, who is issued the
-  // Base Game code and sees the BIG BOX one only if they take the BIG BOX on the page.
-  // That choice is made in the browser and never comes back here, so "shownCode" is
-  // the code the BIG BOX choice shows, not proof that anyone took it.
-  //
-  // There is no "action" field any more. Nothing this endpoint receives is proof of
-  // anything about the address, so it stores facts about the request and no
-  // instructions about anyone's subscription.
+  // Both codes are stored because they rotate and the emailer reads this file later, so
+  // it cannot re-derive them. What goes in the email per state: docs/GIFT-EMAIL.md.
   const event = newEventId();
   const stored = record(
     {
