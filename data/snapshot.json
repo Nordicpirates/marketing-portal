@@ -474,14 +474,22 @@
     "sessions": null,
     "conversion_label": "Unavailable",
     "sales_label": "€2 804",
-    "orders": 36
+    "orders": 36,
+    "shopify_sales_eur": 2804.0,
+    "amazon_sales_eur": null,
+    "amazon_sales_usd": null,
+    "amazon_days_covered": 0,
+    "amazon_label": null,
+    "total_sales_eur": null,
+    "total_label": null
    },
    "meta": {
     "spend_label": "20 331 kr",
     "spend_window": "19-25 sep (Meta, hämtad 26 sep)",
     "meta_roas": 0.93,
     "blended_mer": 1.57,
-    "_note": "Meta 2026-09-19 till 2026-09-25, hämtat 26 september. 18 988 kr tillbaka på 20 331 kr satsat på 19 köp enligt kontot. Blandad avkastning = butikens hela försäljning (31 966 kr) delad med Meta plus Google (20 331 kr). Metas egen avkastning är ett ANSPRÅK, inte pengar: för 25 september gör kontot anspråk på 9 000 kr mot en hel dygnskassa på cirka 11 500 kr från ALLA kanaler, alltså 78 procent. Den blandade siffran bygger på riktiga pengar och är den som ska styra beslut. Dygn läses sex timmar efter stängning."
+    "_note": "Meta 2026-09-19 till 2026-09-25, hämtat 26 september. 18 988 kr tillbaka på 20 331 kr satsat på 19 köp enligt kontot. Blandad avkastning = butikens hela försäljning (31 966 kr) delad med Meta plus Google (20 331 kr). Metas egen avkastning är ett ANSPRÅK, inte pengar: för 25 september gör kontot anspråk på 9 000 kr mot en hel dygnskassa på cirka 11 500 kr från ALLA kanaler, alltså 78 procent. Den blandade siffran bygger på riktiga pengar och är den som ska styra beslut. Dygn läses sex timmar efter stängning.",
+    "blended_mer_total": null
    },
    "gads": {
     "spend_label": "0 kr",
@@ -641,14 +649,22 @@
     "sessions": null,
     "conversion_label": "Unavailable",
     "sales_label": "€12 758",
-    "orders": 146
+    "orders": 146,
+    "shopify_sales_eur": 12758.0,
+    "amazon_sales_eur": null,
+    "amazon_sales_usd": null,
+    "amazon_days_covered": 0,
+    "amazon_label": null,
+    "total_sales_eur": null,
+    "total_label": null
    },
    "meta": {
     "spend_label": "77 724 kr",
     "spend_window": "27-25 08 (Meta, hämtad 26 sep)",
     "meta_roas": 0.95,
     "blended_mer": 1.72,
-    "_note": "Meta 2026-08-27 till 2026-09-25, hämtat 26 september. 73 475 kr tillbaka på 77 724 kr satsat på 62 köp enligt kontot. Blandad avkastning = butikens hela försäljning (145 446 kr) delad med Meta plus Google (84 597 kr). Metas egen avkastning är ett ANSPRÅK, inte pengar: för 25 september gör kontot anspråk på 9 000 kr mot en hel dygnskassa på cirka 11 500 kr från ALLA kanaler, alltså 78 procent. Den blandade siffran bygger på riktiga pengar och är den som ska styra beslut. Dygn läses sex timmar efter stängning."
+    "_note": "Meta 2026-08-27 till 2026-09-25, hämtat 26 september. 73 475 kr tillbaka på 77 724 kr satsat på 62 köp enligt kontot. Blandad avkastning = butikens hela försäljning (145 446 kr) delad med Meta plus Google (84 597 kr). Metas egen avkastning är ett ANSPRÅK, inte pengar: för 25 september gör kontot anspråk på 9 000 kr mot en hel dygnskassa på cirka 11 500 kr från ALLA kanaler, alltså 78 procent. Den blandade siffran bygger på riktiga pengar och är den som ska styra beslut. Dygn läses sex timmar efter stängning.",
+    "blended_mer_total": null
    },
    "gads": {
     "spend_label": "6 872 kr",
@@ -836,14 +852,22 @@
     "sessions": null,
     "conversion_label": "Unavailable",
     "sales_label": "€9 781",
-    "orders": 113
+    "orders": 113,
+    "shopify_sales_eur": 9781.0,
+    "amazon_sales_eur": null,
+    "amazon_sales_usd": null,
+    "amazon_days_covered": 0,
+    "amazon_label": null,
+    "total_sales_eur": null,
+    "total_label": null
    },
    "meta": {
     "spend_label": "62 903 kr",
     "spend_window": "01-25 sep (Meta, hämtad 26 sep)",
     "meta_roas": 0.91,
     "blended_mer": 1.64,
-    "_note": "Meta 2026-09-01 till 2026-09-25, hämtat 26 september. 56 937 kr tillbaka på 62 903 kr satsat på 50 köp enligt kontot. Blandad avkastning = butikens hela försäljning (111 504 kr) delad med Meta plus Google (67 910 kr). Metas egen avkastning är ett ANSPRÅK, inte pengar: för 25 september gör kontot anspråk på 9 000 kr mot en hel dygnskassa på cirka 11 500 kr från ALLA kanaler, alltså 78 procent. Den blandade siffran bygger på riktiga pengar och är den som ska styra beslut. Dygn läses sex timmar efter stängning."
+    "_note": "Meta 2026-09-01 till 2026-09-25, hämtat 26 september. 56 937 kr tillbaka på 62 903 kr satsat på 50 köp enligt kontot. Blandad avkastning = butikens hela försäljning (111 504 kr) delad med Meta plus Google (67 910 kr). Metas egen avkastning är ett ANSPRÅK, inte pengar: för 25 september gör kontot anspråk på 9 000 kr mot en hel dygnskassa på cirka 11 500 kr från ALLA kanaler, alltså 78 procent. Den blandade siffran bygger på riktiga pengar och är den som ska styra beslut. Dygn läses sex timmar efter stängning.",
+    "blended_mer_total": null
    },
    "gads": {
     "spend_label": "5 007 kr",
@@ -1001,14 +1025,22 @@
     "sessions": null,
     "conversion_label": "Unavailable",
     "sales_label": "€83 584",
-    "orders": 834
+    "orders": 834,
+    "shopify_sales_eur": 83584.0,
+    "amazon_sales_eur": null,
+    "amazon_sales_usd": null,
+    "amazon_days_covered": 0,
+    "amazon_label": null,
+    "total_sales_eur": null,
+    "total_label": null
    },
    "meta": {
     "spend_label": "337 625 kr",
     "spend_window": "28-25 06 (Meta, hämtad 26 sep)",
     "meta_roas": 1.84,
     "blended_mer": 2.57,
-    "_note": "Meta 2026-06-28 till 2026-09-25, hämtat 26 september. 619 742 kr tillbaka på 337 625 kr satsat på 511 köp enligt kontot. Blandad avkastning = butikens hela försäljning (952 857 kr) delad med Meta plus Google (370 777 kr). Metas egen avkastning är ett ANSPRÅK, inte pengar: för 25 september gör kontot anspråk på 9 000 kr mot en hel dygnskassa på cirka 11 500 kr från ALLA kanaler, alltså 78 procent. Den blandade siffran bygger på riktiga pengar och är den som ska styra beslut. Dygn läses sex timmar efter stängning."
+    "_note": "Meta 2026-06-28 till 2026-09-25, hämtat 26 september. 619 742 kr tillbaka på 337 625 kr satsat på 511 köp enligt kontot. Blandad avkastning = butikens hela försäljning (952 857 kr) delad med Meta plus Google (370 777 kr). Metas egen avkastning är ett ANSPRÅK, inte pengar: för 25 september gör kontot anspråk på 9 000 kr mot en hel dygnskassa på cirka 11 500 kr från ALLA kanaler, alltså 78 procent. Den blandade siffran bygger på riktiga pengar och är den som ska styra beslut. Dygn läses sex timmar efter stängning.",
+    "blended_mer_total": null
    },
    "gads": {
     "spend_label": "33 152 kr",
@@ -1186,14 +1218,22 @@
     "sessions": null,
     "conversion_label": "Unavailable",
     "sales_label": "€1 012",
-    "orders": 11
+    "orders": 11,
+    "shopify_sales_eur": 1012.0,
+    "amazon_sales_eur": null,
+    "amazon_sales_usd": null,
+    "amazon_days_covered": 0,
+    "amazon_label": null,
+    "total_sales_eur": null,
+    "total_label": null
    },
    "meta": {
     "spend_label": "6 077 kr",
     "spend_window": "25-25 sep (Meta, hämtad 26 sep)",
     "meta_roas": 1.48,
     "blended_mer": 1.9,
-    "_note": "Meta 2026-09-25 till 2026-09-25, hämtat 26 september. 9 000 kr tillbaka på 6 077 kr satsat på 7 köp enligt kontot. Blandad avkastning = butikens hela försäljning (11 535 kr) delad med Meta plus Google (6 077 kr). Metas egen avkastning är ett ANSPRÅK, inte pengar: för 25 september gör kontot anspråk på 9 000 kr mot en hel dygnskassa på cirka 11 500 kr från ALLA kanaler, alltså 78 procent. Den blandade siffran bygger på riktiga pengar och är den som ska styra beslut. Dygn läses sex timmar efter stängning."
+    "_note": "Meta 2026-09-25 till 2026-09-25, hämtat 26 september. 9 000 kr tillbaka på 6 077 kr satsat på 7 köp enligt kontot. Blandad avkastning = butikens hela försäljning (11 535 kr) delad med Meta plus Google (6 077 kr). Metas egen avkastning är ett ANSPRÅK, inte pengar: för 25 september gör kontot anspråk på 9 000 kr mot en hel dygnskassa på cirka 11 500 kr från ALLA kanaler, alltså 78 procent. Den blandade siffran bygger på riktiga pengar och är den som ska styra beslut. Dygn läses sex timmar efter stängning.",
+    "blended_mer_total": null
    },
    "gads": {
     "spend_label": "0 kr",
@@ -1628,5 +1668,398 @@
    }
   ]
  },
- "_n": 5
+ "_n": 5,
+ "fx": {
+  "usd_per_eur": 1.1403,
+  "sek_per_eur": 11.29,
+  "date": "2026-09-25",
+  "source": "ECB eurofxref-daily"
+ },
+ "amazon": {
+  "sheet_url": "https://docs.google.com/spreadsheets/d/1BhaN6Xq8_K41ufkE0ypeU6CA-HLKbpgVBmd_leEmwx0/edit",
+  "days": [],
+  "as_of": null,
+  "pending": true,
+  "fx_used": {
+   "usd_per_eur": 1.1403,
+   "date": "2026-09-25",
+   "source": "ECB eurofxref-daily"
+  },
+  "note": "Amazon US gross sales per day in USD, typed into the sheet from Seller Central > Business Reports, converted at the ECB reference rate on the day the portal refreshed. No rows yet = no number shown; nothing is estimated.",
+  "by_period": {
+   "7d": {
+    "orders": null,
+    "sales_usd": null,
+    "sales_eur": null,
+    "days_covered": 0,
+    "days_total": 7
+   },
+   "30d": {
+    "orders": null,
+    "sales_usd": null,
+    "sales_eur": null,
+    "days_covered": 0,
+    "days_total": 30
+   },
+   "thismonth": {
+    "orders": null,
+    "sales_usd": null,
+    "sales_eur": null,
+    "days_covered": 0,
+    "days_total": 25
+   },
+   "90d": {
+    "orders": null,
+    "sales_usd": null,
+    "sales_eur": null,
+    "days_covered": 0,
+    "days_total": 90
+   },
+   "yesterday": {
+    "orders": null,
+    "sales_usd": null,
+    "sales_eur": null,
+    "days_covered": 0,
+    "days_total": 1
+   }
+  },
+  "sheet_id": "1BhaN6Xq8_K41ufkE0ypeU6CA-HLKbpgVBmd_leEmwx0"
+ },
+ "roas_series": {
+  "as_of": "2026-09-25",
+  "sek_per_eur": 11.4,
+  "note": "Per day, Stockholm time. Meta ROAS is the account's own attributed purchase value over spend. Blended = the store's whole Shopify revenue (all channels) over Meta spend; Google Ads has been paused since 12 Sep. SEK per EUR 11.4. Amazon joins the blended figure the day the sheet has a row for that date.",
+  "days": [
+   {
+    "date": "2026-08-27",
+    "meta_spend_sek": 3325.7,
+    "meta_roas": 1.68,
+    "meta_purchases": 4,
+    "shopify_orders": 6,
+    "shopify_rev_eur": 775.4,
+    "amazon_rev_eur": null,
+    "blended_mer": 2.66,
+    "blended_mer_total": null
+   },
+   {
+    "date": "2026-08-28",
+    "meta_spend_sek": 2898.01,
+    "meta_roas": 1.19,
+    "meta_purchases": 2,
+    "shopify_orders": 6,
+    "shopify_rev_eur": 411.14,
+    "amazon_rev_eur": null,
+    "blended_mer": 1.62,
+    "blended_mer_total": null
+   },
+   {
+    "date": "2026-08-29",
+    "meta_spend_sek": 2452.86,
+    "meta_roas": 1.62,
+    "meta_purchases": 3,
+    "shopify_orders": 12,
+    "shopify_rev_eur": 1051.05,
+    "amazon_rev_eur": null,
+    "blended_mer": 4.88,
+    "blended_mer_total": null
+   },
+   {
+    "date": "2026-08-30",
+    "meta_spend_sek": 3628.47,
+    "meta_roas": 0.56,
+    "meta_purchases": 2,
+    "shopify_orders": 7,
+    "shopify_rev_eur": 559.04,
+    "amazon_rev_eur": null,
+    "blended_mer": 1.76,
+    "blended_mer_total": null
+   },
+   {
+    "date": "2026-08-31",
+    "meta_spend_sek": 2516.6,
+    "meta_roas": 0.59,
+    "meta_purchases": 1,
+    "shopify_orders": 2,
+    "shopify_rev_eur": 180.77,
+    "amazon_rev_eur": null,
+    "blended_mer": 0.82,
+    "blended_mer_total": null
+   },
+   {
+    "date": "2026-09-01",
+    "meta_spend_sek": 2809.53,
+    "meta_roas": 0.0,
+    "meta_purchases": 0,
+    "shopify_orders": 3,
+    "shopify_rev_eur": 408.46,
+    "amazon_rev_eur": null,
+    "blended_mer": 1.66,
+    "blended_mer_total": null
+   },
+   {
+    "date": "2026-09-02",
+    "meta_spend_sek": 257.5,
+    "meta_roas": 3.55,
+    "meta_purchases": 1,
+    "shopify_orders": 4,
+    "shopify_rev_eur": 262.86,
+    "amazon_rev_eur": null,
+    "blended_mer": 11.64,
+    "blended_mer_total": null
+   },
+   {
+    "date": "2026-09-03",
+    "meta_spend_sek": 338.68,
+    "meta_roas": 4.28,
+    "meta_purchases": 1,
+    "shopify_orders": 3,
+    "shopify_rev_eur": 391.08,
+    "amazon_rev_eur": null,
+    "blended_mer": 13.16,
+    "blended_mer_total": null
+   },
+   {
+    "date": "2026-09-04",
+    "meta_spend_sek": 293.61,
+    "meta_roas": 1.97,
+    "meta_purchases": 1,
+    "shopify_orders": 5,
+    "shopify_rev_eur": 314.78,
+    "amazon_rev_eur": null,
+    "blended_mer": 12.22,
+    "blended_mer_total": null
+   },
+   {
+    "date": "2026-09-05",
+    "meta_spend_sek": 252.36,
+    "meta_roas": 6.07,
+    "meta_purchases": 1,
+    "shopify_orders": 3,
+    "shopify_rev_eur": 239.51,
+    "amazon_rev_eur": null,
+    "blended_mer": 10.82,
+    "blended_mer_total": null
+   },
+   {
+    "date": "2026-09-06",
+    "meta_spend_sek": 313.82,
+    "meta_roas": 0.0,
+    "meta_purchases": 0,
+    "shopify_orders": 1,
+    "shopify_rev_eur": 47.27,
+    "amazon_rev_eur": null,
+    "blended_mer": 1.72,
+    "blended_mer_total": null
+   },
+   {
+    "date": "2026-09-07",
+    "meta_spend_sek": 286.42,
+    "meta_roas": 10.51,
+    "meta_purchases": 3,
+    "shopify_orders": 4,
+    "shopify_rev_eur": 207.65,
+    "amazon_rev_eur": null,
+    "blended_mer": 8.26,
+    "blended_mer_total": null
+   },
+   {
+    "date": "2026-09-08",
+    "meta_spend_sek": 297.57,
+    "meta_roas": 0.0,
+    "meta_purchases": 0,
+    "shopify_orders": 4,
+    "shopify_rev_eur": 281.13,
+    "amazon_rev_eur": null,
+    "blended_mer": 10.77,
+    "blended_mer_total": null
+   },
+   {
+    "date": "2026-09-09",
+    "meta_spend_sek": 333.69,
+    "meta_roas": 0.0,
+    "meta_purchases": 0,
+    "shopify_orders": 4,
+    "shopify_rev_eur": 146.48,
+    "amazon_rev_eur": null,
+    "blended_mer": 5.0,
+    "blended_mer_total": null
+   },
+   {
+    "date": "2026-09-10",
+    "meta_spend_sek": 313.34,
+    "meta_roas": 4.98,
+    "meta_purchases": 1,
+    "shopify_orders": 3,
+    "shopify_rev_eur": 244.11,
+    "amazon_rev_eur": null,
+    "blended_mer": 8.88,
+    "blended_mer_total": null
+   },
+   {
+    "date": "2026-09-11",
+    "meta_spend_sek": 1761.75,
+    "meta_roas": 0.0,
+    "meta_purchases": 0,
+    "shopify_orders": 2,
+    "shopify_rev_eur": 153.58,
+    "amazon_rev_eur": null,
+    "blended_mer": 0.99,
+    "blended_mer_total": null
+   },
+   {
+    "date": "2026-09-12",
+    "meta_spend_sek": 3574.52,
+    "meta_roas": 2.03,
+    "meta_purchases": 4,
+    "shopify_orders": 7,
+    "shopify_rev_eur": 819.25,
+    "amazon_rev_eur": null,
+    "blended_mer": 2.61,
+    "blended_mer_total": null
+   },
+   {
+    "date": "2026-09-13",
+    "meta_spend_sek": 4058.48,
+    "meta_roas": 1.0,
+    "meta_purchases": 2,
+    "shopify_orders": 6,
+    "shopify_rev_eur": 901.03,
+    "amazon_rev_eur": null,
+    "blended_mer": 2.53,
+    "blended_mer_total": null
+   },
+   {
+    "date": "2026-09-14",
+    "meta_spend_sek": 4641.84,
+    "meta_roas": 0.66,
+    "meta_purchases": 4,
+    "shopify_orders": 7,
+    "shopify_rev_eur": 483.78,
+    "amazon_rev_eur": null,
+    "blended_mer": 1.19,
+    "blended_mer_total": null
+   },
+   {
+    "date": "2026-09-15",
+    "meta_spend_sek": 5748.24,
+    "meta_roas": 0.26,
+    "meta_purchases": 1,
+    "shopify_orders": 3,
+    "shopify_rev_eur": 397.87,
+    "amazon_rev_eur": null,
+    "blended_mer": 0.79,
+    "blended_mer_total": null
+   },
+   {
+    "date": "2026-09-16",
+    "meta_spend_sek": 5157.3,
+    "meta_roas": 0.84,
+    "meta_purchases": 3,
+    "shopify_orders": 5,
+    "shopify_rev_eur": 551.42,
+    "amazon_rev_eur": null,
+    "blended_mer": 1.22,
+    "blended_mer_total": null
+   },
+   {
+    "date": "2026-09-17",
+    "meta_spend_sek": 5113.91,
+    "meta_roas": 0.96,
+    "meta_purchases": 5,
+    "shopify_orders": 7,
+    "shopify_rev_eur": 711.38,
+    "amazon_rev_eur": null,
+    "blended_mer": 1.59,
+    "blended_mer_total": null
+   },
+   {
+    "date": "2026-09-18",
+    "meta_spend_sek": 7002.84,
+    "meta_roas": 0.54,
+    "meta_purchases": 4,
+    "shopify_orders": 6,
+    "shopify_rev_eur": 415.33,
+    "amazon_rev_eur": null,
+    "blended_mer": 0.68,
+    "blended_mer_total": null
+   },
+   {
+    "date": "2026-09-19",
+    "meta_spend_sek": 6221.8,
+    "meta_roas": 0.12,
+    "meta_purchases": 2,
+    "shopify_orders": 7,
+    "shopify_rev_eur": 463.2,
+    "amazon_rev_eur": null,
+    "blended_mer": 0.85,
+    "blended_mer_total": null
+   },
+   {
+    "date": "2026-09-20",
+    "meta_spend_sek": 1965.15,
+    "meta_roas": 0.33,
+    "meta_purchases": 1,
+    "shopify_orders": 3,
+    "shopify_rev_eur": 153.5,
+    "amazon_rev_eur": null,
+    "blended_mer": 0.89,
+    "blended_mer_total": null
+   },
+   {
+    "date": "2026-09-21",
+    "meta_spend_sek": 2170.43,
+    "meta_roas": 0.39,
+    "meta_purchases": 1,
+    "shopify_orders": 2,
+    "shopify_rev_eur": 195.15,
+    "amazon_rev_eur": null,
+    "blended_mer": 1.03,
+    "blended_mer_total": null
+   },
+   {
+    "date": "2026-09-22",
+    "meta_spend_sek": 1486.83,
+    "meta_roas": 0.46,
+    "meta_purchases": 2,
+    "shopify_orders": 4,
+    "shopify_rev_eur": 249.69,
+    "amazon_rev_eur": null,
+    "blended_mer": 1.91,
+    "blended_mer_total": null
+   },
+   {
+    "date": "2026-09-23",
+    "meta_spend_sek": 1147.34,
+    "meta_roas": 1.3,
+    "meta_purchases": 1,
+    "shopify_orders": 5,
+    "shopify_rev_eur": 300.03,
+    "amazon_rev_eur": null,
+    "blended_mer": 2.98,
+    "blended_mer_total": null
+   },
+   {
+    "date": "2026-09-24",
+    "meta_spend_sek": 1278.37,
+    "meta_roas": 4.36,
+    "meta_purchases": 5,
+    "shopify_orders": 4,
+    "shopify_rev_eur": 430.62,
+    "amazon_rev_eur": null,
+    "blended_mer": 3.84,
+    "blended_mer_total": null
+   },
+   {
+    "date": "2026-09-25",
+    "meta_spend_sek": 6109.16,
+    "meta_roas": 1.47,
+    "meta_purchases": 7,
+    "shopify_orders": 11,
+    "shopify_rev_eur": 1011.85,
+    "amazon_rev_eur": null,
+    "blended_mer": 1.89,
+    "blended_mer_total": null
+   }
+  ]
+ }
 }

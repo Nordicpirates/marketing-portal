@@ -1,2 +1,4 @@
 # Installed by bun from package.json + bun.lock, never committed. The lockfile is.
 node_modules/
+
+scripts/__pycache__/

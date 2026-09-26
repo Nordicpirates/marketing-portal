@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Asul:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
   :root{
     --cream:#f2ede4;--cream-2:#ece4d6;--paper:#fffdf8;--paper-2:#fbf6ec;
@@ -60,6 +61,12 @@
   .kpi .n{font-family:'Asul',serif;font-size:25px;font-weight:700;color:var(--ink)}
   .kpi.terra .n{color:var(--terra)}.kpi.gold .n{color:var(--gold)}.kpi.green .n{color:var(--green)}
   .kpi .k{font-size:11px;color:var(--muted);margin-top:5px;text-transform:uppercase;letter-spacing:.5px;font-weight:600}
+  .kpi .d{font-size:12px;color:var(--muted);margin-top:6px}
+  .kpi.ph .n{color:var(--muted);font-size:20px}
+  .chart-card{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:20px 22px;box-shadow:var(--shadow)}
+  .chart-wrap{position:relative;height:240px}
+  .legend{display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-top:10px}
+  .legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:middle}
   /* health */
   .health{display:grid;grid-template-columns:repeat(auto-fit,minmax(232px,1fr));gap:13px}
   .pill{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:16px 18px 15px;
@@ -225,6 +232,7 @@
     <h2><span class="dot"></span>Store performance</h2>
     <p class="h2sub" id="kpi-period">…</p>
     <div class="kpis" id="kpi-grid"></div>
+    <p class="h2sub" id="sales-note" style="margin-top:10px;font-style:italic"></p>
   </section>
 
   <!-- META / SPEND -->
@@ -232,6 +240,16 @@
     <h2><span class="dot"></span>Paid (Meta) & efficiency</h2>
     <p class="h2sub" id="meta-period">…</p>
     <div class="stats" id="meta-grid"></div>
+  </section>
+
+  <!-- ROAS TREND -->
+  <section id="roas-trend-section">
+    <h2><span class="dot"></span>ROAS per day · last 30 days</h2>
+    <p class="h2sub" id="roas-trend-sub">…</p>
+    <div class="chart-card"><div class="chart-wrap"><canvas id="roasChart"></canvas></div>
+      <div class="legend"><span><i style="background:rgba(201,106,61,.55)"></i>Meta spend (kr)</span><span><i style="background:#cf9a2e"></i>Meta ROAS</span><span><i style="background:#2f8f4e"></i>Blended (Shopify / ads)</span><span><i style="background:#171717"></i>Blended incl. Amazon</span></div>
+    </div>
+    <p class="h2sub" id="roas-trend-note" style="margin-top:10px;font-style:italic"></p>
   </section>
 
   <!-- GOOGLE ADS — SELECTED PERIOD -->
@@ -348,7 +366,7 @@
 
   <footer>
     <div>🏴‍☠️ <b>Nordic Pirates Performance HQ</b> · v4 · for the team + agency</div>
-    <div>Data: Meta Ads + Shopify · weekly auto-pull (Mondays)</div>
+    <div>Data: Meta Ads + Shopify + Amazon (sheet) · daily auto-refresh ~07:15 CEST</div>
   </footer>
 </div>
 
@@ -378,6 +396,7 @@ async function load() {
 
   renderTracking();
   renderGads();
+  renderRoasTrend();
   renderIds();
   await renderTasks();
   await renderExperiments();
@@ -442,18 +461,23 @@ function renderPeriod(i) {
 
   // KPI top row (Shopify)
   const k = p.kpis||{};
+  const amzPending = k.amazon_sales_eur===null || k.amazon_sales_eur===undefined;
   document.getElementById('kpi-grid').innerHTML = `
-    <div class="kpi"><div class="n">${fmtInt(k.sessions)}</div><div class="k">Sessions</div></div>
-    <div class="kpi terra"><div class="n">${k.sales_label||'—'}</div><div class="k">Total sales</div></div>
-    <div class="kpi"><div class="n">${fmtInt(k.orders)}</div><div class="k">Orders</div></div>
-    <div class="kpi green"><div class="n">${k.conversion_label||'—'}</div><div class="k">Conversion rate</div></div>`;
+    <div class="kpi terra"><div class="n">${k.total_label||k.sales_label||'—'}</div><div class="k">Total sales</div><div class="d">${amzPending?'Shopify only until Amazon is filled in':'Shopify + Amazon, EUR'}</div></div>
+    <div class="kpi"><div class="n">${k.sales_label||'—'}</div><div class="k">Shopify sales</div><div class="d">store currency EUR</div></div>
+    <div class="kpi ${amzPending?'ph':'gold'}"><div class="n">${amzPending?'—':k.amazon_label}</div><div class="k">Amazon sales</div><div class="d">${amzPending?'awaiting Seller Central rows':('USD '+fmtInt(Math.round(k.amazon_sales_usd))+' · '+k.amazon_days_covered+'/'+p.days+' days')}</div></div>
+    <div class="kpi"><div class="n">${fmtInt(k.orders)}</div><div class="k">Orders (Shopify)</div></div>
+    <div class="kpi green"><div class="n">${k.conversion_label||'—'}</div><div class="k">Conversion rate</div></div>
+    <div class="kpi"><div class="n">${fmtInt(k.sessions)}</div><div class="k">Sessions</div></div>`;
+  renderSalesNote(p);
 
   // Meta row
   const m = p.meta||{};
   document.getElementById('meta-grid').innerHTML = `
     <div class="stat ink"><div class="n">${m.spend_label||'—'}</div><div class="k">Meta ad spend</div></div>
     <div class="stat gold"><div class="n">${String(m.meta_roas??'—').replace('.',',')}</div><div class="k">Meta ROAS</div></div>
-    <div class="stat gold"><div class="n">${String(m.blended_mer??'—').replace('.',',')}</div><div class="k">Blended MER</div></div>`;
+    <div class="stat gold"><div class="n">${String(m.blended_mer??'—').replace('.',',')}</div><div class="k">Blended MER</div></div>
+    <div class="stat ink"><div class="n">${m.blended_mer_total===null||m.blended_mer_total===undefined?'—':String(m.blended_mer_total).replace('.',',')}</div><div class="k">Blended incl. Amazon</div></div>`;
 
   // Google Ads for this period
   renderPeriodGads(p.gads);
@@ -520,6 +544,51 @@ function renderPeriod(i) {
         <div class="track"><div class="fill static" style="width:${cv.static.pct}%"></div></div>
         <div class="meta">${cv.static.note}</div></div>`;
   }
+}
+
+// The Amazon line under the KPI row: where the number comes from, and how fresh it is.
+function renderSalesNote(p) {
+  const el = document.getElementById('sales-note'); if (!el) return;
+  const a = DATA.amazon || {}; const fx = DATA.fx || {};
+  const rate = fx.usd_per_eur ? `1 EUR = ${String(fx.usd_per_eur).replace('.',',')} USD (ECB ${fx.date||''})` : 'ECB rate unavailable';
+  const link = a.sheet_url ? ` <a href="${a.sheet_url}" target="_blank">Open the Amazon sheet ↗</a>` : '';
+  if (a.pending || !a.as_of) { el.innerHTML = `Amazon: no daily rows in the sheet yet, so Total sales is Shopify only. Converted at ${rate} once rows exist.${link}`; return; }
+  el.innerHTML = `Amazon: USD from Seller Central via the sheet, through ${a.as_of}, converted at ${rate}.${link}`;
+}
+
+let ROAS_CHART = null;
+// Spend bars plus the two return lines, one point per day. Data: snapshot.roas_series (docs/DAILY-REFRESH.md).
+function renderRoasTrend() {
+  const sec = document.getElementById('roas-trend-section'); if (!sec) return;
+  const s = DATA.roas_series;
+  if (!s || !(s.days||[]).length) { sec.style.display='none'; return; }
+  sec.style.display='';
+  const days = s.days;
+  const last7 = days.slice(-7);
+  const spend7 = last7.reduce((t,d)=>t+(d.meta_spend_sek||0),0);
+  const shop7 = last7.reduce((t,d)=>t+(d.shopify_rev_eur||0),0)*(s.sek_per_eur||0);
+  document.getElementById('roas-trend-sub').textContent = `${days[0].date} → ${s.as_of} · Stockholm days · last 7 days: Meta ${fmtInt(Math.round(spend7))} kr, blended ${spend7?(shop7/spend7).toFixed(2).replace('.',','):'—'}`;
+  document.getElementById('roas-trend-note').textContent = s.note || '';
+  if (typeof Chart === 'undefined') return;
+  const ctx = document.getElementById('roasChart').getContext('2d');
+  if (ROAS_CHART) ROAS_CHART.destroy();
+  const labels = days.map(d=>d.date.slice(5).replace('-','/'));
+  const datasets = [
+    { type:'bar', label:'Meta spend (kr)', data: days.map(d=>d.meta_spend_sek), backgroundColor:'rgba(201,106,61,.45)', borderRadius:4, yAxisID:'y' },
+    { type:'line', label:'Meta ROAS', data: days.map(d=>d.meta_roas), borderColor:'#cf9a2e', backgroundColor:'transparent', pointRadius:2, tension:.3, yAxisID:'y2' },
+    { type:'line', label:'Blended (Shopify / ads)', data: days.map(d=>d.blended_mer), borderColor:'#2f8f4e', backgroundColor:'transparent', pointRadius:2, tension:.3, yAxisID:'y2' },
+  ];
+  if (days.some(d=>d.blended_mer_total!==null && d.blended_mer_total!==undefined)) {
+    datasets.push({ type:'line', label:'Blended incl. Amazon', data: days.map(d=>d.blended_mer_total), borderColor:'#171717', backgroundColor:'transparent', pointRadius:2, tension:.3, yAxisID:'y2', spanGaps:true });
+  }
+  ROAS_CHART = new Chart(ctx, { data: { labels, datasets }, options: {
+    responsive:true, maintainAspectRatio:false,
+    plugins:{ legend:{display:false}, tooltip:{ mode:'index', intersect:false, callbacks:{ label: c => c.dataset.type==='bar' ? `Meta spend ${fmtInt(Math.round(c.raw||0))} kr` : `${c.dataset.label} ${c.raw===null||c.raw===undefined?'—':Number(c.raw).toFixed(2)}` } } },
+    scales:{
+      x:{ grid:{color:'rgba(23,23,23,.05)'}, ticks:{color:'#8a8073',font:{size:10}, maxRotation:0, autoSkip:true} },
+      y:{ grid:{color:'rgba(23,23,23,.05)'}, ticks:{color:'#8a8073',font:{size:11}, callback:v=>(v/1000).toFixed(0)+'k'} },
+      y2:{ position:'right', grid:{display:false}, min:0, suggestedMax:3, ticks:{color:'#3a352e',font:{size:11}} }
+    } } });
 }
 
 // Google Ads numbers for the period the user picked, from that period's own `gads`

@@ -1,0 +1,50 @@
+{
+ "sheet_url": "https://docs.google.com/spreadsheets/d/1BhaN6Xq8_K41ufkE0ypeU6CA-HLKbpgVBmd_leEmwx0/edit",
+ "days": [],
+ "as_of": null,
+ "pending": true,
+ "fx_used": {
+  "usd_per_eur": 1.1403,
+  "date": "2026-09-25",
+  "source": "ECB eurofxref-daily"
+ },
+ "note": "Amazon US gross sales per day in USD, typed into the sheet from Seller Central > Business Reports, converted at the ECB reference rate on the day the portal refreshed. No rows yet = no number shown; nothing is estimated.",
+ "by_period": {
+  "7d": {
+   "orders": null,
+   "sales_usd": null,
+   "sales_eur": null,
+   "days_covered": 0,
+   "days_total": 7
+  },
+  "30d": {
+   "orders": null,
+   "sales_usd": null,
+   "sales_eur": null,
+   "days_covered": 0,
+   "days_total": 30
+  },
+  "thismonth": {
+   "orders": null,
+   "sales_usd": null,
+   "sales_eur": null,
+   "days_covered": 0,
+   "days_total": 25
+  },
+  "90d": {
+   "orders": null,
+   "sales_usd": null,
+   "sales_eur": null,
+   "days_covered": 0,
+   "days_total": 90
+  },
+  "yesterday": {
+   "orders": null,
+   "sales_usd": null,
+   "sales_eur": null,
+   "days_covered": 0,
+   "days_total": 1
+  }
+ },
+ "sheet_id": "1BhaN6Xq8_K41ufkE0ypeU6CA-HLKbpgVBmd_leEmwx0"
+}
