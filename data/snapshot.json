@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-25",
+ "generated_at": "2026-09-26",
  "owner": "Bengt 🦉 (data) + Polly (analysis)",
  "currency_note": "Revenue in EUR (store currency). Meta and Google Ads spend in SEK. Blended MER = the store's whole revenue divided by Meta plus Google spend, at 11.4 SEK/EUR.",
  "gads_alert": {
@@ -10,23 +10,23 @@
   "link_gmc": "https://merchants.google.com"
  },
  "yesterday": {
-  "date": "2026-09-24",
-  "orders": 4,
-  "revenue_eur": 430.62,
-  "revenue_sek": 4909,
+  "date": "2026-09-25",
+  "orders": 11,
+  "revenue_eur": 1011.85,
+  "revenue_sek": 11535,
   "sessions": null,
-  "conversions": 4,
+  "conversions": 11,
   "gads_spend": null,
   "gads_spend_sek": 0,
   "gads_roas": 0.0,
   "gads_conv": 0,
-  "meta_spend_sek": 1269,
-  "_note": "Allt hämtat 25 september, läst sex timmar efter dygnets slut. 24 september: Meta drog 1 269 kr och bokför 5 köp värda 5 574 kr, alltså 4,39 tillbaka. MEN butiken tog in 430,62 EUR på 4 ordrar den dagen, cirka 4 909 kr från ALLA kanaler - Metas anspråk är alltså 113 procent av hela kassan och kan inte vara sant som attribution. Mätt mot riktiga pengar: 3,87 tillbaka per annonskrona. Det är ändå veckans bästa dygn och butikens bästa sedan 17 september, och alla fyra ordrar kom från Storbritannien, vilket är det enda land kontot annonserar mot sedan 23 september 16:18."
+  "meta_spend_sek": 6077,
+  "_note": "Allt hämtat 26 september, läst sex timmar efter dygnets slut. 25 september: Meta drog 6 077 kr och bokför 7 köp värda 9 000 kr, alltså 1,48 tillbaka. Butiken tog in 1 011,85 EUR på 11 ordrar, cirka 11 535 kr från ALLA kanaler - Metas anspråk är därmed 78 procent av hela kassan, högt men inte omöjligt som de 113 procenten den 24:e. Mätt mot riktiga pengar: 1,90 tillbaka per annonskrona. Det är butikens bästa dygn sedan 19 september och mer än dubbelt mot den 24:e. Det är också dygnet då YMP tredubblade kontot kl 14:31, från 2 000 till 6 145 kr om dagen, utan att Lucas frysning från 15 september hävts. Australien drog hela sin budget på 1 034 kr utan ett enda köp."
  },
  "gads": {
   "live_since": "8 July",
-  "as_of": "24 September",
-  "note": "Nyhämtat 25 september. Alla kampanjer är pausade sedan 12 september på Lucas beslut, så nollorna efter det datumet är avsiktliga. Totalen nedan är facit för perioden då kanalen levererade och är oförändrad vid dagens omläsning, sjätte dagen i rad på kronan.",
+  "as_of": "25 September",
+  "note": "Nyhämtat 26 september. Alla kampanjer är pausade sedan 12 september på Lucas beslut, så nollorna efter det datumet är avsiktliga. Totalen nedan är facit för 8 juli-12 september och är oförändrad på kronan vid dagens omläsning, sjunde dagen i rad.",
   "spend_label": "33 152 kr",
   "yesterday_label": "0 kr (pausat)",
   "totals": {
@@ -105,7 +105,6 @@
  "chart_data": {
   "orders_9d": {
    "labels": [
-    "15/9",
     "16/9",
     "17/9",
     "18/9",
@@ -114,10 +113,10 @@
     "21/9",
     "22/9",
     "23/9",
-    "24/9"
+    "24/9",
+    "25/9"
    ],
    "revenue": [
-    398,
     551,
     711,
     415,
@@ -126,10 +125,10 @@
     195,
     250,
     300,
-    431
+    431,
+    1012
    ],
    "orders": [
-    3,
     5,
     7,
     6,
@@ -138,7 +137,8 @@
     2,
     4,
     5,
-    4
+    4,
+    11
    ]
   },
   "organic_14d": {
@@ -252,14 +252,14 @@
    "note": "Google Ads-data: klick/konv/värde hela live-perioden. Spend 14 020 kr, ROAS 4.15×."
   }
  ],
- "channels_note": "Alla fem perioder är nyhämtade 25 september och täcker till och med 24 september. Google Ads är pausat sedan 12 september på Lucas beslut, så nollorna i 7-dagars och Gårdagen är avsiktliga. Ordrar räknas exklusive annullerade och dygnet bryts vid svensk midnatt; metoden är kontrollerad mot två kända dygn (22 sep 4 ordrar/249,69 EUR och 23 sep 5/300,03) och stämde på öret. Metas dygn läses sex timmar efter stängning. Läs Metas avkastning som ett ANSPRÅK och den blandade som riktiga pengar: den 24:e gör Meta anspråk på mer än hela dygnets kassa. Sessions- och landningssidesiffrorna har ingen färsk källa i den här körningen.",
+ "channels_note": "Alla fem perioder är nyhämtade 26 september och täcker till och med 25 september. Google Ads är pausat sedan 12 september på Lucas beslut, så nollorna i Gårdagen och 7-dagars är avsiktliga och verifierade med en egen hämtning. Ordrar räknas exklusive annullerade och dygnet bryts vid svensk midnatt; metoden är kontrollerad mot två kända dygn (24 sep 4 ordrar/430,62 EUR och 23 sep 5/300,03) och stämde på öret. Metas dygn läses sex timmar efter stängning. Läs Metas avkastning som ett ANSPRÅK och den blandade som riktiga pengar. Sessions- och landningssidesiffrorna har ingen färsk källa i den här körningen och står kvar från tidigare - de är inte omhämtade 26 september.",
  "dashboard_status": [
   {
    "icon": "✅",
-   "title": "Alla siffror nyhämtade 25 september",
+   "title": "Alla siffror nyhämtade 26 september",
    "who": "Bengt",
    "status": "done",
-   "desc": "Butik, Meta och Google Ads är lästa samma morgon och täcker till och med 24 september. Meta-dygnet är läst sex timmar efter stängning. Butikens siffror är kontrollerade mot två kända dygn innan de skrevs in: 22 september 4 ordrar/249,69 EUR och 23 september 5/300,03, båda exakt som publicerat. Sessions och landningssidor har ingen färsk källa i dag och står kvar daterade."
+   "desc": "Butik, Meta och Google Ads är lästa samma morgon och täcker till och med 25 september. Meta-dygnet är läst sex timmar efter stängning, inte vid midnatt. Butikens siffror är kontrollerade mot två kända dygn innan de skrevs in. Googles nollor är verifierade med en egen hämtning, inte antagna av att kontot är pausat. Sessions och landningssidor har ingen färsk källa och står kvar från tidigare körning."
   },
   {
    "icon": "🔧",
@@ -467,28 +467,28 @@
   {
    "id": "7d",
    "label": "Last 7 days",
-   "range_start": "2026-09-18",
-   "range_end": "2026-09-24",
+   "range_start": "2026-09-19",
+   "range_end": "2026-09-25",
    "days": 7,
    "kpis": {
     "sessions": null,
     "conversion_label": "Unavailable",
-    "sales_label": "€2 208",
-    "orders": 31
+    "sales_label": "€2 804",
+    "orders": 36
    },
    "meta": {
-    "spend_label": "21 264 kr",
-    "spend_window": "18-24 sep (Meta, hämtad 25 sep)",
-    "meta_roas": 0.65,
-    "blended_mer": 1.18,
-    "_note": "Meta 2026-09-18 till 2026-09-24, hämtat 25 september. 13 803 kr tillbaka på 21 264 kr satsat på 16 köp enligt kontot. Blandad avkastning = butikens hela försäljning (25 166 kr) delad med Meta plus Google (21 264 kr) - den siffran bygger på riktiga pengar och är den som ska styra beslut. Metas egen siffra är ett anspråk: för 24 september gör kontot anspråk på 113 procent av hela dygnets kassa. Dygn läses sex timmar efter stängning, och mätlagret ändrades 22 september på kvällen."
+    "spend_label": "20 331 kr",
+    "spend_window": "19-25 sep (Meta, hämtad 26 sep)",
+    "meta_roas": 0.93,
+    "blended_mer": 1.57,
+    "_note": "Meta 2026-09-19 till 2026-09-25, hämtat 26 september. 18 988 kr tillbaka på 20 331 kr satsat på 19 köp enligt kontot. Blandad avkastning = butikens hela försäljning (31 966 kr) delad med Meta plus Google (20 331 kr). Metas egen avkastning är ett ANSPRÅK, inte pengar: för 25 september gör kontot anspråk på 9 000 kr mot en hel dygnskassa på cirka 11 500 kr från ALLA kanaler, alltså 78 procent. Den blandade siffran bygger på riktiga pengar och är den som ska styra beslut. Dygn läses sex timmar efter stängning."
    },
    "gads": {
     "spend_label": "0 kr",
     "gads_roas": 0.0,
     "conv": 0,
     "value_label": "0 kr",
-    "_note": "Google Ads, nyhämtat 25 september. Kontot är pausat sedan 12 september på Lucas beslut, så nollor efter det datumet är avsiktliga, inte ett mätfel. Facit för hela perioden är oförändrat på kronan vid dagens omläsning, sjätte dagen i rad - inga sena konverteringar.",
+    "_note": "Google Ads, nyhämtat 26 september. Kontot är pausat sedan 12 september på Lucas beslut, så nollor efter det datumet är avsiktliga, inte ett mätfel. Nollan i det här fönstret är verifierad med en egen hämtning, inte antagen. ",
     "campaigns": []
    },
    "orders_by_country": [
@@ -496,13 +496,19 @@
      "name": "UK",
      "flag": "🇬🇧",
      "orders": 15,
-     "revenue": "€1 080"
+     "revenue": "€1 052"
     },
     {
      "name": "USA",
      "flag": "🇺🇸",
-     "orders": 10,
-     "revenue": "€535"
+     "orders": 12,
+     "revenue": "€854"
+    },
+    {
+     "name": "Denmark",
+     "flag": "🇩🇰",
+     "orders": 2,
+     "revenue": "€262"
     },
     {
      "name": "Unknown",
@@ -523,16 +529,16 @@
      "revenue": "€135"
     },
     {
-     "name": "Denmark",
-     "flag": "🇩🇰",
-     "orders": 1,
-     "revenue": "€132"
-    },
-    {
      "name": "Sweden",
      "flag": "🇸🇪",
+     "orders": 2,
+     "revenue": "€133"
+    },
+    {
+     "name": "Austria",
+     "flag": "🇦🇹",
      "orders": 1,
-     "revenue": "€12"
+     "revenue": "€55"
     }
    ],
    "landing_pages": [
@@ -628,28 +634,28 @@
   {
    "id": "30d",
    "label": "Last 30 days",
-   "range_start": "2026-08-26",
-   "range_end": "2026-09-24",
+   "range_start": "2026-08-27",
+   "range_end": "2026-09-25",
    "days": 30,
    "kpis": {
     "sessions": null,
     "conversion_label": "Unavailable",
-    "sales_label": "€12 642",
-    "orders": 144
+    "sales_label": "€12 758",
+    "orders": 146
    },
    "meta": {
-    "spend_label": "75 353 kr",
-    "spend_window": "26 aug-24 sep (Meta, hämtad 25 sep)",
+    "spend_label": "77 724 kr",
+    "spend_window": "27-25 08 (Meta, hämtad 26 sep)",
     "meta_roas": 0.95,
-    "blended_mer": 1.74,
-    "_note": "Meta 2026-08-26 till 2026-09-24, hämtat 25 september. 71 350 kr tillbaka på 75 353 kr satsat på 59 köp enligt kontot. Blandad avkastning = butikens hela försäljning (144 121 kr) delad med Meta plus Google (82 674 kr) - den siffran bygger på riktiga pengar och är den som ska styra beslut. Metas egen siffra är ett anspråk: för 24 september gör kontot anspråk på 113 procent av hela dygnets kassa. Dygn läses sex timmar efter stängning, och mätlagret ändrades 22 september på kvällen."
+    "blended_mer": 1.72,
+    "_note": "Meta 2026-08-27 till 2026-09-25, hämtat 26 september. 73 475 kr tillbaka på 77 724 kr satsat på 62 köp enligt kontot. Blandad avkastning = butikens hela försäljning (145 446 kr) delad med Meta plus Google (84 597 kr). Metas egen avkastning är ett ANSPRÅK, inte pengar: för 25 september gör kontot anspråk på 9 000 kr mot en hel dygnskassa på cirka 11 500 kr från ALLA kanaler, alltså 78 procent. Den blandade siffran bygger på riktiga pengar och är den som ska styra beslut. Dygn läses sex timmar efter stängning."
    },
    "gads": {
-    "spend_label": "7 321 kr",
-    "gads_roas": 1.12,
+    "spend_label": "6 872 kr",
+    "gads_roas": 1.19,
     "conv": 11,
     "value_label": "8 193 kr",
-    "_note": "Google Ads, nyhämtat 25 september. Kontot är pausat sedan 12 september på Lucas beslut, så nollor efter det datumet är avsiktliga, inte ett mätfel. Facit för hela perioden är oförändrat på kronan vid dagens omläsning, sjätte dagen i rad - inga sena konverteringar.",
+    "_note": "Google Ads 2026-08-27 till 2026-09-25, nyhämtat 26 september. 6 872 kr satsat, 893 klick, 11 konverteringar värda 8 193 kr. Kontot är pausat sedan 12 september, så fönstret innehåller bara dagar före det. ",
     "campaigns": [
      {
       "name": "Shopping - US & UK",
@@ -666,20 +672,26 @@
     {
      "name": "UK",
      "flag": "🇬🇧",
-     "orders": 49,
-     "revenue": "€4 592"
+     "orders": 48,
+     "revenue": "€4 366"
     },
     {
      "name": "USA",
      "flag": "🇺🇸",
-     "orders": 48,
-     "revenue": "€3 880"
+     "orders": 50,
+     "revenue": "€4 085"
     },
     {
      "name": "Denmark",
      "flag": "🇩🇰",
-     "orders": 4,
-     "revenue": "€572"
+     "orders": 5,
+     "revenue": "€702"
+    },
+    {
+     "name": "Sweden",
+     "flag": "🇸🇪",
+     "orders": 8,
+     "revenue": "€497"
     },
     {
      "name": "Australia",
@@ -700,12 +712,6 @@
      "revenue": "€456"
     },
     {
-     "name": "Sweden",
-     "flag": "🇸🇪",
-     "orders": 7,
-     "revenue": "€375"
-    },
-    {
      "name": "Switzerland",
      "flag": "🇨🇭",
      "orders": 2,
@@ -718,10 +724,10 @@
      "revenue": "€303"
     },
     {
-     "name": "Belgium",
-     "flag": "🇧🇪",
-     "orders": 3,
-     "revenue": "€277"
+     "name": "Austria",
+     "flag": "🇦🇹",
+     "orders": 4,
+     "revenue": "€284"
     }
    ],
    "landing_pages": [
@@ -824,27 +830,27 @@
    "id": "thismonth",
    "label": "September (month to date)",
    "range_start": "2026-09-01",
-   "range_end": "2026-09-24",
-   "days": 24,
+   "range_end": "2026-09-25",
+   "days": 25,
    "kpis": {
     "sessions": null,
     "conversion_label": "Unavailable",
-    "sales_label": "€8 769",
-    "orders": 102
+    "sales_label": "€9 781",
+    "orders": 113
    },
    "meta": {
-    "spend_label": "56 817 kr",
-    "spend_window": "1-24 sep (Meta, hämtad 25 sep)",
-    "meta_roas": 0.84,
-    "blended_mer": 1.62,
-    "_note": "Meta 2026-09-01 till 2026-09-24, hämtat 25 september. 47 937 kr tillbaka på 56 817 kr satsat på 43 köp enligt kontot. Blandad avkastning = butikens hela försäljning (99 968 kr) delad med Meta plus Google (61 824 kr) - den siffran bygger på riktiga pengar och är den som ska styra beslut. Metas egen siffra är ett anspråk: för 24 september gör kontot anspråk på 113 procent av hela dygnets kassa. Dygn läses sex timmar efter stängning, och mätlagret ändrades 22 september på kvällen."
+    "spend_label": "62 903 kr",
+    "spend_window": "01-25 sep (Meta, hämtad 26 sep)",
+    "meta_roas": 0.91,
+    "blended_mer": 1.64,
+    "_note": "Meta 2026-09-01 till 2026-09-25, hämtat 26 september. 56 937 kr tillbaka på 62 903 kr satsat på 50 köp enligt kontot. Blandad avkastning = butikens hela försäljning (111 504 kr) delad med Meta plus Google (67 910 kr). Metas egen avkastning är ett ANSPRÅK, inte pengar: för 25 september gör kontot anspråk på 9 000 kr mot en hel dygnskassa på cirka 11 500 kr från ALLA kanaler, alltså 78 procent. Den blandade siffran bygger på riktiga pengar och är den som ska styra beslut. Dygn läses sex timmar efter stängning."
    },
    "gads": {
     "spend_label": "5 007 kr",
     "gads_roas": 1.1,
     "conv": 7,
     "value_label": "5 526 kr",
-    "_note": "Google Ads, nyhämtat 25 september. Kontot är pausat sedan 12 september på Lucas beslut, så nollor efter det datumet är avsiktliga, inte ett mätfel. Facit för hela perioden är oförändrat på kronan vid dagens omläsning, sjätte dagen i rad - inga sena konverteringar.",
+    "_note": "Google Ads 2026-09-01 till 2026-09-25, nyhämtat 26 september. 5 007 kr satsat, 618 klick, 7 konverteringar värda 5 526 kr. Kontot är pausat sedan 12 september, så fönstret innehåller bara dagar före det. ",
     "campaigns": [
      {
       "name": "Shopping - US & UK",
@@ -861,20 +867,20 @@
     {
      "name": "UK",
      "flag": "🇬🇧",
-     "orders": 36,
-     "revenue": "€3 302"
+     "orders": 40,
+     "revenue": "€3 537"
     },
     {
      "name": "USA",
      "flag": "🇺🇸",
-     "orders": 28,
-     "revenue": "€1 855"
+     "orders": 32,
+     "revenue": "€2 326"
     },
     {
      "name": "Denmark",
      "flag": "🇩🇰",
-     "orders": 4,
-     "revenue": "€572"
+     "orders": 5,
+     "revenue": "€702"
     },
     {
      "name": "Netherlands",
@@ -895,6 +901,12 @@
      "revenue": "€369"
     },
     {
+     "name": "Sweden",
+     "flag": "🇸🇪",
+     "orders": 7,
+     "revenue": "€360"
+    },
+    {
      "name": "Switzerland",
      "flag": "🇨🇭",
      "orders": 2,
@@ -907,16 +919,10 @@
      "revenue": "€303"
     },
     {
-     "name": "Belgium",
-     "flag": "🇧🇪",
-     "orders": 2,
-     "revenue": "€265"
-    },
-    {
-     "name": "Sweden",
-     "flag": "🇸🇪",
-     "orders": 6,
-     "revenue": "€238"
+     "name": "Austria",
+     "flag": "🇦🇹",
+     "orders": 4,
+     "revenue": "€284"
     }
    ],
    "landing_pages": [
@@ -988,90 +994,90 @@
   {
    "id": "90d",
    "label": "Last 90 days",
-   "range_start": "2026-06-27",
-   "range_end": "2026-09-24",
+   "range_start": "2026-06-28",
+   "range_end": "2026-09-25",
    "days": 90,
    "kpis": {
     "sessions": null,
     "conversion_label": "Unavailable",
-    "sales_label": "€84 627",
-    "orders": 842
+    "sales_label": "€83 584",
+    "orders": 834
    },
    "meta": {
-    "spend_label": "336 842 kr",
-    "spend_window": "27 jun-24 sep (Meta, hämtad 25 sep)",
-    "meta_roas": 1.86,
-    "blended_mer": 2.61,
-    "_note": "Meta 2026-06-27 till 2026-09-24, hämtat 25 september. 626 330 kr tillbaka på 336 842 kr satsat på 518 köp enligt kontot. Blandad avkastning = butikens hela försäljning (964 748 kr) delad med Meta plus Google (369 994 kr) - den siffran bygger på riktiga pengar och är den som ska styra beslut. Metas egen siffra är ett anspråk: för 24 september gör kontot anspråk på 113 procent av hela dygnets kassa. Dygn läses sex timmar efter stängning, och mätlagret ändrades 22 september på kvällen."
+    "spend_label": "337 625 kr",
+    "spend_window": "28-25 06 (Meta, hämtad 26 sep)",
+    "meta_roas": 1.84,
+    "blended_mer": 2.57,
+    "_note": "Meta 2026-06-28 till 2026-09-25, hämtat 26 september. 619 742 kr tillbaka på 337 625 kr satsat på 511 köp enligt kontot. Blandad avkastning = butikens hela försäljning (952 857 kr) delad med Meta plus Google (370 777 kr). Metas egen avkastning är ett ANSPRÅK, inte pengar: för 25 september gör kontot anspråk på 9 000 kr mot en hel dygnskassa på cirka 11 500 kr från ALLA kanaler, alltså 78 procent. Den blandade siffran bygger på riktiga pengar och är den som ska styra beslut. Dygn läses sex timmar efter stängning."
    },
    "gads": {
     "spend_label": "33 152 kr",
     "gads_roas": 3.25,
     "conv": 109,
     "value_label": "107 634 kr",
-    "_note": "Google Ads, nyhämtat 25 september. Kontot är pausat sedan 12 september på Lucas beslut, så nollor efter det datumet är avsiktliga, inte ett mätfel. Facit för hela perioden är oförändrat på kronan vid dagens omläsning, sjätte dagen i rad - inga sena konverteringar.",
+    "_note": "Google Ads 2026-06-28 till 2026-09-25, nyhämtat 26 september. 33 152 kr satsat, 7168 klick, 109 konverteringar värda 107 634 kr. Kontot är pausat sedan 12 september, så fönstret innehåller bara dagar före det. 90-dagarsfacit är oförändrat på kronan vid dagens omläsning, sjunde dagen i rad - inga sena konverteringar.",
     "campaigns": []
    },
    "orders_by_country": [
     {
      "name": "USA",
      "flag": "🇺🇸",
-     "orders": 382,
-     "revenue": "€41 255"
+     "orders": 379,
+     "revenue": "€40 980"
     },
     {
      "name": "UK",
      "flag": "🇬🇧",
-     "orders": 144,
-     "revenue": "€13 958"
+     "orders": 145,
+     "revenue": "€13 856"
     },
     {
      "name": "Italy",
      "flag": "🇮🇹",
-     "orders": 98,
-     "revenue": "€8 394"
+     "orders": 94,
+     "revenue": "€8 045"
     },
     {
      "name": "Australia",
      "flag": "🇦🇺",
-     "orders": 61,
-     "revenue": "€6 329"
+     "orders": 59,
+     "revenue": "€6 034"
     },
     {
      "name": "Germany",
      "flag": "🇩🇪",
-     "orders": 41,
-     "revenue": "€3 446"
+     "orders": 40,
+     "revenue": "€3 399"
     },
     {
      "name": "Netherlands",
      "flag": "🇳🇱",
-     "orders": 18,
-     "revenue": "€2 043"
+     "orders": 17,
+     "revenue": "€1 896"
     },
     {
      "name": "Sweden",
      "flag": "🇸🇪",
-     "orders": 21,
-     "revenue": "€1 488"
+     "orders": 25,
+     "revenue": "€1 808"
     },
     {
      "name": "Denmark",
      "flag": "🇩🇰",
-     "orders": 13,
-     "revenue": "€1 450"
+     "orders": 14,
+     "revenue": "€1 579"
     },
     {
      "name": "France",
      "flag": "🇫🇷",
-     "orders": 14,
-     "revenue": "€1 194"
+     "orders": 13,
+     "revenue": "€1 059"
     },
     {
      "name": "Unknown",
      "flag": "🏳️",
-     "orders": 12,
-     "revenue": "€1 189"
+     "orders": 9,
+     "revenue": "€991"
     }
    ],
    "landing_pages": [
@@ -1172,37 +1178,61 @@
   },
   {
    "id": "yesterday",
-   "label": "Yesterday (Sep 24)",
-   "range_start": "2026-09-24",
-   "range_end": "2026-09-24",
+   "label": "Yesterday (Sep 25)",
+   "range_start": "2026-09-25",
+   "range_end": "2026-09-25",
    "days": 1,
    "kpis": {
     "sessions": null,
     "conversion_label": "Unavailable",
-    "sales_label": "€431",
-    "orders": 4
+    "sales_label": "€1 012",
+    "orders": 11
    },
    "meta": {
-    "spend_label": "1 269 kr",
-    "spend_window": "24 sep (Meta, hämtad 25 sep)",
-    "meta_roas": 4.39,
-    "blended_mer": 3.87,
-    "_note": "Meta 2026-09-24 till 2026-09-24, hämtat 25 september. 5 574 kr tillbaka på 1 269 kr satsat på 5 köp enligt kontot. Blandad avkastning = butikens hela försäljning (4 909 kr) delad med Meta plus Google (1 269 kr) - den siffran bygger på riktiga pengar och är den som ska styra beslut. Metas egen siffra är ett anspråk: för 24 september gör kontot anspråk på 113 procent av hela dygnets kassa. Dygn läses sex timmar efter stängning, och mätlagret ändrades 22 september på kvällen."
+    "spend_label": "6 077 kr",
+    "spend_window": "25-25 sep (Meta, hämtad 26 sep)",
+    "meta_roas": 1.48,
+    "blended_mer": 1.9,
+    "_note": "Meta 2026-09-25 till 2026-09-25, hämtat 26 september. 9 000 kr tillbaka på 6 077 kr satsat på 7 köp enligt kontot. Blandad avkastning = butikens hela försäljning (11 535 kr) delad med Meta plus Google (6 077 kr). Metas egen avkastning är ett ANSPRÅK, inte pengar: för 25 september gör kontot anspråk på 9 000 kr mot en hel dygnskassa på cirka 11 500 kr från ALLA kanaler, alltså 78 procent. Den blandade siffran bygger på riktiga pengar och är den som ska styra beslut. Dygn läses sex timmar efter stängning."
    },
    "gads": {
     "spend_label": "0 kr",
     "gads_roas": 0.0,
     "conv": 0,
     "value_label": "0 kr",
-    "_note": "Google Ads, nyhämtat 25 september. Kontot är pausat sedan 12 september på Lucas beslut, så nollor efter det datumet är avsiktliga, inte ett mätfel. Facit för hela perioden är oförändrat på kronan vid dagens omläsning, sjätte dagen i rad - inga sena konverteringar.",
+    "_note": "Google Ads, nyhämtat 26 september. Kontot är pausat sedan 12 september på Lucas beslut, så nollor efter det datumet är avsiktliga, inte ett mätfel. Nollan i det här fönstret är verifierad med en egen hämtning, inte antagen. ",
     "campaigns": []
    },
    "orders_by_country": [
     {
+     "name": "USA",
+     "flag": "🇺🇸",
+     "orders": 4,
+     "revenue": "€471"
+    },
+    {
      "name": "UK",
      "flag": "🇬🇧",
      "orders": 4,
-     "revenue": "€431"
+     "revenue": "€235"
+    },
+    {
+     "name": "Denmark",
+     "flag": "🇩🇰",
+     "orders": 1,
+     "revenue": "€130"
+    },
+    {
+     "name": "Sweden",
+     "flag": "🇸🇪",
+     "orders": 1,
+     "revenue": "€122"
+    },
+    {
+     "name": "Austria",
+     "flag": "🇦🇹",
+     "orders": 1,
+     "revenue": "€55"
     }
    ],
    "landing_pages": [],
