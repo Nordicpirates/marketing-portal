@@ -34,14 +34,13 @@ const CODE_BY_OFFER: Record<string, string> = {
   "bigbox-both": CODE_BIGBOX,
 };
 
-// The English Base Game ships from US and Australian stock, so we do not sell it
-// into Europe. EU 27 + the three other EEA countries + GB.
+// The EU warehouse has no English Base Game, so we do not sell that one edition into
+// the EU and the EEA. Britain is NOT here: Zatu in Norwich stocks it. docs/GIFT-EMAIL.md
 const EUROPE = new Set([
   "AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR", "DE", "GR", "HU",
   "IE", "IT", "LV", "LT", "LU", "MT", "NL", "PL", "PT", "RO", "SK", "SI", "ES",
   "SE", // EU 27
   "IS", "LI", "NO", // rest of the EEA
-  "GB",
 ]);
 
 const BLOCKED_OFFERS = new Set(["base-kraken", "base-coins"]);

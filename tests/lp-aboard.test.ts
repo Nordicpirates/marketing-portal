@@ -13,6 +13,7 @@ import { join } from "path";
 
 // Point the store at a scratch dir BEFORE the module reads it at import time.
 const TEST_STATE = mkdtempSync(join(tmpdir(), "lp-aboard-test-"));
+const REPO = join(import.meta.dir, "..");
 process.env.STATE_DIR = TEST_STATE;
 
 // The Worker's shared secret. Set before the module reads it at import time.
@@ -574,13 +575,37 @@ test("a blocked visitor ends up with a code their cart accepts, whichever choice
   expect(data.cartUrl).toContain("discount=FULLHOLD-B642");
 });
 
-test("every EU, EEA and GB country blocks the English base game", async () => {
-  for (const country of ["DE", "FR", "IT", "ES", "PL", "IE", "NO", "IS", "LI", "GB"]) {
+test("every EU and EEA country blocks the English base game", async () => {
+  for (const country of ["DE", "FR", "IT", "ES", "PL", "IE", "NO", "IS", "LI"]) {
     const res = await claim(
       { email: "eu@example.com", offer: "base-coins", edition: "en" },
       { country }
     );
     expect((await res.json()).state).toBe("blocked");
+  }
+});
+
+// Britain is not the EU here and must not be treated as it: Zatu in Norwich stocks the
+// English Base Game, and the UK market sells it. Lucas, 2026-09-27.
+test("Britain gets the English base game, it ships from Norwich", async () => {
+  for (const offer of ["base-kraken", "base-coins"]) {
+    const res = await claim({ email: "uk@example.com", offer, edition: "en" }, { country: "GB" });
+    const data = await res.json();
+    expect(data.state).toBe("code");
+    expect(data.code).toBe("KRAKEN-A7F2");
+    expect(data.baseCode).toBeUndefined();
+    expect(data.cartUrl).toContain("discount=KRAKEN-A7F2");
+  }
+});
+
+test("the page never tells a reader we cannot send the English base game to Britain", () => {
+  // The warning is shown by CSS on the SELECTION, not by country, so an American and a
+  // Briton read it too. It may name the EU, never Europe as a whole.
+  for (const lang of ["en", "de", "it", "fr", "es"]) {
+    const src = readFileSync(join(REPO, "public", `lp-aboard-i18n-${lang}.js`), "utf8");
+    const body = /"offer\.warn\.body":\s*\n?\s*"([^"]+)"/.exec(src);
+    expect(body, `${lang} has no offer.warn.body`).not.toBeNull();
+    expect(body![1], lang).not.toMatch(/inside Europe|innerhalb Europas|dentro l'Europa|l'int.rieur de l'Europe|dentro de Europa/);
   }
 });
 

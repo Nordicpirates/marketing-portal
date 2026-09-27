@@ -106,7 +106,7 @@ export const EN = {
   "offer.edition.legend": "Which edition should we ship",
   "offer.warn.head": "One thing before you go further.",
   "offer.warn.body":
-    "The English Base Game ships from our stock in the US and Australia, so we cannot send that edition inside Europe at the moment. The BIG BOX in English is here and ready, and it comes with both gifts. Or pick another edition below and keep your code either way.",
+    "The English Base Game ships from our stock in the US, Britain and Australia. Inside the EU we cannot send that edition yet, so if that is where you are, we will offer you the BIG BOX in English with both gifts, or the same game in your own language. Your code stands either way.",
 
   "claim.eyebrow": "Last step",
   "claim.title.kraken": "One step and the Kraken is yours",

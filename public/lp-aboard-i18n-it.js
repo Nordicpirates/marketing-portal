@@ -113,7 +113,7 @@ export const IT = {
   "offer.edition.legend": "Quale edizione dobbiamo spedirti",
   "offer.warn.head": "Una cosa prima di andare avanti.",
   "offer.warn.body":
-    "Il gioco base in inglese parte dalle nostre scorte negli Stati Uniti e in Australia, quindi al momento non possiamo spedire quell'edizione dentro l'Europa. La BIG BOX in inglese invece è qui e pronta, e arriva con tutti e due i regali. Oppure scegli un'altra edizione qui sotto e in ogni caso il tuo codice resta tuo.",
+    "Il gioco base in inglese parte dalle nostre scorte negli Stati Uniti, in Gran Bretagna e in Australia. Dentro l'UE non possiamo ancora spedire quell'edizione, e se ti trovi lì ti offriamo la BIG BOX in inglese con tutti e due i regali, oppure lo stesso gioco nella tua lingua. In ogni caso il tuo codice resta tuo.",
 
   "claim.eyebrow": "Ultimo passo",
   "claim.title.kraken": "Un passo e il Kraken è tuo",
