@@ -164,6 +164,11 @@ def main():
                  "Blended = the store's whole Shopify revenue (all channels) over Meta spend; Google Ads has been paused since 12 Sep. "
                  f"SEK per EUR {sek_per_eur}. Amazon joins the blended figure the day the sheet has a row for that date."),
         "days": series}
+    # the freshness pills read sources.*; keep them in step with what was just written
+    today = datetime.now(timezone.utc).date().isoformat()
+    src = snap.setdefault("sources", {})
+    src.setdefault("roas_series", {}).update({"as_of": last, "pulled": today})
+    src.setdefault("fx", {}).update({"as_of": fx.get("date"), "pulled": today})
     json.dump(snap, open(snap_path, "w"), ensure_ascii=False, indent=1)
     json.dump(amz, open(amz_path, "w"), ensure_ascii=False, indent=1)
     print(f"fx {fx.get('usd_per_eur')} USD/EUR ({fx.get('date')}), sek/eur {sek_per_eur}; amazon days {len(amz['days'])}; series {len(series)} days to {last}")
