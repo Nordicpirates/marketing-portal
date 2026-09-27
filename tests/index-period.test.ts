@@ -235,10 +235,17 @@ describe("every section says how old its own numbers are", () => {
   });
 
   test("a source with no date shows unknown, not a borrowed one", async () => {
+    // Whichever source is dateless today. Naming one by hand goes red the day it gets
+    // a real pull, which is the wrong reason for a test to fail.
+    const dateless = Object.entries<any>(SNAPSHOT.sources).filter(([, v]) => v.as_of === null && !v.text);
+    expect(dateless.length).toBeGreaterThan(0);
     const page = await loadPage();
-    expect(SNAPSHOT.sources.sessions.as_of).toBeNull();
-    expect(page.text("fr-store")).toContain("as of unknown");
-    expect(page.text("fr-store")).toContain("Sessions");
+    const stamped = page.freshnessIds().map((id) => page.text(id)).join(" | ");
+    expect(stamped).toContain("as of unknown");
+    for (const [key] of dateless) {
+      const label = freshness().LABELS[key] || key;
+      if (stamped.includes(label)) expect(stamped).toContain("as of unknown");
+    }
   });
 
   test("a snapshot with no sources block at all shrugs rather than lying", async () => {
@@ -269,6 +276,66 @@ describe("every section says how old its own numbers are", () => {
     for (const label of PERIOD_LABELS) page.pick(label);
     expect(page.html("fr-store")).toContain("fr-");
     expect(page.html("fr-lp")).toContain("fr-");
+    expect(page.errors).toEqual([]);
+  });
+});
+
+describe("conversion, one card per denominator", () => {
+  test("all four rates are drawn, and each one names the traffic it was measured on", async () => {
+    const page = await loadPage();
+    const c = PERIODS[0].conversion;
+    const shown = page.text("conv-grid");
+    for (const [label, value] of [
+      ["Real conversion", c.blended_pct],
+      ["Store traffic", c.store_pct],
+      ["Landing pages", c.landing_pages_pct],
+      ["Shopify reports", c.shopify_pct],
+    ] as [string, number][]) {
+      expect(shown, label).toContain(label);
+      expect(shown, label).toContain(value.toFixed(2).replace(".", ","));
+    }
+    // The denominators are the whole argument, so each has to be on the card.
+    expect(shown).toContain(String(c.sessions_ga4).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+    expect(shown).toContain(String(c.sessions_shopify).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+  });
+
+  test("Shopify's own rate is marked as storefront only, never as the real one", async () => {
+    const page = await loadPage();
+    expect(page.html("conv-grid")).toContain("conv reported");
+    expect(page.text("conv-grid")).toContain("landing pages are not in the bottom of it");
+    expect(page.html("conv-grid")).toContain("conv real");
+  });
+
+  test("the estimated split says it is estimated, in the cards and in the note", async () => {
+    const page = await loadPage();
+    expect(PERIODS[0].conversion.split_is_estimated).toBe(true);
+    expect((page.text("conv-grid").match(/Split estimated/g) || [])).toHaveLength(2);
+    expect(page.text("conv-note")).toContain("a split rather than a measurement");
+  });
+
+  test("the target is read from the page, and the distance to it is worked out", async () => {
+    const page = await loadPage();
+    const c = PERIODS[0].conversion;
+    const factor = (3 / c.blended_pct).toFixed(1).replace(".", ",");
+    expect(page.text("conv-grid")).toContain(`Target 3% is ${factor}x this`);
+  });
+
+  test("the rates follow the period, they are not one figure for the page", async () => {
+    const page = await loadPage();
+    const seen = new Set<string>();
+    for (const period of PERIODS) {
+      page.pick(period.label);
+      expect(page.text("conv-grid")).toContain(period.conversion.blended_pct.toFixed(2).replace(".", ","));
+      seen.add(page.text("conv-grid"));
+    }
+    expect(seen.size).toBeGreaterThan(1);
+    expect(page.errors).toEqual([]);
+  });
+
+  test("a snapshot with no conversion block says so instead of drawing nothing", async () => {
+    const page = await loadPage(snapshotWithout((s) => s.periods.forEach((p: any) => delete p.conversion)));
+    expect(page.text("conv-grid")).toBe("");
+    expect(page.text("conv-note")).toContain("No conversion breakdown");
     expect(page.errors).toEqual([]);
   });
 });

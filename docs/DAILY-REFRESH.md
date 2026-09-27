@@ -66,6 +66,16 @@ the site stayed missing from this table for seven weeks.
 GA4 purchases undercount against Shopify (consent mode, blockers, iOS), so the conversion
 column is GA4's own rate and the page caption says so.
 
+## Conversion, all four denominators
+
+```
+gate vault exec --env CID=Shopify_client_ID --env SEC=SHOPIFYFULL -- python3 scripts/conversion.py
+```
+
+Run it after the periods are written, because it reads each period's orders. It fills
+`periods[].conversion`, the Sessions KPI and the conversion label. Why four figures rather
+than one: docs/CONVERSION.md.
+
 ## Still not in this refresh
 
 `inventory_data`, `chart_data.organic_14d` and `channels_30d` are written by hand and are

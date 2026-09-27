@@ -64,6 +64,19 @@
   .kpi .k{font-size:11px;color:var(--muted);margin-top:5px;text-transform:uppercase;letter-spacing:.5px;font-weight:600}
   .kpi .d{font-size:12px;color:var(--muted);margin-top:6px}
   .kpi.ph .n{color:var(--muted);font-size:20px}
+  /* conversion, one card per denominator */
+  .convrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));gap:12px;margin-top:14px}
+  .conv{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:15px 17px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+  .conv::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px}
+  .conv.real::before{background:var(--terra)}
+  .conv.store::before{background:var(--green)}
+  .conv.lp::before{background:var(--red)}
+  .conv.reported::before{background:var(--muted)}
+  .conv .n{font-family:'Asul',serif;font-size:23px;font-weight:700;color:var(--ink)}
+  .conv.real .n{color:var(--terra)}.conv.store .n{color:var(--green)}.conv.lp .n{color:var(--red)}
+  .conv.reported .n{color:var(--muted)}
+  .conv .k{font-size:11px;color:var(--muted);margin-top:4px;text-transform:uppercase;letter-spacing:.5px;font-weight:600}
+  .conv .d{font-size:11.5px;color:var(--ink-soft);opacity:.85;margin-top:6px;line-height:1.45}
   .chart-card{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:20px 22px;box-shadow:var(--shadow)}
   .chart-wrap{position:relative;height:240px}
   .legend{display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-top:10px}
@@ -235,6 +248,8 @@
     <p class="h2sub" id="kpi-period">…</p>
     <div id="fr-store"></div>
     <div class="kpis" id="kpi-grid"></div>
+    <div class="convrow" id="conv-grid"></div>
+    <p class="h2sub" id="conv-note" style="margin-top:10px"></p>
     <p class="h2sub" id="sales-note" style="margin-top:10px;font-style:italic"></p>
   </section>
 
@@ -392,7 +407,7 @@ let CUR = 0;
 // Which sources each section's numbers actually come from. The pills are drawn from
 // snapshot.sources by /freshness.js; docs/FRESHNESS.md says what each key covers.
 const SECTION_SOURCES = {
-  'fr-store': ['shopify','amazon','sessions'],
+  'fr-store': ['shopify','sessions','shopify_sessions','amazon'],
   'fr-meta': ['meta','shopify'],
   'fr-roas': ['roas_series','fx'],
   'fr-pgads': ['gads'],
@@ -510,8 +525,9 @@ function renderPeriod(i) {
     <div class="kpi ${amzPending?'ph':'gold'}"><div class="n">${amzPending?'—':k.amazon_label}</div><div class="k">Amazon sales</div><div class="d">${amzPending?'awaiting Seller Central rows':('USD '+fmtInt(Math.round(k.amazon_sales_usd))+' · '+k.amazon_days_covered+'/'+p.days+' days')}</div></div>
     <div class="kpi"><div class="n">${fmtInt(k.orders)}</div><div class="k">Orders (Shopify)</div></div>
     <div class="kpi green"><div class="n">${k.conversion_label||'—'}</div><div class="k">Conversion rate</div></div>
-    <div class="kpi"><div class="n">${fmtInt(k.sessions)}</div><div class="k">Sessions</div></div>`;
+    <div class="kpi"><div class="n">${fmtInt(k.sessions)}</div><div class="k">Sessions</div><div class="d">GA4, landing pages included</div></div>`;
   renderSalesNote(p);
+  renderConversion(p);
 
   // Meta row
   const m = p.meta||{};
@@ -586,6 +602,37 @@ function renderPeriod(i) {
         <div class="track"><div class="fill static" style="width:${cv.static.pct}%"></div></div>
         <div class="meta">${cv.static.note}</div></div>`;
   }
+}
+
+// Conversion is a fraction, and the argument is always the bottom of it. One card per
+// denominator, so nobody has to guess which traffic a rate was measured on.
+const CONVERSION_TARGET_PCT = 3;
+
+function renderConversion(p) {
+  const grid = document.getElementById('conv-grid');
+  const note = document.getElementById('conv-note');
+  if (!grid || !note) return;
+  const c = p.conversion;
+  if (!c) { grid.innerHTML = ''; note.textContent = 'No conversion breakdown in this snapshot.'; return; }
+
+  const pct = v => v === null || v === undefined ? '—' : String(v.toFixed(2)).replace('.', ',') + '%';
+  const gap = c.blended_pct ? (CONVERSION_TARGET_PCT / c.blended_pct).toFixed(1).replace('.', ',') : null;
+
+  grid.innerHTML = `
+    <div class="conv real"><div class="n">${pct(c.blended_pct)}</div><div class="k">Real conversion</div>
+      <div class="d">${fmtInt(c.orders)} orders / ${fmtInt(c.sessions_ga4)} sessions, all traffic.${gap ? ` Target ${CONVERSION_TARGET_PCT}% is ${gap}x this.` : ''}</div></div>
+    <div class="conv store"><div class="n">${pct(c.store_pct)}</div><div class="k">Store traffic</div>
+      <div class="d">${fmtInt(c.sessions_store)} sessions that started on the shop itself.${c.split_is_estimated ? ' Split estimated.' : ''}</div></div>
+    <div class="conv lp"><div class="n">${pct(c.landing_pages_pct)}</div><div class="k">Landing pages</div>
+      <div class="d">${fmtInt(c.sessions_landing_pages)} sessions, ${c.sessions_ga4 ? Math.round(c.sessions_landing_pages / c.sessions_ga4 * 100) : 0}% of everything.${c.split_is_estimated ? ' Split estimated.' : ''}</div></div>
+    <div class="conv reported"><div class="n">${pct(c.shopify_pct)}</div><div class="k">Shopify reports</div>
+      <div class="d">${fmtInt(c.orders)} / ${fmtInt(c.sessions_shopify)}. Its own storefront only, so the landing pages are not in the bottom of it.</div></div>`;
+
+  note.innerHTML = c.split_is_estimated
+    ? `Shopify counts the ${fmtInt(c.orders)} orders and GA4 counts the sessions, because only GA4 sees the landing pages. `
+      + `GA4 recorded ${fmtInt(c.ga4_purchases_seen)} of those orders itself, and its landing-page share of them is what splits the real orders `
+      + `between the two middle cards, so treat those two as a split rather than a measurement. The outer two are counted, not estimated.`
+    : '';
 }
 
 // The Amazon line under the KPI row: where the number comes from, and how fresh it is.

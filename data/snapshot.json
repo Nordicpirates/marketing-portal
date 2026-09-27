@@ -20,9 +20,9 @@
    "note": "no daily rows in the sheet yet, so Total sales is Shopify only"
   },
   "sessions": {
-   "as_of": null,
-   "pulled": null,
-   "note": "sessions are not in the daily pull, so every Sessions figure shows a dash rather than an old number"
+   "as_of": "2026-09-26",
+   "pulled": "2026-09-27",
+   "note": "GA4 property 250338585: the only count that includes the landing pages"
   },
   "sessions_chart": {
    "as_of": "2026-08-09",
@@ -65,6 +65,11 @@
    "as_of": null,
    "text": "kept by hand",
    "note": "written when something changes, so no pull date applies"
+  },
+  "shopify_sessions": {
+   "as_of": "2026-09-26",
+   "pulled": "2026-09-27",
+   "note": "Shopify's own sessions, storefront only, so the landing pages are not in it"
   }
  },
  "owner": "Bengt 🦉 (data) + Polly (analysis)",
@@ -538,8 +543,8 @@
    "range_end": "2026-09-26",
    "days": 7,
    "kpis": {
-    "sessions": null,
-    "conversion_label": "Unavailable",
+    "sessions": 3013,
+    "conversion_label": "1,36%",
     "sales_label": "€3 694",
     "orders": 41,
     "shopify_sales_eur": 3694.39,
@@ -717,7 +722,20 @@
      "body": "Two corrections to how these figures are built. Cancelled orders are no longer counted as sales: Shopify's own revenue figure includes them, which is why a number here can read lower than the one in the Shopify app. And each day is now cut at Swedish midnight in our own code, because Shopify's date filter was returning two days' orders as one.",
      "sub": "Checked against 23 Aug: 8 real orders and €608, plus one cancelled order. Shopify shows €756 for the same day because it counts the cancelled one."
     }
-   ]
+   ],
+   "conversion": {
+    "orders": 41,
+    "sessions_ga4": 3013,
+    "sessions_shopify": 877,
+    "sessions_landing_pages": 2185,
+    "sessions_store": 828,
+    "shopify_pct": 4.68,
+    "blended_pct": 1.36,
+    "landing_pages_pct": 0.74,
+    "store_pct": 3.01,
+    "ga4_purchases_seen": 28,
+    "split_is_estimated": true
+   }
   },
   {
    "id": "30d",
@@ -726,8 +744,8 @@
    "range_end": "2026-09-26",
    "days": 30,
    "kpis": {
-    "sessions": null,
-    "conversion_label": "Unavailable",
+    "sessions": 10797,
+    "conversion_label": "1,41%",
     "sales_label": "€13 337",
     "orders": 152,
     "shopify_sales_eur": 13336.56,
@@ -921,7 +939,20 @@
      "body": "Two corrections to how these figures are built. Cancelled orders are no longer counted as sales: Shopify's own revenue figure includes them, which is why a number here can read lower than the one in the Shopify app. And each day is now cut at Swedish midnight in our own code, because Shopify's date filter was returning two days' orders as one.",
      "sub": "Checked against 23 Aug: 8 real orders and €608, plus one cancelled order. Shopify shows €756 for the same day because it counts the cancelled one."
     }
-   ]
+   ],
+   "conversion": {
+    "orders": 152,
+    "sessions_ga4": 10797,
+    "sessions_shopify": 4739,
+    "sessions_landing_pages": 6146,
+    "sessions_store": 4651,
+    "shopify_pct": 3.21,
+    "blended_pct": 1.41,
+    "landing_pages_pct": 0.75,
+    "store_pct": 2.27,
+    "ga4_purchases_seen": 105,
+    "split_is_estimated": true
+   }
   },
   {
    "id": "thismonth",
@@ -930,8 +961,8 @@
    "range_end": "2026-09-26",
    "days": 26,
    "kpis": {
-    "sessions": null,
-    "conversion_label": "Unavailable",
+    "sessions": 9419,
+    "conversion_label": "1,33%",
     "sales_label": "€11 135",
     "orders": 125,
     "shopify_sales_eur": 11134.56,
@@ -1125,7 +1156,20 @@
      "body": "Two corrections to how these figures are built. Cancelled orders are no longer counted as sales: Shopify's own revenue figure includes them, which is why a number here can read lower than the one in the Shopify app. And each day is now cut at Swedish midnight in our own code, because Shopify's date filter was returning two days' orders as one.",
      "sub": "Checked against 23 Aug: 8 real orders and €608, plus one cancelled order. Shopify shows €756 for the same day because it counts the cancelled one."
     }
-   ]
+   ],
+   "conversion": {
+    "orders": 125,
+    "sessions_ga4": 9419,
+    "sessions_shopify": 3784,
+    "sessions_landing_pages": 5730,
+    "sessions_store": 3689,
+    "shopify_pct": 3.3,
+    "blended_pct": 1.33,
+    "landing_pages_pct": 0.69,
+    "store_pct": 2.31,
+    "ga4_purchases_seen": 88,
+    "split_is_estimated": true
+   }
   },
   {
    "id": "90d",
@@ -1134,8 +1178,8 @@
    "range_end": "2026-09-26",
    "days": 90,
    "kpis": {
-    "sessions": null,
-    "conversion_label": "Unavailable",
+    "sessions": 50597,
+    "conversion_label": "1,63%",
     "sales_label": "€82 715",
     "orders": 826,
     "shopify_sales_eur": 82715.47,
@@ -1387,7 +1431,20 @@
      "body": "Two corrections to how these figures are built. Cancelled orders are no longer counted as sales: Shopify's own revenue figure includes them, which is why a number here can read lower than the one in the Shopify app. And each day is now cut at Swedish midnight in our own code, because Shopify's date filter was returning two days' orders as one.",
      "sub": "Checked against 23 Aug: 8 real orders and €608, plus one cancelled order. Shopify shows €756 for the same day because it counts the cancelled one."
     }
-   ]
+   ],
+   "conversion": {
+    "orders": 826,
+    "sessions_ga4": 50597,
+    "sessions_shopify": 22345,
+    "sessions_landing_pages": 29234,
+    "sessions_store": 21363,
+    "shopify_pct": 3.7,
+    "blended_pct": 1.63,
+    "landing_pages_pct": 1.05,
+    "store_pct": 2.43,
+    "ga4_purchases_seen": 622,
+    "split_is_estimated": true
+   }
   },
   {
    "id": "yesterday",
@@ -1396,8 +1453,8 @@
    "range_end": "2026-09-26",
    "days": 1,
    "kpis": {
-    "sessions": null,
-    "conversion_label": "Unavailable",
+    "sessions": 809,
+    "conversion_label": "1,48%",
     "sales_label": "€1 354",
     "orders": 12,
     "shopify_sales_eur": 1353.55,
@@ -1551,7 +1608,20 @@
      "body": "Two corrections to how these figures are built. Cancelled orders are no longer counted as sales: Shopify's own revenue figure includes them, which is why a number here can read lower than the one in the Shopify app. And each day is now cut at Swedish midnight in our own code, because Shopify's date filter was returning two days' orders as one.",
      "sub": "Checked against 23 Aug: 8 real orders and €608, plus one cancelled order. Shopify shows €756 for the same day because it counts the cancelled one."
     }
-   ]
+   ],
+   "conversion": {
+    "orders": 12,
+    "sessions_ga4": 809,
+    "sessions_shopify": 181,
+    "sessions_landing_pages": 685,
+    "sessions_store": 124,
+    "shopify_pct": 6.63,
+    "blended_pct": 1.48,
+    "landing_pages_pct": 0.58,
+    "store_pct": 6.45,
+    "ga4_purchases_seen": 9,
+    "split_is_estimated": true
+   }
   }
  ],
  "inventory_data": {

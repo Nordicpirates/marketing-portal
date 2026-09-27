@@ -11,6 +11,7 @@
 
   var LABELS = {
     shopify: "Shopify",
+    shopify_sessions: "Shopify sessions",
     meta: "Meta",
     gads: "Google Ads",
     amazon: "Amazon",
