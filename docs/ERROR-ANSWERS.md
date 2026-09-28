@@ -38,8 +38,15 @@ empty, rebuilt from the seed. Both cases log one line naming the file, because r
 from the seed resets every done-flag to the seed's value. The merge and what gets stored
 are otherwise unchanged.
 
-The committed seed (`data/tasks.json`) is deliberately not guarded the same way: treating
-a broken seed as empty would overwrite every stored done-flag, and a 500 does not.
+The committed seed (`data/tasks.json`) is not guarded, and a broken one fails in one of
+two ways, measured on the real server. A seed that does not parse, or parses with no task
+list at all (`{}`, `[]`, `7`), is read as empty: GET answers 200, the merge produces an
+empty list, and the write replaces the stored list with it, wiping every done-flag without
+a word. A seed of `null`, or one whose task list is unusable (`{"agency_tasks":5}`, a
+`null` row), throws, answers Bun's generic 500, and leaves the stored file untouched.
+`tests/error-answers.test.ts` checks that the committed seed parses and holds an
+`agency_tasks` array with a string `id` on every row, so a broken seed is caught before it
+ships.
 
 ### A login POST that is not a form
 
@@ -81,5 +88,5 @@ The cap exists because Bun's default ceiling is 128 MB, which on a public endpoi
 free way to make us hold rubbish in memory. 1 MB is far above any body the portal's own
 pages send: an idea is at most about 4,300 characters (title 200, body 4,000, author 100),
 a shipment about 4,500 (notes 2,000, tracking link 2,000, email 254, creator 120, logged
-by 60, plus short fixed choices), and a gift claim is an email address and a few short choices.
-Even escaped as JSON in UTF-8, each is a few tens of KB at most.
+by 60, plus short fixed choices), and a gift claim is an email address and a few short
+choices. Even escaped as JSON in UTF-8, each is a few tens of KB at most.

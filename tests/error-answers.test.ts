@@ -18,7 +18,8 @@ const COOKIE = `auth=${createHash("sha256").update("np-hq-" + PASSWORD).digest("
 const http = Bun.fetch;
 
 let proc: any = null;
-let logs: Promise<string> = Promise.resolve("");
+let logText = "";
+let logDone: Promise<void> = Promise.resolve();
 let base = "";
 let auth = "";
 
@@ -38,7 +39,10 @@ async function start(): Promise<void> {
     stdout: "pipe",
     stderr: "pipe",
   });
-  logs = new Response(proc.stderr).text();
+  logText = "";
+  logDone = (async () => {
+    for await (const chunk of proc.stderr) logText += new TextDecoder().decode(chunk);
+  })();
   for (let waited = 0; waited < 15000; waited += 50) {
     try {
       const res = await http(`${base}/health`);
@@ -56,9 +60,21 @@ async function stop(): Promise<string> {
   if (!proc) return "";
   proc.kill();
   await proc.exited;
+  await logDone;
   proc = null;
-  return logs;
+  return logText;
 }
+
+/** Wait for a line to reach the server's stderr after `from`, and say whether it came. */
+async function logged(line: string, from: number): Promise<boolean> {
+  for (let waited = 0; waited < 2000; waited += 20) {
+    if (logText.slice(from).includes(line)) return true;
+    await new Promise((done) => setTimeout(done, 20));
+  }
+  return false;
+}
+
+const REBUILT = `[tasks] ${TASKS_FILE} is not a task list, so it was read as empty and rebuilt from the seed`;
 
 const form = (password: string) => {
   const body = new FormData();
@@ -148,16 +164,20 @@ describe("a tasks.json that parses but is not a task list", () => {
     const res = await getTasks();
     expect(res.status).toBe(200);
     rebuilt = readFileSync(TASKS_FILE, "utf8");
+    expect(await logged(REBUILT, 0)).toBe(true);
     taskId = (await res.json()).agency_tasks[0].id;
     expect(taskId).toBeTruthy();
   });
 
-  for (const shape of ["null", '"x"', "7", "[]", "true", '{"agency_tasks":5}', '{"agency_tasks":"x"}', '{"agency_tasks":[null]}']) {
-    test(`content ${shape}: GET and POST are 200, exactly like the unparseable file`, async () => {
+  const shapes = ["null", '"x"', "7", "[]", "{}", "true", '{"agency_tasks":null}', '{"agency_tasks":5}', '{"agency_tasks":"x"}'];
+  for (const shape of shapes) {
+    test(`content ${shape}: GET and POST are 200 and logged, exactly like the unparseable file`, async () => {
       writeFileSync(TASKS_FILE, shape);
+      const from = logText.length;
       const read = await getTasks();
       expect(read.status).toBe(200);
       expect(readFileSync(TASKS_FILE, "utf8")).toBe(rebuilt);
+      expect(await logged(REBUILT, from)).toBe(true);
 
       writeFileSync(TASKS_FILE, shape);
       const seedDone = JSON.parse(rebuilt).agency_tasks[0].done;
@@ -167,11 +187,32 @@ describe("a tasks.json that parses but is not a task list", () => {
     });
   }
 
-  test("a real task list keeps its done flags, so the merge itself is unchanged", async () => {
+  test("a task list holding a row that is not a task is a task list: 200, the row is skipped", async () => {
+    writeFileSync(TASKS_FILE, '{"agency_tasks":[null]}');
+    expect((await getTasks()).status).toBe(200);
+    expect(readFileSync(TASKS_FILE, "utf8")).toBe(rebuilt);
+  });
+
+  test("a real task list keeps its done flags, logs nothing, so the merge itself is unchanged", async () => {
     writeFileSync(TASKS_FILE, rebuilt);
+    const from = logText.length;
     const seedDone = JSON.parse(rebuilt).agency_tasks[0].done;
     expect((await postTask(taskId, !seedDone)).status).toBe(200);
     expect((await (await getTasks()).json()).agency_tasks[0].done).toBe(!seedDone);
+    expect(await logged(REBUILT, from)).toBe(false);
+  });
+});
+
+describe("the committed seed, which readTasks does not guard", () => {
+  test("data/tasks.json parses and holds an agency_tasks array with a string id on every row", () => {
+    const seed = JSON.parse(readFileSync(join(REPO, "data", "tasks.json"), "utf8"));
+    expect(seed !== null && typeof seed === "object" && !Array.isArray(seed)).toBe(true);
+    expect(Array.isArray(seed.agency_tasks)).toBe(true);
+    expect(seed.agency_tasks.length).toBeGreaterThan(0);
+    for (const [index, row] of seed.agency_tasks.entries()) {
+      const id = row !== null && typeof row === "object" ? row.id : undefined;
+      expect({ index, idIsText: typeof id === "string" && id.length > 0 }).toEqual({ index, idIsText: true });
+    }
   });
 });
 
@@ -187,7 +228,7 @@ describe("refusals leave a line in the log", () => {
     const log = await stop();
     expect(log).toContain("[tasks] refused a POST: the body needs an id and a boolean done");
     expect(log).toContain("[login] refused a POST: the body is not a form");
-    expect(log).toContain(`[tasks] ${TASKS_FILE} is not a task list, so it was read as empty and rebuilt from the seed`);
+    expect(log).toContain(REBUILT);
     expect(log).not.toContain("TypeError");
   });
 });
