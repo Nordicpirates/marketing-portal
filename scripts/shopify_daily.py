@@ -13,7 +13,8 @@ tok=json.loads(urllib.request.urlopen(req,timeout=60).read())['access_token']
 URL=f'https://{SHOP}/admin/api/2025-01/graphql.json'
 Q='''query($q:String!,$after:String){orders(first:250,query:$q,sortKey:CREATED_AT,after:$after){
 pageInfo{hasNextPage endCursor}
-nodes{name createdAt cancelledAt currentTotalPriceSet{shopMoney{amount currencyCode}}}}}'''
+nodes{name createdAt cancelledAt currentTotalPriceSet{shopMoney{amount currencyCode}}
+shippingAddress{country countryCodeV2} billingAddress{country countryCodeV2}}}}'''
 after=None; rows=[]
 while True:
     b=json.dumps({'query':Q,'variables':{'q':f'created_at:>={since}','after':after}}).encode()
@@ -31,8 +32,14 @@ for n in rows:
     k=dt.strftime('%Y-%m-%d'); m=n['currentTotalPriceSet']['shopMoney']; cur.add(m['currencyCode'])
     e=days.setdefault(k,{'date':k,'orders':0,'revenue_eur':0.0})
     e['orders']+=1; e['revenue_eur']+=float(m['amount'])
-for e in days.values(): e['revenue_eur']=round(e['revenue_eur'],2)
+    # shipping country, else billing; the portal's per-country table is built from this
+    ad=n.get('shippingAddress') or n.get('billingAddress') or {}
+    c=e.setdefault('by_country',{}).setdefault(ad.get('countryCodeV2') or '??',{'name':ad.get('country') or 'Unknown','orders':0,'revenue_eur':0.0})
+    c['orders']+=1; c['revenue_eur']+=float(m['amount'])
+for e in days.values():
+    e['revenue_eur']=round(e['revenue_eur'],2)
+    for c in e.get('by_country',{}).values(): c['revenue_eur']=round(c['revenue_eur'],2)
 res={'since':since,'fetched_at':datetime.now(timezone.utc).isoformat(timespec='seconds'),'currency':sorted(cur),'total_orders':len(rows),'days':[days[k] for k in sorted(days)]}
 json.dump(res,open(out,'w'),indent=1)
 print('orders fetched',len(rows),'currencies',sorted(cur))
-for e in res['days'][-8:]: print(e)
+for e in res['days'][-8:]: print({k:e[k] for k in ('date','orders','revenue_eur')})

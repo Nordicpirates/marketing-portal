@@ -29,7 +29,7 @@
    "sales_usd": null,
    "sales_eur": null,
    "days_covered": 0,
-   "days_total": 26
+   "days_total": 27
   },
   "90d": {
    "orders": null,
@@ -51,5 +51,5 @@
   "spapi": 0,
   "sheet": 0
  },
- "sheet_read_at": "2026-09-27T05:24:21+00:00"
+ "sheet_read_at": "2026-09-28T05:21:46+00:00"
 }

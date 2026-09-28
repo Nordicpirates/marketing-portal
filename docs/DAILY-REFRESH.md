@@ -1,23 +1,59 @@
-# Daily refresh: Amazon, total sales and the ROAS series
+# Daily refresh of the portal
 
-The portal is refreshed once a day by Bengt's signal "Portal daily refresh" (#601). The Meta,
-Google and Shopify period figures are written by that run as before. This document covers the
-three additions from 26 Sep 2026: Amazon sales in EUR, total sales, and the per-day ROAS series.
+The portal is refreshed once a day by Bengt's signal "Portal daily refresh" (#601). Every figure
+comes from a pull made that morning; nothing is carried over or estimated.
+
+## Run order
+
+1. Pull the raw data listed under Inputs.
+2. `scripts/write_periods.py`: the five periods, the yesterday block, orders per country.
+3. `scripts/build_snapshot_extras.py`: exchange rates, Amazon, the ROAS series.
+4. `scripts/ga_landing_pages.py`: landing pages per period.
+5. `scripts/conversion.py`: conversion with all four denominators, and Sessions.
+
+Work in a copy of the checkout under your own home: the shared checkout holds files you cannot
+write. Commit, push, and let the webhook deploy.
 
 ## Inputs
 
-1. `data/snapshot.json` as the refresh has already written it (periods, meta, gads, yesterday).
-2. Meta per day, account level, last 30 days: a JSON `{"days":[{"date","spend","roas","purchases"}]}`
+1. Meta per day, account level, last 30 days: `{"days":[{"date","spend","roas","purchases","value"}]}`
    in SEK. Source: META ADs MCP `ads_get_ad_entities`, level `ad_account`, fields
-   `amount_spent, purchase_roas, omni_purchase`, `date_preset last_30d`, `time_increment "1"`.
-3. Shopify per day: `python3 scripts/shopify_daily.py <since> <out.json>` run through
-   `gate vault exec --env CID=Shopify_client_ID --env CS=SHOPIFYFULL -- ...`. Stockholm days,
-   cancelled orders skipped, EUR.
-4. Amazon per day (USD): the Google Sheet "Amazon daily sales (Seller Central) - Nordic Pirates",
+   `amount_spent, purchase_roas, omni_purchase, omni_purchase_values`, `date_preset last_30d`,
+   `time_increment "1"`. Before using it, sum it and compare with Meta's own account total for
+   the same 30 days: a transcription slip shows up there and nowhere else.
+2. Meta's own account total for the 90-day window (same fields, `time_range`, no increment),
+   passed as `--meta-total`. The daily file is 30 days, so this is the 90-day figure.
+3. Shopify per day, from 90 days back: `python3 scripts/shopify_daily.py <since> <out.json>` run
+   through `gate vault exec --env CID=Shopify_client_ID --env CS=SHOPIFYFULL -- ...`. Stockholm
+   days, cancelled orders skipped, EUR, with `by_country` per day.
+4. Google Ads, 90 days back to yesterday: `gate gads campaign-metrics --customer 7166732500
+   --start <since> --end <yesterday> > gads.json`. Rows carry the day, so one pull serves every
+   window.
+5. Amazon per day (USD): the Google Sheet "Amazon daily sales (Seller Central) - Nordic Pirates",
    tab `daily`, columns `Date (YYYY-MM-DD) | Orders | Sales USD | Notes`. Filled by hand from
    Seller Central > Business Reports > Sales and Traffic (ordered product sales, by day).
    Export it with `gate gdrive download <sheetId> --out amazon.xlsx` (Sheets export to xlsx).
-5. EUR rates: ECB `eurofxref-daily.xml` (USD and SEK per EUR). Fetched by the builder itself.
+6. EUR rates: ECB `eurofxref-daily.xml` (USD and SEK per EUR). Fetched by the builder itself.
+
+## Periods
+
+```
+python3 scripts/write_periods.py --repo . --meta-daily meta.json \
+  --meta-total 90d=<since>:<until>:<spend>:<value>:<purchases> \
+  --shopify-daily shopify.json --gads gads.json --gads-since <since> --gads-until <yesterday>
+```
+
+Windows end yesterday, Stockholm time: 7 days, 30 days, month to date, 90 days, and yesterday.
+It refuses to write when a pull does not cover a window, when a `--meta-total` names other
+dates than its window, or when the orders per country do not add up to the period's orders.
+
+- Meta: the daily file when it covers the window, else the `--meta-total` for exactly that window.
+- Shopify: orders and EUR per window, and `orders_by_country` by shipping country (billing when
+  an order has none), sorted by revenue.
+- Google Ads: per window and per campaign. A zero is a zero the pull returned, not an assumption.
+- Flags carrying a `date` leave every window that no longer holds that day; undated flags stay.
+- It dates the "Alla siffror nyhämtade" status card, `sources.shopify|meta|gads`, `gads.as_of`
+  and `gads_periods.until`. Hand-written status cards and flags are not its business.
 
 ## The builder
 
