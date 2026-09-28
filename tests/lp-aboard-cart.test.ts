@@ -1,14 +1,5 @@
-// Tests for the cart-direct half of issue #10: what happens to the visitor's Shopify
-// cart once a code has been issued.
-//
-// The shop has upsells on the cart page, so a claim has to end ON the cart page with
-// the game, the gift and the code already in it. The old cart permalink cannot do
-// that - it 302s into Shop Pay checkout on this store - so the page builds the cart
-// itself with Shopify's same-origin Ajax cart API and then navigates.
-//
-// Everything here is driven through the real page: the fake fetch answers as Shopify
-// would and records what it was asked for, and location.assign is captured instead of
-// tearing the document down. The page harness is tests/page-harness.ts.
+// What happens to the visitor's Shopify cart once a code is issued, via tests/page-harness.ts.
+// Why the page builds the cart itself, and what each part pins: docs/TESTS-GIFT-CART.md
 
 import { test, expect } from "bun:test";
 import { readFileSync } from "fs";
@@ -54,9 +45,8 @@ test("a successful claim empties the cart, loads it, applies the code, then goes
 
   const landed = await page.navigated();
 
-  // The three calls Shopify needs, in the one order that works. Clearing first is what
-  // makes this campaign's cart the cart: whatever the visitor had in there before is
-  // not what our code was issued against.
+  // The one order that works; clearing first makes this campaign's cart the cart.
+  // docs/TESTS-GIFT-CART.md
   expect(cartPaths(page)).toEqual([CART_CLEAR, CART_ADD, discountPath(CODE_BASE)]);
 
   const [clear, add] = page.cartCalls();
@@ -76,9 +66,8 @@ test("a successful claim empties the cart, loads it, applies the code, then goes
 }, REDIRECT_TEST_MS);
 
 test("every call goes to a bare path, so it reaches the shop and not the portal", async () => {
-  // The page is served from the shop's own origin with a Worker holding only the
-  // /gift-offer/* paths. An absolute URL here would be a cross-origin request the
-  // Ajax cart refuses, and a /gift-offer path would land on the portal.
+  // Bare paths only: absolute is cross-origin, /gift-offer lands on the portal.
+  // docs/TESTS-GIFT-CART.md
   const page = await loadPage({ body: codeAnswer });
   await page.submit();
   await page.navigated();
@@ -91,9 +80,8 @@ test("every call goes to a bare path, so it reaches the shop and not the portal"
 }, REDIRECT_TEST_MS);
 
 test("the code is on screen, and stays there, before the page moves under them", async () => {
-  // Lucas asked for the code to be visible before the redirect, long enough to read.
-  // The page is about to navigate on the visitor's behalf, so a code that flashed past
-  // is a code they never got.
+  // A code that flashed past before the redirect is a code they never got.
+  // docs/TESTS-GIFT-CART.md
   const page = await loadPage({ body: codeAnswer });
   const started = Date.now();
   await page.submit();
@@ -126,10 +114,8 @@ test("the BIG BOX loads three items and its own code", async () => {
   expect(cartPaths(page)[2]).not.toContain(CODE_BASE);
 }, REDIRECT_TEST_MS);
 
-// The gift is posted with the box that was chosen when the button was pressed, and the
-// answer comes back some unknown time later. This is that gap from the picker's end: a
-// box tapped during the wait must not be able to leave the page showing one gift while
-// another one is being carted.
+// A box tapped while the claim is in flight must not split what is shown from what is
+// carted. docs/TESTS-GIFT-CART.md
 const CART_FOR: Record<string, string[]> = {
   "base-kraken": [BASE_EN, KRAKEN],
   "base-coins": [BASE_EN, COINS],
@@ -153,9 +139,7 @@ test(
     release();
     await page.navigated();
 
-    // Whatever box the page ends up showing, that is the box in the cart. This is the
-    // whole claim, and it is read off the page rather than assumed so it holds in
-    // either direction.
+    // The box on screen is the box in the cart, read off the page. docs/TESTS-GIFT-CART.md
     const shown = page.document.querySelector('input[name="offer"]:checked').value;
     expect(addedIds(page)).toEqual(CART_FOR[shown]);
 
@@ -205,10 +189,8 @@ test("the gift radios are held with the language, and handed back with it", asyn
 test(
   "the wait between a built cart and the redirect cannot move either control",
   async () => {
-    // The other half of the same window. The claim is answered and the cart is loaded,
-    // but the page is still holding the code on screen long enough to read, and that wait
-    // is the last place a tap can land before the browser leaves. Everything in the cart
-    // is settled by then, so neither control may move.
+    // The cart is settled while the code is held on screen, so no control may move.
+    // docs/TESTS-GIFT-CART.md
     const page = await loadPage({ body: codeAnswer });
     await page.submit();
     await page.until(() => page.cartCalls().length === 3, "the cart to finish loading");
@@ -350,16 +332,8 @@ test("no_redirect=1 holds for the blocked choices too", async () => {
 });
 
 test("there is one road to a cart, and one to a cart link", async () => {
-  // What keeps every test above true for a road nobody has written yet. Two functions on
-  // this page can produce a cart, and the page calls each of them exactly once: the Ajax
-  // build inside completeWith, which takes what it loads from the page after aim has
-  // moved it, and the fallback link inside render, which moves the page onto what it
-  // carts when the visitor takes it.
-  //
-  // A sixth road that builds its own cart has to add a second call site, and that is this
-  // test failing while it is being written rather than a disagreement somebody finds a
-  // round later. It cannot check that a new call site went through aim, only that adding
-  // one is loud.
+  // One call site per cart builder, so a new road to a cart fails here while being written.
+  // docs/TESTS-GIFT-CART.md
   const source = readFileSync(join(import.meta.dir, "..", "public", "lp-aboard.js"), "utf8");
   const callsTo = (name: string) => source.split(`${name}(`).length - 1;
 

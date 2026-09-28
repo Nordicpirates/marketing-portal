@@ -1,13 +1,5 @@
-// Public gift-offer page /lp/aboard and its claim endpoint.
-//
-// This is the only PUBLIC part of the portal. Everything else in server.ts sits
-// behind the password gate; the retargeting audience arriving here has no login,
-// so server.ts routes /lp/* before the auth check on purpose.
-//
-// No Shopify and no Brevo calls happen here. Submissions land in a JSONL file on
-// the persistent volume and a separate process (Bengt, via Brevo) reads it. The
-// files themselves are in lib/lp-aboard-store.ts, and the authenticated routes the
-// emailer reads them through are in lib/lp-aboard-admin.ts.
+// Public gift-offer page /lp/aboard and its claim endpoint, the only PUBLIC part of the
+// portal. How it is reached and trusted: docs/GIFT-OFFER-WORKER.md
 
 import { existsSync } from "fs";
 import { join } from "path";
@@ -18,13 +10,8 @@ import { EDITIONS, OFFERS, buildCartUrl } from "./offer.js";
 
 const REPO_DIR = join(import.meta.dir, "..");
 
-// One code per offer, because they are two different Shopify BXGY rules: buying a
-// base game grants one free gift, buying the BIG BOX grants both. A single shared
-// code would let someone buying a base game claim both gifts.
-//
-// Rotatable without a code change: set GIFT_CODE_BASE / GIFT_CODE_BIGBOX in Studio
-// settings. The page never hardcodes either - it only shows the one code this
-// endpoint sends back, which is always the code for the offer that state is selling.
+// One code per offer, two BXGY rules, so a base game cannot claim both gifts; rotated
+// by env. docs/GIFT-OFFER-CLAIM.md
 const CODE_BASE = (process.env.GIFT_CODE_BASE || "KRAKEN-A7F2").trim();
 const CODE_BIGBOX = (process.env.GIFT_CODE_BIGBOX || "FULLHOLD-B642").trim();
 
@@ -45,49 +32,18 @@ const EUROPE = new Set([
 
 const BLOCKED_OFFERS = new Set(["base-kraken", "base-coins"]);
 
-// What the trusted hop says when it cannot place the visitor. An empty string is a
-// half-configured Worker; XX and T1 are Cloudflare's own, and it uses them for an
-// address that maps to no country and for a Tor exit node. All three mean "we do not
-// know", and none of them is in EUROPE, so believing them as countries sells the
-// English base game to exactly the visitor we decided not to guess about.
+// The hop's own words for "we do not know where this is", never read as a country.
+// docs/GIFT-OFFER-CLAIM.md
 const UNPLACEABLE = new Set(["", "XX", "T1"]);
 
-// Files the public page is allowed to pull. An explicit map, not a directory
-// walk, so a stray file in public/ can never become publicly readable.
-//
-// These are UPSTREAM paths. The public URL is https://nordicpirates.com/gift-offer
-// and the Cloudflare Worker rewrites it onto this service:
-//
-//   browser asks for            Worker sends us
-//   /gift-offer                 /lp/aboard
-//   /gift-offer/style.css       /lp/aboard/style.css
-//   /gift-offer/page.js         /lp/aboard/page.js
-//   /gift-offer/cart.js         /lp/aboard/cart.js
-//   /gift-offer/offer.js        /lp/aboard/offer.js
-//   /gift-offer/i18n.js         /lp/aboard/i18n.js
-//   /gift-offer/i18n-<lang>.js  /lp/aboard/i18n-<lang>.js
-//   /gift-offer/media/<file>    /lp/aboard/media/<file>
-//   POST /gift-offer/claim      POST /lp/aboard/claim
-//
-// So every path the PAGE emits is /gift-offer/... and every path THIS FILE knows
-// is /lp/aboard/... . They are meant to differ. page.js imports "./offer.js" and
-// "./cart.js", which the browser resolves against /gift-offer/page.js and therefore
-// asks for as /gift-offer/offer.js and /gift-offer/cart.js, which land here as
-// /lp/aboard/offer.js and /lp/aboard/cart.js.
-//
-// The media is served from this repo, not hotlinked from the mockup share space.
-// share.gate1.dev is where designs get reviewed; a live page that people are
-// being paid to visit cannot have its hero video disappear when a mockup is
-// tidied up. Markup and code stay on no-cache because they change; the media is
-// immutable once committed, so it gets a real cache lifetime instead of being
-// re-sent on every visit.
+// Upstream paths the Worker maps /gift-offer onto: docs/GIFT-OFFER-WORKER.md. An explicit
+// map so no stray file is public, media cached, code not: docs/GIFT-OFFER-ASSETS.md
 const NO_CACHE = "no-cache";
 const CACHE_MEDIA = "public, max-age=604800";
 const JS = "text/javascript; charset=utf-8";
 
-// The five languages the page sells in. Same list as LANGUAGES in
-// public/lp-aboard-i18n.js: a language the page can switch to and cannot fetch the
-// copy for would be a blank page in that language.
+// Same list as LANGUAGES in public/lp-aboard-i18n.js, or a language would render blank.
+// docs/GIFT-OFFER-ASSETS.md
 const LANGUAGE_ASSETS = ["en", "de", "it", "fr", "es"];
 
 const ASSETS: Record<string, { file: string; type: string; cache: string }> = {
@@ -119,19 +75,8 @@ function header(req: Request, name: string): string {
   return (req.headers.get(name) || "").trim();
 }
 
-// The pretty URL nordicpirates.com/lp/aboard reaches this service through a
-// Cloudflare Worker. On that hop the CF headers describe the worker, not the
-// person, so the worker forwards the real visitor as x-visitor-ip and
-// x-visitor-country.
-//
-// Those headers are just headers: anyone who can reach this origin directly can
-// send them. Believed unconditionally they would hand an attacker a new identity
-// per request - past the rate limit, past the Europe check, and straight into the
-// signup file. So they are believed ONLY when the request also carries the shared
-// secret the Worker holds. No secret, wrong secret, or no LP_PROXY_SECRET
-// configured on this side means we ignore them entirely and use the CF headers.
-//
-// Fails closed on purpose: an unset LP_PROXY_SECRET trusts nothing.
+// Forwarded visitor headers are believed only with the Worker's secret, and an unset
+// LP_PROXY_SECRET trusts nothing: fails closed. docs/GIFT-OFFER-WORKER.md
 const PROXY_SECRET = (process.env.LP_PROXY_SECRET || "").trim();
 
 if (!PROXY_SECRET) {
@@ -142,27 +87,18 @@ if (!PROXY_SECRET) {
   );
 }
 
-/**
- * True when this request proved it came through our Worker.
- *
- * The comparison itself lives in lib/secret.ts, because the emailer's door in
- * lib/lp-aboard-admin.ts checks its own secret exactly the same way and two copies
- * of a constant-time compare is one copy too many.
- */
+// True when this request proved it came through our Worker; the compare is shared with
+// lib/lp-aboard-admin.ts in secretMatches. docs/GIFT-OFFER-WORKER.md
 function proxyIsTrusted(req: Request): boolean {
   return secretMatches(header(req, "x-lp-proxy-secret"), PROXY_SECRET);
 }
 
-// Both of these are only ever called after the secret has been checked, so they
-// read the Worker's headers and nothing else. There is deliberately no fallback to
-// CF-Connecting-IP, X-Forwarded-For or CF-IPCountry: those are set by whoever can
-// reach this origin, and a claim decision must not rest on them.
+// Called only after the secret checks out, and deliberately with no fallback to headers
+// anyone can set. docs/GIFT-OFFER-WORKER.md
 function clientIp(req: Request): string {
   const visitor = header(req, "x-visitor-ip");
   if (visitor) return visitor;
-  // Authenticated but nothing forwarded. That is a broken Worker, not a visitor.
-  // Everyone lands in one rate-limit bucket until it is fixed, which is the safe
-  // way round.
+  // A broken Worker, not a visitor: one shared rate-limit bucket is the safe way round.
   console.warn("[lp/aboard] authenticated request carried no x-visitor-ip: check the Worker");
   return "unknown";
 }
@@ -223,27 +159,14 @@ async function readBody(req: Request): Promise<ClaimBody> {
   return out;
 }
 
-// Logs go to the container log, which is a far looser thing than the signup file:
-// it is shipped around, tailed in chat, and kept for as long as nobody prunes it.
-// So nothing identifying goes in one. No email, no country, no IP, no discount
-// code, no honeypot value, no raw request body. Only what the endpoint DID.
-//
-// Every stored submission gets an event id that goes into both the log line and
-// the JSONL row, so a line in the log can be tied back to its record by whoever
-// is allowed to open the protected file. The file stays the record; the log is
-// only ever a trace of what happened.
+// Logs carry nothing identifying; this id ties a log line to its stored row instead.
+// docs/GIFT-OFFER-CLAIM.md
 function newEventId(): string {
   return randomBytes(6).toString("hex");
 }
 
-/**
- * Append one submission to the JSONL store. Returns false if it did not land.
- *
- * The caller must not answer with a code when this returns false. The page tells
- * people the code is also on its way to their inbox, and the only thing that makes
- * that true is this file: the emailer reads it and nothing else. A code on screen
- * with no row in the file is a promise we have already broken.
- */
+// Append one submission; false means it did not land, and then no code may be shown.
+// docs/GIFT-OFFER-CLAIM.md
 function record(entry: Record<string, unknown>, event: string): boolean {
   try {
     appendSignup({ event, ...entry });
@@ -306,9 +229,8 @@ export function handleAsset(path: string, req?: Request): Response | null {
     let end: number;
 
     if (rawStart === "") {
-      // Suffix form. "bytes=-500" is the LAST 500 bytes, not the first 500. Getting
-      // this backwards hands the player the start of the file when it asked for the
-      // end, which for an mp4 is where the moov atom lives on a non-faststart file.
+      // Suffix form: "bytes=-500" is the LAST 500 bytes, where an mp4 may keep its moov atom.
+      // docs/GIFT-OFFER-ASSETS.md
       const suffix = parseInt(rawEnd, 10);
       if (!rawEnd || Number.isNaN(suffix) || suffix <= 0) return unsatisfiable();
       // A suffix longer than the file just means the whole file.
@@ -340,15 +262,8 @@ export function handleAsset(path: string, req?: Request): Response | null {
 }
 
 export async function handleClaim(req: Request): Promise<Response> {
-  // The claim endpoint is reachable only through the Cloudflare Worker, so it
-  // refuses anything that cannot prove it came from there. Nothing is parsed,
-  // nothing is stored, and no code is handed out until the secret checks out.
-  //
-  // Failing closed here rather than falling back to the CF headers is the whole
-  // point: at the origin those are just headers, and believing them would let
-  // anyone who can reach this host pick their own country and their own identity
-  // per request. An unset LP_PROXY_SECRET matches nothing, so an unconfigured
-  // deploy issues no codes at all rather than issuing them to everybody.
+  // Nothing is parsed, stored or issued until the Worker's secret checks out; unset, it
+  // matches nothing, so an unconfigured deploy issues no codes. docs/GIFT-OFFER-WORKER.md
   if (!proxyIsTrusted(req)) {
     console.warn("[lp/aboard] claim rejected reason=unauthenticated");
     return Response.json({ error: "Not available here" }, { status: 403 });
@@ -373,12 +288,8 @@ export async function handleClaim(req: Request): Promise<Response> {
     return Response.json({ error: "Bad request" }, { status: 400 });
   }
 
-  // This endpoint proves nothing about who owns the address it is given, so it
-  // must not carry an instruction about somebody's mailing list. Anyone could post
-  // a victim's address and have us write down that they asked to be re-subscribed.
-  // Any action field at all is refused, and no action is ever stored, so the Brevo
-  // job downstream has nothing here it could mistake for consent. Putting people
-  // back on a list needs a confirmed-email flow, which is not this.
+  // No proof of who owns the address, so no mailing-list instruction may ride along.
+  // docs/GIFT-OFFER-CLAIM.md
   if ("action" in body) {
     console.warn("[lp/aboard] claim rejected reason=action-not-accepted");
     return Response.json({ error: "Invalid action" }, { status: 400 });
@@ -396,27 +307,14 @@ export async function handleClaim(req: Request): Promise<Response> {
     return Response.json({ error: `Invalid ${problems.join(", ")}` }, { status: 400 });
   }
 
-  // The English Base Game is the one combination we cannot ship into Europe. If the
-  // trusted hop cannot tell us where the visitor is, we do not know whether this is
-  // allowed, and the honest answer to "we do not know" is not "yes". It used to read
-  // as "not in Europe" and sold them a box that would never arrive. Unknown lands on
-  // blocked, which offers the BIG BOX instead: worst case someone outside Europe is
-  // offered the wrong thing and can pick another edition, rather than being charged
-  // for something we cannot send.
-  //
-  // "Cannot tell us" is more than a missing header: see UNPLACEABLE. A country code
-  // that is not a country is the hop saying it does not know, in its own words.
-  //
-  // Only this combination is affected. A known country, any other edition and the
-  // BIG BOX all behave exactly as before.
+  // English Base Game with an unknown country lands on blocked: "we do not know" is not
+  // "yes". Nothing else changes. docs/GIFT-OFFER-CLAIM.md
   const restricted = edition === "en" && BLOCKED_OFFERS.has(offer);
   const countryKnown = !UNPLACEABLE.has(country);
 
   if (restricted && !countryKnown) {
-    // Which of the two it was, and not the header itself: countries stay out of this
-    // log like everything else identifying. A blank means the Worker is not forwarding
-    // the header at all; a code that is not a country means it is forwarding an answer
-    // Cloudflare could not give, and those need different people to fix them.
+    // Which kind of unknown, never the header: the two need different fixers.
+    // docs/GIFT-OFFER-CLAIM.md
     console.warn(
       `[lp/aboard] trusted hop could not place this visitor (${country ? "not a country" : "nothing sent"}), ` +
         "treating the English base game as not shippable: check the Worker forwards x-visitor-country"
@@ -426,24 +324,17 @@ export async function handleClaim(req: Request): Promise<Response> {
   const blocked = restricted && (!countryKnown || EUROPE.has(country));
   const state = blocked ? "blocked" : "code";
 
-  // The code issued for what they picked. This is the one that gets emailed, and
-  // for a blocked visitor it stays valid for the Base Game in any other edition -
-  // what the blocked copy calls "your original code".
+  // The code issued for what they picked, the one emailed; "your original code" when blocked.
   const issuedCode = CODE_BY_OFFER[offer];
 
-  // The blocked state does not offer what they picked, it offers the BIG BOX in the
-  // same edition, and a Base Game code does not fit a BIG BOX cart. So the state
-  // shows the BIG BOX code and the cart link carries it. Every other state shows and
-  // links the offer they actually chose.
+  // Blocked offers the BIG BOX, which a Base Game code does not fit, so it shows and links
+  // the BIG BOX code. docs/GIFT-OFFER-CLAIM.md
   const target = blocked
     ? { offer: "bigbox-both", edition, code: CODE_BIGBOX }
     : { offer, edition, code: issuedCode };
 
-  // Every submission is stored, blocked ones included. Blocked people still asked
-  // for a code, and Bengt still needs to mail it to them.
-  //
-  // Both codes are stored because they rotate and the emailer reads this file later, so
-  // it cannot re-derive them. What goes in the email per state: docs/GIFT-EMAIL.md.
+  // Every submission is stored, blocked too, with both codes since they rotate.
+  // docs/GIFT-OFFER-CLAIM.md, and per state what is emailed: docs/GIFT-EMAIL.md
   const event = newEventId();
   const stored = record(
     {
@@ -459,9 +350,7 @@ export async function handleClaim(req: Request): Promise<Response> {
     event
   );
 
-  // The write failed, so nobody is going to email this person anything. Saying
-  // "your code is on its way to your inbox" now would be a lie, and handing over a
-  // working code we have no record of issuing is worse. Ask them to try again.
+  // Not stored means never emailed, so no code and no inbox promise: ask them to retry.
   if (!stored) {
     return Response.json(
       { error: "We could not issue your code just now. Please try again in a moment." },
@@ -469,10 +358,8 @@ export async function handleClaim(req: Request): Promise<Response> {
     );
   }
 
-  // "code" and "cartUrl" always describe the state being shown, so they agree with
-  // each other. The page rebuilds the same link from the same shared module, so if
-  // these two ever disagree it is a bug in one of the two callers, not a mismatch
-  // the visitor can end up clicking.
+  // code and cartUrl describe the state shown, built from the same module the page uses.
+  // docs/GIFT-OFFER-CLAIM.md
   const cartUrl = buildCartUrl(target.offer, target.edition, target.code);
   if (!cartUrl) {
     console.error(
@@ -480,17 +367,8 @@ export async function handleClaim(req: Request): Promise<Response> {
     );
   }
 
-  // A blocked visitor is no longer handed one answer. The page asks them whether they
-  // want the same game in a language we can send or the BIG BOX in English, and each
-  // of those needs a different code: a Base Game cart wants the code they were issued,
-  // a BIG BOX cart wants the BIG BOX one. Both are already decided here, so the answer
-  // carries both rather than the page guessing or a second request going out.
-  //
-  // "code" and "cartUrl" mean exactly what they always did - the code and the cart of
-  // the BIG BOX this state offers - so nothing that reads this answer today changes.
-  // "baseCode" is the addition: the code this visitor was issued and will be emailed,
-  // the same value stored as "code" in the signup row. It rides along only on a blocked
-  // answer, because that is the only state with a choice left in it.
+  // A blocked visitor chooses between two carts, so baseCode rides along only then.
+  // docs/GIFT-OFFER-CLAIM.md
   const baseCode = blocked ? issuedCode : "";
 
   return Response.json({

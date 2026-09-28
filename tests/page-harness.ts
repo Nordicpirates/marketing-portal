@@ -1,16 +1,5 @@
-// The real gift page, loaded into a DOM and driven with real events.
-//
-// Nothing here re-implements the page. The only things faked are the browser pieces a
-// test process does not have, and each of them is faked so a test can DRIVE it (what
-// the claim endpoint answers, what Shopify's cart answers, what is on screen, where
-// the page scrolled, where it navigated), never so the page can avoid it.
-//
-// About the module copies: page.js imports "./offer.js", "./cart.js" and "./i18n.js",
-// which the browser resolves against /gift-offer/page.js and the server answers from
-// lib/ and public/. On disk those files are not siblings, so each test writes its own
-// copy of page.js, cart.js and i18n.js with those imports pointed at the real files. A
-// fresh filename per test is also what gets a fresh module: bun caches by path, and
-// this page runs its setup at import time.
+// The real gift page in a DOM, driven with real events; only missing browser pieces are
+// faked, so a test can drive them. Why each fake is shaped so: docs/TESTS-PAGE-HARNESS.md
 
 import { Window } from "happy-dom";
 import { mkdtempSync, readFileSync, writeFileSync } from "fs";
@@ -32,30 +21,16 @@ const OFFER_JS = join(REPO, "lib", "offer.js");
 /** The five the page ships, in the order the nav chips sit in. */
 export const LANGUAGES = ["en", "de", "it", "fr", "es"];
 
-/**
- * How long the page holds the code on screen before it navigates, read out of the page
- * itself. A test that hardcoded the number would keep passing against a page that had
- * quietly stopped waiting.
- */
+// How long the page holds the code before it navigates, read out of the page itself.
+// docs/TESTS-PAGE-HARNESS.md
 export const CODE_VISIBLE_MS = (() => {
   const match = /const CODE_VISIBLE_MS = (\d+);/.exec(PAGE_JS);
   if (!match) throw new Error("page.js no longer declares CODE_VISIBLE_MS, this read is stale");
   return Number(match[1]);
 })();
 
-/**
- * Per-test timeout for a test that waits out a real redirect. Pass it as the third
- * argument to `test()`.
- *
- * Bun's default is 5000ms and the page deliberately holds the code for CODE_VISIBLE_MS
- * before it navigates, so a test that drives one claim to the cart spends most of that
- * default doing exactly what it is there to check. Saying so per test is what keeps
- * `bun test` green with no flags: a suite that only passes when it is invoked a
- * particular way is a suite that is red for whoever invokes it the obvious way.
- *
- * Derived from the constant rather than typed out, so raising the hold cannot leave
- * these behind.
- */
+// Per-test timeout for a test that waits out a real redirect: the third argument to
+// test(). Why it exists and is derived: docs/TESTS-PAGE-HARNESS.md
 export const REDIRECT_TEST_MS = CODE_VISIBLE_MS * 4;
 
 /** Every copy table, the same objects the page itself imports. */
@@ -129,18 +104,8 @@ function freshPageModule(): string {
   return pagePath;
 }
 
-/**
- * Choose one of the boxes, the way a real radio group does it.
- *
- * The checked ATTRIBUTE is moved as well as the property because this DOM matches
- * "input:checked" against the attribute rather than against the live state of the
- * radio. A real browser matches the live state, which is why the page reads its
- * selection with that selector. Without this, every test would be submitting the box
- * that happens to be checked in the markup.
- *
- * The change event is dispatched here for the same reason a browser dispatches it
- * during the click: it fires before the click reaches anything around the radio.
- */
+// Choose a box the way a real radio group does, moving the checked attribute too.
+// Why the attribute and the change event: docs/TESTS-PAGE-HARNESS.md
 export function selectOffer(page: Page, id: string) {
   const input = page.document.getElementById(id);
   if (!input) throw new Error(`no offer input "${id}" on the page`);
@@ -155,18 +120,8 @@ export function selectOffer(page: Page, id: string) {
   return input;
 }
 
-/**
- * A visitor tapping one of the boxes, as a browser would deliver it.
- *
- * Two halves, and only one of them is the browser's to refuse. A click on a disabled
- * radio moves nothing: it stays unchecked, and so does the label wrapped around it. The
- * change event is dispatched either way, because a held control that still acted on the
- * event would be the same bug wearing a disabled attribute.
- *
- * selectOffer above is the other thing entirely: it puts the page into a state a test
- * wants to start from. Driving a tap with it would force through a control the page has
- * said is not the visitor's, and the test would be checking the harness instead.
- */
+// A visitor tapping a box as a browser delivers it: a disabled radio does not move.
+// How this differs from selectOffer: docs/TESTS-PAGE-HARNESS.md
 export function tapOffer(page: Page, id: string) {
   const input = page.document.getElementById(id);
   if (!input) throw new Error(`no offer input "${id}" on the page`);
@@ -225,13 +180,7 @@ export type Page = {
   claimAnswer: { status: number; body: any };
   /** What Shopify answers for a given path. Tests overwrite this to break the cart. */
   cartStatus: (path: string) => number;
-  /**
-   * Hold the claim answer in the air, and hand back the release.
-   *
-   * The request still goes out and is still recorded; only the answer waits. That gap
-   * is a real one on a real connection, and it is where a visitor's next tap lands, so
-   * it is the only way to drive what the page does while a claim is in flight.
-   */
+  /** Hold the claim answer in the air and hand back the release. docs/TESTS-PAGE-HARNESS.md */
   holdClaim: () => () => void;
   submit: () => Promise<void>;
   click: (el: any, detail?: number) => Promise<void>;
@@ -241,10 +190,8 @@ export type Page = {
   navigated: () => Promise<string>;
 };
 
-/**
- * Load the real page with a claim endpoint and a cart that answer whatever the test
- * says. `url` carries the query string, which is how ?no_redirect=1 gets tested.
- */
+// Load the real page with a claim endpoint and a cart that answer what the test says;
+// `url` carries the query string. docs/TESTS-PAGE-HARNESS.md
 export async function loadPage(answer: { status?: number; body: any }, url?: string): Promise<Page> {
   const window = new Window({
     url: url || "https://nordicpirates.com/gift-offer",
@@ -313,9 +260,8 @@ export async function loadPage(answer: { status?: number; body: any }, url?: str
     });
   };
 
-  // The browser's own email validation is not what these tests are about, and
-  // happy-dom does not run it. The page's own "is this address usable" question is
-  // the endpoint's, and it has its own tests.
+  // Browser email validation is not under test and happy-dom does not run it; the
+  // endpoint owns that question. docs/TESTS-PAGE-HARNESS.md
   const email = document.getElementById("email");
   email.checkValidity = () => true;
   email.value = "crew@example.com";
@@ -374,9 +320,8 @@ export async function loadPage(answer: { status?: number; body: any }, url?: str
     text: () => document.getElementById("result").textContent.replace(/\s+/g, " ").trim(),
     scrolledTo: (el: any) => scrolls.find((s) => s.target === el)?.options,
     async until(check: () => boolean, what: string) {
-      // Comfortably past CODE_VISIBLE_MS in the page: a successful claim deliberately
-      // holds the code on screen for a couple of seconds before it navigates, so a
-      // wait that expired at three seconds would be racing the thing under test.
+      // Comfortably past CODE_VISIBLE_MS, so the wait never races the hold under test.
+      // docs/TESTS-PAGE-HARNESS.md
       for (let waited = 0; waited < 15000; waited += 10) {
         if (check()) return;
         await new Promise((done) => setTimeout(done, 10));
