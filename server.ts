@@ -77,13 +77,25 @@ function authToken(password: string): string {
   return createHash("sha256").update("np-hq-" + password).digest("hex");
 }
 
+// Every value of a cookie named exactly "auth" that is 64 lowercase hex. There can be more
+// than one when a sibling subdomain plants its own. docs/SERVER-SECRETS.md, "The staff login"
+function authCookies(req: Request): string[] {
+  const values: string[] = [];
+  for (const pair of (req.headers.get("cookie") || "").split(";")) {
+    const eq = pair.indexOf("=");
+    if (eq < 0 || pair.slice(0, eq).trim() !== "auth") continue;
+    const value = pair.slice(eq + 1).trim();
+    if (/^[0-9a-f]{64}$/.test(value)) values.push(value);
+  }
+  return values;
+}
+
 function checkAuth(req: Request): boolean {
   // Never a token from an empty password: sha256("np-hq-") is a constant anyone can compute.
   const password = configuredSecret("AUTH_PASSWORD");
   if (!password) return false;
-  const cookie = req.headers.get("cookie") || "";
-  const match = cookie.match(/auth=([a-f0-9]{64})/);
-  return match ? secretMatches(match[1], authToken(password)) : false;
+  const token = authToken(password);
+  return authCookies(req).some((value) => secretMatches(value, token));
 }
 
 // One host in the single spelling the URL parser gives it, port dropped on purpose.
