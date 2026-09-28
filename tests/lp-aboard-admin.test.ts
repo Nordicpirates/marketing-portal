@@ -1,16 +1,5 @@
-// Tests for the emailer's two routes: the authenticated signup reader and the sent
-// ledger. Straight off the acceptance criteria in issue #4.
-//
-// The handlers are called directly with Request objects. No server is started,
-// except for one child process that checks what an unset LP_ADMIN_SECRET does,
-// which cannot be checked in here: the module reads the secret once at import.
-//
-// About the store: bun test shares one module cache across test files, so the first
-// test file to import lib/state-dir.ts fixes STATE_DIR for the whole run. Which file
-// that is depends on the order bun happens to load them in. So this file never
-// assumes the store is empty, never assumes it owns it, and asks the store module
-// where its files are instead of rebuilding the paths from a scratch dir here. Every
-// assertion below is about rows this file wrote, found by their own event ids.
+// The emailer's two routes, called as handlers; the store is shared with other files, so
+// every assertion is about rows this file wrote. docs/TESTS-GIFT-EMAIL-ROUTES.md
 
 import { test, expect, beforeAll } from "bun:test";
 import { appendFileSync, chmodSync, existsSync, mkdtempSync, readFileSync, writeFileSync } from "fs";
@@ -35,9 +24,8 @@ let appendSignup: (row: Record<string, unknown>) => void;
 let SENT_FILE: string;
 
 beforeAll(async () => {
-  // Set again here, not only at the top of the file: top level code of every test
-  // file runs before any of them import anything, so this is the last moment before
-  // the module reads it.
+  // Set again: the last moment before the module reads it at import.
+  // docs/TESTS-GIFT-EMAIL-ROUTES.md, setting the secret twice
   process.env.LP_ADMIN_SECRET = ADMIN_SECRET;
 
   const admin = await import("../lib/lp-aboard-admin.ts");
@@ -120,10 +108,8 @@ function sentLedgerLines(): Record<string, any>[] {
 }
 
 test("both routes refuse anything that is not the emailer, and leak nothing", async () => {
-  // Same table as the claim endpoint's: no secret, a wrong one, a near miss on
-  // length, an empty one. Plus the Worker's header name, which must not open this
-  // door: that secret only proves a request came through the edge, it is not
-  // permission to read everybody's email address.
+  // The claim endpoint's refusal table, plus the Worker's header, which must not open
+  // this door. docs/TESTS-GIFT-EMAIL-ROUTES.md
   const attempts: Record<string, Record<string, string>> = {
     "no headers at all": {},
     "wrong secret": { "x-lp-admin-secret": "not-the-secret" },
@@ -167,9 +153,8 @@ test("both routes refuse anything that is not the emailer, and leak nothing", as
 });
 
 test("an unset LP_ADMIN_SECRET refuses everybody, it does not let everybody in", () => {
-  // The module reads the secret once at import, so this cannot be checked in this
-  // process: something has already imported it with a secret set. A child process
-  // with no LP_ADMIN_SECRET in its environment is the real thing.
+  // A child process with no LP_ADMIN_SECRET is the real unconfigured deploy.
+  // docs/TESTS-GIFT-EMAIL-ROUTES.md, an unset secret refuses everybody
   const probeDir = mkdtempSync(join(tmpdir(), "lp-admin-unset-"));
   const script = join(probeDir, "probe.ts");
   writeFileSync(
@@ -495,9 +480,8 @@ test("logs carry no emails, no codes and no secret, only counts and event ids", 
 });
 
 test("a broken line in the store is reported, not silently skipped", async () => {
-  // Nothing writes a half line today, but a full disk could. The emailer must be
-  // told the file has a line nobody can read rather than being handed a short list
-  // that looks complete.
+  // A full disk could write a half line; the emailer must hear of it, not get a short
+  // list that looks complete. docs/TESTS-GIFT-EMAIL-ROUTES.md
   const good = fixture();
 
   const { SIGNUPS_FILE } = await import("../lib/lp-aboard-store.ts");
