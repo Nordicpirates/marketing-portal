@@ -74,7 +74,8 @@ function bareHost(value: string): string {
   const first = (value || "").split(",")[0].trim();
   if (!first) return "";
   try {
-    return new URL(`http://${first}`).hostname.toLowerCase();
+    // The parser keeps a fully qualified name's trailing dot, but it is the same DNS name.
+    return new URL(`http://${first}`).hostname.toLowerCase().replace(/\.$/, "");
   } catch {
     // Not a host at all. Never returns something that could accidentally match.
     return "";
@@ -267,6 +268,13 @@ const server = Bun.serve({
       return new Response("", { status: 302, headers: { Location: "/login" } });
     }
 
+    // Every portal write passes this one guard; POST only, since a browser preflights the
+    // other methods and nothing answers OPTIONS. docs/CROSS-SITE.md
+    if (req.method === "POST" && path.startsWith("/api/")) {
+      const refusal = crossSiteRefusal(req, url);
+      if (refusal) return refusal;
+    }
+
     if (path === "/logout") {
       return new Response("", {
         status: 302,
@@ -302,8 +310,8 @@ const server = Bun.serve({
 
     if (path === "/api/tasks") {
       if (req.method === "POST") {
-        const body = await req.json().catch(() => ({}));
-        if (!body.id || typeof body.done !== "boolean")
+        const body = await req.json().catch(() => null);
+        if (!body || typeof body !== "object" || Array.isArray(body) || !body.id || typeof body.done !== "boolean")
           return Response.json({ error: "need id + done" }, { status: 400 });
         return Response.json(setTask(body.id, body.done));
       }
@@ -315,9 +323,6 @@ const server = Bun.serve({
     if (path === "/api/ideas") {
       return ideasResponse(async () => {
         if (req.method === "POST") {
-          const refusal = crossSiteRefusal(req, url);
-          if (refusal) return refusal;
-
           const body = await req.json().catch(() => null);
           // Valid JSON that is not an object is the caller's mistake: 400, never a 500.
           // docs/ERROR-ANSWERS.md
@@ -347,8 +352,6 @@ const server = Bun.serve({
     // with 503 and never throws. docs/ERROR-ANSWERS.md
     if (path === "/api/shipments") {
       if (req.method === "POST") {
-        const refusal = crossSiteRefusal(req, url);
-        if (refusal) return refusal;
         if (!shipmentsConfigured()) {
           console.warn("[shipments] refused a POST: NOTION_PORTAL_TOKEN is not set");
           return Response.json(
