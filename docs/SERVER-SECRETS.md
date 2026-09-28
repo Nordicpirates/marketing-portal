@@ -47,6 +47,16 @@ alone, and why the emailer route tests used to set their secret twice. Two modul
 reading their own variable their own way is the shape that let it happen twice, so there
 is one reader.
 
+Only an own property of `process.env` counts. Bun's `process.env` inherits from
+`Object.prototype`, so a plain `process.env[name]` for an UNSET variable would return
+whatever something had put on `Object.prototype` under that name. If anything ever
+polluted the prototype at runtime, an unconfigured door would then accept a secret the
+attacker chose, and reading per request is what would make that reachable. So
+`configuredSecret` reads `process.env[name]` only when `Object.hasOwn(process.env, name)`
+is true, and anything inherited reads as the empty string.
+`tests/lp-aboard-secret.test.ts` pollutes the prototype with both variables unset and
+checks that the reader returns "" and that the claim and both emailer routes refuse.
+
 Production does not change. Its environment is fixed for the life of the process, so
 reading per request gives the same value every time, and an unset or blank secret reads
 as the empty string, which `secretMatches` never accepts: both doors still fail closed.

@@ -191,18 +191,64 @@ export type Page = {
 };
 
 // Every global loadPage replaces, and what each one was before the first page loaded.
-const PAGE_GLOBALS = ["window", "document", "navigator", "IntersectionObserver", "fetch"];
+const PAGE_GLOBALS = [
+  "window", "document", "navigator", "IntersectionObserver", "fetch",
+  "setTimeout", "clearTimeout", "setInterval", "clearInterval",
+];
 let originalGlobals: Map<string, PropertyDescriptor | undefined> | null = null;
+
+// Bun's own timers, and what the pages scheduled with them while they were live.
+const bunTimers = { setTimeout, clearTimeout, setInterval, clearInterval };
+const pendingTimeouts = new Set<any>();
+const liveIntervals = new Set<any>();
+const liveWindows: any[] = [];
+
+// How long a restore waits for a page's own timers: past its redirect hold, with room.
+export const RESTORE_WAIT_MS = CODE_VISIBLE_MS + 1000;
 
 function savePageGlobals() {
   if (originalGlobals) return;
   originalGlobals = new Map(PAGE_GLOBALS.map((key) => [key, Object.getOwnPropertyDescriptor(globalThis, key)]));
+
+  const globals = globalThis as any;
+  globals.setTimeout = (run: (...args: any[]) => void, ms?: number, ...args: any[]) => {
+    const timer = bunTimers.setTimeout(() => {
+      pendingTimeouts.delete(timer);
+      run(...args);
+    }, ms);
+    pendingTimeouts.add(timer);
+    return timer;
+  };
+  globals.clearTimeout = (timer: any) => {
+    pendingTimeouts.delete(timer);
+    bunTimers.clearTimeout(timer);
+  };
+  globals.setInterval = (run: (...args: any[]) => void, ms?: number, ...args: any[]) => {
+    const timer = bunTimers.setInterval(run, ms, ...args);
+    liveIntervals.add(timer);
+    return timer;
+  };
+  globals.clearInterval = (timer: any) => {
+    liveIntervals.delete(timer);
+    bunTimers.clearInterval(timer);
+  };
 }
 
-// Put back every global loadPage replaced; a file that loads a page calls this in afterAll.
-// docs/TESTS-PAGE-HARNESS.md, "Globals the harness replaces"
-export function restorePageGlobals() {
+// Let the pages' pending timers fire, redirects above all, then put back every global.
+// Awaited in afterAll. docs/TESTS-PAGE-HARNESS.md, "Globals the harness replaces"
+export async function restorePageGlobals() {
   if (!originalGlobals) return;
+
+  for (let waited = 0; pendingTimeouts.size > 0 && waited < RESTORE_WAIT_MS; waited += 10) {
+    await new Promise((done) => bunTimers.setTimeout(done, 10));
+  }
+  // Past the bound nothing more is waited for: it is stopped, never left to fire later.
+  for (const timer of pendingTimeouts) bunTimers.clearTimeout(timer);
+  for (const timer of liveIntervals) bunTimers.clearInterval(timer);
+  pendingTimeouts.clear();
+  liveIntervals.clear();
+  await Promise.all(liveWindows.splice(0).map((window) => window.happyDOM.abort()));
+
   for (const [key, descriptor] of originalGlobals) {
     if (descriptor) Object.defineProperty(globalThis, key, descriptor);
     else delete (globalThis as any)[key];
@@ -249,6 +295,7 @@ export async function loadPage(answer: { status?: number; body: any }, url?: str
   FakeObserver.live = [];
 
   savePageGlobals();
+  liveWindows.push(window);
   const globals = globalThis as any;
   globals.window = window;
   globals.document = document;

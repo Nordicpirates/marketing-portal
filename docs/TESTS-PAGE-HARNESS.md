@@ -79,22 +79,52 @@ this address usable" question is the endpoint's, and it has its own tests.
 
 `loadPage` sets these on `globalThis`, because the page is an ES module and reads them as
 bare globals: `window`, `document`, `navigator`, `IntersectionObserver` (the test-driven
-`FakeObserver`) and `fetch` (the fake claim endpoint and Shopify cart). The page sees the
-fakes for as long as the file that loaded it is running.
+`FakeObserver`) and `fetch` (the fake claim endpoint and Shopify cart). It also wraps
+`setTimeout`, `clearTimeout`, `setInterval` and `clearInterval`, which still use Bun's own
+timers but record what the pages schedule. The page sees all of this for as long as the
+file that loaded it is running.
 
 They must not outlive that file. `bun test tests/` runs every file in one process, so a
 fake `fetch` left behind answers the next file's requests: a test that starts the real
 server and logs in gets the fake's 200 instead of the server's 302.
 
 So the first `loadPage` of a file records each global's property descriptor as it was
-(`fetch` and `navigator` are Bun's own; `window`, `document` and `IntersectionObserver`
-do not exist), and `restorePageGlobals()` puts every one back exactly: the same object,
-or no property at all. Every file that calls `loadPage` calls it once, at the top level:
-`afterAll(restorePageGlobals)`. A new page test file must do the same, and
-`tests/page-globals.test.ts` checks the restore itself.
+(`fetch`, `navigator` and the four timer functions are Bun's own; `window`, `document`
+and `IntersectionObserver` do not exist), and `restorePageGlobals()` puts every one back
+exactly: the same object, or no property at all. Every file that calls `loadPage` calls
+it once, at the top level: `afterAll(restorePageGlobals)`.
+`tests/page-globals.test.ts` checks the restore itself, and fails for any test file that
+imports `loadPage` from the harness without that line, so forgetting it in a new page
+test file is a red suite rather than the fetch leak coming back.
 
-Why a line in each file rather than something the harness does alone, measured on
-Bun 1.3.11: the harness module is evaluated once per run, so an `afterAll` at its top
-level fires only for the first file that imports it; an `afterAll` registered from inside
-a test fires right after that test, and one registered from a `beforeAll` fires at once;
-and an `afterAll` in a `bunfig.toml` preload fires once, after the whole run.
+## A page's own pending work settles before its globals go
+
+A page can still have work scheduled when its test ends. The redirect is the one that
+matters: after a claim the page waits `CODE_VISIBLE_MS` (2500 ms) with `setTimeout`, then
+calls bare `window.location.assign`, and its error path touches bare `document`. If the
+restore deleted `window` and `document` first, that timer fired about 2.5 s later into
+whatever file ran next and failed it with "window is not defined", charged to a test that
+had nothing to do with it. That happened to any page test that ended before its redirect,
+including one that failed halfway.
+
+So `restorePageGlobals()` is async and does three things before it puts anything back:
+
+1. It waits, for at most `RESTORE_WAIT_MS` (`CODE_VISIBLE_MS` plus one second), until
+   every timeout a page scheduled has fired. The fakes are all still in place while it
+   waits, so a pending redirect lands in the page's own `navigations`, exactly as it would
+   have inside the test. The wait itself uses Bun's own `setTimeout`, not the recording
+   one, or it would wait on itself.
+2. Whatever is still pending after that bound, and every interval, is cleared: stopped,
+   never left to fire later into Bun's own globals.
+3. Each page's happy-dom window is aborted, which cancels that window's own timers and
+   animation frames.
+
+A file with nothing pending pays nothing: the wait ends as soon as the set is empty.
+
+## Why a line in each file
+
+Measured on Bun 1.3.11: the harness module is evaluated once per run, so an `afterAll` at
+its top level fires only for the first file that imports it; an `afterAll` registered
+from inside a test fires right after that test, and one registered from a `beforeAll`
+fires at once; and an `afterAll` in a `bunfig.toml` preload fires once, after the whole
+run. None of those gives "once that file is done", so the file says it itself.

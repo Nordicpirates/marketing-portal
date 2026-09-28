@@ -14,7 +14,8 @@ const ADMIN_WARNING = "[lp/aboard admin] LP_ADMIN_SECRET is not set: every reque
 const GOOD_CLAIM = JSON.stringify({ email: "crew@example.com", offer: "base-kraken", edition: "de" });
 const SIGNUPS = "http://localhost/lp/aboard/signups";
 
-if (!process.env.STATE_DIR) process.env.STATE_DIR = SERVER_STATE;
+// The modules imported here get their own store, apart from the spawned server's.
+if (!process.env.STATE_DIR) process.env.STATE_DIR = mkdtempSync(join(tmpdir(), "lp-aboard-secret-process-"));
 
 /** Run `body` with one env var set or removed, then put it back as it was. */
 async function withEnv(name: string, value: string | undefined, body: () => Promise<void> | void) {
@@ -41,6 +42,67 @@ describe("configuredSecret, the one reader both doors use", () => {
     for (const value of [undefined, "", "   "]) {
       await withEnv(NAME, value, () => expect({ value, read: configuredSecret(NAME) }).toEqual({ value, read: "" }));
     }
+  });
+});
+
+describe("a polluted Object.prototype never configures a door", () => {
+  const CHOSEN = "attacker-chosen-9f41";
+  const NAMES = ["LP_PROXY_SECRET", "LP_ADMIN_SECRET"];
+  let handleClaim: (req: Request) => Promise<Response>;
+  let handleSignups: (req: Request) => Response;
+  let handleMarkSent: (req: Request) => Promise<Response>;
+
+  beforeAll(async () => {
+    handleClaim = (await import("../lib/lp-aboard.ts")).handleClaim;
+    ({ handleSignups, handleMarkSent } = await import("../lib/lp-aboard-admin.ts"));
+  });
+
+  /** Both variables unset, Object.prototype carrying CHOSEN under each name, always cleaned up. */
+  async function polluted(body: () => Promise<void>) {
+    const saved = NAMES.map((name) => process.env[name]);
+    for (const name of NAMES) {
+      delete process.env[name];
+      (Object.prototype as any)[name] = CHOSEN;
+    }
+    try {
+      await body();
+    } finally {
+      NAMES.forEach((name, i) => {
+        delete (Object.prototype as any)[name];
+        if (saved[i] === undefined) delete process.env[name];
+        else process.env[name] = saved[i];
+      });
+    }
+  }
+
+  test("the inherited value is visible on process.env, and configuredSecret ignores it", async () => {
+    await polluted(async () => {
+      expect((process.env as any).LP_PROXY_SECRET).toBe(CHOSEN);
+      expect(configuredSecret("LP_PROXY_SECRET")).toBe("");
+      expect(configuredSecret("LP_ADMIN_SECRET")).toBe("");
+    });
+    expect("LP_PROXY_SECRET" in {}).toBe(false);
+  });
+
+  test("the claim and both emailer routes refuse the attacker's value", async () => {
+    await polluted(async () => {
+      const claim = await handleClaim(
+        new Request("http://localhost/lp/aboard/claim", {
+          method: "POST",
+          headers: { "content-type": "application/json", "x-lp-proxy-secret": CHOSEN, "x-visitor-ip": "198.51.100.71" },
+          body: GOOD_CLAIM,
+        })
+      );
+      const read = handleSignups(new Request(SIGNUPS, { headers: { "x-lp-admin-secret": CHOSEN } }));
+      const mark = await handleMarkSent(
+        new Request(`${SIGNUPS}/mark-sent`, {
+          method: "POST",
+          headers: { "content-type": "application/json", "x-lp-admin-secret": CHOSEN },
+          body: JSON.stringify({ events: [] }),
+        })
+      );
+      expect({ claim: claim.status, read: read.status, mark: mark.status }).toEqual({ claim: 403, read: 403, mark: 403 });
+    });
   });
 });
 
