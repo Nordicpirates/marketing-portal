@@ -24,6 +24,10 @@ endpoint is a free way to make us hold rubbish in memory.
 `addIdea`, where reading `.brand` off `null` threw and answered 500. A malformed body is
 the caller's mistake, so the ideas route says so with a 400 and writes nothing.
 
+`POST /api/tasks` had the same hole: a body of `null` reached `body.id` and answered 500.
+It now answers its existing 400 (`need id + done`) for `null`, a string, a number or an
+array, and writes nothing.
+
 ## The ideas store cannot be used: 503, `ideasResponse`
 
 The store throws on purpose rather than reading a file it does not recognise, and an

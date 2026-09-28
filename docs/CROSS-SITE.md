@@ -1,9 +1,23 @@
 # Cross-site writes: the guard in front of every portal POST
 
-The portal's writes (`POST /api/ideas`, `POST /api/shipments`) pass `crossSiteRefusal` in
-`server.ts`, which refuses a state-changing request that a browser made on behalf of
-another site, or that does not say it is sending JSON. It returns null when the request
-may proceed.
+`crossSiteRefusal` in `server.ts` refuses a state-changing request that a browser made on
+behalf of another site, or that does not say it is sending JSON. It returns null when the
+request may proceed.
+
+## Where it runs: once, in the router
+
+The router calls it exactly once, right after the auth check, for every `POST` whose path
+starts with `/api/`. No route calls it for itself. Guarding routes one at a time is how
+`POST /api/tasks` was missed while `/api/ideas` and `/api/shipments` were guarded, and the
+next POST route would be missed the same way. Being in the router, it also covers a POST
+to a read-only path such as `/api/data`: that answers 403 or 415 the same way.
+
+Auth runs first, so a request with no valid cookie is answered 401 before any 403 or 415.
+
+POST only, deliberately. It is the only state-changing method a browser can send
+cross-origin without a preflight. PUT, PATCH and DELETE are always preflighted, and nothing
+here answers OPTIONS, so a browser never sends them cross-origin. A PUT or DELETE on
+`/api/ideas` or `/api/shipments` still reaches the route and gets its 405.
 
 ## The gap this closes, and why the cookie alone does not
 
@@ -56,6 +70,14 @@ Dropping the port means a different port on the SAME host name counts as ours. T
 the deliberate trade: a live deployment terminates TLS in front of this process, so the
 port seen here is never the port the browser used, and no comparison that keeps it can be
 right. Different host names, which is what a hostile page actually has, still differ.
+
+One trailing dot is stripped after parsing. A fully qualified name ends in a dot and is
+the same DNS name without it, but the parser keeps it
+(`new URL("http://marketing.nordicpirate.com./").hostname` is
+`"marketing.nordicpirate.com."`), and the live proxy serves that spelling. Without the
+strip, `X-Forwarded-Host: marketing.nordicpirate.com.` against
+`Origin: https://marketing.nordicpirate.com` was a 403. A genuinely different host, with
+or without the dot, still differs.
 
 A proxy chain arrives as `first, second`; the first entry is the one the client used. A
 value that is not a host at all becomes `""`, which never matches anything.
