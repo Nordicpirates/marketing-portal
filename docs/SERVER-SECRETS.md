@@ -68,9 +68,8 @@ as the empty string, which `secretMatches` never accepts: every door still fails
 
 Each door still reads its secret once at import, only to warn: when it is unset, the log
 says every request to that door will be refused (403 for the two server-to-server doors,
-401 for the staff login). That read decides nothing. An
-operator starting the service is the one who needs to hear it, and startup is when they
-are looking.
+401 for the staff login). That read decides nothing. An operator starting the service is
+the one who needs to hear it, and startup is when they are looking.
 
 `tests/lp-aboard-secret.test.ts` checks all of it: the reader itself, the real server with
 both secrets unset (every claim and both emailer routes answer 403, both warnings are
@@ -80,8 +79,8 @@ import refuses, on both doors.
 ## The staff login
 
 `AUTH_PASSWORD` is the one shared staff password. There is no fallback in the source: with
-it unset or blank, every login answers the login page with 401, every `auth` cookie is
-refused, and `server.ts` logs a warning at startup, the same way the two server-to-server
+it unset, empty (`AUTH_PASSWORD=` with nothing after it) or blank, every login answers the
+login page with 401, every `auth` cookie is refused, and `server.ts` logs a warning at startup, the same way the two server-to-server
 doors warn and refuse. A default password written in the repository would have been a
 door that fails open, and because the cookie is derived from the password, knowing the
 default would also have meant knowing a valid cookie.
@@ -92,16 +91,27 @@ cannot lock anybody out.
 
 **The cookie is not.** `auth` holds `sha256("np-hq-" + password)` in hex, where `password`
 is the configured value, trimmed and NOT lowercased. `checkAuth` recomputes it from the
-configured password on every request and compares with `secretMatches`. That derivation,
-the cookie name and its attributes (`HttpOnly; Secure; SameSite=Lax; Max-Age=2592000;
-Path=/`) are exactly what they were before the login moved onto this door, so a cookie
-issued before the change is still accepted with the same password and nobody is signed
-out. Changing any of them signs every staff member out.
+configured password on every request and compares it with each `auth` value through
+`secretMatches`. That derivation, the cookie name and its attributes (`HttpOnly; Secure;
+SameSite=Lax; Max-Age=2592000; Path=/`) are exactly what they were before the login moved
+onto this door, so a cookie issued before the change is still accepted with the same
+password and nobody is signed out. Changing any of them signs every staff member out.
+
+**The Cookie header is parsed, not searched.** `authCookies` splits it into name=value
+pairs and keeps only the values of pairs named exactly `auth` that are exactly 64
+lowercase hex characters; `checkAuth` accepts the request if ANY of them matches through
+`secretMatches`. A search for the first `auth=` followed by 64 hex characters used to
+accept `xauth=<token>`, `foo=auth=<token>`, `auth=<token>zz` and `auth=<token>0`. It also
+refused `auth=<64 zeros>; auth=<token>`, so a cookie planted from a sibling subdomain,
+which the browser sends ahead of the real one, could sign a staff member out. Now it
+cannot.
 
 **No token is ever computed from an empty password.** `sha256("np-hq-")` is a constant
 anyone can compute, so `checkAuth` refuses outright when no password is configured,
 before it hashes anything.
 
 Rate limiting, lockouts and a second factor are not here; they are a separate concern.
-`tests/staff-login.test.ts` starts the real server with the password unset, blank and set,
-and checks every point above.
+`tests/staff-login.test.ts` starts the real server with the password unset, empty, blank
+and set, and checks every point above. It also reads `server.ts` and fails if anything
+defaults the password: an `||` or `??` after `configuredSecret("AUTH_PASSWORD")`, or any
+other read of `process.env.AUTH_PASSWORD`.

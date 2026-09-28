@@ -54,8 +54,9 @@ function server(authPassword: string | undefined) {
     form.set("password", password);
     return fetch(`${state.base}/login`, { method: "POST", body: form, redirect: "manual" });
   };
-  const withCookie = (path: string, token: string) =>
-    fetch(state.base + path, { headers: { cookie: `auth=${token}` }, redirect: "manual" });
+  const withCookieHeader = (path: string, header: string) =>
+    fetch(state.base + path, { headers: { cookie: header }, redirect: "manual" });
+  const withCookie = (path: string, token: string) => withCookieHeader(path, `auth=${token}`);
   const stop = async () => {
     state.proc.kill();
     await state.proc.exited;
@@ -63,7 +64,7 @@ function server(authPassword: string | undefined) {
     return state.stderr;
   };
 
-  return { login, withCookie, stop };
+  return { login, withCookie, withCookieHeader, stop };
 }
 
 test("no source file carries the old default password", () => {
@@ -80,8 +81,20 @@ test("no source file carries the old default password", () => {
   expect(found).toEqual([]);
 });
 
+test("nothing in server.ts defaults the password, whatever the default would be", () => {
+  const source = readFileSync(join(REPO, "server.ts"), "utf8");
+  const reads = [...source.matchAll(/configuredSecret\(\s*["']AUTH_PASSWORD["']\s*\)/g)];
+  expect(reads.length).toBeGreaterThanOrEqual(2);
+  for (const read of reads) {
+    const after = source.slice(read.index! + read[0].length).trimStart();
+    expect({ at: read.index, defaulted: after.startsWith("||") || after.startsWith("??") }).toEqual({ at: read.index, defaulted: false });
+  }
+  expect(source).not.toMatch(/process\.env\s*(\.\s*AUTH_PASSWORD|\[\s*["']AUTH_PASSWORD["']\s*\])/);
+});
+
 for (const [label, value] of [
   ["unset", undefined],
+  ["empty, AUTH_PASSWORD= with nothing after it,", ""],
   ["blank", "   "],
 ] as const) {
   describe(`AUTH_PASSWORD ${label}: nobody gets in`, () => {
@@ -150,6 +163,35 @@ describe("AUTH_PASSWORD set: staff get in exactly as before", () => {
     for (const token of [tampered, oldWayToken(PASSWORD.toLowerCase()), oldWayToken(""), oldWayToken(OLD_DEFAULT)]) {
       expect({ token, status: (await s.withCookie("/api/data", token)).status }).toEqual({ token, status: 401 });
       expect({ token, status: (await s.withCookie("/", token)).status }).toEqual({ token, status: 302 });
+    }
+  });
+
+  test("the Cookie header is parsed: only a pair named exactly auth with exactly 64 hex counts", async () => {
+    const good = oldWayToken(PASSWORD);
+    const zeros = "0".repeat(64);
+    for (const header of [`xauth=${good}`, `foo=auth=${good}`, `auth=${good}zz`, `auth=${good}0`, `auth=${good.toUpperCase()}`, `auth =x${good}`]) {
+      expect({ header, status: (await s.withCookieHeader("/api/data", header)).status }).toEqual({ header, status: 401 });
+      expect({ header, status: (await s.withCookieHeader("/", header)).status }).toEqual({ header, status: 302 });
+    }
+    // A planted cookie from a sibling subdomain, ahead of or behind the real one, cannot sign staff out.
+    for (const header of [`auth=${zeros}; auth=${good}`, `auth=${good}; auth=${zeros}`]) {
+      expect({ header, status: (await s.withCookieHeader("/api/data", header)).status }).toEqual({ header, status: 200 });
+    }
+  });
+
+  test("a browser's normal auth cookie works alone and among other cookies", async () => {
+    const good = oldWayToken(PASSWORD);
+    for (const header of [`auth=${good}`, `theme=dark; auth=${good}; _ga=GA1.2.3`, `_ga=GA1.2.3;auth=${good}`, ` auth=${good} `]) {
+      expect({ header, page: (await s.withCookieHeader("/", header)).status }).toEqual({ header, page: 200 });
+      expect({ header, api: (await s.withCookieHeader("/api/data", header)).status }).toEqual({ header, api: 200 });
+    }
+  });
+
+  test("nothing that lacks the real token gets in", async () => {
+    const good = oldWayToken(PASSWORD);
+    const zeros = "0".repeat(64);
+    for (const header of ["", "auth=", `auth=${zeros}`, `auth=${zeros}; auth=${oldWayToken(OLD_DEFAULT)}`, `session=${good}`, `auth=${good.slice(1)}`, `${good}`, "auth=; auth=;"]) {
+      expect({ header, status: (await s.withCookieHeader("/api/data", header)).status }).toEqual({ header, status: 401 });
     }
   });
 
