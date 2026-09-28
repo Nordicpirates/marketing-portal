@@ -1,0 +1,26 @@
+# The routes that sit ahead of the staff password
+
+Almost everything in `server.ts` is behind the staff password. The routes under `/lp/`
+are not, and they are matched before the password gate on purpose.
+
+## The gift offer page: `/lp/aboard`
+
+`/lp/aboard` is the gift offer page for people arriving from a retargeting ad. They have
+no login and never will, so nothing under `/lp/` may be sent to `/login`.
+
+A trailing slash is accepted on every `/lp/` path: an ad platform or a person will
+eventually add one.
+
+## The emailer's two routes
+
+`/lp/aboard/signups` and `/lp/aboard/signups/mark-sent` are server to server only. They
+carry their own shared secret in `x-lp-admin-secret` and answer 403 without it, so they sit
+here rather than behind the staff password, which would only ever redirect a script to a
+login page. They are not in the ASSETS map either, so nothing about them is reachable from
+the public gift page. The contract is in `docs/GIFT-EMAIL.md`.
+
+## Anything else under `/lp/`
+
+An unknown `/lp/` path answers 404 rather than falling through, so it never bounces a
+logged-out visitor to the staff login screen. The request is passed to `handleAsset` so
+the hero video can be served in byte ranges.

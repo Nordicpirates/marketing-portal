@@ -67,23 +67,8 @@ function checkAuth(req: Request): boolean {
   return match ? match[1] === AUTH_TOKEN : false;
 }
 
-/**
- * One host name in the single spelling the URL parser gives it, so that two spellings of
- * the same host compare equal.
- *
- * Everything here goes through the parser rather than through string slicing, because
- * slicing normalises less than the parser does and the two sides of the comparison would
- * then disagree about the same host. The parser collapses IPv6 ([0:0:0:0:0:0:0:1] and
- * [::1] are one host), converts an international name to its A-label (münchen.de and
- * xn--mnchen-3ya.de are one host), lowercases, and drops the port. Hand-written slicing
- * got none of those right, and each one of them was a 403 for a request that genuinely
- * came from the portal.
- *
- * Dropping the port means a different port on the SAME host name counts as ours. That is
- * the deliberate trade: a live deployment terminates TLS in front of this process, so the
- * port seen here is never the port the browser used, and no comparison that keeps it can
- * be right. Different host names, which is what a hostile page actually has, still differ.
- */
+// One host in the single spelling the URL parser gives it, port dropped on purpose.
+// Why the parser and not slicing, and why the port goes: docs/CROSS-SITE.md
 function bareHost(value: string): string {
   // A proxy chain arrives as "first, second". The first entry is the one the client used.
   const first = (value || "").split(",")[0].trim();
@@ -96,13 +81,8 @@ function bareHost(value: string): string {
   }
 }
 
-/**
- * The host parameter of an RFC 7239 Forwarded header, if there is one.
- *
- * The parameter name is anchored to the start of the header or to a semicolon, so only a
- * real host= token matches. Without that anchor any parameter whose name merely ENDS in
- * host counted, and "proto=https;xhost=evil.com" was read as a host of evil.com.
- */
+// The host= of an RFC 7239 Forwarded header, anchored so "xhost=" never counts.
+// docs/CROSS-SITE.md
 function forwardedHost(header: string | null): string {
   if (!header) return "";
   const match = header.split(",")[0].match(/(?:^|;)\s*host\s*=\s*("[^"]*"|[^;]+)/i);
@@ -110,42 +90,8 @@ function forwardedHost(header: string | null): string {
   return bareHost(match[1].trim().replace(/^"|"$/g, ""));
 }
 
-/**
- * Refuse a state-changing request that a browser made on behalf of another site, or
- * that does not say it is sending JSON. Returns null when the request may proceed.
- *
- * What this actually closes. SameSite=Lax keeps the cookie off a cross-SITE request,
- * whether that is a form post or a fetch, so a page on an unrelated domain never had the
- * cookie to begin with. What Lax does not stop is a same-site, cross-ORIGIN request: a
- * page on a sibling subdomain is same-site with this portal, so the cookie rides along.
- * Sending Content-Type: text/plain from there is a "simple" request, so there is no
- * preflight to fail either, and our JSON.parse reads the body happily. Those two checks
- * are what close that gap.
- *
- * Which of the two checks is actually load bearing, stated plainly.
- *
- * Requiring application/json is. It is not a CORS-simple content type, so a cross-origin
- * fetch that sets it must be preflighted, and nothing here answers OPTIONS with CORS
- * headers, so the browser never sends the real request. That holds without trusting a
- * single header value. Do not add an OPTIONS handler.
- *
- * The Origin comparison is defence in depth, and only against a browser. Every value it
- * weighs comes from the request itself: the Origin being judged, and all three names it
- * is judged against (Host, X-Forwarded-Host and Forwarded), plus Sec-Fetch-Site. Nothing
- * here is pinned to a value this server knows independently, so any client that can set
- * its own headers, meaning anything that is not a browser, satisfies it trivially. It is
- * worth keeping because a browser cannot set any of them from script, and a browser is
- * exactly the attacker this endpoint has: a page on a sibling subdomain whose fetch
- * carries the cookie. It is not an authorisation check and must not be read as one.
- * Pinning the host would make it one, and is deliberately not done here.
- *
- * Sec-Fetch-Site: same-origin is accepted on its own for the same reason: a browser sets
- * it and script cannot. It is the way through when a proxy rewrites Host to something
- * internal and forwards nothing, where no host comparison could ever succeed. Only
- * same-origin, because same-site is exactly the sibling-subdomain case being refused.
- *
- * No Origin at all is allowed through, so a server-to-server caller is unaffected.
- */
+// Refuse a write a browser sent for another site (403) or that is not JSON (415); null
+// lets it through. The JSON half is load bearing, Origin is defence in depth: docs/CROSS-SITE.md
 function crossSiteRefusal(req: Request, url: URL): Response | null {
   const jsonRefusal = () => {
     const type = (req.headers.get("content-type") || "").split(";")[0].trim().toLowerCase();
@@ -182,16 +128,8 @@ function crossSiteRefusal(req: Request, url: URL): Response | null {
   return jsonRefusal();
 }
 
-/**
- * Run an ideas handler, and turn a store that cannot be used into a short 503.
- *
- * The store throws on purpose rather than reading a file it does not recognise, and an
- * unhandled throw is answered by Bun itself with a page carrying absolute paths, the
- * source lines around the throw and a stack trace. That is tens of kilobytes of internals
- * behind nothing but the staff password. This says one sentence instead, and says it the
- * same way whatever NODE_ENV happens to be, so the answer does not depend on how the
- * container was started. The detail goes to the log, where an operator can read it.
- */
+// Run an ideas handler, and turn a store that cannot be used into a one-sentence 503
+// rather than Bun's own error page. docs/ERROR-ANSWERS.md
 async function ideasResponse(work: () => Response | Promise<Response>): Promise<Response> {
   try {
     return await work();
@@ -204,13 +142,8 @@ async function ideasResponse(work: () => Response | Promise<Response>): Promise<
   }
 }
 
-/**
- * Notion said no, or could not be reached, while serving the shipments page.
- *
- * One sentence with Notion's status goes to the caller and to the log; Notion's own
- * body never does, because it can echo the request back. 502 rather than 500: the
- * fault is upstream, and an unhandled throw would be answered with Bun's own page.
- */
+// Notion said no or could not be reached: a 502 with Notion's status, never Notion's
+// own body, which can echo the request back. docs/ERROR-ANSWERS.md
 function notionFailure(verb: string, err: unknown): Response {
   if (err instanceof NotionError) {
     console.warn(`[shipments] ${verb} failed: Notion status ${err.status}`);
@@ -277,18 +210,14 @@ function serveLogin(error = false): Response {
   });
 }
 
-// 1 MB. Nothing this server accepts is remotely that big: the largest real body
-// is a claim form with an email address in it. Bun's default ceiling is 128 MB,
-// which on a public endpoint is a free way to make us hold rubbish in memory.
+// 1 MB, far above the largest real body, and far below Bun's 128 MB default.
+// docs/ERROR-ANSWERS.md
 const MAX_REQUEST_BODY_BYTES = 1024 * 1024;
 
 const server = Bun.serve({
   port: PORT,
   maxRequestBodySize: MAX_REQUEST_BODY_BYTES,
-  // Bun decides this from NODE_ENV, and nothing in this repo sets NODE_ENV, so an
-  // unhandled throw anywhere in here would be answered with Bun's development page:
-  // absolute paths, the source lines around the throw, and a stack trace. Say it here
-  // rather than depending on how the container happened to be started.
+  // Never Bun's development error page, whatever NODE_ENV is. docs/ERROR-ANSWERS.md
   development: false,
   async fetch(req) {
     const url = new URL(req.url);
@@ -296,27 +225,21 @@ const server = Bun.serve({
 
     if (path === "/health") return new Response("ok");
 
-    // PUBLIC, and deliberately ahead of the password gate below. /lp/aboard is the
-    // gift offer page for people arriving from a retargeting ad. They have no login
-    // and never will, so nothing under /lp/ may be sent to /login.
-    // Trailing slash included: an ad platform or a person will eventually add one.
+    // PUBLIC, and deliberately ahead of the password gate below: nothing under /lp/ may
+    // be sent to /login. docs/PUBLIC-ROUTES.md
     const lpPath = path.length > 1 && path.endsWith("/") ? path.slice(0, -1) : path;
     if (lpPath === "/lp/aboard/claim") {
       if (req.method !== "POST") return new Response("Method not allowed", { status: 405 });
       return handleClaim(req);
     }
-    // The emailer's two routes. Server to server only: they carry their own shared
-    // secret in x-lp-admin-secret and answer 403 without it, so they sit here rather
-    // than behind the staff password, which would only ever redirect a script to a
-    // login page. They are not in the ASSETS map either, so nothing about them is
-    // reachable from the public gift page.
+    // The emailer's two routes, server to server behind their own x-lp-admin-secret.
+    // docs/PUBLIC-ROUTES.md
     if (lpPath === "/lp/aboard/signups") return handleSignups(req);
     if (lpPath === "/lp/aboard/signups/mark-sent") return handleMarkSent(req);
 
     if (lpPath.startsWith("/lp/")) {
-      // 404 rather than falling through, so an unknown /lp/ path never bounces a
-      // logged-out visitor to the staff login screen. The request goes along so
-      // the hero video can be served in byte ranges.
+      // 404, never the login screen; the request goes along for byte ranges.
+      // docs/PUBLIC-ROUTES.md
       return handleAsset(lpPath, req) || new Response("Not found", { status: 404 });
     }
 
@@ -396,10 +319,8 @@ const server = Bun.serve({
           if (refusal) return refusal;
 
           const body = await req.json().catch(() => null);
-          // `null`, `[1,2]`, `"text"` and `7` are all valid JSON, and every one of them
-          // used to reach addIdea, where reading .brand off null threw and answered 500.
-          // A malformed body is the caller's mistake, so say so with a 400 and write
-          // nothing.
+          // Valid JSON that is not an object is the caller's mistake: 400, never a 500.
+          // docs/ERROR-ANSWERS.md
           if (body === null || typeof body !== "object" || Array.isArray(body)) {
             console.warn(`[ideas] refused a POST: the body is not a JSON object`);
             return Response.json({ error: "body must be a JSON object" }, { status: 400 });
@@ -422,9 +343,8 @@ const server = Bun.serve({
       });
     }
 
-    // Creator shipments live in a Notion database, read and written through
-    // lib/shipments.ts. Without the integration key the page still opens, points at
-    // Notion, and refuses to write: nothing here throws for a missing key.
+    // Creator shipments live in Notion via lib/shipments.ts; a missing key refuses writes
+    // with 503 and never throws. docs/ERROR-ANSWERS.md
     if (path === "/api/shipments") {
       if (req.method === "POST") {
         const refusal = crossSiteRefusal(req, url);
