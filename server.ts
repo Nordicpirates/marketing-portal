@@ -42,7 +42,7 @@ function readTasks(): any {
   let cur: any = null;
   try { cur = JSON.parse(readFileSync(TASKS_FILE, "utf8")); } catch {}
   // Unparseable, or parseable but not an object holding a task list: read as empty, and say so.
-  if (!cur || typeof cur !== "object" || (cur.agency_tasks != null && !Array.isArray(cur.agency_tasks))) {
+  if (!cur || typeof cur !== "object" || Array.isArray(cur) || !Array.isArray(cur.agency_tasks)) {
     console.warn(`[tasks] ${TASKS_FILE} is not a task list, so it was read as empty and rebuilt from the seed`);
     cur = { agency_tasks: [] };
   }
