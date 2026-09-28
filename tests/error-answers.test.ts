@@ -13,10 +13,6 @@ const TASKS_FILE = join(SERVER_STATE, "tasks.json");
 const PASSWORD = "test-portal-password-e21b";
 const COOKIE = `auth=${createHash("sha256").update("np-hq-" + PASSWORD).digest("hex")}; HttpOnly; Secure; SameSite=Lax; Max-Age=2592000; Path=/`;
 
-// Bun.fetch, not fetch: loadPage in tests/page-harness.ts replaces globalThis.fetch for
-// the rest of the run, and this file must reach the real server whatever ran before it.
-const http = Bun.fetch;
-
 let proc: any = null;
 let logText = "";
 let logDone: Promise<void> = Promise.resolve();
@@ -45,7 +41,7 @@ async function start(): Promise<void> {
   })();
   for (let waited = 0; waited < 15000; waited += 50) {
     try {
-      const res = await http(`${base}/health`);
+      const res = await fetch(`${base}/health`);
       if (res.ok) return;
     } catch {
       // Not up yet.
@@ -83,11 +79,11 @@ const form = (password: string) => {
 };
 
 const login = (body: BodyInit, headers: Record<string, string> = {}) =>
-  http(`${base}/login`, { method: "POST", body, headers, redirect: "manual" });
+  fetch(`${base}/login`, { method: "POST", body, headers, redirect: "manual" });
 
-const getTasks = () => http(`${base}/api/tasks`, { headers: { cookie: auth } });
+const getTasks = () => fetch(`${base}/api/tasks`, { headers: { cookie: auth } });
 const postTask = (id: string, done: boolean) =>
-  http(`${base}/api/tasks`, {
+  fetch(`${base}/api/tasks`, {
     method: "POST",
     headers: { "content-type": "application/json", origin: base, cookie: auth },
     body: JSON.stringify({ id, done }),
@@ -133,7 +129,7 @@ describe("POST /login", () => {
   });
 
   test("the login page carries no em dash or en dash", async () => {
-    for (const res of [await http(`${base}/login`), await login(form("wrong"))]) {
+    for (const res of [await fetch(`${base}/login`), await login(form("wrong"))]) {
       expect(await res.text()).not.toMatch(/[\u2013\u2014]/);
     }
   });
@@ -142,14 +138,14 @@ describe("POST /login", () => {
 describe("/lp and /lp/ are public, like everything under /lp/", () => {
   test("logged out, /lp and /lp/ answer 404 and never redirect to /login", async () => {
     for (const path of ["/lp", "/lp/", "/lp/nope"]) {
-      const res = await http(base + path, { redirect: "manual" });
+      const res = await fetch(base + path, { redirect: "manual" });
       expect({ path, status: res.status, location: res.headers.get("location") }).toEqual({ path, status: 404, location: null });
     }
   });
 
   test("the gift page is still served, and a path merely starting with /lp still asks for a login", async () => {
-    expect((await http(`${base}/lp/aboard/`, { redirect: "manual" })).status).toBe(200);
-    const other = await http(`${base}/lpx`, { redirect: "manual" });
+    expect((await fetch(`${base}/lp/aboard/`, { redirect: "manual" })).status).toBe(200);
+    const other = await fetch(`${base}/lpx`, { redirect: "manual" });
     expect(other.status).toBe(302);
     expect(other.headers.get("location")).toBe("/login");
   });
@@ -218,7 +214,7 @@ describe("the committed seed, which readTasks does not guard", () => {
 
 describe("refusals leave a line in the log", () => {
   test("a bad tasks body, a non-form login and an unusable tasks file are all logged", async () => {
-    const bad = await http(`${base}/api/tasks`, {
+    const bad = await fetch(`${base}/api/tasks`, {
       method: "POST",
       headers: { "content-type": "application/json", cookie: auth },
       body: "null",

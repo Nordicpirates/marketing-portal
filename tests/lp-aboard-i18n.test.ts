@@ -1,7 +1,7 @@
 // The language switch and the code shown before the cart, on the real gift page.
 // What each test pins and why: docs/TESTS-GIFT-I18N.md
 
-import { test, expect } from "bun:test";
+import { afterAll, test, expect } from "bun:test";
 import { Window } from "happy-dom";
 import { readFileSync } from "fs";
 import { join } from "path";
@@ -19,10 +19,14 @@ import {
   HTML,
   say,
   tapOffer,
+  restorePageGlobals,
   type Page,
 } from "./page-harness.ts";
 // The page's own offer table, so no test owns a copy of its variants. docs/TESTS-GIFT-I18N.md
 import { cartItems } from "../lib/offer.js";
+
+// Put back the browser globals loadPage replaced, so later files see Bun's own.
+afterAll(restorePageGlobals);
 
 const DEMO = "https://nordicpirates.com/gift-offer?no_redirect=1";
 
@@ -135,7 +139,7 @@ test("no copy anywhere uses an en dash or an em dash", async () => {
 
   for (const file of files) {
     const source = readFileSync(join(REPO, file), "utf8");
-    const found = source.match(/[–—]/g);
+    const found = source.match(/[\u2013\u2014]/g);
     expect(found, `${file} uses ${found?.join(" ")}`).toBeNull();
   }
 });

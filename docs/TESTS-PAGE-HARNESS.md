@@ -79,6 +79,22 @@ this address usable" question is the endpoint's, and it has its own tests.
 
 `loadPage` sets these on `globalThis`, because the page is an ES module and reads them as
 bare globals: `window`, `document`, `navigator`, `IntersectionObserver` (the test-driven
-`FakeObserver`) and `fetch` (the fake claim endpoint and Shopify cart). Nothing puts them
-back: once a page test file has called `loadPage`, they stay replaced for the rest of the
-`bun test` run.
+`FakeObserver`) and `fetch` (the fake claim endpoint and Shopify cart). The page sees the
+fakes for as long as the file that loaded it is running.
+
+They must not outlive that file. `bun test tests/` runs every file in one process, so a
+fake `fetch` left behind answers the next file's requests: a test that starts the real
+server and logs in gets the fake's 200 instead of the server's 302.
+
+So the first `loadPage` of a file records each global's property descriptor as it was
+(`fetch` and `navigator` are Bun's own; `window`, `document` and `IntersectionObserver`
+do not exist), and `restorePageGlobals()` puts every one back exactly: the same object,
+or no property at all. Every file that calls `loadPage` calls it once, at the top level:
+`afterAll(restorePageGlobals)`. A new page test file must do the same, and
+`tests/page-globals.test.ts` checks the restore itself.
+
+Why a line in each file rather than something the harness does alone, measured on
+Bun 1.3.11: the harness module is evaluated once per run, so an `afterAll` at its top
+level fires only for the first file that imports it; an `afterAll` registered from inside
+a test fires right after that test, and one registered from a `beforeAll` fires at once;
+and an `afterAll` in a `bunfig.toml` preload fires once, after the whole run.

@@ -1,7 +1,7 @@
 // What the gift page DOES in a browser, driven through tests/page-harness.ts.
 // What each part pins and why: docs/TESTS-GIFT-PAGE.md
 
-import { test, expect } from "bun:test";
+import { afterAll, test, expect } from "bun:test";
 import {
   loadPage,
   selectOffer,
@@ -16,8 +16,12 @@ import {
   CODE_BASE,
   CODE_BIGBOX,
   say,
+  restorePageGlobals,
   type Page,
 } from "./page-harness.ts";
+
+// Put back the browser globals loadPage replaced, so later files see Bun's own.
+afterAll(restorePageGlobals);
 
 /** Nothing to redirect into: these tests are about the page, not about the cart. */
 const DEMO = "https://nordicpirates.com/gift-offer?no_redirect=1";
