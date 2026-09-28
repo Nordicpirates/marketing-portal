@@ -5,7 +5,7 @@ import { existsSync } from "fs";
 import { join } from "path";
 import { randomBytes } from "crypto";
 import { SIGNUPS_FILE, appendSignup } from "./lp-aboard-store.ts";
-import { secretMatches } from "./secret.ts";
+import { configuredSecret, secretMatches } from "./secret.ts";
 import { EDITIONS, OFFERS, buildCartUrl } from "./offer.js";
 
 const REPO_DIR = join(import.meta.dir, "..");
@@ -75,13 +75,9 @@ function header(req: Request, name: string): string {
   return (req.headers.get(name) || "").trim();
 }
 
-// Forwarded visitor headers are believed only with the Worker's secret, and an unset
-// LP_PROXY_SECRET trusts nothing: fails closed. docs/GIFT-OFFER-WORKER.md
-function proxySecret(): string {
-  return (process.env.LP_PROXY_SECRET || "").trim();
-}
-
-if (!proxySecret()) {
+// Read here only to warn at startup: forwarded headers need the Worker's secret, and an
+// unset LP_PROXY_SECRET trusts nothing. docs/GIFT-OFFER-WORKER.md
+if (!configuredSecret("LP_PROXY_SECRET")) {
   console.warn(
     "[lp/aboard] LP_PROXY_SECRET is not set: EVERY claim will be refused with 403 " +
       "and no codes will be issued. The page itself still serves. Set it here and on " +
@@ -92,8 +88,8 @@ if (!proxySecret()) {
 // True when this request proved it came through our Worker; the compare is shared with
 // lib/lp-aboard-admin.ts in secretMatches. docs/GIFT-OFFER-WORKER.md
 function proxyIsTrusted(req: Request): boolean {
-  // Read on every claim, never frozen at import. docs/GIFT-OFFER-WORKER.md
-  return secretMatches(header(req, "x-lp-proxy-secret"), proxySecret());
+  // Read on every claim, never frozen at import. docs/SERVER-SECRETS.md
+  return secretMatches(header(req, "x-lp-proxy-secret"), configuredSecret("LP_PROXY_SECRET"));
 }
 
 // Called only after the secret checks out, and deliberately with no fallback to headers

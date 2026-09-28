@@ -1,7 +1,7 @@
 // The emailer's door into the gift offer signups: two server-to-server routes behind
 // x-lp-admin-secret. docs/GIFT-EMAIL-ROUTES.md, and why its own secret: docs/SERVER-SECRETS.md
 
-import { secretMatches } from "./secret.ts";
+import { configuredSecret, secretMatches } from "./secret.ts";
 import {
   SENT_FILE,
   appendSent,
@@ -10,9 +10,8 @@ import {
   type SignupRow,
 } from "./lp-aboard-store.ts";
 
-const ADMIN_SECRET = (process.env.LP_ADMIN_SECRET || "").trim();
-
-if (!ADMIN_SECRET) {
+// Read here only to warn at startup; every request reads it again. docs/SERVER-SECRETS.md
+if (!configuredSecret("LP_ADMIN_SECRET")) {
   console.warn(
     "[lp/aboard admin] LP_ADMIN_SECRET is not set: every request to /lp/aboard/signups " +
       "and /lp/aboard/signups/mark-sent will be refused with 403, so the emailer can read " +
@@ -22,7 +21,7 @@ if (!ADMIN_SECRET) {
 
 /** True when this request proved it is the emailer. */
 function callerIsTrusted(req: Request): boolean {
-  return secretMatches((req.headers.get("x-lp-admin-secret") || "").trim(), ADMIN_SECRET);
+  return secretMatches((req.headers.get("x-lp-admin-secret") || "").trim(), configuredSecret("LP_ADMIN_SECRET"));
 }
 
 // Rows carry email addresses, so no cache anywhere is allowed to keep a copy of any

@@ -11,9 +11,7 @@ import { join } from "path";
 const TEST_STATE = mkdtempSync(join(tmpdir(), "lp-aboard-admin-test-"));
 if (!process.env.STATE_DIR) process.env.STATE_DIR = TEST_STATE;
 
-// The emailer's shared secret, set before the module reads it at import time.
 const ADMIN_SECRET = "test-admin-secret-9d41b7";
-process.env.LP_ADMIN_SECRET = ADMIN_SECRET;
 
 const REPO_DIR = join(import.meta.dir, "..");
 
@@ -24,8 +22,7 @@ let appendSignup: (row: Record<string, unknown>) => void;
 let SENT_FILE: string;
 
 beforeAll(async () => {
-  // Set again: the last moment before the module reads it at import.
-  // docs/TESTS-GIFT-EMAIL-ROUTES.md, setting the secret twice
+  // The emailer's secret for every test below; the module reads it on each request.
   process.env.LP_ADMIN_SECRET = ADMIN_SECRET;
 
   const admin = await import("../lib/lp-aboard-admin.ts");

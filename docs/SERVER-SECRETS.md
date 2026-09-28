@@ -31,9 +31,34 @@ An empty configured secret matches nothing, and so does an empty presented one, 
 service that was deployed without a secret refuses everybody instead of letting everybody
 in.
 
-## Reading the configured value
+## One reader: `configuredSecret` in `lib/secret.ts`
 
-`lib/lp-aboard.ts` reads `LP_PROXY_SECRET` on every claim, through `proxySecret()`.
-`lib/lp-aboard-admin.ts` reads `LP_ADMIN_SECRET` once, when the module is imported.
-Each module logs a warning at startup when its secret is unset, saying every request to
-its door will be refused with 403.
+Both doors read their configured value the same way, through `configuredSecret(name)`,
+which returns the trimmed value of that environment variable at the moment it is called.
+`lib/lp-aboard.ts` calls `configuredSecret("LP_PROXY_SECRET")` on every claim and
+`lib/lp-aboard-admin.ts` calls `configuredSecret("LP_ADMIN_SECRET")` on every request. No
+module keeps a secret in a constant.
+
+Why at call time. A value captured when a module is imported belongs to whoever imported
+the module first. In one `bun test` run every test file shares one module cache, so a file
+that imported a door before another file set its secret decided that secret for the whole
+run: that is how the claim tests once failed 31 times in the full suite while passing
+alone, and why the emailer route tests used to set their secret twice. Two modules each
+reading their own variable their own way is the shape that let it happen twice, so there
+is one reader.
+
+Production does not change. Its environment is fixed for the life of the process, so
+reading per request gives the same value every time, and an unset or blank secret reads
+as the empty string, which `secretMatches` never accepts: both doors still fail closed.
+
+## The startup warnings
+
+Each module still reads its secret once at import, only to warn: when it is unset, the log
+says every request to that door will be refused with 403. That read decides nothing. An
+operator starting the service is the one who needs to hear it, and startup is when they
+are looking.
+
+`tests/lp-aboard-secret.test.ts` checks all of it: the reader itself, the real server with
+both secrets unset (every claim and both emailer routes answer 403, both warnings are
+logged), and in process that a secret set after import is honoured and one removed after
+import refuses, on both doors.
