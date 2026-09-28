@@ -1,11 +1,13 @@
-# The server-to-server secrets
+# The portal's secrets
 
-Two doors in this service open only for a caller that presents a shared secret:
+Three doors in this service open only for a caller that presents a secret, and all three
+read it with `configuredSecret` and compare it with `secretMatches`:
 
-| Door | Header | Configured by | Proves |
+| Door | Presented as | Configured by | Proves |
 |---|---|---|---|
-| The gift claim, `lib/lp-aboard.ts` | `x-lp-proxy-secret` | `LP_PROXY_SECRET` | the request came through our Cloudflare Worker |
-| The emailer's routes, `lib/lp-aboard-admin.ts` | `x-lp-admin-secret` | `LP_ADMIN_SECRET` | the caller is the emailer |
+| The gift claim, `lib/lp-aboard.ts` | header `x-lp-proxy-secret` | `LP_PROXY_SECRET` | the request came through our Cloudflare Worker |
+| The emailer's routes, `lib/lp-aboard-admin.ts` | header `x-lp-admin-secret` | `LP_ADMIN_SECRET` | the caller is the emailer |
+| The staff login, `server.ts` | the login form, then the `auth` cookie | `AUTH_PASSWORD` | the caller is staff |
 
 ## Two secrets on purpose
 
@@ -19,7 +21,7 @@ read everybody's email address.
 
 ## One comparison: `secretMatches` in `lib/secret.ts`
 
-Both doors compare the presented secret with `secretMatches`, a constant-time shared
+All three doors compare the presented secret with `secretMatches`, a constant-time shared
 secret check. Two copies of a constant-time compare is one copy too many.
 
 Both sides are hashed first, so the comparison is always over two 32 byte buffers.
@@ -33,11 +35,12 @@ in.
 
 ## One reader: `configuredSecret` in `lib/secret.ts`
 
-Both doors read their configured value the same way, through `configuredSecret(name)`,
-which returns the trimmed value of that environment variable at the moment it is called.
-`lib/lp-aboard.ts` calls `configuredSecret("LP_PROXY_SECRET")` on every claim and
-`lib/lp-aboard-admin.ts` calls `configuredSecret("LP_ADMIN_SECRET")` on every request. No
-module keeps a secret in a constant.
+All three doors read their configured value the same way, through
+`configuredSecret(name)`, which returns the trimmed value of that environment variable at
+the moment it is called. `lib/lp-aboard.ts` calls `configuredSecret("LP_PROXY_SECRET")` on
+every claim, `lib/lp-aboard-admin.ts` calls `configuredSecret("LP_ADMIN_SECRET")` on every
+request, and `server.ts` calls `configuredSecret("AUTH_PASSWORD")` on every login and every
+cookie check. No module keeps a secret in a constant.
 
 Why at call time. A value captured when a module is imported belongs to whoever imported
 the module first. In one `bun test` run every test file shares one module cache, so a file
@@ -59,12 +62,13 @@ checks that the reader returns "" and that the claim and both emailer routes ref
 
 Production does not change. Its environment is fixed for the life of the process, so
 reading per request gives the same value every time, and an unset or blank secret reads
-as the empty string, which `secretMatches` never accepts: both doors still fail closed.
+as the empty string, which `secretMatches` never accepts: every door still fails closed.
 
 ## The startup warnings
 
-Each module still reads its secret once at import, only to warn: when it is unset, the log
-says every request to that door will be refused with 403. That read decides nothing. An
+Each door still reads its secret once at import, only to warn: when it is unset, the log
+says every request to that door will be refused (403 for the two server-to-server doors,
+401 for the staff login). That read decides nothing. An
 operator starting the service is the one who needs to hear it, and startup is when they
 are looking.
 
@@ -72,3 +76,32 @@ are looking.
 both secrets unset (every claim and both emailer routes answer 403, both warnings are
 logged), and in process that a secret set after import is honoured and one removed after
 import refuses, on both doors.
+
+## The staff login
+
+`AUTH_PASSWORD` is the one shared staff password. There is no fallback in the source: with
+it unset or blank, every login answers the login page with 401, every `auth` cookie is
+refused, and `server.ts` logs a warning at startup, the same way the two server-to-server
+doors warn and refuse. A default password written in the repository would have been a
+door that fails open, and because the cookie is derived from the password, knowing the
+default would also have meant knowing a valid cookie.
+
+**The login compare is forgiving on purpose.** The typed password is trimmed, and both
+sides are lowercased before `secretMatches` compares them, so phone and Mac autocapitals
+cannot lock anybody out.
+
+**The cookie is not.** `auth` holds `sha256("np-hq-" + password)` in hex, where `password`
+is the configured value, trimmed and NOT lowercased. `checkAuth` recomputes it from the
+configured password on every request and compares with `secretMatches`. That derivation,
+the cookie name and its attributes (`HttpOnly; Secure; SameSite=Lax; Max-Age=2592000;
+Path=/`) are exactly what they were before the login moved onto this door, so a cookie
+issued before the change is still accepted with the same password and nobody is signed
+out. Changing any of them signs every staff member out.
+
+**No token is ever computed from an empty password.** `sha256("np-hq-")` is a constant
+anyone can compute, so `checkAuth` refuses outright when no password is configured,
+before it hashes anything.
+
+Rate limiting, lockouts and a second factor are not here; they are a separate concern.
+`tests/staff-login.test.ts` starts the real server with the password unset, blank and set,
+and checks every point above.
