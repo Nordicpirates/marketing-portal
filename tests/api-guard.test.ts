@@ -230,6 +230,17 @@ describe("one guard in the router, for POST only", () => {
     }
   });
 
+  test("a browser's preflight carries no cookie, so it gets the 401 and no CORS headers", async () => {
+    for (const path of ["/api/tasks", "/api/ideas", "/api/shipments"]) {
+      const res = await http(base + path, {
+        method: "OPTIONS",
+        headers: { origin: FOREIGN, "access-control-request-method": "POST", "access-control-request-headers": "content-type" },
+      });
+      expect({ path, status: res.status }).toEqual({ path, status: 401 });
+      expect([...res.headers.keys()].filter((name) => name.startsWith("access-control-"))).toEqual([]);
+    }
+  });
+
   test("a POST to any other /api/ path passes the same guard", async () => {
     for (const path of ["/api/data", "/api/assets", "/api/not-a-route"]) {
       const foreign = await send(path, "{}", { "content-type": "application/json", origin: FOREIGN, cookie: auth });

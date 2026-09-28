@@ -16,13 +16,14 @@ Auth runs first, so a request with no valid cookie is answered 401 before any 40
 
 POST only, deliberately. It is the only state-changing method a browser can send
 cross-origin without a preflight. PUT, PATCH and DELETE are always preflighted, and nothing
-here answers OPTIONS, so a browser never sends them cross-origin. A PUT or DELETE on
-`/api/ideas` or `/api/shipments` still reaches the route and gets its 405.
+here answers a preflight with CORS headers (a preflight carries no cookie, so it gets the
+401), so a browser never sends them cross-origin. A PUT or DELETE on `/api/ideas` or
+`/api/shipments` still reaches the route and gets its 405.
 
 ## The gap this closes, and why the cookie alone does not
 
-SameSite=Lax keeps the cookie off a cross-SITE request, whether that is a form post or a
-fetch, so a page on an unrelated domain never had the cookie to begin with. What Lax does
+SameSite=Lax keeps the cookie off a cross-SITE POST, whether that is a form post or a
+fetch, so a page on an unrelated domain never had the cookie to write with. What Lax does
 not stop is a same-site, cross-ORIGIN request: a page on a sibling subdomain is same-site
 with this portal, so the cookie rides along. Sending `Content-Type: text/plain` from there
 is a "simple" request, so there is no preflight to fail either, and our `JSON.parse` reads
@@ -31,27 +32,37 @@ the body happily. The two checks below are what close that gap.
 ## Which of the two checks is load bearing, stated plainly
 
 **Requiring `application/json` is.** It is not a CORS-simple content type, so a
-cross-origin fetch that sets it must be preflighted, and nothing here answers OPTIONS with
-CORS headers, so the browser never sends the real request. That holds without trusting a
-single header value. Do not add an OPTIONS handler. A request without it is refused with
-415.
+cross-origin fetch that sets it must be preflighted, and nothing here answers a preflight
+with CORS headers, so the browser never sends the real request. That holds without
+trusting a single header value. Do not add an OPTIONS handler. A request that passes the
+Origin comparison but does not say `application/json` is refused with 415; one that fails
+the comparison gets its 403 first.
 
 **The Origin comparison is defence in depth, and only against a browser.** Every value it
-weighs comes from the request itself: the Origin being judged, and all three names it is
-judged against (`Host`, `X-Forwarded-Host` and `Forwarded`), plus `Sec-Fetch-Site`.
+weighs comes from the request itself. The Origin being judged is compared against three
+names: the host of the request's own URL, which Bun takes from the request line or the
+`Host` header; `X-Forwarded-Host`; and the `host=` of `Forwarded`. `Sec-Fetch-Site` is
+read as well. An absolute-form request target such as
+`POST http://evil.nordicpirate.com/api/ideas` sets the URL's host itself, whatever `Host`
+says; a browser never sends that form.
+
 Nothing here is pinned to a value this server knows independently, so any client that can
-set its own headers, meaning anything that is not a browser, satisfies it trivially. It
-is worth keeping because a browser cannot set any of them from script, and a browser is
-exactly the attacker this endpoint has: a page on a sibling subdomain whose fetch carries
-the cookie. It is not an authorisation check and must not be read as one. Pinning the
-host would make it one, and is deliberately not done here. A mismatch is refused with 403.
+set its own headers, meaning anything that is not a browser, satisfies it trivially. It is
+still worth keeping against a browser, which is exactly the attacker this endpoint has: a
+page on a sibling subdomain whose fetch carries the cookie. `Origin`, `Host` and
+`Sec-Fetch-Site` are forbidden headers that script cannot set. Script can set
+`X-Forwarded-Host` and `Forwarded`, but either one makes the request non-simple and forces
+a preflight, which nothing here answers, so the browser never sends it. It is not an
+authorisation check and must not be read as one. Pinning the host would make it one, and
+is deliberately not done here. A mismatch is refused with 403.
 
 `Sec-Fetch-Site: same-origin` is accepted on its own for the same reason: a browser sets
 it and script cannot. It is the way through when a proxy rewrites `Host` to something
 internal and forwards nothing, where no host comparison could ever succeed. Only
 same-origin, because same-site is exactly the sibling-subdomain case being refused.
 
-No Origin at all is allowed through, so a server-to-server caller is unaffected.
+No Origin at all skips the comparison, so a server-to-server caller is unaffected. It
+still has to send `application/json`.
 
 ## Host matching: `bareHost`
 
@@ -70,6 +81,10 @@ Dropping the port means a different port on the SAME host name counts as ours. T
 the deliberate trade: a live deployment terminates TLS in front of this process, so the
 port seen here is never the port the browser used, and no comparison that keeps it can be
 right. Different host names, which is what a hostile page actually has, still differ.
+
+The scheme is not compared either, deliberately and for the same reason: TLS terminates in
+front of this process, so the browser's Origin says `https://` while the URL seen here
+says `http://`. Only host names are compared.
 
 One trailing dot is stripped after parsing. A fully qualified name ends in a dot and is
 the same DNS name without it, but the parser keeps it
@@ -94,4 +109,5 @@ host counted, and `proto=https;xhost=evil.com` was read as a host of `evil.com`.
 - Do not add CORS headers or an OPTIONS handler: the missing preflight answer is the
   load-bearing half.
 - Do not change the cookie's SameSite value to fix a cross-site gap. That is a much wider
-  blast radius and signs people out.
+  blast radius: Strict, for one, also drops the cookie when a person follows a link to
+  the portal from another site, so they land on the login page.

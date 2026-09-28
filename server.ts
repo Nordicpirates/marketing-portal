@@ -39,10 +39,15 @@ function readTasks(): any {
   let seed: any = { agency_tasks: [] };
   if (existsSync(TASKS_SEED)) { try { seed = JSON.parse(readFileSync(TASKS_SEED, "utf8")); } catch {} }
   if (!existsSync(TASKS_FILE)) { try { writeFileSync(TASKS_FILE, JSON.stringify(seed, null, 2)); } catch {} return seed; }
-  let cur: any = { agency_tasks: [] };
+  let cur: any = null;
   try { cur = JSON.parse(readFileSync(TASKS_FILE, "utf8")); } catch {}
+  // Unparseable, or parseable but not an object holding a task list: read as empty, and say so.
+  if (!cur || typeof cur !== "object" || (cur.agency_tasks != null && !Array.isArray(cur.agency_tasks))) {
+    console.warn(`[tasks] ${TASKS_FILE} is not a task list, so it was read as empty and rebuilt from the seed`);
+    cur = { agency_tasks: [] };
+  }
   // Merge: keep done-state for existing ids, add any new seed tasks.
-  const doneMap = new Map((cur.agency_tasks || []).map((t: any) => [t.id, t.done]));
+  const doneMap = new Map((cur.agency_tasks || []).map((t: any) => [t?.id, t?.done]));
   const merged = (seed.agency_tasks || []).map((t: any) => ({ ...t, done: doneMap.get(t.id) ?? t.done ?? false }));
   const out = { ...seed, agency_tasks: merged };
   try { writeFileSync(TASKS_FILE, JSON.stringify(out, null, 2)); } catch {}
@@ -196,7 +201,7 @@ function serveLogin(error = false): Response {
     </div>
     <h1>Välkommen</h1>
     <p>Logga in för att se performance-data, tracking-status och annonsstrategi.</p>
-    ${error ? '<div class="error">Fel lösenord — försök igen.</div>' : ""}
+    ${error ? '<div class="error">Fel lösenord - försök igen.</div>' : ""}
     <form method="POST" action="/login">
       <label for="pw">Lösenord</label>
       <input type="password" name="password" id="pw" placeholder="••••••••" autofocus autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false">
@@ -238,7 +243,7 @@ const server = Bun.serve({
     if (lpPath === "/lp/aboard/signups") return handleSignups(req);
     if (lpPath === "/lp/aboard/signups/mark-sent") return handleMarkSent(req);
 
-    if (lpPath.startsWith("/lp/")) {
+    if (lpPath === "/lp" || lpPath.startsWith("/lp/")) {
       // 404, never the login screen; the request goes along for byte ranges.
       // docs/PUBLIC-ROUTES.md
       return handleAsset(lpPath, req) || new Response("Not found", { status: 404 });
@@ -246,7 +251,11 @@ const server = Bun.serve({
 
     if (path === "/login") {
       if (req.method === "POST") {
-        const form = await req.formData();
+        const form = await req.formData().catch(() => null);
+        if (!form) {
+          console.warn("[login] refused a POST: the body is not a form, answered like a wrong password");
+          return serveLogin(true);
+        }
         // Trim whitespace and ignore case so phone/Mac autocaps can't lock people out.
         const pw = (form.get("password")?.toString() || "").trim();
         if (pw.toLowerCase() === AUTH_PASSWORD.toLowerCase()) {
@@ -311,8 +320,10 @@ const server = Bun.serve({
     if (path === "/api/tasks") {
       if (req.method === "POST") {
         const body = await req.json().catch(() => null);
-        if (!body || typeof body !== "object" || Array.isArray(body) || !body.id || typeof body.done !== "boolean")
+        if (!body || typeof body !== "object" || Array.isArray(body) || !body.id || typeof body.done !== "boolean") {
+          console.warn("[tasks] refused a POST: the body needs an id and a boolean done");
           return Response.json({ error: "need id + done" }, { status: 400 });
+        }
         return Response.json(setTask(body.id, body.done));
       }
       return Response.json(readTasks(), { headers: { "Cache-Control": "no-cache" } });
