@@ -2,6 +2,7 @@ import { readFileSync, existsSync, writeFileSync } from "fs";
 import { join } from "path";
 import { createHash } from "crypto";
 import { STATE_DIR } from "./lib/state-dir.ts";
+import { configuredSecret, secretMatches } from "./lib/secret.ts";
 import { handleAsset, handleClaim } from "./lib/lp-aboard.ts";
 import { handleMarkSent, handleSignups } from "./lib/lp-aboard-admin.ts";
 import { addIdea, readBrands, readIdeas } from "./lib/ideas-store.ts";
@@ -14,7 +15,6 @@ import {
   validateInput as validateShipment,
 } from "./lib/shipments.ts";
 
-const AUTH_PASSWORD = (process.env.AUTH_PASSWORD || "pirates2024").trim();
 const PORT = parseInt(process.env.PORT || "3000");
 const DIR = import.meta.dir;
 
@@ -62,14 +62,28 @@ function setTask(id: string, done: boolean): any {
   return t;
 }
 
-// Stateless auth token: hash of the password. Survives restarts/redeploys,
-// no in-memory session state to lose.
-const AUTH_TOKEN = createHash("sha256").update("np-hq-" + AUTH_PASSWORD).digest("hex");
+// Read here only to warn at startup; every login and every cookie reads it again.
+// No password means nobody gets in. docs/SERVER-SECRETS.md, "The staff login"
+if (!configuredSecret("AUTH_PASSWORD")) {
+  console.warn(
+    "[login] AUTH_PASSWORD is not set: every staff login will be refused with 401 and every " +
+      "auth cookie will be refused. Set it in the site's secrets before anyone needs to log in."
+  );
+}
+
+// Stateless auth token: hash of the password, so it survives restarts and redeploys.
+// Unchanged on purpose, or every staff member is signed out. docs/SERVER-SECRETS.md
+function authToken(password: string): string {
+  return createHash("sha256").update("np-hq-" + password).digest("hex");
+}
 
 function checkAuth(req: Request): boolean {
+  // Never a token from an empty password: sha256("np-hq-") is a constant anyone can compute.
+  const password = configuredSecret("AUTH_PASSWORD");
+  if (!password) return false;
   const cookie = req.headers.get("cookie") || "";
   const match = cookie.match(/auth=([a-f0-9]{64})/);
-  return match ? match[1] === AUTH_TOKEN : false;
+  return match ? secretMatches(match[1], authToken(password)) : false;
 }
 
 // One host in the single spelling the URL parser gives it, port dropped on purpose.
@@ -258,12 +272,13 @@ const server = Bun.serve({
         }
         // Trim whitespace and ignore case so phone/Mac autocaps can't lock people out.
         const pw = (form.get("password")?.toString() || "").trim();
-        if (pw.toLowerCase() === AUTH_PASSWORD.toLowerCase()) {
+        const password = configuredSecret("AUTH_PASSWORD");
+        if (password && secretMatches(pw.toLowerCase(), password.toLowerCase())) {
           return new Response("", {
             status: 302,
             headers: {
               Location: "/",
-              "Set-Cookie": `auth=${AUTH_TOKEN}; HttpOnly; Secure; SameSite=Lax; Max-Age=2592000; Path=/`,
+              "Set-Cookie": `auth=${authToken(password)}; HttpOnly; Secure; SameSite=Lax; Max-Age=2592000; Path=/`,
             },
           });
         }
