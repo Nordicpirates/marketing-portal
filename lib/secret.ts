@@ -8,3 +8,9 @@ export function secretMatches(presented: string, configured: string): boolean {
   const b = createHash("sha256").update(configured).digest();
   return timingSafeEqual(a, b);
 }
+
+// A configured secret, read from the environment at call time and never cached, so
+// every door sees the value in force now. docs/SERVER-SECRETS.md
+export function configuredSecret(name: string): string {
+  return (process.env[name] || "").trim();
+}

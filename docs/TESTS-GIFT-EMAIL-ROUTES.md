@@ -7,8 +7,7 @@ acceptance criteria written when those routes were built for the emailer.
 ## Handlers, not a server
 
 The handlers are called directly with `Request` objects. No server is started, except for
-one child process that checks what an unset `LP_ADMIN_SECRET` does. That cannot be checked
-in this process: the module reads the secret once at import.
+one child process that checks what an unset `LP_ADMIN_SECRET` does in a fresh process.
 
 ## The store is shared with other files
 
@@ -19,12 +18,13 @@ assumes it owns it, and asks the store module where its files are instead of reb
 the paths from a scratch dir. Every assertion is about rows this file wrote, found by
 their own event ids.
 
-## Setting the secret twice
+## Setting the secret
 
-The emailer's shared secret is set at the top of the file, before the module reads it at
-import time, and set again in `beforeAll`, not only at the top: top level code of every
-test file runs before any of them import anything, so `beforeAll` is the last moment
-before the module reads it.
+The emailer's shared secret is set once, in `beforeAll`. The module reads it on every
+request through `configuredSecret` (`docs/SERVER-SECRETS.md`), so what matters is the
+value while these tests run, not which file imported the module first. It used to be set
+twice, at the top of the file and again in `beforeAll`, because the module froze it at
+import.
 
 ## Everything that is not the emailer is refused
 
@@ -35,10 +35,10 @@ read everybody's email address.
 
 ## An unset secret refuses everybody
 
-The module reads the secret once at import, so this cannot be checked in this process:
-something has already imported it with a secret set. A child process with no
-`LP_ADMIN_SECRET` in its environment is the real thing, and it also shows the startup
-warning.
+A child process with no `LP_ADMIN_SECRET` in its environment is the real unconfigured
+deploy: it imports the module fresh, so it also shows the startup warning, which is only
+printed at import. That a secret set or removed after import is honoured on the next
+request is checked in process by `tests/lp-aboard-secret.test.ts`.
 
 ## A broken line in the store is reported
 

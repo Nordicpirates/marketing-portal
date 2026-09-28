@@ -52,15 +52,10 @@ the module logs at startup that EVERY claim will be refused with 403 and no code
 issued, that the page itself still serves, and that the secret must be set here and on the
 Worker before routing nordicpirates.com/gift-offer at this service.
 
-**The secret is read on every claim, never frozen at import.** `proxySecret()` reads
-`LP_PROXY_SECRET` each time `proxyIsTrusted` runs. A value captured once at import belonged
-to whoever imported the module first: in one `bun test` run every test file shares one
-module cache, so a file that imported this module before another file set the secret left
-every claim in the run refused. Reading it per claim changes nothing in production, where
-the environment is fixed for the life of the process, and an unset or emptied secret still
-matches nothing. The startup warning still reads it once, at import, because that is when
-an operator starting the service needs to hear it. `tests/lp-aboard-secret.test.ts`
-starts the real server with the secret unset and checks both the refusals and the warning.
+**The secret is read on every claim, never frozen at import.** `proxyIsTrusted` calls
+`configuredSecret("LP_PROXY_SECRET")` each time, the same reader the emailer's routes use
+for their own secret. The startup warning reads it once, at import, only to warn. Why
+both doors read this way, and the tests that hold them to it: `docs/SERVER-SECRETS.md`.
 
 ## The claim endpoint refuses anything that is not the Worker
 
