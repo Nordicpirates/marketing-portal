@@ -61,10 +61,10 @@ async function stop(): Promise<string> {
   return logText;
 }
 
-/** Wait for a line to reach the server's stderr after `from`, and say whether it came. */
-async function logged(line: string, from: number): Promise<boolean> {
+/** Wait for a line to reach the server's stderr `times` times after `from`, and say whether it did. */
+async function logged(line: string, from: number, times = 1): Promise<boolean> {
   for (let waited = 0; waited < 2000; waited += 20) {
-    if (logText.slice(from).includes(line)) return true;
+    if (logText.slice(from).split(line).length - 1 >= times) return true;
     await new Promise((done) => setTimeout(done, 20));
   }
   return false;
@@ -180,6 +180,8 @@ describe("a tasks.json that parses but is not a task list", () => {
       const write = await postTask(taskId, !seedDone);
       expect(write.status).toBe(200);
       expect((await write.json()).agency_tasks[0].done).toBe(!seedDone);
+      // The POST read the bad file too; wait for its line so it cannot land in the next test.
+      expect(await logged(REBUILT, from, 2)).toBe(true);
     });
   }
 
