@@ -1,11 +1,5 @@
-// Tests for what the gift page DOES in a browser: the picker sends you to the email
-// field, the sticky button follows you down the page and changes job when you choose,
-// the reviewer section is gone, and a blocked visitor is asked which cart they want
-// before any code appears.
-//
-// Straight off the acceptance criteria in issues #6 and #10. What happens to the CART
-// after a code is issued is the other half of #10 and lives in lp-aboard-cart.test.ts.
-// The harness both files drive the page with is tests/page-harness.ts.
+// What the gift page DOES in a browser, driven through tests/page-harness.ts.
+// What each part pins and why: docs/TESTS-GIFT-PAGE.md
 
 import { test, expect } from "bun:test";
 import {
@@ -112,9 +106,7 @@ test("the heading over the email field names the gift that is chosen", async () 
 });
 
 test("arrow keys through the boxes do not drag a keyboard visitor out of the group", async () => {
-  // A radio group fires a click of its own with detail 0 when the arrow keys move
-  // through it. Treating that as a choice would fling focus to the email field every
-  // time somebody tried to read the second option.
+  // An arrow key's own click (detail 0) is not a choice. docs/TESTS-GIFT-PAGE.md
   const page = await loadPage({ body: codeAnswer });
 
   const pick = page.document.getElementById("o-coins").closest(".pick");
@@ -285,11 +277,8 @@ test("the European edition choice keeps the code they were issued and carts that
   expect(page.document.getElementById("ed-de").checked).toBe(true);
   expect(page.document.getElementById("ed-en").checked).toBe(false);
 
-  // The nav chip follows the same change, and this is readable here now. The page finds
-  // its current edition with an "input:checked" selector, which this DOM matches against
-  // the checked ATTRIBUTE rather than the live state of the radio, so moving an edition
-  // moves both. It has to: that selector is where the page keeps what the visitor is
-  // looking at, and everything it carts is built from what it answers.
+  // The nav chip follows too: the page's "input:checked" selector is what it carts from.
+  // docs/TESTS-GIFT-PAGE.md
   expect(page.document.querySelector('.np-lang[data-lang="de"]').className).toContain("is-on");
   expect(page.document.querySelector('.np-lang[data-lang="en"]').className).not.toContain("is-on");
 });
@@ -317,9 +306,7 @@ test("the BIG BOX choice shows the BIG BOX code and the BIG BOX cart", async () 
 });
 
 test("answering inside the panel keeps focus inside the panel", async () => {
-  // Every choice replaces the button that was just pressed. Without somewhere to put
-  // focus it lands back at the top of the document, and a keyboard visitor has to walk
-  // the whole page again to find out what their answer did.
+  // Every choice replaces the pressed button, so focus needs a home. docs/TESTS-GIFT-PAGE.md
   const page = await loadPage({ body: blockedAnswer }, DEMO);
   await page.submit();
 
@@ -358,9 +345,7 @@ test("the BIG BOX is still reachable from the edition list", async () => {
 });
 
 test("a blocked answer with no base code offers the one choice it can honour", async () => {
-  // The language choice needs the code the visitor was issued. Without it the cart it
-  // builds would carry no discount at all, which is a gift silently not given. One
-  // honest choice beats two where the second is broken.
+  // No base code means no honest language choice to offer. docs/TESTS-GIFT-PAGE.md
   const page = await loadPage({ body: { ...blockedAnswer, baseCode: undefined } }, DEMO);
   await page.submit();
 
@@ -415,10 +400,8 @@ test("a state this page does not know is an error, not a blank panel", async () 
   expect(page.cartCalls()).toEqual([]);
 });
 
-// The choosing step is two product columns: the Base Game with a choice of gift inside
-// it, and the BIG BOX, which is one choice carrying both gifts. Everything the page and
-// the claim endpoint read off this markup had to survive that move, and the tests below
-// are the parts that would break quietly rather than loudly.
+// The two product columns, and what had to survive the move to them quietly.
+// docs/TESTS-GIFT-PAGE.md
 
 const flat = (value: string) => value.replace(/\s+/g, " ").trim();
 
@@ -544,9 +527,7 @@ test("a language tile on the BIG BOX chooses the language, and not the box", asy
 });
 
 test("no id is used twice, on the page or in anything it renders", async () => {
-  // Two elements with the same id is a real bug: getElementById answers with one of
-  // them and every "for" attribute pointing at it follows suit. Two sets of edition
-  // tiles is exactly the change that could introduce one.
+  // A duplicate id silently breaks getElementById and every "for". docs/TESTS-GIFT-PAGE.md
   const page = await loadPage({ body: codeAnswer });
   const roots = [
     page.document,
@@ -567,9 +548,8 @@ test("no id is used twice, on the page or in anything it renders", async () => {
 test("the warning and the stock note are still on the Base Game column", async () => {
   const page = await loadPage({ body: codeAnswer });
 
-  // The only thing on this page that tells a European about the English Base Game
-  // before they submit. The stylesheet shows it for exactly that pairing, so it has to
-  // be inside the form, which is what those rules key off.
+  // The only pre-submit warning about the English Base Game; its CSS keys off the form.
+  // docs/TESTS-GIFT-PAGE.md
   const warn = page.document.querySelector("p.en-warn");
   expect(warn).not.toBeNull();
   expect(flat(warn.textContent)).toBe(
