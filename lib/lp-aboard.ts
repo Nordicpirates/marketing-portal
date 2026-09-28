@@ -77,9 +77,11 @@ function header(req: Request, name: string): string {
 
 // Forwarded visitor headers are believed only with the Worker's secret, and an unset
 // LP_PROXY_SECRET trusts nothing: fails closed. docs/GIFT-OFFER-WORKER.md
-const PROXY_SECRET = (process.env.LP_PROXY_SECRET || "").trim();
+function proxySecret(): string {
+  return (process.env.LP_PROXY_SECRET || "").trim();
+}
 
-if (!PROXY_SECRET) {
+if (!proxySecret()) {
   console.warn(
     "[lp/aboard] LP_PROXY_SECRET is not set: EVERY claim will be refused with 403 " +
       "and no codes will be issued. The page itself still serves. Set it here and on " +
@@ -90,7 +92,8 @@ if (!PROXY_SECRET) {
 // True when this request proved it came through our Worker; the compare is shared with
 // lib/lp-aboard-admin.ts in secretMatches. docs/GIFT-OFFER-WORKER.md
 function proxyIsTrusted(req: Request): boolean {
-  return secretMatches(header(req, "x-lp-proxy-secret"), PROXY_SECRET);
+  // Read on every claim, never frozen at import. docs/GIFT-OFFER-WORKER.md
+  return secretMatches(header(req, "x-lp-proxy-secret"), proxySecret());
 }
 
 // Called only after the secret checks out, and deliberately with no fallback to headers

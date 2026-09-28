@@ -1,7 +1,7 @@
 // What happens to the visitor's Shopify cart once a code is issued, via tests/page-harness.ts.
 // Why the page builds the cart itself, and what each part pins: docs/TESTS-GIFT-CART.md
 
-import { test, expect } from "bun:test";
+import { afterAll, test, expect } from "bun:test";
 import { readFileSync } from "fs";
 import { join } from "path";
 import {
@@ -24,8 +24,12 @@ import {
   REDIRECT_TEST_MS,
   say,
   tapOffer,
+  restorePageGlobals,
   type Page,
 } from "./page-harness.ts";
+
+// Put back the browser globals loadPage replaced, so later files see Bun's own.
+afterAll(restorePageGlobals);
 
 const DEMO = "https://nordicpirates.com/gift-offer?no_redirect=1";
 

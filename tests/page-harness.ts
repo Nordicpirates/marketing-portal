@@ -190,6 +190,26 @@ export type Page = {
   navigated: () => Promise<string>;
 };
 
+// Every global loadPage replaces, and what each one was before the first page loaded.
+const PAGE_GLOBALS = ["window", "document", "navigator", "IntersectionObserver", "fetch"];
+let originalGlobals: Map<string, PropertyDescriptor | undefined> | null = null;
+
+function savePageGlobals() {
+  if (originalGlobals) return;
+  originalGlobals = new Map(PAGE_GLOBALS.map((key) => [key, Object.getOwnPropertyDescriptor(globalThis, key)]));
+}
+
+// Put back every global loadPage replaced; a file that loads a page calls this in afterAll.
+// docs/TESTS-PAGE-HARNESS.md, "Globals the harness replaces"
+export function restorePageGlobals() {
+  if (!originalGlobals) return;
+  for (const [key, descriptor] of originalGlobals) {
+    if (descriptor) Object.defineProperty(globalThis, key, descriptor);
+    else delete (globalThis as any)[key];
+  }
+  originalGlobals = null;
+}
+
 // Load the real page with a claim endpoint and a cart that answer what the test says;
 // `url` carries the query string. docs/TESTS-PAGE-HARNESS.md
 export async function loadPage(answer: { status?: number; body: any }, url?: string): Promise<Page> {
@@ -228,6 +248,7 @@ export async function loadPage(answer: { status?: number; body: any }, url?: str
 
   FakeObserver.live = [];
 
+  savePageGlobals();
   const globals = globalThis as any;
   globals.window = window;
   globals.document = document;

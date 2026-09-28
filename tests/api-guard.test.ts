@@ -13,10 +13,6 @@ const IDEAS_FILE = join(SERVER_STATE, "ideas.json");
 const PASSWORD = "test-portal-password-7d3e";
 const FOREIGN = "https://evil.example";
 
-// Bun.fetch, not fetch: loadPage in tests/page-harness.ts replaces globalThis.fetch for
-// the rest of the run, and this file must reach the real server whatever ran before it.
-const http = Bun.fetch;
-
 let proc: any = null;
 let base = "";
 let auth = "";
@@ -39,7 +35,7 @@ async function start(): Promise<void> {
   });
   for (let waited = 0; waited < 15000; waited += 50) {
     try {
-      const res = await http(`${base}/health`);
+      const res = await fetch(`${base}/health`);
       if (res.ok) return;
     } catch {
       // Not up yet.
@@ -52,7 +48,7 @@ async function start(): Promise<void> {
 async function login(): Promise<string> {
   const form = new FormData();
   form.set("password", PASSWORD);
-  const res = await http(`${base}/login`, { method: "POST", body: form, redirect: "manual" });
+  const res = await fetch(`${base}/login`, { method: "POST", body: form, redirect: "manual" });
   expect(res.status).toBe(302);
   const cookie = (res.headers.get("set-cookie") || "").match(/auth=[a-f0-9]{64}/);
   if (!cookie) throw new Error("POST /login did not set an auth cookie");
@@ -61,7 +57,7 @@ async function login(): Promise<string> {
 
 /** A POST with exactly these headers and this body text, nothing added. */
 const send = (path: string, body: string, headers: Record<string, string>, method = "POST") =>
-  http(base + path, { method, headers, body, redirect: "manual" });
+  fetch(base + path, { method, headers, body, redirect: "manual" });
 
 const tasksBytes = () => readFileSync(TASKS_FILE, "utf8");
 const taskDone = (id: string) => JSON.parse(tasksBytes()).agency_tasks.find((t: any) => t.id === id).done;
@@ -74,7 +70,7 @@ beforeAll(async () => {
   auth = await login();
 
   // The first read writes tasks.json from the seed, so every test below has bytes to compare.
-  const res = await http(`${base}/api/tasks`, { headers: { cookie: auth } });
+  const res = await fetch(`${base}/api/tasks`, { headers: { cookie: auth } });
   expect(res.status).toBe(200);
   taskId = (await res.json()).agency_tasks[0].id;
   expect(taskId).toBeTruthy();
@@ -152,7 +148,7 @@ describe("POST /api/tasks is guarded like every other portal write", () => {
   });
 
   test("GET with a foreign Origin is still 200 with the task list, uncached", async () => {
-    const res = await http(`${base}/api/tasks`, { headers: { cookie: auth, origin: FOREIGN } });
+    const res = await fetch(`${base}/api/tasks`, { headers: { cookie: auth, origin: FOREIGN } });
     expect(res.status).toBe(200);
     expect(res.headers.get("cache-control")).toBe("no-cache");
     expect((await res.json()).agency_tasks.find((t: any) => t.id === taskId).done).toBe(taskDone(taskId));
@@ -232,7 +228,7 @@ describe("one guard in the router, for POST only", () => {
 
   test("a browser's preflight carries no cookie, so it gets the 401 and no CORS headers", async () => {
     for (const path of ["/api/tasks", "/api/ideas", "/api/shipments"]) {
-      const res = await http(base + path, {
+      const res = await fetch(base + path, {
         method: "OPTIONS",
         headers: { origin: FOREIGN, "access-control-request-method": "POST", "access-control-request-headers": "content-type" },
       });
