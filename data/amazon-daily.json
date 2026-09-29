@@ -4,8 +4,8 @@
  "as_of": null,
  "pending": true,
  "fx_used": {
-  "usd_per_eur": 1.1403,
-  "date": "2026-09-25",
+  "usd_per_eur": 1.1378,
+  "date": "2026-09-28",
   "source": "ECB eurofxref-daily"
  },
  "note": "Amazon US gross sales per day in USD, typed into the sheet from Seller Central > Business Reports, converted at the ECB reference rate on the day the portal refreshed. No rows yet = no number shown; nothing is estimated.",
@@ -29,7 +29,7 @@
    "sales_usd": null,
    "sales_eur": null,
    "days_covered": 0,
-   "days_total": 27
+   "days_total": 28
   },
   "90d": {
    "orders": null,
@@ -51,5 +51,5 @@
   "spapi": 0,
   "sheet": 0
  },
- "sheet_read_at": "2026-09-28T05:21:46+00:00"
+ "sheet_read_at": "2026-09-29T05:16:13+00:00"
 }
