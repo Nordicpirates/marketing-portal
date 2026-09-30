@@ -158,6 +158,7 @@
     <p class="h2sub">Daglig snapshot · Shopify + GA4</p>
     <div id="fr-yest"></div>
     <div class="kpis" id="yest-kpis"></div>
+    <p class="h2sub" id="yest-note" style="margin-top:10px"></p>
   </section>
 
   <!-- CHARTS -->
@@ -266,6 +267,8 @@ async function load() {
 
   // Yesterday KPIs
   const y = DATA.yesterday || {};
+  if (window.Freshness && y.sources) window.Freshness.render(document, 'fr-yest', y.sources, SECTION_SOURCES['fr-yest']);
+  document.getElementById('yest-note').textContent = y._note || '';
   const yDate = y.date || DATA.generated_at || '';
   document.getElementById('yest-date-label').textContent = yDate ? formatDate(yDate) : '';
   document.getElementById('yest-kpis').innerHTML = `
@@ -280,9 +283,9 @@ async function load() {
       <div class="d">${y.sessions ? 'alla kanaler' : '–'}</div>
     </div>
     <div class="kpi gold">
-      <div class="n">${fmt(y.conversions)}</div>
-      <div class="k">Konverteringar (GA4)</div>
-      <div class="d">${y.conversions && y.sessions ? ((y.conversions/y.sessions*100).toFixed(1)+'% CVR') : '–'}</div>
+      <div class="n">${y.orders_per_measured_visit_pct != null ? y.orders_per_measured_visit_pct.toFixed(2)+'%' : fmt(y.conversions)}</div>
+      <div class="k">${y.provisional ? 'Provisional orders per measured visit' : 'Konverteringar (GA4)'}</div>
+      <div class="d">${y.provisional ? fmt(y.ga4_purchases_seen)+' GA4 tracked purchases; not converted sessions' : (y.conversions && y.sessions ? ((y.conversions/y.sessions*100).toFixed(1)+'% CVR') : '–')}</div>
     </div>
     <div class="kpi green">
       <div class="n" style="font-size:20px">${y.revenue_sek ? fmt(y.revenue_sek)+' kr' : '—'}</div>

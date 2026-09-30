@@ -509,6 +509,10 @@ function renderPeriod(i) {
 
   document.querySelectorAll('.preset').forEach(b=>b.classList.toggle('active', parseInt(b.dataset.i)===i));
 
+  if (window.Freshness && DATA.sources) {
+    const sources = { ...DATA.sources, ...p.sources };
+    for (const id in SECTION_SOURCES) window.Freshness.render(document, id, sources, SECTION_SOURCES[id]);
+  }
   const rangeStr = `${p.range_start} → ${p.range_end}`;
   document.getElementById('range-caption').innerHTML = `Showing <b>${p.label}</b> · ${rangeStr} · ${p.days} day${p.days===1?'':'s'}`;
   const note = `${p.label} · ${rangeStr}`;
@@ -524,7 +528,7 @@ function renderPeriod(i) {
     <div class="kpi"><div class="n">${k.sales_label||'—'}</div><div class="k">Shopify sales</div><div class="d">store currency EUR</div></div>
     <div class="kpi ${amzPending?'ph':'gold'}"><div class="n">${amzPending?'—':k.amazon_label}</div><div class="k">Amazon sales</div><div class="d">${amzPending?'awaiting Seller Central rows':('USD '+fmtInt(Math.round(k.amazon_sales_usd))+' · '+k.amazon_days_covered+'/'+p.days+' days')}</div></div>
     <div class="kpi"><div class="n">${fmtInt(k.orders)}</div><div class="k">Orders (Shopify)</div></div>
-    <div class="kpi green"><div class="n">${k.conversion_label||'—'}</div><div class="k">Conversion rate</div></div>
+    <div class="kpi green"><div class="n">${k.conversion_label||'—'}</div><div class="k">${p.conversion?.provisional ? 'Provisional orders per measured visit' : 'Conversion rate'}</div></div>
     <div class="kpi"><div class="n">${fmtInt(k.sessions)}</div><div class="k">Sessions</div><div class="d">GA4, landing pages included</div></div>`;
   renderSalesNote(p);
   renderConversion(p);
@@ -616,6 +620,11 @@ function renderConversion(p) {
   if (!c) { grid.innerHTML = ''; note.textContent = 'No conversion breakdown in this snapshot.'; return; }
 
   const pct = v => v === null || v === undefined ? '—' : String(v.toFixed(2)).replace('.', ',') + '%';
+  if (c.provisional) {
+    grid.innerHTML = `<div class="conv real"><div class="n">${pct(c.blended_pct)}</div><div class="k">Provisional orders per measured visit</div><div class="d">${fmtInt(c.orders)} Shopify orders / ${fmtInt(c.sessions_ga4)} GA4 sessions, including unknown landing pages.</div></div>`;
+    note.textContent = c.note;
+    return;
+  }
   const gap = c.blended_pct ? (CONVERSION_TARGET_PCT / c.blended_pct).toFixed(1).replace('.', ',') : null;
 
   grid.innerHTML = `

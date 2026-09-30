@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-29",
+ "generated_at": "2026-10-01",
  "sources": {
   "shopify": {
    "as_of": "2026-09-28",
@@ -82,25 +82,57 @@
   "link_gmc": "https://merchants.google.com"
  },
  "yesterday": {
-  "date": "2026-09-28",
-  "orders": 9,
-  "revenue_eur": 547.94,
-  "revenue_sek": 6247,
-  "sessions": null,
-  "conversions": 9,
+  "date": "2026-09-30",
+  "orders": 15,
+  "revenue_eur": 1687.32,
+  "revenue_sek": null,
+  "sessions": 481,
+  "conversions": 7,
+  "ga4_purchases_seen": 7,
+  "orders_per_measured_visit_pct": 3.12,
+  "provisional": true,
   "gads_spend": null,
-  "gads_spend_sek": 0,
-  "gads_roas": 0.0,
-  "gads_conv": 0,
-  "meta_spend_sek": 6552,
-  "_note": "Allt hämtat 29 september, läst 7 timmar efter dygnets slut. 28 september: Meta drog 6 552 kr och bokför 4 köp värda 5 016 kr, alltså 0,77 tillbaka enligt kontot. Butiken tog in 547,94 EUR på 9 ordrar, cirka 6 247 kr från ALLA kanaler. Metas anspråk är därmed 80 procent av hela kassan. Mätt mot riktiga pengar: 0,95 tillbaka per annonskrona."
+  "gads_spend_sek": null,
+  "gads_roas": null,
+  "gads_conv": null,
+  "meta_spend_sek": null,
+  "sources": {
+   "shopify": {
+    "as_of": "2026-09-30",
+    "pulled": "2026-10-01",
+    "note": "Non-cancelled orders by Europe/Stockholm day; fetched 2026-09-30T23:11:34+00:00"
+   },
+   "sessions": {
+    "as_of": "2026-09-30",
+    "pulled": "2026-10-01",
+    "note": "Provisional GA4 property 250338585; all 481 sessions including unknown landing pages; processing incomplete."
+   },
+   "meta": {
+    "as_of": null,
+    "text": "unavailable for 30 September",
+    "note": "Fresh pull unavailable; no older figures reused."
+   },
+   "gads": {
+    "as_of": null,
+    "text": "not refreshed for 30 September"
+   },
+   "shopify_sessions": {
+    "as_of": null,
+    "text": "not refreshed for 30 September"
+   },
+   "landing_pages": {
+    "as_of": null,
+    "text": "breakdown not refreshed for 30 September"
+   }
+  },
+  "_note": "Provisional: 30 September 2026, Europe/Stockholm. Shopify: 15 non-cancelled orders, EUR 1,687.32. GA4 property 250338585: 481 measured sessions (including 5 with unknown landing pages), 7 tracked purchases. Pulled on 1 October about one hour after midnight; GA4 processing is incomplete. 15 / 481 = 3.12% orders per measured visit, not an exact session purchase rate or the share of sessions that purchased. No store/landing-page order split is estimated. Partial refresh on 1 October: Shopify and GA4 for 30 September only. Meta could not be fetched through the available connection; Google Ads and Amazon were not refreshed. Missing paid metrics are unavailable, not zero. Other windows and trend charts retain their original dates through 28 September or earlier."
  },
  "gads": {
   "live_since": "8 July",
   "as_of": "28 September",
   "note": "Nyhämtat 27 september. Alla kampanjer är pausade sedan 12 september på Lucas beslut, så nollorna efter det datumet är avsiktliga. Totalen nedan är facit för 8 juli-12 september och är oförändrad på kronan vid dagens omläsning, åttonde dagen i rad.",
   "spend_label": "33 152 kr",
-  "yesterday_label": "0 kr (pausat)",
+  "yesterday_label": "Unavailable (30 September not refreshed)",
   "totals": {
    "spend_sek": 33152,
    "clicks": 7168,
@@ -327,11 +359,11 @@
  "channels_note": "Alla fem perioder är nyhämtade 26 september och täcker till och med 25 september. Google Ads är pausat sedan 12 september på Lucas beslut, så nollorna i Gårdagen och 7-dagars är avsiktliga och verifierade med en egen hämtning. Ordrar räknas exklusive annullerade och dygnet bryts vid svensk midnatt; metoden är kontrollerad mot två kända dygn (24 sep 4 ordrar/430,62 EUR och 23 sep 5/300,03) och stämde på öret. Metas dygn läses sex timmar efter stängning. Läs Metas avkastning som ett ANSPRÅK och den blandade som riktiga pengar. Sessions- och landningssidesiffrorna har ingen färsk källa i den här körningen och står kvar från tidigare - de är inte omhämtade 26 september.",
  "dashboard_status": [
   {
-   "icon": "✅",
-   "title": "Alla siffror nyhämtade 29 september",
+   "icon": "",
+   "title": "30 September conversion: provisional Shopify + GA4 refresh",
    "who": "Bengt",
-   "status": "done",
-   "desc": "Butik, Meta och Google Ads är lästa samma morgon och täcker till och med 28 september, ordrar per land inräknade. Googles nollor är verifierade med en egen hämtning, inte antagna."
+   "status": "queue",
+   "desc": "Partial refresh on 1 October: Shopify and GA4 for 30 September only. Meta could not be fetched through the available connection; Google Ads and Amazon were not refreshed. Missing paid metrics are unavailable, not zero. Other windows and trend charts retain their original dates through 28 September or earlier."
   },
   {
    "icon": "🔧",
@@ -534,7 +566,7 @@
    "note": "Orders and sales are read straight from Shopify again as of 19 Aug. Shopify analytics (sessions, conversion rate, landing pages) is a separate connection and still refuses its login."
   }
  ],
- "default_period": "7d",
+ "default_period": "yesterday",
  "periods": [
   {
    "id": "7d",
@@ -1597,16 +1629,16 @@
   },
   {
    "id": "yesterday",
-   "label": "Yesterday (Sep 28)",
-   "range_start": "2026-09-28",
-   "range_end": "2026-09-28",
+   "label": "Yesterday (Sep 30)",
+   "range_start": "2026-09-30",
+   "range_end": "2026-09-30",
    "days": 1,
    "kpis": {
-    "sessions": 684,
-    "conversion_label": "1,32%",
-    "sales_label": "€548",
-    "orders": 9,
-    "shopify_sales_eur": 547.94,
+    "sessions": 481,
+    "conversion_label": "3.12% (provisional)",
+    "sales_label": "€1,687.32",
+    "orders": 15,
+    "shopify_sales_eur": 1687.32,
     "amazon_sales_eur": null,
     "amazon_sales_usd": null,
     "amazon_days_covered": 0,
@@ -1615,130 +1647,92 @@
     "total_label": null
    },
    "meta": {
-    "spend_label": "6 552 kr",
-    "spend_window": "28 sep (Meta, hämtad 29 sep)",
-    "meta_roas": 0.77,
-    "blended_mer": 0.95,
-    "_note": "Allt hämtat 29 september, läst 7 timmar efter dygnets slut. 28 september: Meta drog 6 552 kr och bokför 4 köp värda 5 016 kr, alltså 0,77 tillbaka enligt kontot. Butiken tog in 547,94 EUR på 9 ordrar, cirka 6 247 kr från ALLA kanaler. Metas anspråk är därmed 80 procent av hela kassan. Mätt mot riktiga pengar: 0,95 tillbaka per annonskrona.",
-    "blended_mer_total": null
+    "spend_label": "Unavailable",
+    "meta_roas": null,
+    "blended_mer": null,
+    "blended_mer_total": null,
+    "_note": "Partial refresh on 1 October: Shopify and GA4 for 30 September only. Meta could not be fetched through the available connection; Google Ads and Amazon were not refreshed. Missing paid metrics are unavailable, not zero. Other windows and trend charts retain their original dates through 28 September or earlier."
    },
    "gads": {
-    "spend_label": "0 kr",
-    "gads_roas": 0.0,
-    "conv": 0,
-    "value_label": "0 kr",
-    "_note": "Google Ads, nyhämtat 29 september, ingen spend i fönstret - verifierat med en egen hämtning, inte antaget. Senaste spend var 12 september.",
-    "campaigns": []
+    "spend_label": "Unavailable",
+    "value_label": "Unavailable",
+    "gads_roas": null,
+    "conv": null,
+    "campaigns": [],
+    "_note": "Not refreshed for 30 September; no zero assumed."
    },
    "orders_by_country": [
     {
-     "name": "UK",
-     "flag": "🇬🇧",
-     "orders": 2,
-     "revenue": "€251"
+     "name": "United States",
+     "flag": "",
+     "orders": 8,
+     "revenue": "€899.86"
     },
     {
-     "name": "USA",
-     "flag": "🇺🇸",
-     "orders": 3,
-     "revenue": "€162"
+     "name": "United Kingdom",
+     "flag": "",
+     "orders": 5,
+     "revenue": "€430.27"
     },
     {
-     "name": "Australia",
-     "flag": "🇦🇺",
-     "orders": 2,
-     "revenue": "€108"
-    },
-    {
-     "name": "Croatia",
-     "flag": "🇭🇷",
+     "name": "Belgium",
+     "flag": "",
      "orders": 1,
-     "revenue": "€13"
+     "revenue": "€182.25"
     },
     {
-     "name": "Netherlands",
-     "flag": "🇳🇱",
+     "name": "Denmark",
+     "flag": "",
      "orders": 1,
-     "revenue": "€13"
+     "revenue": "€174.94"
     }
    ],
-   "landing_pages": [
-    {
-     "name": "CoG Big Box LP (A)",
-     "path": "/lp/lying-pirates-cities-of-greed-big-box",
-     "sessions": 292,
-     "conv_pct": 1.03
-    },
-    {
-     "name": "CoG Big Box LP (B)",
-     "path": "/lp/lying-pirates-cities-of-greed-big-box-b",
-     "sessions": 247,
-     "conv_pct": 0.4,
-     "alert": true
-    },
-    {
-     "name": "Homepage",
-     "path": "/",
-     "sessions": 42,
-     "conv_pct": 0.0
-    },
-    {
-     "name": "Kraken Mini (product)",
-     "path": "/products/kraken-mini-expansion",
-     "sessions": 32,
-     "conv_pct": 9.38
-    },
-    {
-     "name": "Big Box (product)",
-     "path": "/products/lying-pirates-big-box",
-     "sessions": 22,
-     "conv_pct": 0.0
-    },
-    {
-     "name": "Base Game (product)",
-     "path": "/products/lying-pirates-base-game",
-     "sessions": 7,
-     "conv_pct": 0.0
-    },
-    {
-     "name": "Custom Insert (product)",
-     "path": "/products/lying-pirates-custom-insert",
-     "sessions": 5,
-     "conv_pct": 0.0
-    },
-    {
-     "name": "/blog/12-best-board-games-for-6-plus-players",
-     "path": "/blog/12-best-board-games-for-6-plus-players",
-     "sessions": 4,
-     "conv_pct": 0.0
-    }
-   ],
+   "landing_pages": [],
    "flags": [
     {
      "level": "warning",
-     "title": "Google Ads står pausat sedan 12 september",
-     "body": "Alla fjorton kampanjer i kontot är avstängda. Shopping US &amp; UK stoppades 12 september 20:47 på Lucas beslut, medan klickpriset utreds - det steg från 3,74 kr till 9,61 kr per besök under augusti. Nollorna i Google-rutorna för 13-24 september är alltså avsiktliga.",
-     "sub": "Facit för perioden 8 juli-12 september, då kanalen levererade: 33 152 kr ut, 107 634 kr in, 3,25x. Omläst 25 september och oförändrat på kronan för sjätte dagen i rad."
-    },
-    {
-     "level": "info",
-     "title": "Order counts now exclude cancelled orders, and days are cut in Swedish time",
-     "body": "Two corrections to how these figures are built. Cancelled orders are no longer counted as sales: Shopify's own revenue figure includes them, which is why a number here can read lower than the one in the Shopify app. And each day is now cut at Swedish midnight in our own code, because Shopify's date filter was returning two days' orders as one.",
-     "sub": "Checked against 23 Aug: 8 real orders and €608, plus one cancelled order. Shopify shows €756 for the same day because it counts the cancelled one."
+     "title": "Partial refresh; paid metrics unavailable",
+     "body": "Partial refresh on 1 October: Shopify and GA4 for 30 September only. Meta could not be fetched through the available connection; Google Ads and Amazon were not refreshed. Missing paid metrics are unavailable, not zero. Other windows and trend charts retain their original dates through 28 September or earlier.",
+     "date": "2026-09-30"
     }
    ],
    "conversion": {
-    "orders": 9,
-    "sessions_ga4": 684,
-    "sessions_shopify": 181,
-    "sessions_landing_pages": 541,
-    "sessions_store": 143,
-    "shopify_pct": 4.97,
-    "blended_pct": 1.32,
-    "landing_pages_pct": 0.94,
-    "store_pct": 2.73,
+    "orders": 15,
+    "sessions_ga4": 481,
     "ga4_purchases_seen": 7,
-    "split_is_estimated": true
+    "blended_pct": 3.12,
+    "provisional": true,
+    "split_is_estimated": false,
+    "note": "Provisional: 30 September 2026, Europe/Stockholm. Shopify: 15 non-cancelled orders, EUR 1,687.32. GA4 property 250338585: 481 measured sessions (including 5 with unknown landing pages), 7 tracked purchases. Pulled on 1 October about one hour after midnight; GA4 processing is incomplete. 15 / 481 = 3.12% orders per measured visit, not an exact session purchase rate or the share of sessions that purchased. No store/landing-page order split is estimated."
+   },
+   "sources": {
+    "shopify": {
+     "as_of": "2026-09-30",
+     "pulled": "2026-10-01",
+     "note": "Non-cancelled orders by Europe/Stockholm day; fetched 2026-09-30T23:11:34+00:00"
+    },
+    "sessions": {
+     "as_of": "2026-09-30",
+     "pulled": "2026-10-01",
+     "note": "Provisional GA4 property 250338585; all 481 sessions including unknown landing pages; processing incomplete."
+    },
+    "meta": {
+     "as_of": null,
+     "text": "unavailable for 30 September",
+     "note": "Fresh pull unavailable; no older figures reused."
+    },
+    "gads": {
+     "as_of": null,
+     "text": "not refreshed for 30 September"
+    },
+    "shopify_sessions": {
+     "as_of": null,
+     "text": "not refreshed for 30 September"
+    },
+    "landing_pages": {
+     "as_of": null,
+     "text": "breakdown not refreshed for 30 September"
+    }
    }
   }
  ],

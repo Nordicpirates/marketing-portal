@@ -146,7 +146,7 @@ describe("Google Ads follows the period", () => {
     const oc = ONE_DAY.orders_by_country || [];
     expect(page.shown("orders-country-section")).toBe(oc.length > 0);
     if (oc.length) {
-      expect(page.rows("oc-body")[0]).toEqual([`${oc[0].flag} ${oc[0].name}`, String(oc[0].orders), oc[0].revenue]);
+      expect(page.rows("oc-body")[0]).toEqual([`${oc[0].flag} ${oc[0].name}`.trim(), String(oc[0].orders), oc[0].revenue]);
     }
 
     const lps = ONE_DAY.landing_pages || [];
@@ -228,6 +228,7 @@ describe("every section says how old its own numbers are", () => {
       s.sources.landing_pages = { as_of: "2026-01-02", pulled: "2026-01-02", note: "frozen in January" };
     });
     const page = await loadPage(stale);
+    page.pick(PERIODS[0].label);
     expect(page.text("fr-lp")).toContain("2 Jan");
     expect(page.text("fr-lp")).toContain("frozen in January");
     expect(page.html("fr-lp")).toContain("fr-stale");
@@ -281,8 +282,36 @@ describe("every section says how old its own numbers are", () => {
 });
 
 describe("conversion, one card per denominator", () => {
+  test("provisional orders per visit retains unknown sessions and does not claim converted sessions", async () => {
+    const snapshot = snapshotWith((s) => {
+      s.default_period = s.periods[0].id;
+      s.periods[0].conversion = { provisional: true, orders: 15, sessions_ga4: 481,
+        blended_pct: 3.12, note: 'Processing incomplete; not an exact session purchase rate.' };
+      s.periods[0].kpis.conversion_label = '3.12% (provisional)';
+    });
+    const page = await loadPage(snapshot);
+    expect(page.text('conv-grid')).toContain('15 Shopify orders / 481 GA4 sessions');
+    expect(page.text('conv-grid')).toContain('including unknown landing pages');
+    expect(page.text('conv-grid')).not.toContain('Real conversion');
+    expect(page.text('conv-grid')).not.toContain('Target');
+    expect(page.text('kpi-grid')).toContain('Provisional orders per measured visit');
+    expect(page.text('conv-note')).toContain('not an exact session purchase rate');
+    expect(page.errors).toEqual([]);
+  });
+
+  test("default selection and freshness follow the selected period", async () => {
+    const page = await loadPage();
+    const selected = PERIODS.find(p => p.id === SNAPSHOT.default_period);
+    expect(page.text('range-caption')).toContain(selected.label);
+    if (selected.sources?.sessions) {
+      expect(page.text('fr-store')).toContain(F_SHORT(selected.sources.sessions.as_of));
+      page.pick(PERIODS[0].label);
+      expect(page.text('fr-store')).toContain(F_SHORT(SNAPSHOT.sources.sessions.as_of));
+    }
+  });
   test("all four rates are drawn, and each one names the traffic it was measured on", async () => {
     const page = await loadPage();
+    page.pick(PERIODS[0].label);
     const c = PERIODS[0].conversion;
     const shown = page.text("conv-grid");
     for (const [label, value] of [
@@ -301,6 +330,7 @@ describe("conversion, one card per denominator", () => {
 
   test("Shopify's own rate is marked as storefront only, never as the real one", async () => {
     const page = await loadPage();
+    page.pick(PERIODS[0].label);
     expect(page.html("conv-grid")).toContain("conv reported");
     expect(page.text("conv-grid")).toContain("landing pages are not in the bottom of it");
     expect(page.html("conv-grid")).toContain("conv real");
@@ -308,6 +338,7 @@ describe("conversion, one card per denominator", () => {
 
   test("the estimated split says it is estimated, in the cards and in the note", async () => {
     const page = await loadPage();
+    page.pick(PERIODS[0].label);
     expect(PERIODS[0].conversion.split_is_estimated).toBe(true);
     expect((page.text("conv-grid").match(/Split estimated/g) || [])).toHaveLength(2);
     expect(page.text("conv-note")).toContain("a split rather than a measurement");
@@ -315,6 +346,7 @@ describe("conversion, one card per denominator", () => {
 
   test("the target is read from the page, and the distance to it is worked out", async () => {
     const page = await loadPage();
+    page.pick(PERIODS[0].label);
     const c = PERIODS[0].conversion;
     const factor = (3 / c.blended_pct).toFixed(1).replace(".", ",");
     expect(page.text("conv-grid")).toContain(`Target 3% is ${factor}x this`);
