@@ -6,6 +6,7 @@ import { configuredSecret, secretMatches } from "./lib/secret.ts";
 import { handleAsset, handleClaim } from "./lib/lp-aboard.ts";
 import { handleMarkSent, handleSignups } from "./lib/lp-aboard-admin.ts";
 import { addIdea, readBrands, readIdeas } from "./lib/ideas-store.ts";
+import { handleHit as handleQrHit, handleStats as handleQrStats } from "./lib/qr-links.ts";
 import {
   NOTION_URL,
   NotionError,
@@ -269,6 +270,10 @@ const server = Bun.serve({
     if (lpPath === "/lp/aboard/signups") return handleSignups(req);
     if (lpPath === "/lp/aboard/signups/mark-sent") return handleMarkSent(req);
 
+    // The QR edge's scan counter, server to server behind its own x-qr-hit-secret.
+    // docs/PUBLIC-ROUTES.md
+    if (lpPath === "/qr/hit") return handleQrHit(req);
+
     if (lpPath === "/lp" || lpPath.startsWith("/lp/")) {
       // 404, never the login screen; the request goes along for byte ranges.
       // docs/PUBLIC-ROUTES.md
@@ -434,6 +439,14 @@ const server = Bun.serve({
       }
     }
 
+    // Scan counts per QR link, counted from the edge's hits. docs/QR-LINKS.md
+    if (path === "/api/qr") {
+      if (req.method !== "GET") {
+        return Response.json({ error: "Method not allowed" }, { status: 405, headers: { Allow: "GET" } });
+      }
+      return handleQrStats();
+    }
+
     // The freshness pills every page draws. One file so two pages cannot disagree
     // about how old a number is: public/freshness.js, docs/FRESHNESS.md.
     if (path === "/freshness.js") {
@@ -472,6 +485,11 @@ const server = Bun.serve({
 
     if (path === "/assets") {
       const page = htmlPage("assets.html");
+      if (page) return page;
+    }
+
+    if (path === "/qr") {
+      const page = htmlPage("qr.html");
       if (page) return page;
     }
 

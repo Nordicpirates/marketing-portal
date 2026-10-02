@@ -1,6 +1,6 @@
 # The portal's secrets
 
-Three doors in this service open only for a caller that presents a secret, and all three
+Four doors in this service open only for a caller that presents a secret, and all four
 read it with `configuredSecret` and compare it with `secretMatches`:
 
 | Door | Presented as | Configured by | Proves |
@@ -8,6 +8,7 @@ read it with `configuredSecret` and compare it with `secretMatches`:
 | The gift claim, `lib/lp-aboard.ts` | header `x-lp-proxy-secret` | `LP_PROXY_SECRET` | the request came through our Cloudflare Worker |
 | The emailer's routes, `lib/lp-aboard-admin.ts` | header `x-lp-admin-secret` | `LP_ADMIN_SECRET` | the caller is the emailer |
 | The staff login, `server.ts` | the login form, then the `auth` cookie | `AUTH_PASSWORD` | the caller is staff |
+| The QR scan counter, `lib/qr-links.ts` | header `x-qr-hit-secret` | `QR_HIT_SECRET` | the request came from the QR edge on qr.nordicpirates.com |
 
 ## Two secrets on purpose
 
@@ -21,7 +22,7 @@ read everybody's email address.
 
 ## One comparison: `secretMatches` in `lib/secret.ts`
 
-All three doors compare the presented secret with `secretMatches`, a constant-time shared
+All four doors compare the presented secret with `secretMatches`, a constant-time shared
 secret check. Two copies of a constant-time compare is one copy too many.
 
 Both sides are hashed first, so the comparison is always over two 32 byte buffers.
@@ -35,12 +36,13 @@ in.
 
 ## One reader: `configuredSecret` in `lib/secret.ts`
 
-All three doors read their configured value the same way, through
+All four doors read their configured value the same way, through
 `configuredSecret(name)`, which returns the trimmed value of that environment variable at
 the moment it is called. `lib/lp-aboard.ts` calls `configuredSecret("LP_PROXY_SECRET")` on
 every claim, `lib/lp-aboard-admin.ts` calls `configuredSecret("LP_ADMIN_SECRET")` on every
-request, and `server.ts` calls `configuredSecret("AUTH_PASSWORD")` on every login and every
-cookie check. No module keeps a secret in a constant.
+request, `lib/qr-links.ts` calls `configuredSecret("QR_HIT_SECRET")` on every scan, and
+`server.ts` calls `configuredSecret("AUTH_PASSWORD")` on every login and every cookie check.
+No module keeps a secret in a constant.
 
 Why at call time. A value captured when a module is imported belongs to whoever imported
 the module first. In one `bun test` run every test file shares one module cache, so a file
