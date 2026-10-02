@@ -6,6 +6,9 @@ import { join } from "path";
 import { readJsonlObjects } from "./jsonl.ts";
 import { configuredSecret, secretMatches } from "./secret.ts";
 import { STATE_DIR } from "./state-dir.ts";
+import { stockholmDay } from "./stockholm-day.js";
+
+export { stockholmDay };
 
 export const REGISTRY_FILE = join(import.meta.dir, "..", "data", "qr-links.json");
 export const SCANS_FILE = join(STATE_DIR, "qr-scans.jsonl");
@@ -43,10 +46,6 @@ export function readRegistry(): Registry {
   return { base: String(raw.base || ""), links: raw.links, direct: Array.isArray(raw.direct) ? raw.direct : [] };
 }
 
-/** The calendar day an instant falls on in Stockholm, as YYYY-MM-DD. */
-export function stockholmDay(at: Date): string {
-  return new Intl.DateTimeFormat("en-CA", { timeZone: TIME_ZONE, year: "numeric", month: "2-digit", day: "2-digit" }).format(at);
-}
 
 /** The last n Stockholm days ending today, oldest first. */
 export function lastDays(now: Date, n: number): string[] {

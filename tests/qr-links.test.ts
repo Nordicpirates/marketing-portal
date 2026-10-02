@@ -200,6 +200,14 @@ describe("the edge", () => {
     expect(await edge.visitorHash(SECRET, "203.0.113.9", IPHONE, "2026-10-03")).not.toBe(a);
   });
 
+  test("the edge hashes with the same Stockholm day the portal counts with", () => {
+    // A UTC day would split one phone into two between midnight and 02:00 Stockholm time.
+    const src = readFileSync(join(REPO, "edge", "qr", "functions", "[[path]].js"), "utf8");
+    expect(src).toContain('import { stockholmDay } from "../../../lib/stockholm-day.js";');
+    expect(src).toContain("stockholmDay(new Date())");
+    expect(src).not.toContain("toISOString().slice(0, 10)");
+  });
+
   test("the print files and robots.txt are kept away from the Function", () => {
     const routes = JSON.parse(readFileSync(join(REPO, "edge", "qr", "public", "_routes.json"), "utf8"));
     expect(routes.exclude).toEqual(["/files/*", "/robots.txt"]);

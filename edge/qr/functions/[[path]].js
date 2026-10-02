@@ -1,6 +1,7 @@
 // qr.nordicpirates.com: a registered slug redirects to its destination and reports the scan
 // to the portal; anything else lands on the store. docs/QR-LINKS.md
 import REGISTRY from "../../../data/qr-links.json";
+import { stockholmDay } from "../../../lib/stockholm-day.js";
 
 export const HIT_URL = "https://marketing.nordicpirate.com/qr/hit";
 export const STORE = "https://www.nordicpirates.com/";
@@ -39,7 +40,7 @@ export async function reportScan(request, slug, secret, fetchImpl = fetch) {
     slug,
     country: (request.cf && request.cf.country) || "XX",
     device: deviceOf(ua),
-    visitor: await visitorHash(secret, request.headers.get("cf-connecting-ip") || "", ua, new Date().toISOString().slice(0, 10)),
+    visitor: await visitorHash(secret, request.headers.get("cf-connecting-ip") || "", ua, stockholmDay(new Date())),
     test: new URL(request.url).searchParams.get("test") === "1",
   };
   const res = await fetchImpl(HIT_URL, {

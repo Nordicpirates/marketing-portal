@@ -62,8 +62,9 @@ breaks a printed code: it only loses the counts for those seconds.
 hit arrived. `country` is Cloudflare's two-letter guess, `XX` when unknown. `device` is
 `ios`, `android` or `other` from the user agent.
 
-`visitor` is the first 16 hex of SHA-256 over the UTC day, the IP, the user agent and
-`QR_HIT_SECRET`. The IP never leaves the edge. The same phone gives the same value all
+`visitor` is the first 16 hex of SHA-256 over the Stockholm day, the IP, the user agent
+and `QR_HIT_SECRET`. The day comes from `lib/stockholm-day.js`, the same function the
+portal counts days with, so one phone is one phone from midnight to midnight. The IP never leaves the edge. The same phone gives the same value all
 day, so "different phones" counts it once per day, and the next day's value cannot be
 linked to it.
 
