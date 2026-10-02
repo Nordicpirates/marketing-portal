@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nordic Pirates — QR codes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Asul:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#f2ede4;--cream-2:#ece4d6;--paper:#fffdf8;--paper-2:#fbf6ec;
+    --ink:#171717;--ink-soft:#3a352e;--muted:#8a8073;
+    --terra:#c96a3d;--terra-deep:#a8512a;--gold:#cf9a2e;
+    --grid:rgba(23,23,23,.08);
+    --line:rgba(23,23,23,.09);--shadow:0 1px 2px rgba(23,23,23,.04),0 8px 24px rgba(23,23,23,.05);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Inter',sans-serif;color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased;
+    background:radial-gradient(900px 460px at 88% -8%,rgba(201,106,61,.10),transparent 60%),
+               radial-gradient(760px 420px at -6% 4%,rgba(207,154,46,.12),transparent 58%),
+               var(--cream);
+    padding:0 0 70px}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 16px}
+  header.top{padding:18px 0 16px;margin-bottom:20px;border-bottom:1px solid var(--line)}
+  .brandrow{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:14px}
+  .logochip{background:var(--ink);border-radius:13px;padding:11px 13px;display:flex;align-items:center;box-shadow:var(--shadow)}
+  .logochip img{height:26px;display:block}
+  h1{font-family:'Asul',serif;font-size:27px;font-weight:700;letter-spacing:.2px;line-height:1.15}
+  .sub{color:var(--muted);font-size:13.5px;margin-top:3px}
+  .header-right{display:flex;flex-direction:column;align-items:flex-start;gap:8px}
+  .stamp{font-size:12px;color:var(--muted);line-height:1.7}
+  .stamp b{color:var(--ink-soft)}
+  .logout{font-size:12px;color:var(--muted);text-decoration:none;padding:5px 12px;border:1px solid var(--line);border-radius:20px;background:var(--paper);transition:.15s}
+  .logout:hover{border-color:var(--terra);color:var(--terra)}
+  .view-toggle{display:inline-flex;flex-wrap:wrap;background:var(--paper);border:1.5px solid var(--line);border-radius:24px;padding:4px;margin-top:16px;box-shadow:var(--shadow)}
+  .view-toggle a{font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:var(--muted);text-decoration:none;padding:8px 14px;border-radius:20px;transition:.15s}
+  .view-toggle a:hover{color:var(--ink)}
+  .view-toggle a.active{background:var(--ink);color:#fff}
+  h2{font-family:'Asul',serif;font-size:19px;font-weight:700;margin:0 0 5px;display:flex;align-items:center;gap:9px}
+  h2 .dot{width:9px;height:9px;border-radius:50%;background:var(--terra);flex-shrink:0}
+  .h2sub{font-size:12.5px;color:var(--muted);margin:0 0 14px 18px;max-width:640px}
+  section{margin-bottom:34px}
+  .summary{font-size:14px;color:var(--ink-soft);margin:0 0 18px}
+  .summary b{color:var(--ink)}
+  /* one card per counted link: QR first on a phone, side by side from 760px */
+  .card{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:var(--shadow);margin-bottom:18px;display:grid;gap:18px}
+  .card h3{font-family:'Asul',serif;font-size:20px;line-height:1.2}
+  .where{font-size:13px;color:var(--muted);margin-top:2px}
+  .qrbox{display:flex;flex-direction:column;gap:12px;align-items:flex-start}
+  .qrbox img{width:168px;height:168px;border-radius:10px;border:1px solid var(--line);background:#fff;padding:6px}
+  .dl{display:flex;flex-wrap:wrap;gap:8px}
+  .dl a{font-size:13px;font-weight:600;color:var(--ink);text-decoration:none;padding:8px 14px;border:1.5px solid var(--line);border-radius:20px;background:var(--paper-2);min-height:36px;display:inline-flex;align-items:center}
+  .dl a:hover{border-color:var(--terra);color:var(--terra-deep)}
+  .facts{font-size:12.5px;color:var(--muted);line-height:1.7;word-break:break-word}
+  .facts b{color:var(--ink-soft);font-weight:600}
+  .facts a{color:var(--ink-soft)}
+  .tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+  .tile{background:var(--paper-2);border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+  .tile .label{font-size:12px;color:var(--muted)}
+  .tile .value{font-size:26px;font-weight:600;line-height:1.2;margin-top:2px}
+  .chart-title{font-size:13px;font-weight:600;color:var(--ink-soft);margin:16px 0 6px}
+  .chart{position:relative}
+  .chart svg{display:block;width:100%;height:auto;overflow:visible}
+  .chart .hit{fill:transparent;cursor:default;outline:none}
+  .chart .bar{fill:var(--terra)}
+  .chart .bar.on{fill:var(--terra-deep)}
+  .chart text{font-family:'Inter',sans-serif;font-size:11px;fill:var(--muted);font-variant-numeric:tabular-nums}
+  .chart text.peak{fill:var(--ink-soft);font-weight:600}
+  .tip{position:absolute;pointer-events:none;background:var(--ink);color:#fff;font-size:12px;line-height:1.35;border-radius:8px;padding:6px 9px;white-space:nowrap;transform:translate(-50%,-100%);display:none}
+  .tip b{font-size:14px}
+  .empty{background:var(--paper-2);border:1px dashed var(--line);border-radius:14px;padding:18px;color:var(--muted);font-size:13.5px;margin-top:16px}
+  .split{display:grid;gap:14px;margin-top:16px}
+  .split h4{font-size:13px;font-weight:600;color:var(--ink-soft);margin-bottom:6px}
+  .rows{list-style:none;font-size:13px}
+  .rows li{display:flex;justify-content:space-between;gap:12px;padding:5px 0;border-bottom:1px solid var(--line)}
+  .rows li span:last-child{font-variant-numeric:tabular-nums;color:var(--ink-soft);font-weight:600}
+  details{margin-top:14px;font-size:13px}
+  summary{cursor:pointer;color:var(--ink-soft);font-weight:600;min-height:32px;display:flex;align-items:center}
+  table{border-collapse:collapse;width:100%;max-width:360px;margin-top:6px;font-variant-numeric:tabular-nums}
+  td,th{text-align:left;padding:4px 8px 4px 0;border-bottom:1px solid var(--line);font-weight:400}
+  th{color:var(--muted);font-size:12px}
+  .tested{font-size:12px;color:var(--muted);margin-top:10px}
+  .direct{display:grid;gap:10px}
+  .direct .row{background:var(--paper);border:1px dashed var(--line);border-radius:14px;padding:12px 14px;font-size:13px}
+  .direct .row b{display:block;font-size:14px}
+  .direct .row span{color:var(--muted);word-break:break-all}
+  .errbox{background:linear-gradient(180deg,rgba(201,106,61,.09),var(--paper));border:1px solid rgba(201,106,61,.28);border-radius:18px;padding:20px 22px;box-shadow:var(--shadow);font-size:14px;color:var(--ink-soft)}
+  .errbox b{font-family:'Asul',serif;color:var(--terra-deep);display:block;margin-bottom:6px}
+  .errbox a{color:var(--terra-deep)}
+  footer{border-top:1px solid var(--line);margin-top:42px;padding-top:22px;font-size:12px;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+  footer b{color:var(--ink-soft)}
+  @media(min-width:760px){
+    .wrap{padding:0 20px}
+    header.top{padding:22px 0 20px}
+    .header-right{align-items:flex-end}
+    .stamp{text-align:right}
+    .view-toggle a{padding:8px 22px}
+    .card{grid-template-columns:200px 1fr;padding:22px;gap:26px}
+    .tiles{grid-template-columns:repeat(4,1fr)}
+    .split{grid-template-columns:1fr 1fr;gap:26px}
+  }
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap brandrow">
+  <div class="brand">
+    <span class="logochip"><img src="https://www.nordicpirates.com/cdn/shop/files/LP_LOGO_vit_e2ed4c01-c782-4abb-8a90-b5cab974fd0a.png?width=120" alt="Nordic Pirates"></span>
+    <div>
+      <h1>QR codes</h1>
+      <div class="sub">Every counted QR link, and how many times it was scanned</div>
+      <div class="view-toggle">
+        <a href="/">Marketing HQ</a>
+        <a href="/dashboard">Dashboard</a>
+        <a href="/inventory">Lager</a>
+        <a href="/growth">Growth</a>
+        <a href="/ideas">Ideas</a>
+        <a href="/assets">Assets</a>
+        <a href="/shipments">Shipments</a>
+        <a href="/qr" class="active">QR codes</a>
+      </div>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="stamp">Counted live · <b id="stamp">…</b></div>
+    <a class="logout" href="/logout">Log out</a>
+  </div>
+</div></header>
+
+<div class="wrap">
+  <p class="summary" id="summary"></p>
+  <section>
+    <h2><span class="dot"></span>Counted QR codes</h2>
+    <p class="h2sub">Each code opens a short link on qr.nordicpirates.com. We count the scan, then send the phone on to the page. Where a code leads can change at any time without printing it again.</p>
+    <div id="links"></div>
+  </section>
+  <section id="directSection">
+    <h2><span class="dot"></span>Older codes, not counted</h2>
+    <p class="h2sub">These go straight to the page, so we never see the scan. Their visits show in Google Analytics under the utm tags. Ask Bengt to swap one for a counted code before the next print.</p>
+    <div class="direct" id="direct"></div>
+  </section>
+  <footer>
+    <div>🏴‍☠️ <b>Nordic Pirates QR codes</b> · one scan is one phone opening the link</div>
+    <div>New code? Tell Bengt the name, where it will hang, and where it should go.</div>
+  </footer>
+</div>
+
+<script>
+const LOCALE = 'en-GB';
+const TZ = 'Europe/Stockholm';
+
+// Everything from the server goes through here, so a name with markup in it shows as text.
+function esc(s){ return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function num(n){ return Number(n || 0).toLocaleString(LOCALE); }
+function dayLabel(iso){ const [y,m,d] = iso.split('-').map(Number); return new Date(Date.UTC(y,m-1,d)).toLocaleDateString(LOCALE,{day:'numeric',month:'short',timeZone:'UTC'}); }
+function longDay(iso){ const [y,m,d] = iso.split('-').map(Number); return new Date(Date.UTC(y,m-1,d)).toLocaleDateString(LOCALE,{weekday:'short',day:'numeric',month:'short',timeZone:'UTC'}); }
+function when(at){ return at ? new Date(at).toLocaleString(LOCALE,{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit',timeZone:TZ}) : '—'; }
+function country(code){
+  if (code === 'XX') return 'Unknown';
+  try { return new Intl.DisplayNames([LOCALE],{type:'region'}).of(code) || code; } catch (e) { return code; }
+}
+function shortUrl(u){ return String(u || '').replace(/^https?:\/\//,''); }
+
+function errBox(msg){
+  return `<div class="errbox"><b>The QR numbers could not be fetched.</b>${esc(msg)} <a href="/qr">Reload the page</a>.</div>`;
+}
+
+// One column per day, peak labelled, every value also in the table below.
+function chartSvg(days, daily, width){
+  const W = Math.max(280, Math.round(width || 600)), H = 170, top = 18, bottom = 22, left = 26;
+  const plotW = W - left, plotH = H - top - bottom;
+  const max = Math.max(...daily, 1);
+  const step = max <= 4 ? 1 : Math.ceil(max / 4);
+  const ceil = Math.ceil(max / step) * step;
+  const slot = plotW / days.length;
+  const barW = Math.max(2, Math.min(24, slot - 2));
+  const y = v => top + plotH - (v / ceil) * plotH;
+  let grid = '';
+  for (let v = 0; v <= ceil; v += step) {
+    grid += `<line x1="${left}" x2="${W}" y1="${y(v)}" y2="${y(v)}" stroke="var(--grid)" stroke-width="1"/>`;
+    grid += `<text x="${left - 6}" y="${y(v) + 4}" text-anchor="end">${v}</text>`;
+  }
+  const peak = daily.lastIndexOf(max);
+  let bars = '';
+  days.forEach((d, i) => {
+    const v = daily[i];
+    const x = left + i * slot + (slot - barW) / 2;
+    const h = (v / ceil) * plotH;
+    if (v > 0) {
+      const r = Math.min(4, h, barW / 2), y0 = top + plotH;
+      bars += `<path class="bar" data-i="${i}" d="M${x},${y0} V${y0 - h + r} Q${x},${y0 - h} ${x + r},${y0 - h} H${x + barW - r} Q${x + barW},${y0 - h} ${x + barW},${y0 - h + r} V${y0} Z"/>`;
+    }
+    bars += `<rect class="hit" data-i="${i}" tabindex="0" x="${left + i * slot}" y="${top}" width="${slot}" height="${plotH}" aria-label="${esc(longDay(d))}: ${v} scans"/>`;
+  });
+  const peakLabel = daily[peak] > 0
+    ? `<text class="peak" x="${left + peak * slot + slot / 2}" y="${y(daily[peak]) - 6}" text-anchor="middle">${daily[peak]}</text>` : '';
+  const xs = [0, Math.floor((days.length - 1) / 2), days.length - 1];
+  const axis = xs.map(i => `<text x="${left + i * slot + slot / 2}" y="${H - 5}" text-anchor="${i === 0 ? 'start' : i === days.length - 1 ? 'end' : 'middle'}">${i === days.length - 1 ? 'Today' : esc(dayLabel(days[i]))}</text>`).join('');
+  return `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="Scans per day, last ${days.length} days">${grid}${bars}${peakLabel}${axis}</svg>`;
+}
+
+function wireTips(box, days, daily){
+  const tip = box.querySelector('.tip');
+  const show = el => {
+    const i = Number(el.getAttribute('data-i'));
+    box.querySelectorAll('.bar').forEach(b => b.classList.toggle('on', b.getAttribute('data-i') === String(i)));
+    tip.textContent = '';
+    const b = document.createElement('b');
+    b.textContent = daily[i] + (daily[i] === 1 ? ' scan' : ' scans');
+    tip.appendChild(b);
+    tip.appendChild(document.createTextNode(' · ' + longDay(days[i])));
+    const r = el.getBoundingClientRect(), host = box.getBoundingClientRect();
+    tip.style.left = (r.left - host.left + r.width / 2) + 'px';
+    tip.style.top = '14px';
+    tip.style.display = 'block';
+  };
+  const hide = () => { tip.style.display = 'none'; box.querySelectorAll('.bar').forEach(b => b.classList.remove('on')); };
+  box.querySelectorAll('.hit').forEach(el => {
+    el.addEventListener('pointerenter', () => show(el));
+    el.addEventListener('focus', () => show(el));
+    el.addEventListener('pointerleave', hide);
+    el.addEventListener('blur', hide);
+  });
+}
+
+function linkCard(l, days){
+  const devices = l.devices || {};
+  const deviceRows = [['iPhone', devices.ios], ['Android', devices.android], ['Other', devices.other]]
+    .filter(([, n]) => n > 0).map(([k, n]) => `<li><span>${k}</span><span>${num(n)}</span></li>`).join('');
+  const countryRows = (l.countries || []).slice(0, 6).map(c => `<li><span>${esc(country(c.code))}</span><span>${num(c.scans)}</span></li>`).join('');
+  const table = days.map((d, i) => `<tr><td>${esc(longDay(d))}</td><td>${l.daily[i]}</td></tr>`).join('');
+  const body = l.total > 0 ? `
+      <div class="chart-title">Scans per day, last ${days.length} days</div>
+      <div class="chart" id="chart-${esc(l.slug)}"><div class="tip"></div></div>
+      <div class="split">
+        <div><h4>Where the phones were</h4><ul class="rows">${countryRows}</ul></div>
+        <div><h4>Phone</h4><ul class="rows">${deviceRows}</ul></div>
+      </div>
+      <details><summary>Show as table</summary><table><tr><th>Day</th><th>Scans</th></tr>${table}</table></details>`
+    : `<div class="empty">No scans yet. A scan shows here a few seconds after it happens.</div>`;
+  return `<article class="card" id="qr-${esc(l.slug)}">
+    <div class="qrbox">
+      <img src="${esc(l.files.svg)}" alt="QR code for ${esc(l.name)}" width="168" height="168">
+      <div class="dl">
+        <a href="${esc(l.files.pdf)}" download>PDF</a>
+        <a href="${esc(l.files.svg)}" download>SVG</a>
+        <a href="${esc(l.files.png)}" download>PNG</a>
+      </div>
+      <div class="facts">
+        <b>Link</b> <a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(shortUrl(l.url))}</a><br>
+        <b>Goes to</b> <span title="${esc(l.destination)}">${esc(shortUrl(l.destination).split('?')[0])}</span><br>
+        <b>Made</b> ${esc(l.created || '—')}${l.requested_by ? ' for ' + esc(l.requested_by) : ''}
+      </div>
+    </div>
+    <div>
+      <h3>${esc(l.name)}</h3>
+      <div class="where">${esc(l.where || '')}</div>
+      <div class="tiles" style="margin-top:14px">
+        <div class="tile"><div class="label">Scans, all time</div><div class="value" id="total-${esc(l.slug)}">${num(l.total)}</div></div>
+        <div class="tile"><div class="label">Last 7 days</div><div class="value">${num(l.last7)}</div></div>
+        <div class="tile"><div class="label">Today</div><div class="value">${num(l.today)}</div></div>
+        <div class="tile"><div class="label">Different phones</div><div class="value">${num(l.unique)}</div></div>
+      </div>
+      ${body}
+      ${l.last_test ? `<div class="tested">Last test scan ${esc(when(l.last_test))}, not counted.</div>` : ''}
+    </div>
+  </article>`;
+}
+
+function drawCharts(data){
+  for (const l of data.links) {
+    if (!(l.total > 0)) continue;
+    const box = document.getElementById('chart-' + l.slug);
+    if (!box) continue;
+    const tip = box.querySelector('.tip');
+    box.innerHTML = chartSvg(data.days, l.daily, box.clientWidth);
+    box.appendChild(tip);
+    wireTips(box, data.days, l.daily);
+  }
+}
+
+async function load() {
+  const box = document.getElementById('links');
+  let r;
+  try { r = await fetch('/api/qr'); }
+  catch (e) { console.error(e); box.innerHTML = errBox('No contact with the server.'); return; }
+  if (r.status === 401) { location.href = '/login'; return; }
+  if (!r.ok) { box.innerHTML = errBox('The server answered ' + r.status + '.'); return; }
+  let data;
+  try { data = await r.json(); }
+  catch (e) { console.error(e); box.innerHTML = errBox('The answer could not be read.'); return; }
+
+  const links = data.links || [];
+  const total = links.reduce((s, l) => s + (l.total || 0), 0);
+  const last = links.map(l => l.last_scan).filter(Boolean).sort().pop();
+  document.getElementById('stamp').textContent = last ? 'last scan ' + when(last) : 'no scans yet';
+  document.getElementById('summary').innerHTML =
+    `<b>${links.length}</b> counted ${links.length === 1 ? 'code' : 'codes'} · <b>${num(total)}</b> ${total === 1 ? 'scan' : 'scans'} in total`;
+  box.innerHTML = links.length ? links.map(l => linkCard(l, data.days)).join('') : '<div class="empty">No counted codes yet.</div>';
+  drawCharts(data);
+
+  const direct = data.direct || [];
+  document.getElementById('directSection').style.display = direct.length ? '' : 'none';
+  document.getElementById('direct').innerHTML = direct.map(d =>
+    `<div class="row"><b>${esc(d.name)}</b><span>${esc(shortUrl(d.url))}</span>${d.created ? ' · made ' + esc(d.created) : ''}</div>`).join('');
+
+  let t;
+  window.addEventListener('resize', () => { clearTimeout(t); t = setTimeout(() => drawCharts(data), 150); });
+}
+
+load();
+</script>
+</body>
+</html>

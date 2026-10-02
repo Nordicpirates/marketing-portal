@@ -1,7 +1,7 @@
 # The routes that sit ahead of the staff password
 
 Almost everything in `server.ts` is behind the staff password. Ahead of it sit `/health`,
-`/login`, and every path under `/lp/`, matched before the password gate on purpose.
+`/login`, `/qr/hit`, and every path under `/lp/`, matched before the password gate on purpose.
 
 ## The gift offer page: `/lp/aboard`
 
@@ -26,3 +26,11 @@ the public gift page. The contract is in `docs/GIFT-EMAIL.md`.
 An unknown `/lp/` path, and a bare `/lp` or `/lp/`, answers 404 rather than falling
 through, so it never bounces a logged-out visitor to the staff login screen. The request
 is passed to `handleAsset` so the hero video can be served in byte ranges.
+
+## The QR scan counter: `/qr/hit`
+
+`POST /qr/hit` is how the QR edge on qr.nordicpirates.com reports a scan. It is server to
+server, behind its own `x-qr-hit-secret`, and answers 403 without it, so it sits here for
+the same reason as the emailer's routes: behind the staff password it would only ever
+redirect the edge to a login page. The staff page that shows the counts, `/qr`, and its
+`/api/qr` stay behind the password. The contract is in `docs/QR-LINKS.md`.

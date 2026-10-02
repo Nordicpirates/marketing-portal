@@ -138,7 +138,7 @@ describe("serving", () => {
     // One helper for every page, so a cache header can never be set on six of seven.
     expect(server).toContain('function htmlPage(file: string): Response | null');
     expect(server).toContain('"Cache-Control": NO_CACHE');
-    for (const page of ["index.html", "dashboard.html", "inventory.html", "growth.html", "ideas.html", "assets.html", "shipments.html"]) {
+    for (const page of ["index.html", "dashboard.html", "inventory.html", "growth.html", "ideas.html", "assets.html", "shipments.html", "qr.html"]) {
       expect(server, `${page} is not served through htmlPage`).toContain(`htmlPage("${page}")`);
     }
     // Only two places answer with HTML at all, htmlPage and the login form, and both
