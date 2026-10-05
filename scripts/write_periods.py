@@ -18,6 +18,8 @@ EN_MONTHS = ["", "January", "February", "March", "April", "May", "June", "July",
              "September", "October", "November", "December"]
 SHORT_NAMES = {"GB": "UK", "US": "USA"}
 FRESH_CARD = "Alla siffror nyhämtade"
+PARTIAL_CARD = "Butik och Google nyhämtade"
+NO_META = "Unavailable"
 
 
 def kr(x):
@@ -113,6 +115,14 @@ def gads_window(rows, s, e):
             sum(c[2] for c in camp.values()), campaigns)
 
 
+def no_meta_note(e, today, shop, gads):
+    orders, revenue, shop_sek = shop
+    google = f" Google drog {kr(gads)}." if gads else ""
+    return (f"Meta gick inte att hämta {sv_date(today)}: GATE saknar just nu kopplingen till annonskontot. "
+            f"Metas rutor står tomma, inte på noll, och blandad avkastning räknas inte utan Metas kostnad. "
+            f"Butiken tog in {sv(revenue)} EUR på {orders} ordrar till och med {sv_date(e)}.{google}")
+
+
 def meta_note(pid, s, e, today, hours, m, shop, gads):
     msp, mval, mpur = m
     orders, revenue, shop_sek = shop
@@ -135,15 +145,19 @@ def meta_note(pid, s, e, today, hours, m, shop, gads):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--repo", default=".")
-    ap.add_argument("--meta-daily", required=True, help="{days:[{date,spend,roas,purchases,value}]} in SEK")
+    ap.add_argument("--meta-daily", help="{days:[{date,spend,roas,purchases,value}]} in SEK")
     ap.add_argument("--meta-total", action="append", default=[],
                     help="id=since:until:spend:value:purchases, for a period the daily file does not cover")
+    ap.add_argument("--no-meta", action="store_true",
+                    help="Meta could not be pulled: its figures are written as unavailable, never as zero")
     ap.add_argument("--shopify-daily", required=True, help="output of scripts/shopify_daily.py")
     ap.add_argument("--gads", required=True, help="output of gate gads campaign-metrics")
     ap.add_argument("--gads-since", required=True)
     ap.add_argument("--gads-until", required=True)
     ap.add_argument("--today", help="YYYY-MM-DD, default today in Stockholm")
     a = ap.parse_args()
+    if a.no_meta == bool(a.meta_daily) or (a.no_meta and a.meta_total):
+        raise SystemExit("give --meta-daily (with any --meta-total), or --no-meta alone")
 
     now = datetime.now(TZ)
     today = date.fromisoformat(a.today) if a.today else now.date()
@@ -158,7 +172,7 @@ def main():
         raise SystemExit("currency_note carries no 'N SEK/EUR' rate")
     rate = float(rate.group(1))
 
-    meta = {d["date"]: d for d in json.load(open(a.meta_daily))["days"]}
+    meta = {} if a.no_meta else {d["date"]: d for d in json.load(open(a.meta_daily))["days"]}
     totals = {}
     for spec in a.meta_total:
         pid, rest = spec.split("=", 1)
@@ -181,24 +195,31 @@ def main():
             print(f"left alone: unknown period {pid}")
             continue
         s, e = win[pid]
-        m = meta_window(meta, totals, pid, s, e)
+        m = None if a.no_meta else meta_window(meta, totals, pid, s, e)
         orders, revenue, by_country = shop_window(shop, shop_file["since"], s, e)
         gsp, gconv, gval, gcamps = gads_window(gads_rows, s, e)
         shop_sek = revenue * rate
-        spend = m[0] + gsp
+        spend = m[0] + gsp if m else None
 
         p.update(range_start=s.isoformat(), range_end=e.isoformat(), days=(e - s).days + 1)
+        # an override left by an earlier partial run describes numbers this run replaces
+        p.pop("sources", None)
         if pid == "thismonth":
             p["label"] = f"{EN_MONTHS[e.month]} (month to date)"
         if pid == "yesterday":
             p["label"] = f"Yesterday ({EN_MONTHS[e.month][:3]} {e.day})"
         p.setdefault("kpis", {}).update(orders=orders, shopify_sales_eur=round(revenue, 2), sales_label=eur(revenue))
         p["orders_by_country"] = by_country
-        p.setdefault("meta", {}).update(
-            spend_label=kr(m[0]), spend_window=f"{span(s, e)} (Meta, hämtad {today.day} {SV_MONTHS[today.month][:3]})",
-            meta_roas=round(m[1] / m[0], 2) if m[0] else 0.0,
-            blended_mer=round(shop_sek / spend, 2) if spend else None,
-            _note=meta_note(pid, s, e, today, hours, m, (orders, revenue, shop_sek), gsp))
+        if m:
+            p.setdefault("meta", {}).update(
+                spend_label=kr(m[0]), spend_window=f"{span(s, e)} (Meta, hämtad {today.day} {SV_MONTHS[today.month][:3]})",
+                meta_roas=round(m[1] / m[0], 2) if m[0] else 0.0,
+                blended_mer=round(shop_sek / spend, 2) if spend else None,
+                _note=meta_note(pid, s, e, today, hours, m, (orders, revenue, shop_sek), gsp))
+        else:
+            p.setdefault("meta", {}).update(
+                spend_label=NO_META, spend_window=None, meta_roas=None, blended_mer=None,
+                _note=no_meta_note(e, today, (orders, revenue, shop_sek), gsp))
         last = f" Senaste spend var {sv_date(last_gads)}." if last_gads else ""
         p.setdefault("gads", {}).update(
             spend_label=kr(gsp), gads_roas=round(gval / gsp, 2) if gsp else 0.0, conv=round(gconv),
@@ -214,20 +235,42 @@ def main():
                 "date": e.isoformat(), "orders": orders, "revenue_eur": round(revenue, 2),
                 "revenue_sek": round(shop_sek), "sessions": None, "conversions": orders,
                 "gads_spend": None, "gads_spend_sek": round(gsp), "gads_roas": round(gval / gsp, 2) if gsp else 0.0,
-                "gads_conv": round(gconv), "meta_spend_sek": round(m[0]), "_note": p["meta"]["_note"]}
+                "gads_conv": round(gconv), "meta_spend_sek": round(m[0]) if m else None, "_note": p["meta"]["_note"]}
             quiet = not last_gads or (yesterday - last_gads).days >= 7
             snap["gads"]["yesterday_label"] = kr(gsp) + (" (pausat)" if quiet and not gsp else "")
 
     snap["generated_at"] = today.isoformat()
-    for k in ("shopify", "meta", "gads"):
+    for k in ("shopify", "gads") if a.no_meta else ("shopify", "meta", "gads"):
         snap["sources"].setdefault(k, {}).update(as_of=yesterday.isoformat(), pulled=today.isoformat())
+    if a.no_meta:
+        old = snap["sources"].get("meta") or {}
+        last = old.get("last_as_of") or old.get("as_of")
+        snap["sources"]["meta"] = {
+            "as_of": None, "pulled": None, "last_as_of": last, "text": "unavailable",
+            "note": f"Meta could not be fetched on {today.isoformat()}: GATE has no working connection to the ad "
+                    f"account. Meta figures are blank, not zero, and nothing older is reused. The last Meta pull "
+                    f"covered up to {last or 'an unknown day'}."}
+    else:
+        snap["sources"]["meta"].pop("text", None)
+        snap["sources"]["meta"].pop("last_as_of", None)
+        if (snap["sources"]["meta"].get("note") or "").startswith("Meta could not be fetched"):
+            snap["sources"]["meta"].pop("note")
     snap["gads"]["as_of"] = f"{yesterday.day} {EN_MONTHS[yesterday.month]}"
     gp = snap.get("gads_periods")
     if gp and gp.get("since"):
         gp["until"] = yesterday.isoformat()
         gp["days"] = (yesterday - date.fromisoformat(gp["since"])).days + 1
     for card in snap.get("dashboard_status", []):
-        if card.get("title", "").startswith(FRESH_CARD):
+        if not card.get("title", "").startswith((FRESH_CARD, PARTIAL_CARD)):
+            continue
+        if a.no_meta:
+            card.update(icon="🔄", status="queue")
+            card["title"] = f"{PARTIAL_CARD} {sv_date(today)}, Meta saknas"
+            card["desc"] = (f"Butik och Google Ads är lästa samma morgon och täcker till och med {sv_date(yesterday)}, "
+                            f"ordrar per land inräknade. Meta gick inte att hämta: GATE saknar just nu kopplingen "
+                            f"till annonskontot. Metas rutor står tomma, inte på noll.")
+        else:
+            card.update(icon="✅", status="done")
             card["title"] = f"{FRESH_CARD} {sv_date(today)}"
             card["desc"] = (f"Butik, Meta och Google Ads är lästa samma morgon och täcker till och med "
                             f"{sv_date(yesterday)}, ordrar per land inräknade. Googles nollor är verifierade "

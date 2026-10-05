@@ -87,11 +87,13 @@ function asRendered(v: any): string {
 
 describe("Google Ads follows the period", () => {
   test("Meta and Google both move when the period changes", async () => {
-    // Two different windows, whichever two the snapshot carries, so this stays a test
-    // of "the numbers follow the toggle" and not a copy of today's figures.
-    const [first, second] = PERIODS;
-    expect(first.meta.spend_label).not.toBe(second.meta.spend_label);
-    const page = await loadPage();
+    // Distinct labels are set here: with Meta unpulled or Google paused, every period can read the same.
+    const snap = snapshotWith((s) => {
+      Object.assign(s.periods[0].meta, { spend_label: "111 kr" }); Object.assign(s.periods[0].gads, { spend_label: "333 kr", gads_roas: 1.1 });
+      Object.assign(s.periods[1].meta, { spend_label: "222 kr" }); Object.assign(s.periods[1].gads, { spend_label: "444 kr", gads_roas: 2.2 });
+    });
+    const [first, second] = snap.periods;
+    const page = await loadPage(snap);
 
     page.pick(first.label);
     expect(page.text("meta-grid")).toContain(first.meta.spend_label);
@@ -236,17 +238,13 @@ describe("every section says how old its own numbers are", () => {
   });
 
   test("a source with no date shows unknown, not a borrowed one", async () => {
-    // Whichever source is dateless today. Naming one by hand goes red the day it gets
-    // a real pull, which is the wrong reason for a test to fail.
-    const dateless = Object.entries<any>(SNAPSHOT.sources).filter(([, v]) => v.as_of === null && !v.text);
-    expect(dateless.length).toBeGreaterThan(0);
-    const page = await loadPage();
-    const stamped = page.freshnessIds().map((id) => page.text(id)).join(" | ");
-    expect(stamped).toContain("as of unknown");
-    for (const [key] of dateless) {
-      const label = freshness().LABELS[key] || key;
-      if (stamped.includes(label)) expect(stamped).toContain("as of unknown");
-    }
+    // The date is taken away here, so the test holds on a morning when every real source has one.
+    const page = await loadPage(snapshotWith((s) => {
+      s.sources.shopify = { as_of: null };
+      for (const p of s.periods) delete p.sources;
+    }));
+    expect(page.text("fr-store")).toContain("Shopify as of unknown");
+    expect(page.text("fr-store")).not.toContain(F_SHORT(SNAPSHOT.generated_at));
   });
 
   test("a snapshot with no sources block at all shrugs rather than lying", async () => {

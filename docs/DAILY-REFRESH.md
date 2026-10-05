@@ -54,6 +54,22 @@ dates than its window, or when the orders per country do not add up to the perio
 - Flags carrying a `date` leave every window that no longer holds that day; undated flags stay.
 - It dates the "Alla siffror nyhämtade" status card, `sources.shopify|meta|gads`, `gads.as_of`
   and `gads_periods.until`. Hand-written status cards and flags are not its business.
+- It drops any per-period `sources` override: the period is rewritten from this morning's
+  pulls, so an override left by an earlier partial run would describe numbers that are gone.
+
+## When Meta cannot be pulled
+
+Pass `--no-meta` instead of `--meta-daily` (and no `--meta-total`) to both scripts. The rest
+of the page still refreshes; Lucas chose this on 5 Oct 2026 over a page frozen on old days.
+
+- Every period's Meta block reads `Unavailable`, with ROAS, blended and blended incl. Amazon
+  null: blank on the page, never zero, and no older Meta figure is reused.
+- `sources.meta` gets `as_of: null`, `text: "unavailable"` and a note naming the last day a
+  pull covered (`last_as_of`), so the Meta pill says so in words.
+- `roas_series` is left exactly as it was, since every point rests on Meta's spend. Its own
+  pill shows its age.
+- The status card is titled "Butik och Google nyhämtade <day>, Meta saknas". The next full run
+  renames it back to "Alla siffror nyhämtade" and clears the Meta note.
 
 ## The builder
 

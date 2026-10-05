@@ -52,17 +52,20 @@ def eur_label(v):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--repo", default=".")
-    ap.add_argument("--meta-daily", required=True, help="JSON with days[{date,spend,roas,purchases}] in SEK")
+    ap.add_argument("--meta-daily", help="JSON with days[{date,spend,roas,purchases}] in SEK")
+    ap.add_argument("--no-meta", action="store_true", help="Meta could not be pulled: leave roas_series as it was")
     ap.add_argument("--shopify-daily", required=True, help="JSON with days[{date,orders,revenue_eur}]")
     ap.add_argument("--amazon-xlsx", help="Export of the 'Amazon daily sales' sheet; merged into data/amazon-daily.json")
     ap.add_argument("--amazon-json", help="Output of scripts/amazon_spapi_daily.py; API rows win over sheet rows for the same date")
     ap.add_argument("--no-ecb", action="store_true", help="Keep the fx block already in the snapshot")
     a = ap.parse_args()
+    if a.no_meta == bool(a.meta_daily):
+        sys.exit("give --meta-daily or --no-meta, not both and not neither")
 
     snap_path = os.path.join(a.repo, "data", "snapshot.json")
     amz_path = os.path.join(a.repo, "data", "amazon-daily.json")
     snap = json.load(open(snap_path))
-    meta = {d["date"]: d for d in json.load(open(a.meta_daily))["days"]}
+    meta = {} if a.no_meta else {d["date"]: d for d in json.load(open(a.meta_daily))["days"]}
     shop = {d["date"]: d for d in json.load(open(a.shopify_daily))["days"]}
     amz = json.load(open(amz_path)) if os.path.exists(amz_path) else {"sheet_url": None, "days": []}
 
@@ -135,11 +138,28 @@ def main():
         g_digits = re.sub(r"[^0-9.]", "", (g.get("spend_label") or "").replace(",", "").replace(" ", ""))
         gads_spend_sek = float(g_digits) if g_digits else 0.0
         ad_spend = (meta_spend_sek or 0) + gads_spend_sek
-        if have_amz and k["total_sales_eur"] is not None and ad_spend > 0 and sek_per_eur:
+        # without Meta's spend the bottom of the fraction is missing, so there is no figure
+        if meta_spend_sek is None:
+            mt["blended_mer_total"] = None
+        elif have_amz and k["total_sales_eur"] is not None and ad_spend > 0 and sek_per_eur:
             mt["blended_mer_total"] = round(k["total_sales_eur"] * sek_per_eur / ad_spend, 2)
         else:
             mt["blended_mer_total"] = None
     amz["by_period"] = by_period
+
+    today = datetime.now(timezone.utc).date().isoformat()
+    src = snap.setdefault("sources", {})
+    src.setdefault("fx", {}).update({"as_of": fx.get("date"), "pulled": today})
+    src["amazon"] = {"as_of": amz["as_of"], "pulled": today, "note": (
+        "no daily rows in the sheet yet, so Total sales is Shopify only" if amz["pending"] else
+        "typed into the sheet by hand from Seller Central, so the last row is as far as Amazon goes")}
+    if a.no_meta:
+        # every point of the series rests on Meta's spend; its freshness pill shows how old it is
+        json.dump(snap, open(snap_path, "w"), ensure_ascii=False, indent=1)
+        json.dump(amz, open(amz_path, "w"), ensure_ascii=False, indent=1)
+        print(f"fx {fx.get('usd_per_eur')} USD/EUR ({fx.get('date')}); amazon days {len(amz['days'])}; "
+              f"roas_series left at {snap.get('roas_series', {}).get('as_of')} (--no-meta)")
+        return
 
     last = max(meta) if meta else None
     series = []
@@ -165,10 +185,7 @@ def main():
                  f"SEK per EUR {sek_per_eur}. Amazon joins the blended figure the day the sheet has a row for that date."),
         "days": series}
     # the freshness pills read sources.*; keep them in step with what was just written
-    today = datetime.now(timezone.utc).date().isoformat()
-    src = snap.setdefault("sources", {})
     src.setdefault("roas_series", {}).update({"as_of": last, "pulled": today})
-    src.setdefault("fx", {}).update({"as_of": fx.get("date"), "pulled": today})
     json.dump(snap, open(snap_path, "w"), ensure_ascii=False, indent=1)
     json.dump(amz, open(amz_path, "w"), ensure_ascii=False, indent=1)
     print(f"fx {fx.get('usd_per_eur')} USD/EUR ({fx.get('date')}), sek/eur {sek_per_eur}; amazon days {len(amz['days'])}; series {len(series)} days to {last}")

@@ -1,27 +1,56 @@
 {
  "sheet_url": "https://docs.google.com/spreadsheets/d/1BhaN6Xq8_K41ufkE0ypeU6CA-HLKbpgVBmd_leEmwx0/edit",
- "days": [],
- "as_of": null,
- "pending": true,
+ "days": [
+  {
+   "date": "2026-09-25",
+   "orders": 4,
+   "sales_usd": 144.8,
+   "source": "sheet",
+   "sales_eur": 129.0
+  },
+  {
+   "date": "2026-09-26",
+   "orders": 7,
+   "sales_usd": 379.65,
+   "source": "sheet",
+   "sales_eur": 338.22
+  },
+  {
+   "date": "2026-09-27",
+   "orders": 2,
+   "sales_usd": 189.9,
+   "source": "sheet",
+   "sales_eur": 169.18
+  },
+  {
+   "date": "2026-09-28",
+   "orders": 3,
+   "sales_usd": 234.85,
+   "source": "sheet",
+   "sales_eur": 209.22
+  }
+ ],
+ "as_of": "2026-09-28",
+ "pending": false,
  "fx_used": {
-  "usd_per_eur": 1.1378,
-  "date": "2026-09-28",
+  "usd_per_eur": 1.1225,
+  "date": "2026-10-02",
   "source": "ECB eurofxref-daily"
  },
  "note": "Amazon US gross sales per day in USD, typed into the sheet from Seller Central > Business Reports, converted at the ECB reference rate on the day the portal refreshed. No rows yet = no number shown; nothing is estimated.",
  "by_period": {
   "7d": {
-   "orders": null,
-   "sales_usd": null,
-   "sales_eur": null,
-   "days_covered": 0,
+   "orders": 3,
+   "sales_usd": 234.85,
+   "sales_eur": 209.22,
+   "days_covered": 1,
    "days_total": 7
   },
   "30d": {
-   "orders": null,
-   "sales_usd": null,
-   "sales_eur": null,
-   "days_covered": 0,
+   "orders": 16,
+   "sales_usd": 949.2,
+   "sales_eur": 845.62,
+   "days_covered": 4,
    "days_total": 30
   },
   "thismonth": {
@@ -29,13 +58,13 @@
    "sales_usd": null,
    "sales_eur": null,
    "days_covered": 0,
-   "days_total": 28
+   "days_total": 4
   },
   "90d": {
-   "orders": null,
-   "sales_usd": null,
-   "sales_eur": null,
-   "days_covered": 0,
+   "orders": 16,
+   "sales_usd": 949.2,
+   "sales_eur": 845.62,
+   "days_covered": 4,
    "days_total": 90
   },
   "yesterday": {
@@ -49,7 +78,7 @@
  "sheet_id": "1BhaN6Xq8_K41ufkE0ypeU6CA-HLKbpgVBmd_leEmwx0",
  "source_mix": {
   "spapi": 0,
-  "sheet": 0
+  "sheet": 4
  },
- "sheet_read_at": "2026-09-29T05:16:13+00:00"
+ "sheet_read_at": "2026-10-05T11:54:08+00:00"
 }
