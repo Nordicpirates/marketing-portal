@@ -1,30 +1,30 @@
 {
- "generated_at": "2026-10-05",
+ "generated_at": "2026-10-06",
  "sources": {
   "shopify": {
-   "as_of": "2026-10-04",
-   "pulled": "2026-10-05"
+   "as_of": "2026-10-05",
+   "pulled": "2026-10-06"
   },
   "meta": {
    "as_of": null,
    "pulled": null,
    "last_as_of": "2026-09-28",
    "text": "unavailable",
-   "note": "Meta could not be fetched on 2026-10-05: GATE has no working connection to the ad account. Meta figures are blank, not zero, and nothing older is reused. The last Meta pull covered up to 2026-09-28."
+   "note": "Meta could not be fetched on 2026-10-06: GATE has no working connection to the ad account. Meta figures are blank, not zero, and nothing older is reused. The last Meta pull covered up to 2026-09-28."
   },
   "gads": {
-   "as_of": "2026-10-04",
-   "pulled": "2026-10-05",
+   "as_of": "2026-10-05",
+   "pulled": "2026-10-06",
    "note": "the account is paused since 12 September on Lucas's decision, so the zeros are deliberate and verified, not a gap"
   },
   "amazon": {
    "as_of": "2026-09-28",
-   "pulled": "2026-10-05",
+   "pulled": "2026-10-06",
    "note": "typed into the sheet by hand from Seller Central, so the last row is as far as Amazon goes"
   },
   "sessions": {
-   "as_of": "2026-10-04",
-   "pulled": "2026-10-05",
+   "as_of": "2026-10-05",
+   "pulled": "2026-10-06",
    "note": "GA4 property 250338585: the only count that includes the landing pages"
   },
   "sessions_chart": {
@@ -33,8 +33,8 @@
    "note": "the 14-day sessions chart is still the GA4 pull of 10 August and has not moved since"
   },
   "landing_pages": {
-   "as_of": "2026-10-04",
-   "pulled": "2026-10-05",
+   "as_of": "2026-10-05",
+   "pulled": "2026-10-06",
    "note": "GA4 property 250338585, sessions and purchases per landing page"
   },
   "channels": {
@@ -51,8 +51,8 @@
    "pulled": "2026-09-29"
   },
   "fx": {
-   "as_of": "2026-10-02",
-   "pulled": "2026-10-05"
+   "as_of": "2026-10-05",
+   "pulled": "2026-10-06"
   },
   "tracking": {
    "as_of": null,
@@ -70,8 +70,8 @@
    "note": "written when something changes, so no pull date applies"
   },
   "shopify_sessions": {
-   "as_of": "2026-10-04",
-   "pulled": "2026-10-05",
+   "as_of": "2026-10-05",
+   "pulled": "2026-10-06",
    "note": "Shopify's own sessions, storefront only, so the landing pages are not in it"
   }
  },
@@ -85,22 +85,22 @@
   "link_gmc": "https://merchants.google.com"
  },
  "yesterday": {
-  "date": "2026-10-04",
-  "orders": 7,
-  "revenue_eur": 594.53,
-  "revenue_sek": 6778,
+  "date": "2026-10-05",
+  "orders": 5,
+  "revenue_eur": 568.49,
+  "revenue_sek": 6481,
   "sessions": null,
-  "conversions": 7,
+  "conversions": 5,
   "gads_spend": null,
   "gads_spend_sek": 0,
   "gads_roas": 0.0,
   "gads_conv": 0,
   "meta_spend_sek": null,
-  "_note": "Meta gick inte att hämta 5 oktober: GATE saknar just nu kopplingen till annonskontot. Metas rutor står tomma, inte på noll, och blandad avkastning räknas inte utan Metas kostnad. Butiken tog in 594,53 EUR på 7 ordrar till och med 4 oktober."
+  "_note": "Meta gick inte att hämta 6 oktober: GATE saknar just nu kopplingen till annonskontot. Metas rutor står tomma, inte på noll, och blandad avkastning räknas inte utan Metas kostnad. Butiken tog in 568,49 EUR på 5 ordrar till och med 5 oktober."
  },
  "gads": {
   "live_since": "8 July",
-  "as_of": "4 October",
+  "as_of": "5 October",
   "note": "Nyhämtat 27 september. Alla kampanjer är pausade sedan 12 september på Lucas beslut, så nollorna efter det datumet är avsiktliga. Totalen nedan är facit för 8 juli-12 september och är oförändrad på kronan vid dagens omläsning, åttonde dagen i rad.",
   "spend_label": "33 152 kr",
   "yesterday_label": "0 kr (pausat)",
@@ -331,10 +331,10 @@
  "dashboard_status": [
   {
    "icon": "🔄",
-   "title": "Butik och Google nyhämtade 5 oktober, Meta saknas",
+   "title": "Butik och Google nyhämtade 6 oktober, Meta saknas",
    "who": "Bengt",
    "status": "queue",
-   "desc": "Butik och Google Ads är lästa samma morgon och täcker till och med 4 oktober, ordrar per land inräknade. Meta gick inte att hämta: GATE saknar just nu kopplingen till annonskontot. Metas rutor står tomma, inte på noll."
+   "desc": "Butik och Google Ads är lästa samma morgon och täcker till och med 5 oktober, ordrar per land inräknade. Meta gick inte att hämta: GATE saknar just nu kopplingen till annonskontot. Metas rutor står tomma, inte på noll."
   },
   {
    "icon": "🔧",
@@ -542,28 +542,28 @@
   {
    "id": "7d",
    "label": "Last 7 days",
-   "range_start": "2026-09-28",
-   "range_end": "2026-10-04",
+   "range_start": "2026-09-29",
+   "range_end": "2026-10-05",
    "days": 7,
    "kpis": {
-    "sessions": 3936,
-    "conversion_label": "1,63%",
-    "sales_label": "€5 558",
-    "orders": 64,
-    "shopify_sales_eur": 5557.56,
-    "amazon_sales_eur": 209.22,
-    "amazon_sales_usd": 234.85,
-    "amazon_days_covered": 1,
-    "amazon_label": "€209",
-    "total_sales_eur": 5766.78,
-    "total_label": "€5 767"
+    "sessions": 3753,
+    "conversion_label": "1,60%",
+    "sales_label": "€5 578",
+    "orders": 60,
+    "shopify_sales_eur": 5578.11,
+    "amazon_sales_eur": null,
+    "amazon_sales_usd": null,
+    "amazon_days_covered": 0,
+    "amazon_label": null,
+    "total_sales_eur": null,
+    "total_label": null
    },
    "meta": {
     "spend_label": "Unavailable",
     "spend_window": null,
     "meta_roas": null,
     "blended_mer": null,
-    "_note": "Meta gick inte att hämta 5 oktober: GATE saknar just nu kopplingen till annonskontot. Metas rutor står tomma, inte på noll, och blandad avkastning räknas inte utan Metas kostnad. Butiken tog in 5 557,56 EUR på 64 ordrar till och med 4 oktober.",
+    "_note": "Meta gick inte att hämta 6 oktober: GATE saknar just nu kopplingen till annonskontot. Metas rutor står tomma, inte på noll, och blandad avkastning räknas inte utan Metas kostnad. Butiken tog in 5 578,11 EUR på 60 ordrar till och med 5 oktober.",
     "blended_mer_total": null
    },
    "gads": {
@@ -571,33 +571,33 @@
     "gads_roas": 0.0,
     "conv": 0,
     "value_label": "0 kr",
-    "_note": "Google Ads, nyhämtat 5 oktober, ingen spend i fönstret - verifierat med en egen hämtning, inte antaget. Senaste spend var 12 september.",
+    "_note": "Google Ads, nyhämtat 6 oktober, ingen spend i fönstret - verifierat med en egen hämtning, inte antaget. Senaste spend var 12 september.",
     "campaigns": []
    },
    "orders_by_country": [
     {
      "name": "USA",
      "flag": "🇺🇸",
-     "orders": 32,
-     "revenue": "€3 145"
+     "orders": 31,
+     "revenue": "€3 179"
     },
     {
      "name": "UK",
      "flag": "🇬🇧",
-     "orders": 15,
-     "revenue": "€1 227"
-    },
-    {
-     "name": "Australia",
-     "flag": "🇦🇺",
-     "orders": 8,
-     "revenue": "€383"
+     "orders": 14,
+     "revenue": "€1 183"
     },
     {
      "name": "Sweden",
      "flag": "🇸🇪",
-     "orders": 2,
-     "revenue": "€311"
+     "orders": 4,
+     "revenue": "€476"
+    },
+    {
+     "name": "Australia",
+     "flag": "🇦🇺",
+     "orders": 6,
+     "revenue": "€275"
     },
     {
      "name": "Denmark",
@@ -622,58 +622,41 @@
      "flag": "🇩🇪",
      "orders": 1,
      "revenue": "€13"
-    },
-    {
-     "name": "Croatia",
-     "flag": "🇭🇷",
-     "orders": 1,
-     "revenue": "€13"
-    },
-    {
-     "name": "Netherlands",
-     "flag": "🇳🇱",
-     "orders": 1,
-     "revenue": "€13"
     }
    ],
    "landing_pages": [
     {
      "name": "CoG Big Box LP (A)",
      "path": "/lp/lying-pirates-cities-of-greed-big-box",
-     "sessions": 1490,
-     "conv_pct": 0.81,
+     "sessions": 1346,
+     "conv_pct": 0.74,
      "alert": true
     },
     {
      "name": "CoG Big Box LP (B)",
      "path": "/lp/lying-pirates-cities-of-greed-big-box-b",
-     "sessions": 1426,
-     "conv_pct": 0.56,
+     "sessions": 1346,
+     "conv_pct": 0.59,
      "alert": true
     },
     {
      "name": "Homepage",
      "path": "/",
-     "sessions": 347,
-     "conv_pct": 3.17
+     "sessions": 358,
+     "conv_pct": 3.35
     },
     {
      "name": "Big Box (product)",
      "path": "/products/lying-pirates-big-box",
-     "sessions": 186,
-     "conv_pct": 1.08
+     "sessions": 228,
+     "conv_pct": 0.88,
+     "alert": true
     },
     {
      "name": "All products",
      "path": "/collections/all",
-     "sessions": 85,
-     "conv_pct": 4.71
-    },
-    {
-     "name": "Kraken Mini (product)",
-     "path": "/products/kraken-mini-expansion",
-     "sessions": 65,
-     "conv_pct": 7.69
+     "sessions": 92,
+     "conv_pct": 6.52
     },
     {
      "name": "Base Game (product)",
@@ -682,9 +665,15 @@
      "conv_pct": 1.96
     },
     {
+     "name": "Kraken Mini (product)",
+     "path": "/products/kraken-mini-expansion",
+     "sessions": 34,
+     "conv_pct": 5.88
+    },
+    {
      "name": "Gold Coins (product)",
      "path": "/products/gold-coins-20-pcs",
-     "sessions": 30,
+     "sessions": 33,
      "conv_pct": 0.0
     }
    ],
@@ -709,61 +698,61 @@
     }
    ],
    "conversion": {
-    "orders": 64,
-    "sessions_ga4": 3936,
-    "sessions_shopify": 1222,
-    "sessions_landing_pages": 2922,
-    "sessions_store": 1014,
-    "shopify_pct": 5.24,
-    "blended_pct": 1.63,
-    "landing_pages_pct": 0.91,
-    "store_pct": 3.68,
-    "ga4_purchases_seen": 48,
+    "orders": 60,
+    "sessions_ga4": 3753,
+    "sessions_shopify": 1271,
+    "sessions_landing_pages": 2698,
+    "sessions_store": 1055,
+    "shopify_pct": 4.72,
+    "blended_pct": 1.6,
+    "landing_pages_pct": 0.87,
+    "store_pct": 3.46,
+    "ga4_purchases_seen": 46,
     "split_is_estimated": true
    }
   },
   {
    "id": "30d",
    "label": "Last 30 days",
-   "range_start": "2026-09-05",
-   "range_end": "2026-10-04",
+   "range_start": "2026-09-06",
+   "range_end": "2026-10-05",
    "days": 30,
    "kpis": {
-    "sessions": 13210,
-    "conversion_label": "1,49%",
-    "sales_label": "€16 997",
-    "orders": 197,
-    "shopify_sales_eur": 16997.22,
-    "amazon_sales_eur": 845.62,
+    "sessions": 13415,
+    "conversion_label": "1,48%",
+    "sales_label": "€17 326",
+    "orders": 199,
+    "shopify_sales_eur": 17326.2,
+    "amazon_sales_eur": 847.19,
     "amazon_sales_usd": 949.2,
     "amazon_days_covered": 4,
-    "amazon_label": "€846",
-    "total_sales_eur": 17842.84,
-    "total_label": "€17 843"
+    "amazon_label": "€847",
+    "total_sales_eur": 18173.39,
+    "total_label": "€18 173"
    },
    "meta": {
     "spend_label": "Unavailable",
     "spend_window": null,
     "meta_roas": null,
     "blended_mer": null,
-    "_note": "Meta gick inte att hämta 5 oktober: GATE saknar just nu kopplingen till annonskontot. Metas rutor står tomma, inte på noll, och blandad avkastning räknas inte utan Metas kostnad. Butiken tog in 16 997,22 EUR på 197 ordrar till och med 4 oktober. Google drog 3 237 kr.",
+    "_note": "Meta gick inte att hämta 6 oktober: GATE saknar just nu kopplingen till annonskontot. Metas rutor står tomma, inte på noll, och blandad avkastning räknas inte utan Metas kostnad. Butiken tog in 17 326,20 EUR på 199 ordrar till och med 5 oktober. Google drog 2 733 kr.",
     "blended_mer_total": null
    },
    "gads": {
-    "spend_label": "3 237 kr",
-    "gads_roas": 0.98,
-    "conv": 4,
-    "value_label": "3 179 kr",
-    "_note": "Google Ads, nyhämtat 5 oktober, siffran gäller de dagar i fönstret som hade spend. Senaste spend var 12 september.",
+    "spend_label": "2 733 kr",
+    "gads_roas": 1.01,
+    "conv": 3,
+    "value_label": "2 749 kr",
+    "_note": "Google Ads, nyhämtat 6 oktober, siffran gäller de dagar i fönstret som hade spend. Senaste spend var 12 september.",
     "campaigns": [
      {
       "name": "Shopping - US & UK",
-      "spend_label": "3 237 kr",
-      "spend_sek": 3237,
-      "conv": 4,
-      "value_label": "3 179 kr",
-      "conv_value_sek": 3179,
-      "roas": 0.98
+      "spend_label": "2 733 kr",
+      "spend_sek": 2733,
+      "conv": 3,
+      "value_label": "2 749 kr",
+      "conv_value_sek": 2749,
+      "roas": 1.01
      }
     ]
    },
@@ -771,20 +760,14 @@
     {
      "name": "USA",
      "flag": "🇺🇸",
-     "orders": 74,
-     "revenue": "€6 397"
+     "orders": 75,
+     "revenue": "€6 546"
     },
     {
      "name": "UK",
      "flag": "🇬🇧",
      "orders": 61,
-     "revenue": "€5 377"
-    },
-    {
-     "name": "Denmark",
-     "flag": "🇩🇰",
-     "orders": 8,
-     "revenue": "€1 074"
+     "revenue": "€5 530"
     },
     {
      "name": "Australia",
@@ -793,10 +776,16 @@
      "revenue": "€1 070"
     },
     {
+     "name": "Denmark",
+     "flag": "🇩🇰",
+     "orders": 7,
+     "revenue": "€936"
+    },
+    {
      "name": "Sweden",
      "flag": "🇸🇪",
-     "orders": 12,
-     "revenue": "€706"
+     "orders": 14,
+     "revenue": "€871"
     },
     {
      "name": "Netherlands",
@@ -863,52 +852,52 @@
     {
      "name": "CoG Big Box LP (B)",
      "path": "/lp/lying-pirates-cities-of-greed-big-box-b",
-     "sessions": 4600,
-     "conv_pct": 0.67,
+     "sessions": 4715,
+     "conv_pct": 0.68,
      "alert": true
     },
     {
      "name": "CoG Big Box LP (A)",
      "path": "/lp/lying-pirates-cities-of-greed-big-box",
-     "sessions": 4266,
-     "conv_pct": 0.54,
+     "sessions": 4367,
+     "conv_pct": 0.55,
      "alert": true
     },
     {
      "name": "Homepage",
      "path": "/",
-     "sessions": 1306,
-     "conv_pct": 1.76
+     "sessions": 1321,
+     "conv_pct": 1.82
     },
     {
      "name": "Big Box (product)",
      "path": "/products/lying-pirates-big-box",
-     "sessions": 658,
-     "conv_pct": 1.22
+     "sessions": 682,
+     "conv_pct": 1.17
     },
     {
      "name": "Base Game (product)",
      "path": "/products/lying-pirates-base-game",
-     "sessions": 647,
-     "conv_pct": 1.85
+     "sessions": 605,
+     "conv_pct": 1.82
     },
     {
      "name": "Custom Insert (product)",
      "path": "/products/lying-pirates-custom-insert",
-     "sessions": 173,
-     "conv_pct": 2.31
+     "sessions": 177,
+     "conv_pct": 2.26
     },
     {
      "name": "Kraken Mini (product)",
      "path": "/products/kraken-mini-expansion",
-     "sessions": 154,
-     "conv_pct": 7.79
+     "sessions": 144,
+     "conv_pct": 8.33
     },
     {
      "name": "All products",
      "path": "/collections/all",
-     "sessions": 150,
-     "conv_pct": 4.67
+     "sessions": 143,
+     "conv_pct": 6.29
     }
    ],
    "flags": [
@@ -953,16 +942,16 @@
     }
    ],
    "conversion": {
-    "orders": 197,
-    "sessions_ga4": 13210,
-    "sessions_shopify": 4638,
-    "sessions_landing_pages": 8905,
-    "sessions_store": 4305,
+    "orders": 199,
+    "sessions_ga4": 13415,
+    "sessions_shopify": 4681,
+    "sessions_landing_pages": 9122,
+    "sessions_store": 4293,
     "shopify_pct": 4.25,
-    "blended_pct": 1.49,
-    "landing_pages_pct": 0.83,
+    "blended_pct": 1.48,
+    "landing_pages_pct": 0.84,
     "store_pct": 2.86,
-    "ga4_purchases_seen": 144,
+    "ga4_purchases_seen": 146,
     "split_is_estimated": true
    }
   },
@@ -970,14 +959,14 @@
    "id": "thismonth",
    "label": "October (month to date)",
    "range_start": "2026-10-01",
-   "range_end": "2026-10-04",
-   "days": 4,
+   "range_end": "2026-10-05",
+   "days": 5,
    "kpis": {
-    "sessions": 2140,
-    "conversion_label": "1,31%",
-    "sales_label": "€2 212",
-    "orders": 28,
-    "shopify_sales_eur": 2212.01,
+    "sessions": 2643,
+    "conversion_label": "1,25%",
+    "sales_label": "€2 780",
+    "orders": 33,
+    "shopify_sales_eur": 2780.5,
     "amazon_sales_eur": null,
     "amazon_sales_usd": null,
     "amazon_days_covered": 0,
@@ -990,7 +979,7 @@
     "spend_window": null,
     "meta_roas": null,
     "blended_mer": null,
-    "_note": "Meta gick inte att hämta 5 oktober: GATE saknar just nu kopplingen till annonskontot. Metas rutor står tomma, inte på noll, och blandad avkastning räknas inte utan Metas kostnad. Butiken tog in 2 212,01 EUR på 28 ordrar till och med 4 oktober.",
+    "_note": "Meta gick inte att hämta 6 oktober: GATE saknar just nu kopplingen till annonskontot. Metas rutor står tomma, inte på noll, och blandad avkastning räknas inte utan Metas kostnad. Butiken tog in 2 780,50 EUR på 33 ordrar till och med 5 oktober.",
     "blended_mer_total": null
    },
    "gads": {
@@ -998,33 +987,33 @@
     "gads_roas": 0.0,
     "conv": 0,
     "value_label": "0 kr",
-    "_note": "Google Ads, nyhämtat 5 oktober, ingen spend i fönstret - verifierat med en egen hämtning, inte antaget. Senaste spend var 12 september.",
+    "_note": "Google Ads, nyhämtat 6 oktober, ingen spend i fönstret - verifierat med en egen hämtning, inte antaget. Senaste spend var 12 september.",
     "campaigns": []
    },
    "orders_by_country": [
     {
      "name": "USA",
      "flag": "🇺🇸",
-     "orders": 15,
-     "revenue": "€1 542"
+     "orders": 17,
+     "revenue": "€1 738"
     },
     {
      "name": "Sweden",
      "flag": "🇸🇪",
-     "orders": 2,
-     "revenue": "€311"
+     "orders": 4,
+     "revenue": "€476"
+    },
+    {
+     "name": "UK",
+     "flag": "🇬🇧",
+     "orders": 5,
+     "revenue": "€314"
     },
     {
      "name": "Australia",
      "flag": "🇦🇺",
      "orders": 4,
      "revenue": "€144"
-    },
-    {
-     "name": "UK",
-     "flag": "🇬🇧",
-     "orders": 4,
-     "revenue": "€107"
     },
     {
      "name": "Denmark",
@@ -1047,54 +1036,54 @@
    ],
    "landing_pages": [
     {
-     "name": "CoG Big Box LP (A)",
-     "path": "/lp/lying-pirates-cities-of-greed-big-box",
-     "sessions": 771,
-     "conv_pct": 0.52,
+     "name": "CoG Big Box LP (B)",
+     "path": "/lp/lying-pirates-cities-of-greed-big-box-b",
+     "sessions": 940,
+     "conv_pct": 0.43,
      "alert": true
     },
     {
-     "name": "CoG Big Box LP (B)",
-     "path": "/lp/lying-pirates-cities-of-greed-big-box-b",
-     "sessions": 771,
-     "conv_pct": 0.39,
+     "name": "CoG Big Box LP (A)",
+     "path": "/lp/lying-pirates-cities-of-greed-big-box",
+     "sessions": 919,
+     "conv_pct": 0.54,
      "alert": true
     },
     {
      "name": "Homepage",
      "path": "/",
-     "sessions": 208,
-     "conv_pct": 2.88
+     "sessions": 262,
+     "conv_pct": 2.67
     },
     {
      "name": "Big Box (product)",
      "path": "/products/lying-pirates-big-box",
-     "sessions": 113,
-     "conv_pct": 1.77
+     "sessions": 177,
+     "conv_pct": 1.13
     },
     {
      "name": "All products",
      "path": "/collections/all",
-     "sessions": 43,
-     "conv_pct": 6.98
+     "sessions": 51,
+     "conv_pct": 9.8
     },
     {
      "name": "Base Game (product)",
      "path": "/products/lying-pirates-base-game",
-     "sessions": 34,
-     "conv_pct": 2.94
-    },
-    {
-     "name": "Kraken Mini (product)",
-     "path": "/products/kraken-mini-expansion",
-     "sessions": 21,
-     "conv_pct": 4.76
+     "sessions": 40,
+     "conv_pct": 2.5
     },
     {
      "name": "Gold Coins (product)",
      "path": "/products/gold-coins-20-pcs",
-     "sessions": 20,
+     "sessions": 25,
      "conv_pct": 0.0
+    },
+    {
+     "name": "Kraken Mini (product)",
+     "path": "/products/kraken-mini-expansion",
+     "sessions": 22,
+     "conv_pct": 4.55
     }
    ],
    "flags": [
@@ -1112,44 +1101,44 @@
     }
    ],
    "conversion": {
-    "orders": 28,
-    "sessions_ga4": 2140,
-    "sessions_shopify": 724,
-    "sessions_landing_pages": 1545,
-    "sessions_store": 595,
-    "shopify_pct": 3.87,
-    "blended_pct": 1.31,
-    "landing_pages_pct": 0.5,
-    "store_pct": 3.39,
-    "ga4_purchases_seen": 25,
+    "orders": 33,
+    "sessions_ga4": 2643,
+    "sessions_shopify": 955,
+    "sessions_landing_pages": 1864,
+    "sessions_store": 779,
+    "shopify_pct": 3.46,
+    "blended_pct": 1.25,
+    "landing_pages_pct": 0.53,
+    "store_pct": 2.97,
+    "ga4_purchases_seen": 30,
     "split_is_estimated": true
    }
   },
   {
    "id": "90d",
    "label": "Last 90 days",
-   "range_start": "2026-07-07",
-   "range_end": "2026-10-04",
+   "range_start": "2026-07-08",
+   "range_end": "2026-10-05",
    "days": 90,
    "kpis": {
-    "sessions": 48941,
-    "conversion_label": "1,59%",
-    "sales_label": "€76 892",
-    "orders": 778,
-    "shopify_sales_eur": 76891.57,
-    "amazon_sales_eur": 845.62,
+    "sessions": 48632,
+    "conversion_label": "1,58%",
+    "sales_label": "€75 755",
+    "orders": 767,
+    "shopify_sales_eur": 75754.6,
+    "amazon_sales_eur": 847.19,
     "amazon_sales_usd": 949.2,
     "amazon_days_covered": 4,
-    "amazon_label": "€846",
-    "total_sales_eur": 77737.19,
-    "total_label": "€77 737"
+    "amazon_label": "€847",
+    "total_sales_eur": 76601.79,
+    "total_label": "€76 602"
    },
    "meta": {
     "spend_label": "Unavailable",
     "spend_window": null,
     "meta_roas": null,
     "blended_mer": null,
-    "_note": "Meta gick inte att hämta 5 oktober: GATE saknar just nu kopplingen till annonskontot. Metas rutor står tomma, inte på noll, och blandad avkastning räknas inte utan Metas kostnad. Butiken tog in 76 891,57 EUR på 778 ordrar till och med 4 oktober. Google drog 33 152 kr.",
+    "_note": "Meta gick inte att hämta 6 oktober: GATE saknar just nu kopplingen till annonskontot. Metas rutor står tomma, inte på noll, och blandad avkastning räknas inte utan Metas kostnad. Butiken tog in 75 754,60 EUR på 767 ordrar till och med 5 oktober. Google drog 33 152 kr.",
     "blended_mer_total": null
    },
    "gads": {
@@ -1157,7 +1146,7 @@
     "gads_roas": 3.29,
     "conv": 110,
     "value_label": "109 066 kr",
-    "_note": "Google Ads, nyhämtat 5 oktober, siffran gäller de dagar i fönstret som hade spend. Senaste spend var 12 september.",
+    "_note": "Google Ads, nyhämtat 6 oktober, siffran gäller de dagar i fönstret som hade spend. Senaste spend var 12 september.",
     "campaigns": [
      {
       "name": "Shopping - US & UK",
@@ -1228,32 +1217,32 @@
     {
      "name": "USA",
      "flag": "🇺🇸",
-     "orders": 365,
-     "revenue": "€38 952"
+     "orders": 359,
+     "revenue": "€38 233"
     },
     {
      "name": "UK",
      "flag": "🇬🇧",
-     "orders": 152,
-     "revenue": "€13 754"
+     "orders": 151,
+     "revenue": "€13 667"
     },
     {
      "name": "Italy",
      "flag": "🇮🇹",
-     "orders": 70,
-     "revenue": "€5 713"
+     "orders": 69,
+     "revenue": "€5 666"
     },
     {
      "name": "Australia",
      "flag": "🇦🇺",
-     "orders": 55,
-     "revenue": "€5 338"
+     "orders": 54,
+     "revenue": "€5 284"
     },
     {
      "name": "Germany",
      "flag": "🇩🇪",
-     "orders": 30,
-     "revenue": "€2 375"
+     "orders": 29,
+     "revenue": "€2 298"
     },
     {
      "name": "Denmark",
@@ -1262,28 +1251,28 @@
      "revenue": "€2 046"
     },
     {
-     "name": "Netherlands",
-     "flag": "🇳🇱",
-     "orders": 15,
-     "revenue": "€1 732"
-    },
-    {
      "name": "Sweden",
      "flag": "🇸🇪",
-     "orders": 24,
-     "revenue": "€1 591"
+     "orders": 26,
+     "revenue": "€1 757"
     },
     {
-     "name": "France",
-     "flag": "🇫🇷",
-     "orders": 10,
-     "revenue": "€969"
+     "name": "Netherlands",
+     "flag": "🇳🇱",
+     "orders": 14,
+     "revenue": "€1 592"
     },
     {
      "name": "Belgium",
      "flag": "🇧🇪",
      "orders": 9,
      "revenue": "€947"
+    },
+    {
+     "name": "France",
+     "flag": "🇫🇷",
+     "orders": 9,
+     "revenue": "€922"
     },
     {
      "name": "Unknown",
@@ -1304,16 +1293,16 @@
      "revenue": "€467"
     },
     {
-     "name": "New Zealand",
-     "flag": "🇳🇿",
-     "orders": 3,
-     "revenue": "€396"
-    },
-    {
      "name": "Spain",
      "flag": "🇪🇸",
      "orders": 4,
      "revenue": "€377"
+    },
+    {
+     "name": "New Zealand",
+     "flag": "🇳🇿",
+     "orders": 2,
+     "revenue": "€264"
     },
     {
      "name": "Romania",
@@ -1366,37 +1355,37 @@
    ],
    "landing_pages": [
     {
-     "name": "CoG Big Box LP (A)",
-     "path": "/lp/lying-pirates-cities-of-greed-big-box",
-     "sessions": 12215,
-     "conv_pct": 0.85,
+     "name": "CoG Big Box LP (B)",
+     "path": "/lp/lying-pirates-cities-of-greed-big-box-b",
+     "sessions": 12126,
+     "conv_pct": 0.82,
      "alert": true
     },
     {
-     "name": "CoG Big Box LP (B)",
-     "path": "/lp/lying-pirates-cities-of-greed-big-box-b",
-     "sessions": 12137,
-     "conv_pct": 0.82,
+     "name": "CoG Big Box LP (A)",
+     "path": "/lp/lying-pirates-cities-of-greed-big-box",
+     "sessions": 12093,
+     "conv_pct": 0.84,
      "alert": true
     },
     {
      "name": "Base Game (product)",
      "path": "/products/lying-pirates-base-game",
-     "sessions": 5524,
-     "conv_pct": 0.69,
+     "sessions": 5514,
+     "conv_pct": 0.67,
      "alert": true
     },
     {
      "name": "Homepage",
      "path": "/",
-     "sessions": 5353,
-     "conv_pct": 1.36
+     "sessions": 5316,
+     "conv_pct": 1.39
     },
     {
      "name": "Big Box (product)",
      "path": "/products/lying-pirates-big-box",
-     "sessions": 3689,
-     "conv_pct": 1.57
+     "sessions": 3716,
+     "conv_pct": 1.53
     },
     {
      "name": "Lying Pirates LP (IT)",
@@ -1408,15 +1397,15 @@
     {
      "name": "Gold Coins (product)",
      "path": "/products/gold-coins-20-pcs",
-     "sessions": 593,
+     "sessions": 597,
      "conv_pct": 0.67,
      "alert": true
     },
     {
      "name": "Custom Insert (product)",
      "path": "/products/lying-pirates-custom-insert",
-     "sessions": 552,
-     "conv_pct": 2.36
+     "sessions": 537,
+     "conv_pct": 2.23
     }
    ],
    "flags": [
@@ -1461,31 +1450,31 @@
     }
    ],
    "conversion": {
-    "orders": 778,
-    "sessions_ga4": 48941,
-    "sessions_shopify": 21671,
-    "sessions_landing_pages": 27880,
-    "sessions_store": 21061,
-    "shopify_pct": 3.59,
-    "blended_pct": 1.59,
-    "landing_pages_pct": 1.06,
-    "store_pct": 2.29,
-    "ga4_purchases_seen": 584,
+    "orders": 767,
+    "sessions_ga4": 48632,
+    "sessions_shopify": 21676,
+    "sessions_landing_pages": 27594,
+    "sessions_store": 21038,
+    "shopify_pct": 3.54,
+    "blended_pct": 1.58,
+    "landing_pages_pct": 1.05,
+    "store_pct": 2.26,
+    "ga4_purchases_seen": 578,
     "split_is_estimated": true
    }
   },
   {
    "id": "yesterday",
-   "label": "Yesterday (Oct 4)",
-   "range_start": "2026-10-04",
-   "range_end": "2026-10-04",
+   "label": "Yesterday (Oct 5)",
+   "range_start": "2026-10-05",
+   "range_end": "2026-10-05",
    "days": 1,
    "kpis": {
-    "sessions": 575,
-    "conversion_label": "1,22%",
-    "sales_label": "€595",
-    "orders": 7,
-    "shopify_sales_eur": 594.53,
+    "sessions": 503,
+    "conversion_label": "0,99%",
+    "sales_label": "€568",
+    "orders": 5,
+    "shopify_sales_eur": 568.49,
     "amazon_sales_eur": null,
     "amazon_sales_usd": null,
     "amazon_days_covered": 0,
@@ -1498,7 +1487,7 @@
     "meta_roas": null,
     "blended_mer": null,
     "blended_mer_total": null,
-    "_note": "Meta gick inte att hämta 5 oktober: GATE saknar just nu kopplingen till annonskontot. Metas rutor står tomma, inte på noll, och blandad avkastning räknas inte utan Metas kostnad. Butiken tog in 594,53 EUR på 7 ordrar till och med 4 oktober.",
+    "_note": "Meta gick inte att hämta 6 oktober: GATE saknar just nu kopplingen till annonskontot. Metas rutor står tomma, inte på noll, och blandad avkastning räknas inte utan Metas kostnad. Butiken tog in 568,49 EUR på 5 ordrar till och med 5 oktober.",
     "spend_window": null
    },
    "gads": {
@@ -1507,91 +1496,90 @@
     "gads_roas": 0.0,
     "conv": 0,
     "campaigns": [],
-    "_note": "Google Ads, nyhämtat 5 oktober, ingen spend i fönstret - verifierat med en egen hämtning, inte antaget. Senaste spend var 12 september."
+    "_note": "Google Ads, nyhämtat 6 oktober, ingen spend i fönstret - verifierat med en egen hämtning, inte antaget. Senaste spend var 12 september."
    },
    "orders_by_country": [
-    {
-     "name": "USA",
-     "flag": "🇺🇸",
-     "orders": 5,
-     "revenue": "€544"
-    },
-    {
-     "name": "Italy",
-     "flag": "🇮🇹",
-     "orders": 1,
-     "revenue": "€35"
-    },
     {
      "name": "UK",
      "flag": "🇬🇧",
      "orders": 1,
-     "revenue": "€16"
+     "revenue": "€207"
+    },
+    {
+     "name": "USA",
+     "flag": "🇺🇸",
+     "orders": 2,
+     "revenue": "€196"
+    },
+    {
+     "name": "Sweden",
+     "flag": "🇸🇪",
+     "orders": 2,
+     "revenue": "€165"
     }
    ],
    "landing_pages": [
     {
      "name": "CoG Big Box LP (B)",
      "path": "/lp/lying-pirates-cities-of-greed-big-box-b",
-     "sessions": 225,
-     "conv_pct": 0.0,
-     "alert": true
+     "sessions": 171,
+     "conv_pct": 0.58
     },
     {
      "name": "CoG Big Box LP (A)",
      "path": "/lp/lying-pirates-cities-of-greed-big-box",
-     "sessions": 192,
+     "sessions": 146,
+     "conv_pct": 0.68
+    },
+    {
+     "name": "Big Box (product)",
+     "path": "/products/lying-pirates-big-box",
+     "sessions": 64,
      "conv_pct": 0.0
     },
     {
      "name": "Homepage",
      "path": "/",
-     "sessions": 50,
-     "conv_pct": 4.0
+     "sessions": 54,
+     "conv_pct": 1.85
     },
     {
-     "name": "Big Box (product)",
-     "path": "/products/lying-pirates-big-box",
-     "sessions": 35,
-     "conv_pct": 2.86
-    },
-    {
-     "name": "Kraken Mini (product)",
-     "path": "/products/kraken-mini-expansion",
-     "sessions": 11,
-     "conv_pct": 0.0
+     "name": "All products",
+     "path": "/collections/all",
+     "sessions": 8,
+     "conv_pct": 25.0
     },
     {
      "name": "Base Game (product)",
      "path": "/products/lying-pirates-base-game",
-     "sessions": 10,
-     "conv_pct": 10.0
+     "sessions": 6,
+     "conv_pct": 0.0
     },
     {
-     "name": "FAQ",
-     "path": "/pages/faq",
-     "sessions": 8,
+     "name": "/blog/it/12-best-board-games-for-6-plus-players",
+     "path": "/blog/it/12-best-board-games-for-6-plus-players",
+     "sessions": 5,
      "conv_pct": 0.0
     },
     {
      "name": "Gold Coins (product)",
      "path": "/products/gold-coins-20-pcs",
-     "sessions": 8,
+     "sessions": 5,
      "conv_pct": 0.0
     }
    ],
    "flags": [],
    "conversion": {
-    "orders": 7,
-    "sessions_ga4": 575,
-    "sessions_shopify": 207,
-    "sessions_landing_pages": 418,
-    "sessions_store": 157,
-    "shopify_pct": 3.38,
-    "blended_pct": 1.22,
-    "landing_pages_pct": 0.0,
-    "store_pct": 4.46,
-    "ga4_purchases_seen": 6,
+    "orders": 5,
+    "sessions_ga4": 503,
+    "sessions_shopify": 231,
+    "sessions_landing_pages": 319,
+    "sessions_store": 184,
+    "shopify_pct": 2.16,
+    "blended_pct": 0.99,
+    "landing_pages_pct": 0.63,
+    "store_pct": 1.63,
+    "ga4_purchases_seen": 5,
     "split_is_estimated": true
    }
   }
@@ -1884,8 +1872,8 @@
  },
  "gads_periods": {
   "since": "2026-07-08",
-  "until": "2026-10-04",
-  "days": 89,
+  "until": "2026-10-05",
+  "days": 90,
   "total_spend_sek": 33152,
   "total_conv": 109,
   "total_conv_value_sek": 107634,
@@ -1944,9 +1932,9 @@
  },
  "_n": 5,
  "fx": {
-  "usd_per_eur": 1.1225,
-  "sek_per_eur": 11.29,
-  "date": "2026-10-02",
+  "usd_per_eur": 1.1204,
+  "sek_per_eur": 11.2525,
+  "date": "2026-10-05",
   "source": "ECB eurofxref-daily"
  },
  "amazon": {
@@ -1957,50 +1945,50 @@
     "orders": 4,
     "sales_usd": 144.8,
     "source": "sheet",
-    "sales_eur": 129.0
+    "sales_eur": 129.24
    },
    {
     "date": "2026-09-26",
     "orders": 7,
     "sales_usd": 379.65,
     "source": "sheet",
-    "sales_eur": 338.22
+    "sales_eur": 338.85
    },
    {
     "date": "2026-09-27",
     "orders": 2,
     "sales_usd": 189.9,
     "source": "sheet",
-    "sales_eur": 169.18
+    "sales_eur": 169.49
    },
    {
     "date": "2026-09-28",
     "orders": 3,
     "sales_usd": 234.85,
     "source": "sheet",
-    "sales_eur": 209.22
+    "sales_eur": 209.61
    }
   ],
   "as_of": "2026-09-28",
   "pending": false,
   "fx_used": {
-   "usd_per_eur": 1.1225,
-   "date": "2026-10-02",
+   "usd_per_eur": 1.1204,
+   "date": "2026-10-05",
    "source": "ECB eurofxref-daily"
   },
   "note": "Amazon US gross sales per day in USD, typed into the sheet from Seller Central > Business Reports, converted at the ECB reference rate on the day the portal refreshed. No rows yet = no number shown; nothing is estimated.",
   "by_period": {
    "7d": {
-    "orders": 3,
-    "sales_usd": 234.85,
-    "sales_eur": 209.22,
-    "days_covered": 1,
+    "orders": null,
+    "sales_usd": null,
+    "sales_eur": null,
+    "days_covered": 0,
     "days_total": 7
    },
    "30d": {
     "orders": 16,
     "sales_usd": 949.2,
-    "sales_eur": 845.62,
+    "sales_eur": 847.19,
     "days_covered": 4,
     "days_total": 30
    },
@@ -2009,12 +1997,12 @@
     "sales_usd": null,
     "sales_eur": null,
     "days_covered": 0,
-    "days_total": 4
+    "days_total": 5
    },
    "90d": {
     "orders": 16,
     "sales_usd": 949.2,
-    "sales_eur": 845.62,
+    "sales_eur": 847.19,
     "days_covered": 4,
     "days_total": 90
    },
@@ -2031,7 +2019,7 @@
    "spapi": 0,
    "sheet": 4
   },
-  "sheet_read_at": "2026-10-05T11:54:08+00:00"
+  "sheet_read_at": "2026-10-06T05:16:47+00:00"
  },
  "roas_series": {
   "as_of": "2026-09-28",

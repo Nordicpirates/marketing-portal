@@ -6,50 +6,50 @@
    "orders": 4,
    "sales_usd": 144.8,
    "source": "sheet",
-   "sales_eur": 129.0
+   "sales_eur": 129.24
   },
   {
    "date": "2026-09-26",
    "orders": 7,
    "sales_usd": 379.65,
    "source": "sheet",
-   "sales_eur": 338.22
+   "sales_eur": 338.85
   },
   {
    "date": "2026-09-27",
    "orders": 2,
    "sales_usd": 189.9,
    "source": "sheet",
-   "sales_eur": 169.18
+   "sales_eur": 169.49
   },
   {
    "date": "2026-09-28",
    "orders": 3,
    "sales_usd": 234.85,
    "source": "sheet",
-   "sales_eur": 209.22
+   "sales_eur": 209.61
   }
  ],
  "as_of": "2026-09-28",
  "pending": false,
  "fx_used": {
-  "usd_per_eur": 1.1225,
-  "date": "2026-10-02",
+  "usd_per_eur": 1.1204,
+  "date": "2026-10-05",
   "source": "ECB eurofxref-daily"
  },
  "note": "Amazon US gross sales per day in USD, typed into the sheet from Seller Central > Business Reports, converted at the ECB reference rate on the day the portal refreshed. No rows yet = no number shown; nothing is estimated.",
  "by_period": {
   "7d": {
-   "orders": 3,
-   "sales_usd": 234.85,
-   "sales_eur": 209.22,
-   "days_covered": 1,
+   "orders": null,
+   "sales_usd": null,
+   "sales_eur": null,
+   "days_covered": 0,
    "days_total": 7
   },
   "30d": {
    "orders": 16,
    "sales_usd": 949.2,
-   "sales_eur": 845.62,
+   "sales_eur": 847.19,
    "days_covered": 4,
    "days_total": 30
   },
@@ -58,12 +58,12 @@
    "sales_usd": null,
    "sales_eur": null,
    "days_covered": 0,
-   "days_total": 4
+   "days_total": 5
   },
   "90d": {
    "orders": 16,
    "sales_usd": 949.2,
-   "sales_eur": 845.62,
+   "sales_eur": 847.19,
    "days_covered": 4,
    "days_total": 90
   },
@@ -80,5 +80,5 @@
   "spapi": 0,
   "sheet": 4
  },
- "sheet_read_at": "2026-10-05T11:54:08+00:00"
+ "sheet_read_at": "2026-10-06T05:16:47+00:00"
 }
