@@ -17,12 +17,16 @@ write. Commit, push, and let the webhook deploy.
 ## Inputs
 
 1. Meta per day, account level, last 30 days: `{"days":[{"date","spend","roas","purchases","value"}]}`
-   in SEK. Source: META ADs MCP `ads_get_ad_entities`, level `ad_account`, fields
-   `amount_spent, purchase_roas, omni_purchase, omni_purchase_values`, `date_preset last_30d`,
-   `time_increment "1"`. Before using it, sum it and compare with Meta's own account total for
-   the same 30 days: a transcription slip shows up there and nowhere else.
-2. Meta's own account total for the 90-day window (same fields, `time_range`, no increment),
-   passed as `--meta-total`. The daily file is 30 days, so this is the 90-day figure.
+   in SEK, written by `python3 scripts/meta_daily.py --since <since30> --until <yesterday>
+   --out meta.json --total-since <since90>`. It reads the account through `gate metaads insights`
+   one day at a time (the connection "your own Meta token", delegated 12 Oct 2026), checks that
+   the days sum to Meta's own account total for the window, and refuses to write when they do
+   not. With `--source graph`, or when `gate metaads accounts` is empty, it re-runs itself under
+   `gate vault exec --env T=GATE_META_APP` and reads the same fields from the Graph API with the
+   key in a header, never on a command line. The claude.ai MCP connector is no longer used.
+2. Meta's own account total for the 90-day window: with `--total-since` the script prints the
+   `--meta-total 90d=<since>:<until>:<spend>:<value>:<purchases>` line; pass it on as printed.
+   The daily file is 30 days, so this is the 90-day figure.
 3. Shopify per day, from 90 days back: `python3 scripts/shopify_daily.py <since> <out.json>` run
    through `gate vault exec --env CID=Shopify_client_ID --env CS=SHOPIFYFULL -- ...`. Stockholm
    days, cancelled orders skipped, EUR, with `by_country` per day.
