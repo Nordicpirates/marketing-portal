@@ -25,9 +25,8 @@
    "note": "GA4 property 250338585: the only count that includes the landing pages"
   },
   "sessions_chart": {
-   "as_of": "2026-08-09",
-   "pulled": "2026-08-10",
-   "note": "the 14-day sessions chart is still the GA4 pull of 10 August and has not moved since"
+   "as_of": "2026-10-11",
+   "pulled": "2026-10-12"
   },
   "landing_pages": {
    "as_of": "2026-10-11",
@@ -35,13 +34,13 @@
    "note": "GA4 property 250338585, sessions and purchases per landing page"
   },
   "channels": {
-   "as_of": "2026-08-03",
-   "pulled": "2026-08-10",
-   "note": "Meta 5 July-3 August and Shopify referrer 4 July-2 August, so the 30-day heading is the old window, not the last 30 days"
+   "as_of": "2026-10-11",
+   "pulled": "2026-10-12",
+   "note": "GA4 by channel 2026-09-12 to 2026-10-11; GA4 sees fewer purchases than Shopify"
   },
   "inventory": {
-   "as_of": "2026-08-06",
-   "pulled": "2026-08-06"
+   "as_of": "2026-10-12",
+   "pulled": "2026-10-12"
   },
   "roas_series": {
    "as_of": "2026-10-11",
@@ -177,151 +176,173 @@
  "chart_data": {
   "orders_9d": {
    "labels": [
-    "16/9",
-    "17/9",
-    "18/9",
-    "19/9",
-    "20/9",
-    "21/9",
-    "22/9",
-    "23/9",
-    "24/9",
-    "25/9"
+    "2/10",
+    "3/10",
+    "4/10",
+    "5/10",
+    "6/10",
+    "7/10",
+    "8/10",
+    "9/10",
+    "10/10",
+    "11/10"
    ],
    "revenue": [
-    551,
-    711,
-    415,
-    463,
-    154,
-    195,
-    250,
-    300,
-    431,
-    1012
+    749,
+    657,
+    595,
+    568,
+    383,
+    299,
+    1265,
+    480,
+    138,
+    869
    ],
    "orders": [
-    5,
-    7,
+    8,
     6,
     7,
-    3,
-    2,
-    4,
+    5,
     5,
     4,
-    11
+    11,
+    7,
+    1,
+    8
    ]
   },
   "organic_14d": {
    "labels": [
-    "27/7",
-    "28/7",
-    "29/7",
-    "30/7",
-    "31/7",
-    "1/8",
-    "2/8",
-    "3/8",
-    "4/8",
-    "5/8",
-    "6/8",
-    "7/8",
-    "8/8",
-    "9/8"
+    "28/9",
+    "29/9",
+    "30/9",
+    "1/10",
+    "2/10",
+    "3/10",
+    "4/10",
+    "5/10",
+    "6/10",
+    "7/10",
+    "8/10",
+    "9/10",
+    "10/10",
+    "11/10"
    ],
    "sessions": [
-    353,
-    301,
-    271,
-    246,
-    277,
-    284,
-    301,
-    308,
-    326,
-    301,
-    503,
-    454,
-    404,
-    363
+    698,
+    567,
+    567,
+    602,
+    525,
+    467,
+    584,
+    519,
+    505,
+    819,
+    256,
+    224,
+    238,
+    257
    ],
    "conversions": [
-    11,
     7,
-    13,
-    10,
-    13,
     9,
-    9,
-    10,
+    12,
+    6,
     8,
     6,
+    6,
+    5,
+    5,
     4,
-    10,
-    7,
-    10
+    8,
+    5,
+    1,
+    7
    ]
   }
  },
  "channels_30d": [
   {
-   "name": "Paid Social · Meta",
+   "name": "Betald social (Meta)",
    "dot": "#4a90e2",
-   "sessions": 22659,
-   "conversions": 279,
-   "cvr": 1.23,
-   "revenue_sek": 352624,
-   "source": "meta",
-   "note": "Meta API 5 jul-3 aug · 7d-klick/1d-visning. Spend 149 479 kr, ROAS 2.36. Sessions = länk-klick."
+   "sessions": 7381,
+   "conversions": 52,
+   "cvr": 0.7,
+   "cvr_good": false,
+   "revenue_sek": 56201,
+   "source": "ga4"
+  },
+  {
+   "name": "Organisk social",
+   "dot": "#14b8a6",
+   "sessions": 3692,
+   "conversions": 24,
+   "cvr": 0.65,
+   "cvr_good": false,
+   "revenue_sek": 25113,
+   "source": "ga4"
   },
   {
    "name": "Direkt",
    "dot": "#8b5cf6",
-   "sessions": 4530,
-   "conversions": 251,
-   "cvr": 5.54,
-   "revenue_sek": 301940,
-   "source": "shopify",
+   "sessions": 1391,
+   "conversions": 27,
+   "cvr": 1.94,
    "cvr_good": true,
-   "note": "Shopify referrer 4 jul-2 aug. Inkluderar Meta-klick där referrer tappades (vanligt på mobil/iOS)."
+   "revenue_sek": 30631,
+   "source": "ga4"
   },
   {
-   "name": "Sökning (organisk + betald)",
+   "name": "Organisk sökning",
    "dot": "#2f8f4e",
-   "sessions": 3347,
-   "conversions": 53,
-   "cvr": 1.58,
-   "revenue_sek": 65299,
-   "source": "shopify"
-  },
-  {
-   "name": "Social (organisk referrer)",
-   "dot": "#14b8a6",
-   "sessions": 1296,
-   "conversions": 28,
-   "cvr": 2.16,
-   "revenue_sek": 44950,
-   "source": "shopify"
+   "sessions": 1104,
+   "conversions": 19,
+   "cvr": 1.72,
+   "cvr_good": true,
+   "revenue_sek": 13706,
+   "source": "ga4"
   },
   {
    "name": "Okänd",
    "dot": "#8a8073",
-   "sessions": 400,
-   "conversions": 16,
-   "cvr": 4.0,
-   "revenue_sek": 56316,
-   "source": "shopify"
+   "sessions": 779,
+   "conversions": 28,
+   "cvr": 3.59,
+   "cvr_good": true,
+   "revenue_sek": 24580,
+   "source": "ga4"
   },
   {
-   "name": "Google Ads (8 jul-3 aug)",
-   "dot": "#ea4335",
-   "sessions": 3568,
-   "conversions": 59,
-   "cvr": 1.65,
+   "name": "Hänvisning",
+   "dot": "#cf9a2e",
+   "sessions": 205,
+   "conversions": 0,
+   "cvr": 0.0,
    "cvr_good": false,
-   "revenue_sek": 58171,
-   "note": "Google Ads-data: klick/konv/värde hela live-perioden. Spend 14 020 kr, ROAS 4.15×."
+   "revenue_sek": 0,
+   "source": "ga4"
+  },
+  {
+   "name": "E-post",
+   "dot": "#c96a3d",
+   "sessions": 101,
+   "conversions": 15,
+   "cvr": 14.85,
+   "cvr_good": true,
+   "revenue_sek": 2749,
+   "source": "ga4"
+  },
+  {
+   "name": "Övrigt",
+   "dot": "#8a8073",
+   "sessions": 158,
+   "conversions": 3,
+   "cvr": 1.9,
+   "cvr_good": true,
+   "revenue_sek": 3864,
+   "source": "ga4"
   }
  ],
  "channels_note": "Alla fem perioder är nyhämtade 26 september och täcker till och med 25 september. Google Ads är pausat sedan 12 september på Lucas beslut, så nollorna i Gårdagen och 7-dagars är avsiktliga och verifierade med en egen hämtning. Ordrar räknas exklusive annullerade och dygnet bryts vid svensk midnatt; metoden är kontrollerad mot två kända dygn (24 sep 4 ordrar/430,62 EUR och 23 sep 5/300,03) och stämde på öret. Metas dygn läses sex timmar efter stängning. Läs Metas avkastning som ett ANSPRÅK och den blandade som riktiga pengar. Sessions- och landningssidesiffrorna har ingen färsk källa i den här körningen och står kvar från tidigare - de är inte omhämtade 26 september.",
@@ -1616,7 +1637,7 @@
   }
  ],
  "inventory_data": {
-  "updated_at": "2026-08-06",
+  "updated_at": "2026-10-12",
   "velocity_window_days": 30,
   "filter_note": "Add-On Box + Upgrade Box exkluderade per Lucas 2026-07-24 (irrelevanta produkter)",
   "warehouses": [
@@ -1646,15 +1667,16 @@
    {
     "title": "BIG BOX",
     "variant": "English",
-    "velocity": 6.8,
+    "sku": "NPGLPGFBB01EN",
+    "velocity": 3.03,
     "stock": {
-     "bridge": 198,
-     "armarlo": 126,
-     "meeples": 235,
-     "zatu": 163,
-     "total": 722
+     "bridge": 20,
+     "armarlo": 114,
+     "meeples": 0,
+     "zatu": 116,
+     "total": 250
     },
-    "days": 106,
+    "days": 83,
     "status": "ok",
     "warehouse_scope": [
      "bridge",
@@ -1666,16 +1688,17 @@
    {
     "title": "BIG BOX",
     "variant": "Italian",
-    "velocity": 0.77,
+    "sku": "NPGLPGFBB01IT",
+    "velocity": 0.0,
     "stock": {
-     "bridge": 2,
+     "bridge": 3,
      "armarlo": 0,
      "meeples": 0,
      "zatu": 0,
-     "total": 2
+     "total": 3
     },
-    "days": 3,
-    "status": "critical",
+    "days": 999,
+    "status": "ok",
     "warehouse_scope": [
      "meeples"
     ]
@@ -1683,15 +1706,16 @@
    {
     "title": "BIG BOX",
     "variant": "German",
-    "velocity": 0.13,
+    "sku": "NPGLPGFBB01DE",
+    "velocity": 0.07,
     "stock": {
      "bridge": 0,
      "armarlo": 0,
-     "meeples": 272,
+     "meeples": 55,
      "zatu": 0,
-     "total": 272
+     "total": 55
     },
-    "days": 999,
+    "days": 786,
     "status": "ok",
     "warehouse_scope": [
      "meeples"
@@ -1700,15 +1724,16 @@
    {
     "title": "BIG BOX",
     "variant": "French",
-    "velocity": 0.1,
+    "sku": "NPGLPGFBB01FR",
+    "velocity": 0.03,
     "stock": {
-     "bridge": 1,
+     "bridge": 0,
      "armarlo": 0,
-     "meeples": 129,
+     "meeples": 44,
      "zatu": 0,
-     "total": 130
+     "total": 44
     },
-    "days": 999,
+    "days": 1467,
     "status": "ok",
     "warehouse_scope": [
      "meeples"
@@ -1717,13 +1742,14 @@
    {
     "title": "BIG BOX",
     "variant": "Spanish",
+    "sku": "NPGLPGFBB01ES",
     "velocity": 0.0,
     "stock": {
-     "bridge": 4,
+     "bridge": 2,
      "armarlo": 0,
-     "meeples": 27,
+     "meeples": 0,
      "zatu": 0,
-     "total": 31
+     "total": 2
     },
     "days": 999,
     "status": "ok",
@@ -1734,15 +1760,16 @@
    {
     "title": "Base Game",
     "variant": "English",
-    "velocity": 2.37,
+    "sku": "NPGLPGFRT01EN",
+    "velocity": 1.77,
     "stock": {
-     "bridge": 1202,
-     "armarlo": 68,
+     "bridge": 721,
+     "armarlo": 55,
      "meeples": 0,
      "zatu": 0,
-     "total": 1270
+     "total": 776
     },
-    "days": 536,
+    "days": 438,
     "status": "ok",
     "warehouse_scope": [
      "bridge",
@@ -1754,16 +1781,17 @@
    {
     "title": "Base Game",
     "variant": "Italian",
-    "velocity": 0.6,
+    "sku": "NPGLPGFRT01IT",
+    "velocity": 0.0,
     "stock": {
      "bridge": 0,
      "armarlo": 0,
-     "meeples": 20,
+     "meeples": 0,
      "zatu": 0,
-     "total": 20
+     "total": 0
     },
-    "days": 33,
-    "status": "watch",
+    "days": 0,
+    "status": "critical",
     "warehouse_scope": [
      "meeples"
     ]
@@ -1771,16 +1799,17 @@
    {
     "title": "Base Game",
     "variant": "German",
-    "velocity": 0.27,
+    "sku": "NPGLPGFRT01DE",
+    "velocity": 0.2,
     "stock": {
      "bridge": 0,
      "armarlo": 0,
-     "meeples": 196,
+     "meeples": 11,
      "zatu": 0,
-     "total": 196
+     "total": 11
     },
-    "days": 999,
-    "status": "ok",
+    "days": 55,
+    "status": "watch",
     "warehouse_scope": [
      "meeples"
     ]
@@ -1788,13 +1817,14 @@
    {
     "title": "Base Game",
     "variant": "French",
-    "velocity": 0.07,
+    "sku": "NPGLPGFRT01FR",
+    "velocity": 0.0,
     "stock": {
      "bridge": 0,
      "armarlo": 0,
-     "meeples": 221,
+     "meeples": 11,
      "zatu": 0,
-     "total": 221
+     "total": 11
     },
     "days": 999,
     "status": "ok",
@@ -1805,13 +1835,14 @@
    {
     "title": "Base Game",
     "variant": "Spanish",
-    "velocity": 0.03,
+    "sku": "NPGLPGFRT01ES",
+    "velocity": 0.0,
     "stock": {
      "bridge": 12,
      "armarlo": 0,
-     "meeples": 142,
-     "zatu": 24,
-     "total": 178
+     "meeples": 0,
+     "zatu": 0,
+     "total": 12
     },
     "days": 999,
     "status": "ok",
@@ -1822,16 +1853,17 @@
    {
     "title": "Kraken Mini-Expansion",
     "variant": "Default",
-    "velocity": 3.9,
+    "sku": "NPGKMP01",
+    "velocity": 3.27,
     "stock": {
-     "bridge": -8,
-     "armarlo": 0,
-     "meeples": 40,
-     "zatu": 47,
-     "total": 79
+     "bridge": 91,
+     "armarlo": 45,
+     "meeples": 12,
+     "zatu": 110,
+     "total": 258
     },
-    "days": 20,
-    "status": "low",
+    "days": 79,
+    "status": "ok",
     "warehouse_scope": [
      "bridge",
      "armarlo",
@@ -1842,15 +1874,16 @@
    {
     "title": "Cities of Greed",
     "variant": "Default",
-    "velocity": 0.73,
+    "sku": "NPGLPGFCOG01",
+    "velocity": 0.63,
     "stock": {
-     "bridge": 151,
+     "bridge": 104,
      "armarlo": 147,
-     "meeples": 14,
-     "zatu": 27,
-     "total": 339
+     "meeples": 0,
+     "zatu": 22,
+     "total": 273
     },
-    "days": 464,
+    "days": 433,
     "status": "ok",
     "warehouse_scope": [
      "bridge",
@@ -1862,15 +1895,16 @@
    {
     "title": "Custom Insert",
     "variant": "Default",
-    "velocity": 1.67,
+    "sku": "NPGCI",
+    "velocity": 1.3,
     "stock": {
-     "bridge": -1,
+     "bridge": 63,
      "armarlo": 0,
-     "meeples": 35,
-     "zatu": 76,
-     "total": 110
+     "meeples": 10,
+     "zatu": 111,
+     "total": 184
     },
-    "days": 66,
+    "days": 142,
     "status": "ok",
     "warehouse_scope": [
      "bridge",
@@ -1882,16 +1916,17 @@
    {
     "title": "8-Player Components",
     "variant": "Default",
-    "velocity": 2.43,
+    "sku": "NPG8PCP01",
+    "velocity": 1.63,
     "stock": {
-     "bridge": -21,
-     "armarlo": 0,
-     "meeples": 23,
-     "zatu": 1,
-     "total": 3
+     "bridge": 143,
+     "armarlo": 50,
+     "meeples": 17,
+     "zatu": 117,
+     "total": 327
     },
-    "days": 1,
-    "status": "critical",
+    "days": 201,
+    "status": "ok",
     "warehouse_scope": [
      "bridge",
      "armarlo",

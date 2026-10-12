@@ -10,6 +10,7 @@ comes from a pull made that morning; nothing is carried over or estimated.
 3. `scripts/build_snapshot_extras.py`: exchange rates, Amazon, the ROAS series.
 4. `scripts/ga_landing_pages.py`: landing pages per period.
 5. `scripts/conversion.py`: conversion with all four denominators, and Sessions.
+6. `scripts/daily_sections.py`: stock, channels, the sessions chart and the orders chart.
 
 Work in a copy of the checkout under your own home: the shared checkout holds files you cannot
 write. Commit, push, and let the webhook deploy.
@@ -132,11 +133,25 @@ Run it after the periods are written, because it reads each period's orders. It 
 `periods[].conversion`, the Sessions KPI and the conversion label. Why four figures rather
 than one: docs/CONVERSION.md.
 
-## Still not in this refresh
+## Stock, channels and the two dashboard charts
 
-`inventory_data`, `chart_data.organic_14d` and `channels_30d` are written by hand and are
-the sections that go stale. The freshness pills now say how old each one is
-(docs/FRESHNESS.md); making them daily is open work.
+```
+gate vault exec --env CID=Shopify_client_ID --env SEC=SHOPIFYFULL -- \
+  python3 scripts/daily_sections.py --shopify-daily shopify.json
+```
+
+Run it last. It writes, from that morning's pulls:
+
+- `inventory_data`: Shopify's `available` per SKU in Bridge, Armarlo, Meeples and Zatu (the
+  showroom is the office, not stock), velocity as units sold per day over the last 30 closed
+  days, cancelled orders skipped. The assortment and each variant's warehouses are the
+  `CATALOGUE` in the script; a SKU Shopify no longer has stops the run.
+- `channels_30d`: GA4 by `sessionDefaultChannelGroup`, last 30 days, revenue in SEK. GA4
+  sees fewer purchases than Shopify (consent, blockers), so read the rates, not the counts.
+- `chart_data.organic_14d`: GA4 sessions and purchases per day, last 14 days.
+- `chart_data.orders_9d`: Shopify orders and EUR per day, last 10 days, from `shopify.json`.
+
+It dates `sources.inventory`, `sources.channels` and `sources.sessions_chart`.
 
 ## Amazon: the honest limits
 
