@@ -1,0 +1,57 @@
+{
+ "contacts": [
+  {
+   "id": 2,
+   "emailBlacklisted": false,
+   "listIds": [
+    10,
+    3
+   ],
+   "createdAt": "2026-09-30T10:00:00.000+02:00",
+   "attributes": {
+    "SIGNUP_DATE": "2026-10-06",
+    "SIGNUP_FORM": "hero",
+    "UTM_MEDIUM": "paid_social"
+   }
+  },
+  {
+   "id": 4,
+   "emailBlacklisted": true,
+   "listIds": [
+    10
+   ],
+   "createdAt": "2026-09-30T10:00:00.000+02:00",
+   "attributes": {
+    "SIGNUP_DATE": "2026-10-07",
+    "SIGNUP_FORM": "join",
+    "UTM_MEDIUM": ""
+   }
+  },
+  {
+   "id": 5,
+   "emailBlacklisted": false,
+   "listIds": [
+    10
+   ],
+   "createdAt": "2026-09-30T10:00:00.000+02:00",
+   "attributes": {
+    "SIGNUP_DATE": "2026-10-09",
+    "SIGNUP_FORM": "offer",
+    "UTM_MEDIUM": "email"
+   }
+  },
+  {
+   "id": 6,
+   "emailBlacklisted": false,
+   "listIds": [
+    2
+   ],
+   "createdAt": "2026-09-30T10:00:00.000+02:00",
+   "attributes": {
+    "SIGNUP_DATE": "2026-10-08",
+    "SIGNUP_FORM": "hero",
+    "UTM_MEDIUM": "email"
+   }
+  }
+ ]
+}

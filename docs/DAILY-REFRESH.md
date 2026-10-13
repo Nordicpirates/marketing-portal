@@ -153,6 +153,11 @@ Run it last. It writes, from that morning's pulls:
 
 It dates `sources.inventory`, `sources.channels` and `sources.sessions_chart`.
 
+## TAP 10
+
+`data/tap10.json` for the `/tap10` tab has its own builder, `scripts/tap10_snapshot.py`, and its
+own inputs. How to run it and what each number means: docs/TAP10.md.
+
 ## Amazon: the honest limits
 
 There is no Amazon API access in GATE. Mailbox shipment notices undercount and FeedbackFive

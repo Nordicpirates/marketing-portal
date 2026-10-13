@@ -349,6 +349,16 @@ const server = Bun.serve({
       });
     }
 
+    // TAP 10 counts per day, built by scripts/tap10_snapshot.py. Not built yet reads as no days.
+    // TAP10_JSON points tests at a fixture. docs/TAP10.md
+    if (path === "/api/tap10") {
+      const p = process.env.TAP10_JSON || join(DIR, "data", "tap10.json");
+      if (!existsSync(p)) return Response.json({ days: [] }, { headers: { "Cache-Control": NO_CACHE } });
+      return new Response(readFileSync(p), {
+        headers: { "Content-Type": "application/json", "Cache-Control": NO_CACHE },
+      });
+    }
+
     if (path === "/api/tasks") {
       if (req.method === "POST") {
         const body = await req.json().catch(() => null);
@@ -490,6 +500,11 @@ const server = Bun.serve({
 
     if (path === "/qr") {
       const page = htmlPage("qr.html");
+      if (page) return page;
+    }
+
+    if (path === "/tap10") {
+      const page = htmlPage("tap10.html");
       if (page) return page;
     }
 

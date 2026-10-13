@@ -1,0 +1,472 @@
+{
+ "property": "542188652",
+ "start": "2026-10-06",
+ "end": "2026-10-08",
+ "daily": {
+  "ok": true,
+  "data": {
+   "rowCount": 6,
+   "rows": [
+    {
+     "dimensionValues": [
+      {
+       "value": "20261006"
+      },
+      {
+       "value": "tap10game.com"
+      }
+     ],
+     "metricValues": [
+      {
+       "value": "10"
+      },
+      {
+       "value": "8"
+      },
+      {
+       "value": "60"
+      }
+     ]
+    },
+    {
+     "dimensionValues": [
+      {
+       "value": "20261006"
+      },
+      {
+       "value": "www.tap10game.com"
+      }
+     ],
+     "metricValues": [
+      {
+       "value": "30"
+      },
+      {
+       "value": "20"
+      },
+      {
+       "value": "100"
+      }
+     ]
+    },
+    {
+     "dimensionValues": [
+      {
+       "value": "20261006"
+      },
+      {
+       "value": "www.kickstarter.com"
+      }
+     ],
+     "metricValues": [
+      {
+       "value": "500"
+      },
+      {
+       "value": "400"
+      },
+      {
+       "value": "30"
+      }
+     ]
+    },
+    {
+     "dimensionValues": [
+      {
+       "value": "20261007"
+      },
+      {
+       "value": "www.tap10game.com"
+      }
+     ],
+     "metricValues": [
+      {
+       "value": "20"
+      },
+      {
+       "value": "15"
+      },
+      {
+       "value": "45"
+      }
+     ]
+    },
+    {
+     "dimensionValues": [
+      {
+       "value": "20261007"
+      },
+      {
+       "value": "localhost"
+      }
+     ],
+     "metricValues": [
+      {
+       "value": "99"
+      },
+      {
+       "value": "99"
+      },
+      {
+       "value": "10"
+      }
+     ]
+    },
+    {
+     "dimensionValues": [
+      {
+       "value": "20261008"
+      },
+      {
+       "value": "www.kickstarter.com"
+      }
+     ],
+     "metricValues": [
+      {
+       "value": "7"
+      },
+      {
+       "value": "7"
+      },
+      {
+       "value": "20"
+      }
+     ]
+    }
+   ]
+  }
+ },
+ "events": {
+  "ok": true,
+  "data": {
+   "rowCount": 5,
+   "rows": [
+    {
+     "dimensionValues": [
+      {
+       "value": "20261006"
+      },
+      {
+       "value": "demo_start"
+      },
+      {
+       "value": "www.tap10game.com"
+      }
+     ],
+     "metricValues": [
+      {
+       "value": "5"
+      }
+     ]
+    },
+    {
+     "dimensionValues": [
+      {
+       "value": "20261006"
+      },
+      {
+       "value": "demo_start"
+      },
+      {
+       "value": "www.kickstarter.com"
+      }
+     ],
+     "metricValues": [
+      {
+       "value": "50"
+      }
+     ]
+    },
+    {
+     "dimensionValues": [
+      {
+       "value": "20261006"
+      },
+      {
+       "value": "try_demo_click"
+      },
+      {
+       "value": "tap10game.com"
+      }
+     ],
+     "metricValues": [
+      {
+       "value": "3"
+      }
+     ]
+    },
+    {
+     "dimensionValues": [
+      {
+       "value": "20261006"
+      },
+      {
+       "value": "page_view"
+      },
+      {
+       "value": "www.tap10game.com"
+      }
+     ],
+     "metricValues": [
+      {
+       "value": "80"
+      }
+     ]
+    },
+    {
+     "dimensionValues": [
+      {
+       "value": "20261007"
+      },
+      {
+       "value": "demo_complete"
+      },
+      {
+       "value": "www.tap10game.com"
+      }
+     ],
+     "metricValues": [
+      {
+       "value": "2"
+      }
+     ]
+    }
+   ]
+  }
+ },
+ "videos": {
+  "ok": true,
+  "data": {
+   "rowCount": 7,
+   "rows": [
+    {
+     "dimensionValues": [
+      {
+       "value": "20261006"
+      },
+      {
+       "value": "video_start"
+      },
+      {
+       "value": "TAP 10 film"
+      },
+      {
+       "value": "www.tap10game.com"
+      }
+     ],
+     "metricValues": [
+      {
+       "value": "7"
+      }
+     ]
+    },
+    {
+     "dimensionValues": [
+      {
+       "value": "20261006"
+      },
+      {
+       "value": "video_complete"
+      },
+      {
+       "value": "TAP 10 film"
+      },
+      {
+       "value": "www.tap10game.com"
+      }
+     ],
+     "metricValues": [
+      {
+       "value": "3"
+      }
+     ]
+    },
+    {
+     "dimensionValues": [
+      {
+       "value": "20261006"
+      },
+      {
+       "value": "video_start"
+      },
+      {
+       "value": "Reel Ana"
+      },
+      {
+       "value": "www.tap10game.com"
+      }
+     ],
+     "metricValues": [
+      {
+       "value": "4"
+      }
+     ]
+    },
+    {
+     "dimensionValues": [
+      {
+       "value": "20261006"
+      },
+      {
+       "value": "video_progress"
+      },
+      {
+       "value": "Reel Ana"
+      },
+      {
+       "value": "www.tap10game.com"
+      }
+     ],
+     "metricValues": [
+      {
+       "value": "4"
+      }
+     ]
+    },
+    {
+     "dimensionValues": [
+      {
+       "value": "20261007"
+      },
+      {
+       "value": "video_start"
+      },
+      {
+       "value": "Reel Bo"
+      },
+      {
+       "value": "tap10game.com"
+      }
+     ],
+     "metricValues": [
+      {
+       "value": "2"
+      }
+     ]
+    },
+    {
+     "dimensionValues": [
+      {
+       "value": "20261007"
+      },
+      {
+       "value": "video_complete"
+      },
+      {
+       "value": "Reel Ana"
+      },
+      {
+       "value": "www.tap10game.com"
+      }
+     ],
+     "metricValues": [
+      {
+       "value": "1"
+      }
+     ]
+    },
+    {
+     "dimensionValues": [
+      {
+       "value": "20261007"
+      },
+      {
+       "value": "video_start"
+      },
+      {
+       "value": "TAP 10 film"
+      },
+      {
+       "value": "www.kickstarter.com"
+      }
+     ],
+     "metricValues": [
+      {
+       "value": "100"
+      }
+     ]
+    }
+   ]
+  }
+ },
+ "sources": {
+  "ok": true,
+  "data": {
+   "rowCount": 4,
+   "rows": [
+    {
+     "dimensionValues": [
+      {
+       "value": "google"
+      },
+      {
+       "value": "organic"
+      },
+      {
+       "value": "www.tap10game.com"
+      }
+     ],
+     "metricValues": [
+      {
+       "value": "12"
+      }
+     ]
+    },
+    {
+     "dimensionValues": [
+      {
+       "value": "google"
+      },
+      {
+       "value": "organic"
+      },
+      {
+       "value": "tap10game.com"
+      }
+     ],
+     "metricValues": [
+      {
+       "value": "3"
+      }
+     ]
+    },
+    {
+     "dimensionValues": [
+      {
+       "value": "facebook"
+      },
+      {
+       "value": "paid"
+      },
+      {
+       "value": "www.tap10game.com"
+      }
+     ],
+     "metricValues": [
+      {
+       "value": "25"
+      }
+     ]
+    },
+    {
+     "dimensionValues": [
+      {
+       "value": "kickstarter.com"
+      },
+      {
+       "value": "referral"
+      },
+      {
+       "value": "www.kickstarter.com"
+      }
+     ],
+     "metricValues": [
+      {
+       "value": "400"
+      }
+     ]
+    }
+   ]
+  }
+ }
+}

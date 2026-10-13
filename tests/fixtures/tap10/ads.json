@@ -1,0 +1,17 @@
+[
+ {
+  "date": "2026-10-06",
+  "spend_sek": 100.5,
+  "link_clicks": 10
+ },
+ {
+  "date": "2026-10-07",
+  "spend_sek": 200,
+  "link_clicks": 20
+ },
+ {
+  "date": "2026-10-08",
+  "spend_sek": 50,
+  "link_clicks": 5
+ }
+]
