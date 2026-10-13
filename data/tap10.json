@@ -26,8 +26,8 @@
  "days": [
   {
    "date": "2026-10-13",
-   "signups": 5,
-   "waitlist_total": 190,
+   "signups": 6,
+   "waitlist_total": 191,
    "waitlist_blacklisted": 5,
    "ks_followers": 219,
    "ks_pageviews": 29,
@@ -232,7 +232,7 @@
   },
   {
    "form": "offer",
-   "count": 14
+   "count": 15
   },
   {
    "form": "unknown",
@@ -246,7 +246,7 @@
   },
   {
    "medium": "Facebook_Mobile_Feed",
-   "count": 49
+   "count": 50
   },
   {
    "medium": "-",
