@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nordic Pirates · TAP 10</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Asul:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="/freshness.js"></script>
+<style>
+  :root{
+    --cream:#f2ede4;--cream-2:#ece4d6;--paper:#fffdf8;--paper-2:#fbf6ec;
+    --ink:#171717;--ink-soft:#3a352e;--muted:#8a8073;
+    --terra:#c96a3d;--terra-deep:#a8512a;--gold:#cf9a2e;--gold-soft:#e7b94b;
+    --green:#2f8f4e;--red:#cf4234;
+    --line:rgba(23,23,23,.09);--shadow:0 1px 2px rgba(23,23,23,.04),0 8px 24px rgba(23,23,23,.05);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Inter',sans-serif;color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased;
+    background:radial-gradient(900px 460px at 88% -8%,rgba(201,106,61,.10),transparent 60%),
+               radial-gradient(760px 420px at -6% 4%,rgba(207,154,46,.12),transparent 58%),
+               var(--cream);
+    padding:0 0 70px}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+  header.top{padding:26px 0 22px;margin-bottom:22px;border-bottom:1px solid var(--line)}
+  .brandrow{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:14px}
+  .logochip{background:var(--ink);border-radius:13px;padding:11px 13px;display:flex;align-items:center;box-shadow:var(--shadow)}
+  .logochip img{height:26px;display:block}
+  h1{font-family:'Asul',serif;font-size:27px;font-weight:700;letter-spacing:.2px;line-height:1.15}
+  .sub{color:var(--muted);font-size:13.5px;margin-top:3px}
+  .header-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+  .stamp{font-size:12px;color:var(--muted);text-align:right;line-height:1.7}
+  .stamp b{color:var(--ink-soft)}
+  .hr-btns{display:flex;gap:8px;align-items:center}
+  .logout{font-size:12px;color:var(--muted);text-decoration:none;padding:5px 12px;border:1px solid var(--line);border-radius:20px;background:var(--paper);transition:.15s}
+  .logout:hover{border-color:var(--terra);color:var(--terra)}
+  /* View toggle, the same bar every portal page carries */
+  .view-toggle{display:inline-flex;flex-wrap:wrap;background:var(--paper);border:1.5px solid var(--line);border-radius:24px;padding:4px;margin-top:16px;box-shadow:var(--shadow)}
+  .view-toggle a{font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:var(--muted);text-decoration:none;padding:8px 15px;border-radius:20px;transition:.15s}
+  .view-toggle a:hover{color:var(--ink)}
+  .view-toggle a.active{background:var(--ink);color:#fff}
+  /* window presets */
+  .rangebar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+  .preset{font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:var(--ink-soft);background:var(--paper);border:1.5px solid var(--line);border-radius:22px;padding:8px 16px;cursor:pointer;transition:.15s}
+  .preset:hover{border-color:var(--terra);color:var(--terra)}
+  .preset.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .range-caption{font-size:12.5px;color:var(--muted);margin-bottom:26px;padding-left:2px}
+  .range-caption b{color:var(--terra-deep)}
+  h2{font-family:'Asul',serif;font-size:19px;font-weight:700;margin:0 0 5px;display:flex;align-items:center;gap:9px;color:var(--ink)}
+  h2 .dot{width:9px;height:9px;border-radius:50%;background:var(--terra);flex-shrink:0}
+  .h2sub{font-size:12.5px;color:var(--muted);margin:0 0 14px 18px}
+  section{margin-bottom:34px}
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:13px}
+  .kpi{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:17px 19px;box-shadow:var(--shadow)}
+  .kpi .n{font-family:'Asul',serif;font-size:25px;font-weight:700;color:var(--ink)}
+  .kpi.terra .n{color:var(--terra)}
+  .kpi .k{font-size:11px;color:var(--muted);margin-top:5px;text-transform:uppercase;letter-spacing:.5px;font-weight:600}
+  .kpi .d{font-size:12px;color:var(--muted);margin-top:6px}
+  .chart-card{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:20px 22px;box-shadow:var(--shadow)}
+  .chart-wrap{position:relative;height:260px}
+  .legend{display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-top:10px}
+  .legend i{display:inline-block;width:14px;height:0;border-top:2px solid;margin-right:6px;vertical-align:middle}
+  .panel{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:6px 8px;box-shadow:var(--shadow);overflow-x:auto}
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th,td{text-align:right;padding:11px 14px;white-space:nowrap}
+  th:first-child,td:first-child{text-align:left;font-weight:600}
+  thead th{font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;border-bottom:1px solid var(--line);font-weight:700}
+  tbody tr{border-bottom:1px solid rgba(23,23,23,.05)}tbody tr:last-child{border-bottom:none}
+  tbody tr:hover{background:var(--paper-2)}
+  td.empty{text-align:left;color:var(--muted);font-weight:400;font-style:italic;white-space:normal}
+  .tag{font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;letter-spacing:.3px;margin-left:6px;background:rgba(207,154,46,.18);color:#9a7416}
+  .twocol{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+  .callout{background:linear-gradient(180deg,rgba(201,106,61,.09),var(--paper));border:1px solid rgba(201,106,61,.28);border-radius:18px;padding:20px 22px;box-shadow:var(--shadow)}
+  .callout h3{font-family:'Asul',serif;font-size:16px;margin-bottom:8px;color:var(--terra-deep)}
+  .callout li{font-size:14px;color:var(--ink-soft);margin:0 0 6px 18px}
+  .errbox{background:linear-gradient(180deg,rgba(201,106,61,.09),var(--paper));border:1px solid rgba(201,106,61,.28);border-radius:18px;padding:20px 22px;box-shadow:var(--shadow);font-size:14px;color:var(--ink-soft);margin-bottom:22px}
+  .errbox b{font-family:'Asul',serif;color:var(--terra-deep);display:block;margin-bottom:6px}
+  .errbox a{color:var(--terra-deep)}
+  footer{border-top:1px solid var(--line);margin-top:42px;padding-top:22px;font-size:12px;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+  footer b{color:var(--ink-soft)}
+  @media(max-width:680px){
+    .wrap{padding:0 16px}
+    header.top{padding:18px 0 16px}
+    .header-right{align-items:flex-start}
+    .view-toggle a{padding:8px 14px}
+    .twocol{grid-template-columns:1fr}
+    .kpis{grid-template-columns:1fr 1fr}
+    .kpi .n{font-size:21px}
+  }
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap brandrow">
+  <div class="brand">
+    <span class="logochip"><img src="https://www.nordicpirates.com/cdn/shop/files/LP_LOGO_vit_e2ed4c01-c782-4abb-8a90-b5cab974fd0a.png?width=120" alt="Nordic Pirates"></span>
+    <div>
+      <h1>TAP 10</h1>
+      <div class="sub">Anmälningar, besökare, filmer, demo och Kickstarter per dag</div>
+      <div class="view-toggle">
+        <a href="/">Marketing HQ</a>
+        <a href="/dashboard">Dashboard</a>
+        <a href="/inventory">Lager</a>
+        <a href="/growth">Growth</a>
+        <a href="/ideas">Ideas</a>
+        <a href="/assets">Assets</a>
+        <a href="/shipments">Shipments</a>
+        <a href="/qr">QR codes</a>
+        <a href="/tap10" class="active">TAP 10</a>
+      </div>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="stamp">Byggd <b id="generated">…</b></div>
+    <div class="hr-btns">
+      <a class="logout" href="/logout">Logga ut</a>
+    </div>
+  </div>
+</div></header>
+
+<div class="wrap">
+  <div id="load-error"></div>
+
+  <div class="rangebar" id="rangebar"></div>
+  <div class="range-caption" id="range-caption">…</div>
+
+  <section>
+    <h2><span class="dot"></span>Nyckeltal</h2>
+    <div id="fr-kpis"></div>
+    <div class="kpis" id="kpi-grid"></div>
+  </section>
+
+  <section>
+    <h2><span class="dot"></span>Anmälningar och Kickstarter-följare per dag</h2>
+    <p class="h2sub">Anmälningar på vänster axel, följare på höger.</p>
+    <div id="fr-chart"></div>
+    <div class="chart-card"><div class="chart-wrap"><canvas id="tap10Chart"></canvas></div>
+      <div class="legend"><span><i style="border-color:#c96a3d"></i>Anmälningar per dag</span><span><i style="border-color:#171717;border-top-style:dashed"></i>Kickstarter-följare</span></div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="dot"></span>Per dag</h2>
+    <p class="h2sub">Nyast först, en rad per dag i Stockholmstid.</p>
+    <div id="fr-days"></div>
+    <div class="panel"><table>
+      <thead><tr><th>Dag</th><th>Anmälningar</th><th>Väntelista totalt</th><th>KS-följare</th><th>Kickstarter-sidvisningar (Meta-pixel)</th><th>Kickstarter-besök (GA)</th><th>GA-besök</th><th>Annonsklick</th><th>Annonskostnad SEK</th><th>Kr/anmälan</th><th>Film start/klar</th><th>Reels start/klar</th><th>Demo start/klar</th><th>"Try the demo"-klick</th><th>Snittid per besök</th></tr></thead>
+      <tbody id="days-body"></tbody>
+    </table></div>
+  </section>
+
+  <section>
+    <h2><span class="dot"></span>Videor</h2>
+    <p class="h2sub" id="videos-sub">Sedan lansering.</p>
+    <div id="fr-videos"></div>
+    <div class="panel"><table>
+      <thead><tr><th>Video</th><th>Starter</th><th>Sett klart</th></tr></thead>
+      <tbody id="videos-body"></tbody>
+    </table></div>
+  </section>
+
+  <section>
+    <h2><span class="dot"></span>Var anmälningarna kommer ifrån</h2>
+    <p class="h2sub" id="forms-sub">Sedan lansering.</p>
+    <div id="fr-forms"></div>
+    <div class="twocol">
+      <div class="panel"><table>
+        <thead><tr><th>Formulär</th><th>Anmälningar</th></tr></thead>
+        <tbody id="forms-body"></tbody>
+      </table></div>
+      <div class="panel"><table>
+        <thead><tr><th>Placering (UTM medium)</th><th>Anmälningar</th></tr></thead>
+        <tbody id="media-body"></tbody>
+      </table></div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="dot"></span>Trafikkällor (GA)</h2>
+    <p class="h2sub" id="sources-sub">Besök på tap10game.com sedan lansering.</p>
+    <div id="fr-ga-sources"></div>
+    <div class="panel"><table>
+      <thead><tr><th>Källa</th><th>Medium</th><th>Besök</th></tr></thead>
+      <tbody id="sources-body"></tbody>
+    </table></div>
+  </section>
+
+  <section>
+    <div class="callout">
+      <h3>Så ska siffrorna läsas</h3>
+      <ul>
+        <li>GA ser bara besökare som godkänner cookies, och cookierutan är avvisad som standard för alla. GA-besök, film- och demosiffror är därför ett golv, inte en räkning.</li>
+        <li>Anmälningarna räknas i Brevo och är exakta.</li>
+        <li>Kickstarter-sidvisningar är TAP 10:s Meta-pixels PageView på kickstarter.com och är en indikation. Kickstarter-besök (GA) är GA:s egna besök på www.kickstarter.com och räknas aldrig in i besökarna på tap10game.com.</li>
+        <li>Cloudflares cookiefria räknare finns, men ingen nyckel kan läsa den än.</li>
+        <li>Ett streck betyder att källan saknas för den dagen, aldrig noll.</li>
+      </ul>
+    </div>
+  </section>
+
+  <footer>
+    <div>🏴‍☠️ <b>Nordic Pirates · TAP 10</b> · för teamet</div>
+    <div>Data: Brevo, GA4, Meta och Kickstarter, byggs varje morgon</div>
+  </footer>
+</div>
+
+<script>
+let DATA = null;
+let WIN = 'launch';
+let CHART = null;
+
+// Which sources each section rests on. Pills come from tap10.json "sources" through
+// /freshness.js; docs/TAP10.md says what each key covers.
+const SECTION_SOURCES = {
+  'fr-kpis': ['signups','ks_followers','ks_pageviews','ga','ads'],
+  'fr-chart': ['signups','ks_followers'],
+  'fr-days': ['signups','ks_followers','ks_pageviews','ga','ads'],
+  'fr-videos': ['ga'],
+  'fr-forms': ['signups'],
+  'fr-ga-sources': ['ga'],
+};
+
+const WINDOWS = [
+  { id:'launch', label:'Sedan lansering' },
+  { id:'7d', label:'7 dagar' },
+  { id:'yday', label:'Igår' },
+];
+
+function esc(s){ return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+const isNum = v => v !== null && v !== undefined;
+// A missing number is a dash, never a zero.
+function fmt(n){ return isNum(n) ? Number(n).toLocaleString('sv-SE') : '-'; }
+function kr(n){ return isNum(n) ? Math.round(n).toLocaleString('sv-SE') + ' kr' : '-'; }
+function pair(a, b){ return !isNum(a) && !isNum(b) ? '-' : `${fmt(a)} / ${fmt(b)}`; }
+function secs(s){ if (!isNum(s)) return '-'; const m = Math.floor(s / 60); return m ? `${m} min ${s % 60} s` : `${s} s`; }
+function perSignup(spend, signups){ return isNum(spend) && signups ? kr(spend / signups) : '-'; }
+function shiftDay(iso, n){ const d = new Date(iso + 'T00:00:00Z'); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); }
+
+function paintFreshness() {
+  if (!window.Freshness) { console.error('freshness.js did not load, so no section can show how old its data is'); return; }
+  let painted = 0;
+  for (const id in SECTION_SOURCES) if (window.Freshness.render(document, id, DATA.sources || {}, SECTION_SOURCES[id])) painted++;
+  if (!painted) console.error('no section had a place to show its date: this markup is older than freshness.js');
+}
+
+function errBox(msg){
+  document.getElementById('load-error').innerHTML = `<div class="errbox"><b>TAP 10-siffrorna kunde inte hämtas.</b>${esc(msg)} <a href="/tap10">Ladda om sidan</a>.</div>`;
+}
+
+async function load() {
+  let r;
+  try { r = await fetch('/api/tap10'); }
+  catch (e) { console.error(e); errBox('Ingen kontakt med servern.'); return; }
+  if (r.status === 401) { location.href = '/login'; return; }
+  if (!r.ok) { errBox('Servern svarade ' + r.status + '.'); return; }
+  try { DATA = await r.json(); }
+  catch (e) { console.error(e); errBox('Svaret gick inte att läsa.'); return; }
+
+  document.getElementById('generated').textContent = DATA.generated_at || 'inte än';
+  const rb = document.getElementById('rangebar');
+  rb.innerHTML = WINDOWS.map(w => `<button class="preset" data-w="${w.id}">${w.label}</button>`).join('');
+  rb.querySelectorAll('.preset').forEach(b => b.onclick = () => renderWindow(b.dataset.w));
+
+  paintFreshness();
+  renderDays();
+  renderChart();
+  renderVideos();
+  renderSignupSources();
+  renderGaSources();
+  renderWindow(WIN);
+}
+
+// Windows end on the newest whole day, so today's half-counted row never sits in a total.
+function windowDays(id) {
+  const days = DATA.days || [];
+  const whole = days.filter(d => !d.partial);
+  if (!whole.length) return { days: [], start: null, end: null };
+  const end = whole[0].date;
+  const start = id === 'yday' ? end : id === '7d' ? shiftDay(end, -6) : (DATA.launch_date || whole[whole.length - 1].date);
+  return { days: whole.filter(d => d.date >= start && d.date <= end), start, end };
+}
+
+function sum(days, key) {
+  const have = days.filter(d => isNum(d[key]));
+  return { value: have.length ? have.reduce((t, d) => t + d[key], 0) : null, missing: days.length - have.length };
+}
+
+function missingNote(s, total) { return s.missing && isNum(s.value) ? `saknas ${s.missing} av ${total} dagar` : ''; }
+
+// A level (list size, followers) is the window's last reading, with the change over the window.
+function level(all, w, key) {
+  const inWin = w.days.filter(d => isNum(d[key]));
+  if (!inWin.length) return { value: null, note: '' };
+  const before = all.find(d => d.date < w.start && isNum(d[key]));
+  const note = before ? `${inWin[0][key] - before[key] >= 0 ? '+' : ''}${fmt(inWin[0][key] - before[key])} i perioden` : `per ${inWin[0].date}`;
+  return { value: inWin[0][key], note };
+}
+
+function kpi(value, label, note, cls) {
+  return `<div class="kpi ${cls || ''}"><div class="n">${value}</div><div class="k">${label}</div><div class="d">${esc(note || '')}</div></div>`;
+}
+
+function renderWindow(id) {
+  WIN = id;
+  document.querySelectorAll('.preset').forEach(b => b.classList.toggle('active', b.dataset.w === id));
+  const w = windowDays(id);
+  const label = WINDOWS.find(x => x.id === id).label;
+  document.getElementById('range-caption').innerHTML = w.end
+    ? `Visar <b>${label}</b> · ${w.start} till ${w.end} · ${w.days.length} ${w.days.length === 1 ? 'dag' : 'dagar'}`
+    : `Visar <b>${label}</b> · inga dagar byggda än`;
+
+  const n = w.days.length;
+  const signups = sum(w.days, 'signups');
+  const spend = sum(w.days, 'ad_spend_sek');
+  const spendDays = w.days.filter(d => isNum(d.ad_spend_sek));
+  const cpa = sum(spendDays, 'signups');
+  const film = sum(w.days, 'film_starts'), reels = sum(w.days, 'reel_starts');
+  const starts = isNum(film.value) || isNum(reels.value) ? (film.value || 0) + (reels.value || 0) : null;
+  const demo = sum(w.days, 'demo_starts'), demoDone = sum(w.days, 'demo_completes');
+  const pv = sum(w.days, 'ks_pageviews'), ksGa = sum(w.days, 'ks_ga_sessions'), ga = sum(w.days, 'ga_sessions');
+  const all = DATA.days || [];
+  const wl = level(all, w, 'waitlist_total'), ks = level(all, w, 'ks_followers');
+
+  document.getElementById('kpi-grid').innerHTML = [
+    kpi(fmt(signups.value), 'Anmälningar', missingNote(signups, n) || 'Brevo, exakt', 'terra'),
+    kpi(fmt(wl.value), 'Väntelistan totalt', wl.note),
+    kpi(fmt(ks.value), 'Kickstarter-följare', ks.note),
+    kpi(fmt(pv.value), 'Kickstarter-sidvisningar (Meta-pixel)', missingNote(pv, n) || 'en indikation'),
+    kpi(fmt(ksGa.value), 'Kickstarter-besök (GA)', missingNote(ksGa, n) || 'ett golv'),
+    kpi(fmt(ga.value), 'Besökare tap10game.com', missingNote(ga, n) || 'GA-besök, ett golv'),
+    kpi(kr(spend.value), 'Annonskostnad', missingNote(spend, n) || 'Meta, TAP 10 Leads'),
+    kpi(perSignup(spend.value, cpa.value), 'Kostnad per anmälan', spendDays.length ? `${fmt(cpa.value)} anmälningar på dagar med annonsdata` : ''),
+    kpi(fmt(starts), 'Filmstarter', isNum(starts) ? `film ${fmt(film.value)} · reels ${fmt(reels.value)}` : ''),
+    kpi(fmt(demo.value), 'Demospel', isNum(demo.value) ? `${fmt(demoDone.value)} spelade klart` : ''),
+  ].join('');
+}
+
+function renderDays() {
+  const days = DATA.days || [];
+  const body = document.getElementById('days-body');
+  if (!days.length) { body.innerHTML = '<tr><td class="empty" colspan="15">Inga dagar byggda än. scripts/tap10_snapshot.py skriver dem varje morgon.</td></tr>'; return; }
+  body.innerHTML = days.map(d => `<tr>
+    <td>${esc(d.date)}${d.partial ? '<span class="tag">pågår</span>' : ''}${d.provisional ? '<span class="tag">GA preliminär</span>' : ''}</td>
+    <td>${fmt(d.signups)}</td><td>${fmt(d.waitlist_total)}</td><td>${fmt(d.ks_followers)}</td>
+    <td>${fmt(d.ks_pageviews)}</td><td>${fmt(d.ks_ga_sessions)}</td><td>${fmt(d.ga_sessions)}</td>
+    <td>${fmt(d.ad_clicks)}</td><td>${fmt(d.ad_spend_sek)}</td><td>${perSignup(d.ad_spend_sek, d.signups)}</td>
+    <td>${pair(d.film_starts, d.film_completes)}</td><td>${pair(d.reel_starts, d.reel_completes)}</td>
+    <td>${pair(d.demo_starts, d.demo_completes)}</td><td>${fmt(d.demo_star_clicks)}</td><td>${secs(d.avg_session_sec)}</td>
+  </tr>`).join('');
+}
+
+function rowsOr(id, rows, cols, empty) {
+  document.getElementById(id).innerHTML = rows.length ? rows.join('') : `<tr><td class="empty" colspan="${cols}">${empty}</td></tr>`;
+}
+
+function renderVideos() {
+  rowsOr('videos-body', (DATA.videos || []).map(v => `<tr><td>${esc(v.title)}</td><td>${fmt(v.starts)}</td><td>${fmt(v.completes)}</td></tr>`), 3, 'Ingen GA-data om videor än.');
+}
+
+function renderSignupSources() {
+  rowsOr('forms-body', (DATA.signups_by_form || []).map(r => `<tr><td>${esc(r.form)}</td><td>${fmt(r.count)}</td></tr>`), 2, 'Inga anmälningar från Brevo än.');
+  rowsOr('media-body', (DATA.signups_by_medium || []).map(r => `<tr><td>${esc(r.medium)}</td><td>${fmt(r.count)}</td></tr>`), 2, 'Inga anmälningar från Brevo än.');
+}
+
+function renderGaSources() {
+  rowsOr('sources-body', (DATA.ga_sources || []).map(r => `<tr><td>${esc(r.source)}</td><td>${esc(r.medium)}</td><td>${fmt(r.sessions)}</td></tr>`), 3, 'Ingen GA-data om trafikkällor än.');
+}
+
+// Two measures on two axes, as the brief asks; the legend and tooltip name each line.
+function renderChart() {
+  const days = [...(DATA.days || [])].reverse();
+  if (!days.length || typeof Chart === 'undefined') return;
+  const ctx = document.getElementById('tap10Chart').getContext('2d');
+  if (CHART) CHART.destroy();
+  CHART = new Chart(ctx, { type:'line', data: {
+    labels: days.map(d => d.date.slice(5).replace('-', '/')),
+    datasets: [
+      { label:'Anmälningar per dag', data: days.map(d => d.signups), borderColor:'#c96a3d', backgroundColor:'#c96a3d', borderWidth:2, pointRadius:4, tension:0, yAxisID:'y' },
+      { label:'Kickstarter-följare', data: days.map(d => d.ks_followers), borderColor:'#171717', backgroundColor:'#171717', borderWidth:2, borderDash:[6,4], pointRadius:4, tension:0, spanGaps:true, yAxisID:'y2' },
+    ] }, options: {
+    responsive:true, maintainAspectRatio:false,
+    plugins:{ legend:{display:false}, tooltip:{ mode:'index', intersect:false, callbacks:{ label: c => `${c.dataset.label} ${fmt(c.raw)}` } } },
+    scales:{
+      x:{ grid:{color:'rgba(23,23,23,.05)'}, ticks:{color:'#8a8073',font:{size:10}, maxRotation:0, autoSkip:true} },
+      y:{ min:0, grid:{color:'rgba(23,23,23,.05)'}, ticks:{color:'#a8512a',font:{size:11}, precision:0}, title:{display:true,text:'Anmälningar',color:'#a8512a'} },
+      y2:{ position:'right', grid:{display:false}, ticks:{color:'#171717',font:{size:11}, precision:0}, title:{display:true,text:'KS-följare',color:'#171717'} }
+    } } });
+}
+
+load();
+</script>
+</body>
+</html>

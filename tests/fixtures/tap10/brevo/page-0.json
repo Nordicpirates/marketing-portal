@@ -1,0 +1,45 @@
+{
+ "data": {
+  "contacts": [
+   {
+    "id": 1,
+    "emailBlacklisted": false,
+    "listIds": [
+     10
+    ],
+    "createdAt": "2026-09-30T10:00:00.000+02:00",
+    "attributes": {
+     "SIGNUP_DATE": "2026-10-01",
+     "SIGNUP_FORM": "hero",
+     "FIRSTNAME": "Fixturename"
+    }
+   },
+   {
+    "id": 2,
+    "emailBlacklisted": false,
+    "listIds": [
+     10,
+     3
+    ],
+    "createdAt": "2026-09-30T10:00:00.000+02:00",
+    "attributes": {
+     "SIGNUP_DATE": "2026-10-06",
+     "SIGNUP_FORM": "hero",
+     "UTM_MEDIUM": "paid_social"
+    }
+   },
+   {
+    "id": 3,
+    "emailBlacklisted": false,
+    "listIds": [
+     10
+    ],
+    "createdAt": "2026-10-06T23:30:00.000+00:00",
+    "attributes": {
+     "SIGNUP_FORM": "bar",
+     "UTM_MEDIUM": "paid_social"
+    }
+   }
+  ]
+ }
+}

@@ -23,8 +23,9 @@ landing-page table that had not moved in 48 days, and that is what these pills r
 - `text` — what the pill says instead of "as of unknown", for a list kept by hand.
 
 `public/freshness.js` turns those into pills and is the only place the age rules live, so
-two pages cannot disagree. Served at `/freshness.js`, loaded by index, dashboard and
-inventory. Up to 2 days old is green, 3 to 7 amber, over 7 red with the age in days.
+two pages cannot disagree. Served at `/freshness.js`, loaded by index, dashboard,
+inventory and tap10 (which reads its `sources` from `data/tap10.json`, docs/TAP10.md).
+Up to 2 days old is green, 3 to 7 amber, over 7 red with the age in days.
 
 ## Adding a section, or a source
 

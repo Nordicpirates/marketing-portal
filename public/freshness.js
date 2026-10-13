@@ -27,6 +27,11 @@
     fx: "ECB rate",
     experiments: "Experiments",
     snapshot: "Snapshot",
+    signups: "Signups (Brevo)",
+    ga: "GA4 (TAP 10)",
+    ads: "Meta ads",
+    ks_followers: "KS followers",
+    ks_pageviews: "KS page views (pixel)",
   };
 
   var CSS =

@@ -255,7 +255,7 @@ describe("it looks like the portal, and every portal page can reach it", () => {
   });
 
   test("the Assets tab is on every page of the portal", () => {
-    for (const page of ["index", "dashboard", "inventory", "growth", "ideas", "assets", "shipments"]) {
+    for (const page of ["index", "dashboard", "inventory", "growth", "ideas", "assets", "shipments", "qr", "tap10"]) {
       const html = readFileSync(join(REPO, "public", `${page}.html`), "utf8");
       expect(html).toContain('href="/assets"');
     }

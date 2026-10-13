@@ -1,0 +1,39 @@
+{
+ "stats": [
+  {
+   "timestamp": "2026-10-06T08:00:00+0200",
+   "data": [
+    {
+     "value": "www.kickstarter.com",
+     "count": 4
+    },
+    {
+     "value": "tap10game.com",
+     "count": 6
+    }
+   ]
+  },
+  {
+   "timestamp": "2026-10-06T15:00:00-0700",
+   "data": [
+    {
+     "value": "www.kickstarter.com",
+     "count": 5
+    },
+    {
+     "value": "tap10game.com",
+     "count": 0
+    }
+   ]
+  },
+  {
+   "timestamp": "2026-10-08T10:00:00+0000",
+   "data": [
+    {
+     "value": "tap10game.com",
+     "count": 3
+    }
+   ]
+  }
+ ]
+}
