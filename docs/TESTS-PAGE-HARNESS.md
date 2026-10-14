@@ -59,6 +59,15 @@ would be the same bug wearing a disabled attribute.
 start from. Driving a tap with it would force through a control the page has said is not
 the visitor's, and the test would be checking the harness instead.
 
+## The canned answers and the variant ids
+
+`codeAnswer` is a plain `code` answer, `preorderAnswer` is the same with `preorder: true`
+(the English Base Game as the pre-order print, `BASE_PREORDER_EN`), and `blockedAnswer` is
+the old blocked answer. The claim endpoint no longer sends that last one, but
+`public/lp-aboard.js` still draws its panel, so the harness keeps it to drive that panel.
+`CART_UPDATE` is the `/cart/update.js` call that marks the cart `lp_arm=gift_offer`; it
+sits between `CART_ADD` and the discount call in every successful sequence.
+
 ## Holding the claim answer: `page.holdClaim`
 
 Holds the claim answer in the air, and hands back the release. The request still goes

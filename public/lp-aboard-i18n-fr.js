@@ -18,42 +18,16 @@ export const FR = {
   "nav.aria.main": "Navigation principale",
   "nav.aria.langs": "Langue et édition",
   "nav.howToPlay": "Comment jouer",
-  "nav.editions": "Éditions",
   "nav.reviews": "Avis",
   "nav.cta": "Je prends le jeu",
 
-  "hero.title": "Nous n'aurons pas de meilleure offre que celle-ci.",
-  "hero.lede":
-    "Un jeu de dés et de bluff. Vous mentez aux gens que vous aimez le plus, puis vous envoyez leurs bateaux droit sur les rochers.",
-  "hero.point1": "Choisissez une boîte ci-dessous",
-  "hero.point2": "On y glisse quelque chose que l'on n'offre pas d'habitude",
-  "hero.point3": "Vous voyez cette page uniquement parce que vous n'avez pas acheté la première fois",
-  "hero.cta": "Voir ce qui est offert",
-
-  "showcase.alt":
-    "Trois joueurs autour d'une table en pleine partie, plateau et pièces étalés, l'un d'eux rit",
-
-  "stats.players": "joueurs, 14 ans et plus",
-  "stats.length": "une partie complète",
-  "stats.sold": "exemplaires vendus",
-  "stats.bgg": "sur BoardGameGeek",
-  "stats.reviews": "avis de la communauté",
-  "stats.countries": "pays livrés",
-
-  "game.eyebrow": "Au cas où vous auriez oublié",
-  "game.title": "Le jeu du menteur, sauf que tout le monde y court avec un navire",
-  "game.alt":
-    "Un gobelet en bambou marqué que l'on soulève et qui découvre cinq dés sur le plateau",
-  "game.caption": "Soulevez le gobelet et découvrez qui disait la vérité.",
-
   "how.eyebrow": "Vite appris",
   "how.title": "Comment jouer",
-  "how.sub": "Trois phases par tour. Chacune a sa vidéo d'explication.",
   "how.1.aria": "Phase de paris, dés cachés sous un gobelet",
   "how.1.phase": "Phase de paris",
   "how.1.title": "Bluffez votre équipage",
   "how.1.body":
-    "Lancez vos dés Équipage cachés sous le gobelet en bambou, puis bluffez sur les totaux. Montez la mise, verrouillez une valeur ou traitez quelqu'un de menteur, exactement au bon moment.",
+    "Lancez vos dés Équipage cachés sous votre gobelet, puis bluffez sur les totaux. Montez la mise, verrouillez une valeur ou traitez quelqu'un de menteur, exactement au bon moment.",
   "how.2.aria": "Phase de navigation, bateaux qui avancent sur le plateau",
   "how.2.phase": "Phase de navigation",
   "how.2.title": "Faites avancer la flotte",
@@ -65,17 +39,11 @@ export const FR = {
   "how.3.body":
     "Jouez des cartes Action dorées ou argentées pour attaquer vos rivaux, défendre votre position ou améliorer votre équipage. Chaque carte change le plateau.",
 
-  "reviews.eyebrow": "De la part de ceux qui l'ont chez eux",
-  "reviews.bgg.on": "sur BoardGameGeek",
-  "reviews.bgg.from": "sur 600+ avis de la communauté",
   "reviews.title": "Avis de la communauté",
   "reviews.note":
     "Non retouchés, avec les notes que leurs auteurs ont données. Raccourcis là où c'est indiqué, pour tenir dans la place.",
   "country.us": "États-Unis",
-  "country.it": "Italie",
   "country.gb": "Royaume-Uni",
-  "country.se": "Suède",
-  "country.de": "Allemagne",
 
   "ship.eyebrow": "Livraison",
   "ship.title": "Expédié depuis un entrepôt près de chez vous",
@@ -110,9 +78,9 @@ export const FR = {
   "offer.stock.body":
     "Quand il sera épuisé, ce choix deviendra l'or, et nous le dirons ici.",
   "offer.edition.legend": "Quelle édition devons-nous envoyer",
-  "offer.warn.head": "Une chose avant d'aller plus loin.",
+  "offer.warn.head": "Édition anglaise : en précommande.",
   "offer.warn.body":
-    "Le jeu de base en anglais part de nos stocks aux États-Unis, au Royaume-Uni et en Australie. À l'intérieur de l'UE, nous ne pouvons pas encore envoyer cette édition, et si vous y êtes, nous vous proposons la BIG BOX en anglais avec les deux cadeaux, ou le même jeu dans votre langue. Votre code reste le vôtre dans tous les cas.",
+    "En dehors des États-Unis, du Canada, de l'Australie et de la Nouvelle-Zélande, le jeu de base en anglais est le nouveau tirage en précommande, livré en 14 à 21 jours environ. Votre cadeau arrive dans le même envoi.",
 
   "claim.eyebrow": "Dernière étape",
   "claim.title.kraken": "Une étape et le Kraken est à vous",
@@ -188,4 +156,40 @@ export const FR = {
   "error.generic": "Nous n'avons pas pu émettre votre code à l'instant.",
   "error.network": "Nous n'avons pas pu joindre le navire. Vérifiez votre connexion et réessayez.",
   "error.template": "Quelque chose s'est mal passé de notre côté. Réessayez, s'il vous plaît.",
+
+  // The light rebuild (Polly, 2026-10-14). Translations are Polly's and want a native read.
+  "nav.gift": "Votre cadeau",
+  "hero2.eyebrow": "Un cadeau pour votre retour",
+  "hero2.title": "Vous avez quitté le navire les mains vides une fois. Voici votre seconde chance !",
+  "hero2.offer": "Jeu de base €39.95, avec un cadeau : le Kraken ou 20 pièces d'or en métal.",
+  "hero2.bigbox": "La BIG BOX, €124.95, a droit aux deux.",
+  "why1.b": "Personne n'attend son tour.",
+  "why1.s": "Tout le monde parie à chaque tour, personne ne reste sur la touche.",
+  "why2.b": "Personne ne sort son téléphone.",
+  "why2.s": "Chaque pari compte tous les dés de la table, vous restez donc dans la partie jusqu'à ce que les gobelets se lèvent.",
+  "hero2.cta": "Choisissez votre cadeau",
+  "hero2.from": "À partir de €39.95",
+  "proof.bgg": "sur BoardGameGeek",
+  "proof.ratings": "600+ notes",
+  "proof.sold": "exemplaires vendus",
+  "proof.countries": "pays",
+  "rev.eyebrow": "Ce qu'en disent les joueurs",
+  "rev.line": "Note de la communauté BoardGameGeek, 600+ notes.",
+  "rev.bggLink": "Tous les avis sur BoardGameGeek",
+  "rev.fbTitle": "Entendu dans les commentaires.",
+  "rev.fbNote": "De vrais commentaires sous nos publications Facebook, copiés mot pour mot. Noms de famille abrégés.",
+  "rev.swipe": "Faites glisser pour en voir plus",
+  "how2.sub": "Chaque tour suit le même ordre : paris, navigation, actions. Les nouveaux joueurs bluffent dès le deuxième tour.",
+  "mu.eyebrow": "Vous préférez regarder ?",
+  "mu.title": "Vidéo d'explication par Meeple University",
+  "mu.body": "Une présentation du jeu de base et de l'extension Cities of Greed, en anglais. S'ouvre sur YouTube.",
+  "mu.aria": "Lire sur YouTube la vidéo d'explication de Meeple University",
+  "ig.eyebrow": "#lyingpirates sur Instagram",
+  "ig.title": "Des tables partout dans le monde.",
+  "final.eyebrow": "Pas une soirée jeux ordinaire",
+  "final.title": "Quelqu'un à votre table ment en ce moment même.",
+  "final.body": "Découvrez qui. Votre cadeau vous attend toujours.",
+  "country.ca": "Canada",
+  "hero2.alt": "Deux joueurs en chapeau de pirate au plateau de Lying Pirates, cartes en main",
+  "final.alt": "Un joueur coiffé d'un chapeau de pirate, souriant derrière sa coupe",
 };

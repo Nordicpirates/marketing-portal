@@ -2,277 +2,178 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <script>
-// The shop's primary domain is www.nordicpirates.com (Shopify 301s every shop
-// path on the bare domain to www, and the browser refuses the redirected cart
-// calls as cross-origin). A visitor on the bare domain could read this page but
-// never load a cart from it, so move them to www before anything else runs.
-// This HTML is served no-cache, so the guard reaches every visitor immediately.
-if (location.hostname === "nordicpirates.com") {
-  location.replace("https://www.nordicpirates.com" + location.pathname + location.search + location.hash);
-}
+// Cart calls only work on www (Shopify 301s the bare domain), so move there before anything runs.
+if (location.hostname === "nordicpirates.com") location.replace("https://www.nordicpirates.com" + location.pathname + location.search + location.hash);
 </script>
 <meta name="robots" content="noindex, nofollow, noarchive">
-<!-- Every visitor-facing string on this page carries a data-i18n key, and the copy
-     for all five languages lives in /gift-offer/i18n-<lang>.js. The English words in
-     this markup are the same words the English table holds, so the page reads
-     correctly before the module runs and if it never runs at all. A test asserts
-     the two cannot drift apart. -->
 <title data-i18n="meta.title">We made something special | Lying Pirates</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preload" href="/gift-offer/media/cinzel.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/gift-offer/media/asul-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="canonical" href="https://www.nordicpirates.com/gift-offer">
-<meta property="og:title" content="Nordic Pirates">
-<meta property="og:description" content="Lying Pirates, a bluffing dice game.">
+<meta property="og:title" content="Lying Pirates, with a gift in the box">
+<meta property="og:description" content="Base Game with the Kraken or 20 metal gold coins, free. The BIG BOX comes with both.">
+<meta property="og:image" content="https://www.nordicpirates.com/gift-offer/media/gift-crew.webp">
+<script src="/lp/lp-market.v1.js"></script>
+<script>
+// The pre-order note on the English Base Game stays down where it ships from US stock (lp-market.v1.js).
+window.lpMarket&&window.lpMarket.then(function(m){if(m&&m.enBase)document.documentElement.setAttribute("data-en-base",m.enBase);}).catch(function(e){console.warn("[lp/aboard] no market, pre-order note stays up",e);});
+</script><script src="/lp/consent.v1.js"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LYH6PJYVMZ"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-LYH6PJYVMZ');</script>
+<script async src="/lp/meta-pixel.v1.js"></script>
+<script defer src="/lp/lp-measure.v5.js"></script>
 <link rel="stylesheet" href="/gift-offer/style.css">
 </head>
-<body id="top">
-<header class="np-nav" id="npnav">
-  <div class="np-nav-inner">
-    <a class="np-logo" href="#top">NORDIC <span>PIRATES</span></a>
-    <nav class="np-links" data-i18n-aria-label="nav.aria.main" aria-label="Main">
-      <a href="#how-to-play" data-i18n="nav.howToPlay">How to Play</a>
-      <a href="#offer" data-i18n="nav.editions">Editions</a>
-      <a href="#bgg-reviews" data-i18n="nav.reviews">Reviews</a>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#top"><img src="/gift-offer/media/logo-lp.png" alt="Lying Pirates" width="560" height="146"></a>
+    <nav data-i18n-aria-label="nav.aria.main" aria-label="Main">
+      <a href="#how-to-play" data-i18n="nav.howToPlay">How to Play</a><a href="#bgg-reviews" data-i18n="nav.reviews">Reviews</a><a href="#offer" data-i18n="nav.gift">Your gift</a>
     </nav>
-    <!-- These do two things at once: they translate the whole page into the language
-         on the chip, and they select the matching physical edition in the picker
-         further down. The two never move apart. -->
-    <div class="np-langs" role="group" data-i18n-aria-label="nav.aria.langs" aria-label="Language and edition">
-      <button type="button" class="np-lang is-on" data-lang="en">EN</button
-      ><button type="button" class="np-lang" data-lang="de">DE</button
-      ><button type="button" class="np-lang" data-lang="it">IT</button
-      ><button type="button" class="np-lang" data-lang="fr">FR</button
-      ><button type="button" class="np-lang" data-lang="es">ES</button>
+    <div class="top-r">
+      <!-- The chips switch the page language AND the edition we ship: one choice. -->
+      <div class="np-langs" role="group" data-i18n-aria-label="nav.aria.langs" aria-label="Language and edition">
+        <button type="button" class="np-lang is-on" data-lang="en">EN</button><button type="button" class="np-lang" data-lang="de">DE</button><button type="button" class="np-lang" data-lang="it">IT</button><button type="button" class="np-lang" data-lang="fr">FR</button><button type="button" class="np-lang" data-lang="es">ES</button>
+      </div>
+      <a class="btn btn-ink top-cta" href="#offer" data-i18n="nav.cta">Get the Game</a>
     </div>
-    <a class="np-nav-cta" href="#offer" data-i18n="nav.cta">Get the Game</a>
   </div>
 </header>
-
-
-<!-- HERO -->
+<main id="top">
 <section class="hero">
-  <video class="hero-vid" autoplay muted loop playsinline preload="metadata"
-         poster="/gift-offer/media/lp-hero-poster.jpg">
-    <source src="/gift-offer/media/lp-hero-1080.webm" type="video/webm">
-    <source src="/gift-offer/media/lp-hero-1080.mp4" type="video/mp4">
-  </video>
-  <div class="hero-veil" aria-hidden="true"></div>
-  <div class="wrap hero-copy">
-    <p class="eyebrow">Nordic Pirates</p>
-    <h1 data-i18n="hero.title">We will not have a better offer than this.</h1>
-    <p class="lede" data-i18n="hero.lede">A bluffing dice game. You lie to the people you like most, then race their ships into the rocks.</p>
-    <!-- A plain list now, not an ordered one: the numbers became dots on 2026-08-14
-         and an ol with nothing numbered in it is a lie to a screen reader. -->
-    <ul class="hero-points">
-      <li><span class="hero-dot" aria-hidden="true"></span> <span data-i18n="hero.point1">Choose one of the boxes below</span></li>
-      <li><span class="hero-dot" aria-hidden="true"></span> <span data-i18n="hero.point2">Something goes in that we would normally charge you for.</span></li>
-      <li><span class="hero-dot" aria-hidden="true"></span> <span data-i18n="hero.point3">You left empty-handed once. Here's your second chance!</span></li>
-    </ul>
-    <a class="hero-cta" href="#offer" data-i18n="hero.cta">See what comes free</a>
+  <div class="wrap">
+    <div class="hero-copy">
+      <p class="eyebrow" data-i18n="hero2.eyebrow">A gift for coming back</p>
+      <h1 data-i18n="hero2.title">You left empty-handed once. Here&#x27;s your second chance!</h1>
+      <div class="deal-strip">
+        <div class="ds-pics" aria-hidden="true"><img src="/gift-offer/media/base.webp" alt="" width="551" height="559"><span class="ds-plus">+</span><img src="https://www.nordicpirates.com/cdn/shop/files/Kraken_1.png?v=1775020469&amp;width=160" alt="" width="160" height="160"><img src="https://www.nordicpirates.com/cdn/shop/files/Goldcoins_20pcs_413e3651-0f5f-4566-a5d6-84ca092fb36c.png?v=1762192283&amp;width=160" alt="" width="160" height="160"></div>
+        <p><b data-i18n="hero2.offer">Base Game €39.95, plus a free gift: the Kraken or 20 metal gold coins.</b> <span data-i18n="hero2.bigbox">The BIG BOX, €124.95, comes with both.</span></p>
+      </div>
+      <ul class="why">
+        <li><b data-i18n="why1.b">No waiting for your turn.</b><span data-i18n="why1.s">Everyone bets every round, so nobody sits out.</span></li>
+        <li><b data-i18n="why2.b">Nobody reaches for their phone.</b><span data-i18n="why2.s">Every bet counts every die at the table, so you stay in it until the cups come up.</span></li>
+      </ul>
+      <div class="hero-cta"><a class="btn btn-gold btn-from" href="#offer"><span data-i18n="hero2.cta">Pick your free gift</span><small data-i18n="hero2.from">From €39.95</small></a></div>
+      <ul class="proof">
+        <li><b>7.2</b><span data-i18n="proof.bgg">on BoardGameGeek</span><span data-i18n="proof.ratings">600+ ratings</span></li>
+        <li><b>18,000+</b><span data-i18n="proof.sold">copies sold</span></li>
+        <li><b>69</b><span data-i18n="proof.countries">countries</span></li>
+      </ul>
+    </div>
+    <figure class="plate"><img src="/gift-offer/media/gift-crew.webp" data-i18n-alt="hero2.alt" alt="Two players in pirate hats at the Lying Pirates board, cards in hand" width="1200" height="800" fetchpriority="high"></figure>
   </div>
 </section>
 
-<!-- full photo, nothing cropped -->
-<div class="showcase">
-  <figure>
-    <img src="/gift-offer/media/lp-gift-hero.jpg"
-         data-i18n-alt="showcase.alt"
-         alt="Three players around a table mid-game, board and pieces spread out, one laughing"
-         width="1920" height="1280">
-      </figure>
-</div>
-
-<!-- STATS -->
-<div class="stats">
+<section class="reviews" id="bgg-reviews">
   <div class="wrap">
-    <ul>
-      <li><b>2 to 6</b><span data-i18n="stats.players">players, 14+</span></li>
-      <li><b>40 to 75 min</b><span data-i18n="stats.length">a full game</span></li>
-      <li><b>18,000</b><span data-i18n="stats.sold">copies sold</span></li>
-      <li><b>7.3</b><span data-i18n="stats.bgg">on BoardGameGeek</span></li>
-      <li><b>600+</b><span data-i18n="stats.reviews">community reviews</span></li>
-      <li><b>69+</b><span data-i18n="stats.countries">countries shipped</span></li>
-    </ul>
-  </div>
-</div>
-
-<!-- WHAT IT IS -->
-<section class="game">
-  <div class="wrap">
-    <div class="game-top">
-      <div>
-        <p class="eyebrow" data-i18n="game.eyebrow">In case you forgot</p>
-        <h2 data-i18n="game.title">Liar's dice, but everyone is racing a ship</h2>
+    <div class="rev-head">
+      <div class="bgg">
+        <p class="eyebrow" data-i18n="rev.eyebrow">What players say</p>
+        <p class="score">7.2<small>/ 10</small></p>
+        <div class="stars" role="img" aria-label="7.2 / 10"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" stroke="currentColor" stroke-width="1.4" d="m12 3 2.7 5.6 6.1.8-4.5 4.2 1.1 6.1L12 16.8l-5.4 2.9 1.1-6.1-4.5-4.2 6.1-.8z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" stroke="currentColor" stroke-width="1.4" d="m12 3 2.7 5.6 6.1.8-4.5 4.2 1.1 6.1L12 16.8l-5.4 2.9 1.1-6.1-4.5-4.2 6.1-.8z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" stroke="currentColor" stroke-width="1.4" d="m12 3 2.7 5.6 6.1.8-4.5 4.2 1.1 6.1L12 16.8l-5.4 2.9 1.1-6.1-4.5-4.2 6.1-.8z"/></svg><span style="position:relative;display:block;width:22px;height:22px"><svg style="position:absolute;inset:0" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.4" d="m12 3 2.7 5.6 6.1.8-4.5 4.2 1.1 6.1L12 16.8l-5.4 2.9 1.1-6.1-4.5-4.2 6.1-.8z"/></svg><svg style="position:absolute;inset:0;clip-path:inset(0 50% 0 0)" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" stroke="currentColor" stroke-width="1.4" d="m12 3 2.7 5.6 6.1.8-4.5 4.2 1.1 6.1L12 16.8l-5.4 2.9 1.1-6.1-4.5-4.2 6.1-.8z"/></svg></span><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.4" d="m12 3 2.7 5.6 6.1.8-4.5 4.2 1.1 6.1L12 16.8l-5.4 2.9 1.1-6.1-4.5-4.2 6.1-.8z"/></svg></div>
+        <p data-i18n="rev.line">BoardGameGeek community rating, 600+ ratings.</p>
+        <a class="textlink" href="https://boardgamegeek.com/boardgame/345967/lying-pirates-the-race-for-the-pirate-throne" target="_blank" rel="noopener" data-i18n="rev.bggLink">Every review on BoardGameGeek</a>
       </div>
-      <figure>
-        <img src="/gift-offer/media/lp-gift-howto.jpg"
-             data-i18n-alt="game.alt"
-             alt="A branded bamboo cup lifted to reveal five dice on the board"
-             width="1280" height="853" loading="lazy">
-        <figcaption data-i18n="game.caption">Lift the cup and find out who was telling the truth.</figcaption>
-      </figure>
+      <div class="rev-intro">
+        <h2 class="h2" data-i18n="reviews.title">Community reviews</h2>
+        <p class="lead" data-i18n="reviews.note">Unedited, with the scores their authors gave them. Trimmed for length where marked.</p>
+      </div>
+    </div>
+    <!-- Quotes are what named people wrote, so they are never translated. -->
+    <div class="quotes" tabindex="0">
+<figure class="q-card"><p class="q-score">9<span>/10</span></p><blockquote>…easy to pick up the rules and flow, and everyone is busy playing the game on each persons turn</blockquote><figcaption><span class="q-av" aria-hidden="true">J</span><span class="q-who"><b>jetter1</b><small data-i18n="country.us">United States</small></span><span class="q-src">BoardGameGeek</span></figcaption></figure>
+<figure class="q-card"><p class="q-score">9<span>/10</span></p><blockquote>Fun game. … ways for players to catch up even if well behind… keeps all players engaged.</blockquote><figcaption><span class="q-av" aria-hidden="true">S</span><span class="q-who"><b>SergeantMojo</b><small data-i18n="country.us">United States</small></span><span class="q-src">BoardGameGeek</span></figcaption></figure>
+<figure class="q-card"><p class="q-score">10<span>/10</span></p><blockquote>I absolutely love this game! Especially at 6 players. Lots of laughs and fun every time we play. I&#x27;ve yet to play it with someone who hasn&#x27;t had a great time.</blockquote><figcaption><span class="q-av" aria-hidden="true">K</span><span class="q-who"><b>King_Apparatus</b><small data-i18n="country.us">United States</small></span><span class="q-src">BoardGameGeek</span></figcaption></figure>
+<figure class="q-card"><p class="q-score">9<span>/10</span></p><blockquote>Easy to play, fun to play, and the modular board keeps it fresh game after game. Would highly recommend.</blockquote><figcaption><span class="q-av" aria-hidden="true">M</span><span class="q-who"><b>MyFrogMan</b><small data-i18n="country.ca">Canada</small></span><span class="q-src">BoardGameGeek</span></figcaption></figure>
+<figure class="q-card"><p class="q-score">10<span>/10</span></p><blockquote>Pirate theme, easy to learn, easy to teach and bring to the table, even with non boardgamers. The artwork is 10/10,  AMAZING.</blockquote><figcaption><span class="q-av" aria-hidden="true">L</span><span class="q-who"><b>LydiaAthanasiadou</b></span><span class="q-src">BoardGameGeek</span></figcaption></figure>
+<figure class="q-card"><p class="q-score">9<span>/10</span></p><blockquote>Having a great time playing this one. Quality production throughout. It captures the tavern feel perfectly.</blockquote><figcaption><span class="q-av" aria-hidden="true">B</span><span class="q-who"><b>Bazmondo123</b><small data-i18n="country.gb">United Kingdom</small></span><span class="q-src">BoardGameGeek</span></figcaption></figure>
+    </div>
+    <div class="fb-block fb">
+      <h3 class="fb-title" data-i18n="rev.fbTitle">Overheard in the comments.</h3>
+      <p class="lead" data-i18n="rev.fbNote">Real comments on our Facebook posts, copied word for word. Last names shortened.</p>
+      <ul class="fb-track" tabindex="0">
+<li class="fbt"><div class="fbc"><span class="av t1" aria-hidden="true">BS</span><div class="bub"><b>Björn S.</b><p>Amazing game, got the big box and it was worth the money! The quality is felt and add depth to the feeling of the game.
+
+We had a lot of fun playing 4 players and also as 2 with the 3rd ghost player.
+
+If you are on the fence of buying the game &quot;walk the plank&quot; and just do it! 👍🏴‍☠️☠️</p></div></div></li>
+<li class="fbt"><div class="fbc"><span class="av t2" aria-hidden="true">GJ</span><div class="bub"><b>Guppy J.</b><p>I generally found early on that one or two players in our group when I pulled this game out looked very sceptical about it. By the end they were always being ruthless, engaged and demanding a rematch. Just a great fun game.
+Always a crowd pleaser now 🙂</p></div></div></li>
+<li class="fbt"><div class="fbc"><span class="av t3" aria-hidden="true">CY</span><div class="bub"><b>Cameron Y.</b><p>This game as always goes down well. I dont usually buy games friends of mine own but I backed this moments after playing it. Glad to have a copy.</p></div></div><div class="fbc"><span class="av" aria-hidden="true">SM</span><div class="bub"><b>Stefano M.</b><p>Directly from pirates of the Caribbean!! Finally the Dutchman&#x27;s game is actually a game</p></div></div></li>
+<li class="fbt"><div class="fbc"><span class="av t1" aria-hidden="true">DR</span><div class="bub"><b>Daniel R.</b><p>Its alot fun</p></div></div></li>
+<li class="fbt"><div class="fbc"><span class="av t2" aria-hidden="true">DS</span><div class="bub"><b>David S.</b><p>This game is fab.
+You can make it as simple or as madly complicated as you like with all the optional elements and expansions.</p></div></div></li>
+<li class="fbt"><div class="fbc"><span class="av t3" aria-hidden="true">JB</span><div class="bub"><b>Jimmy B.</b><p>Got this on kickstarter. I like the added mechanics of the board and cards. Also, you choose characters to play as, and that give you added abilities. There are beautiful dice that also impart more interesting mechanics and the whole thing is very thematic.
+  If you are a person who doesn&#x27;t like a more in depth game then just play liars dice. I play this game often with my family and we all agree that it is one of our favorites.</p></div></div></li>
+<li class="fbt"><div class="fbc"><span class="av" aria-hidden="true">PM</span><div class="bub"><b>Piccolo M.</b><p>So they took Liars dice and enhanced it. That’s pretty cool.</p></div></div><div class="fbc"><span class="av t1" aria-hidden="true">OP</span><div class="bub"><b>Olliver P.</b><p>Really nice game. Everyone I&#x27;ve played this with likes it</p></div></div><div class="fbc"><span class="av t2" aria-hidden="true">AE</span><div class="bub"><b>Alan E.</b><p>Have it. Love it.</p></div></div></li>
+      </ul>
+      <p class="fb-hint" aria-hidden="true"><span data-i18n="rev.swipe">Swipe for more</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 12h15M13 6l6 6-6 6"/></svg></p>
+    </div>
+    <div class="press">
+<figure><span class="logo"><img src="https://cdn.shopify.com/s/files/1/0792/3217/2379/files/nedladdning.jpg?v=1776435608&amp;width=160" alt="Unfiltered Gamer" width="80" height="80" loading="lazy"></span><div><blockquote>This game is one of the best bluffing games I&#x27;ve played in years. The quality is top notch and it&#x27;s a game I&#x27;m never getting rid of!</blockquote><figcaption><b>Michael</b>, Unfiltered Gamer</figcaption></div></figure>
+<figure><span class="logo"><img src="https://cdn.shopify.com/s/files/1/0792/3217/2379/files/nedladdning_1.jpg?v=1776435639&amp;width=160" alt="Meeple University" width="80" height="80" loading="lazy"></span><div><blockquote>Deception, dice and daring, a fun take of Liar&#x27;s Dice mix with racing and running away from the Kraken.</blockquote><figcaption><b>Stella</b>, Meeple University</figcaption></div></figure>
+<figure><span class="logo"><img src="https://cdn.shopify.com/s/files/1/0792/3217/2379/files/DiceTowerLogo.png?v=1764332880&amp;width=160" alt="The Dice Tower" width="80" height="80" loading="lazy"></span><div><blockquote>Cities of Greed doesn&#x27;t just add to Lying Pirates. It sharpens it. More strategy. More betrayal. And somehow, even more reason to question your friends... or at least switch seats next time.</blockquote><figcaption><b>Mark</b>, The Dice Tower</figcaption></div></figure>
     </div>
   </div>
 </section>
 
-<!-- HOW TO PLAY - reused from the main landing page -->
 <section class="how" id="how-to-play">
   <div class="wrap">
-    <p class="eyebrow" data-i18n="how.eyebrow">Quick to learn</p>
-    <h2 data-i18n="how.title">How to play</h2>
-    <p class="how-sub" data-i18n="how.sub">Three phases per round. There is a how-to-play video for each one.</p>
-    <div class="how-cards">
-      <article class="how-card">
-        <video src="https://www.nordicpirates.com/cdn/shop/videos/c/vp/3cf0f069d1b348af98cb66b0020f57cc/3cf0f069d1b348af98cb66b0020f57cc.SD-480p-1.5Mbps-80560920.mp4?v=0"
-               muted autoplay loop playsinline preload="metadata" width="640" height="360"
-               data-i18n-aria-label="how.1.aria"
-               aria-label="Betting phase, dice hidden under a cup"></video>
-        <div class="how-body">
-          <span class="how-n">01</span>
-          <span class="how-phase" data-i18n="how.1.phase">Betting phase</span>
-          <h3 data-i18n="how.1.title">Bluff your crew</h3>
-          <p data-i18n="how.1.body">Roll your crew dice hidden under the bamboo cup, then bluff on totals. Raise the stakes,
-          lock a number, or call someone a liar, at exactly the right moment.</p>
-        </div>
-      </article>
-      <article class="how-card">
-        <video src="https://www.nordicpirates.com/cdn/shop/videos/c/vp/1dfdb441cf284fa6ae350d9f8b4ae3e5/1dfdb441cf284fa6ae350d9f8b4ae3e5.SD-480p-1.5Mbps-80560922.mp4?v=0"
-               muted autoplay loop playsinline preload="metadata" width="640" height="360"
-               data-i18n-aria-label="how.2.aria"
-               aria-label="Sail phase, ships moving across the board"></video>
-        <div class="how-body">
-          <span class="how-n">02</span>
-          <span class="how-phase" data-i18n="how.2.phase">Sail phase</span>
-          <h3 data-i18n="how.2.title">Move the fleet</h3>
-          <p data-i18n="how.2.body">The round winner rolls the sail die and advances ships 1 to 2 tiles. Battle dice decide
-          naval combat. Tile events keep every move unpredictable.</p>
-        </div>
-      </article>
-      <article class="how-card">
-        <video src="https://www.nordicpirates.com/cdn/shop/videos/c/vp/2979ea32e6bd4ec0bbdba4679be2b186/2979ea32e6bd4ec0bbdba4679be2b186.SD-480p-1.5Mbps-80560919.mp4?v=0"
-               muted autoplay loop playsinline preload="metadata" width="640" height="360"
-               data-i18n-aria-label="how.3.aria"
-               aria-label="Action phase, playing cards"></video>
-        <div class="how-body">
-          <span class="how-n">03</span>
-          <span class="how-phase" data-i18n="how.3.phase">Action phase</span>
-          <h3 data-i18n="how.3.title">Play your hand</h3>
-          <p data-i18n="how.3.body">Deploy Gold or Silver cards to attack rivals, defend your position, or upgrade your
-          crew. Every card changes the board.</p>
-        </div>
-      </article>
+    <div class="how-head">
+      <p class="eyebrow" data-i18n="how.eyebrow">Quick to learn</p>
+      <h2 class="h2" data-i18n="how.title">How to play</h2>
+      <p class="lead" data-i18n="how2.sub">Each round runs Betting, then Sail, then Action. Same order every time, so new players are bluffing by round two.</p>
+    </div>
+    <div class="phases">
+<article class="ph"><video src="https://www.nordicpirates.com/cdn/shop/videos/c/vp/3cf0f069d1b348af98cb66b0020f57cc/3cf0f069d1b348af98cb66b0020f57cc.SD-480p-1.5Mbps-80560920.mp4?v=0" muted autoplay loop playsinline preload="metadata" width="640" height="360" data-i18n-aria-label="how.1.aria" aria-label="Betting phase, dice hidden under a cup"></video><div class="ph-body"><span class="ph-n">01 · <span data-i18n="how.1.phase">Betting phase</span></span><h3 data-i18n="how.1.title">Bluff your crew</h3><p data-i18n="how.1.body">Roll your crew dice hidden under your cup, then bluff on totals. Raise the stakes, lock a number, or call someone a liar, at exactly the right moment.</p></div></article>
+<article class="ph"><video src="https://www.nordicpirates.com/cdn/shop/videos/c/vp/1dfdb441cf284fa6ae350d9f8b4ae3e5/1dfdb441cf284fa6ae350d9f8b4ae3e5.SD-480p-1.5Mbps-80560922.mp4?v=0" muted autoplay loop playsinline preload="metadata" width="640" height="360" data-i18n-aria-label="how.2.aria" aria-label="Sail phase, ships moving across the board"></video><div class="ph-body"><span class="ph-n">02 · <span data-i18n="how.2.phase">Sail phase</span></span><h3 data-i18n="how.2.title">Move the fleet</h3><p data-i18n="how.2.body">The round winner rolls the sail die and advances ships 1 to 2 tiles. Battle dice decide naval combat. Tile events keep every move unpredictable.</p></div></article>
+<article class="ph"><video src="https://www.nordicpirates.com/cdn/shop/videos/c/vp/2979ea32e6bd4ec0bbdba4679be2b186/2979ea32e6bd4ec0bbdba4679be2b186.SD-480p-1.5Mbps-80560919.mp4?v=0" muted autoplay loop playsinline preload="metadata" width="640" height="360" data-i18n-aria-label="how.3.aria" aria-label="Action phase, playing cards"></video><div class="ph-body"><span class="ph-n">03 · <span data-i18n="how.3.phase">Action phase</span></span><h3 data-i18n="how.3.title">Play your hand</h3><p data-i18n="how.3.body">Deploy Gold or Silver cards to attack rivals, defend your position, or upgrade your crew. Every card changes the board.</p></div></article>
+    </div>
+    <div class="mu">
+      <a class="mu-play" href="https://www.youtube.com/watch?v=vWlyuVQ92TQ" target="_blank" rel="noopener" data-i18n-aria-label="mu.aria" aria-label="Play the how-to-play video by Meeple University on YouTube">
+        <img src="/gift-offer/media/mu-thumb.webp" alt="" width="960" height="540" loading="lazy">
+        <span class="mu-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5l13 7.5-13 7.5z"/></svg></span>
+      </a>
+      <div class="mu-copy"><p class="eyebrow" data-i18n="mu.eyebrow">Prefer to watch?</p><h3 data-i18n="mu.title">How-to-play video by Meeple University</h3><p data-i18n="mu.body">A walkthrough of the base game and the Cities of Greed expansion, in English. Opens on YouTube.</p></div>
     </div>
   </div>
 </section>
 
-<!-- REVIEWS -->
-<!-- The quotes themselves are NOT translated, and they carry no data-i18n key. They
-     are what named people wrote on BoardGameGeek, the line above them says they are
-     unedited, and a translated quote is no longer the sentence its author wrote.
-     Everything around them, that line included, switches with the page. -->
-<section class="voices" id="bgg-reviews">
+<section class="ig" id="creators">
   <div class="wrap">
-    <div class="voices-head">
-      <div>
-        <p class="eyebrow" data-i18n="reviews.eyebrow">From the people who own it</p>
-        <div class="bgg-badge"><b>7.3</b><span><span data-i18n="reviews.bgg.on">on BoardGameGeek</span><br><span data-i18n="reviews.bgg.from">from 600+ community reviews</span></span></div>
-        <h2 data-i18n="reviews.title">Community reviews</h2>
-      </div>
-      <p data-i18n="reviews.note">Unedited, with the scores their authors gave them. Trimmed for length where marked.</p>
-    </div>
-    <div class="quotes">
-      <figure class="q-card">
-        <p class="q-score">10<span>/10</span></p>
-        <blockquote>I absolutely love this game! Especially at 6 players. Lots of laughs and fun every time we play. I've yet to play it with someone who hasn't had a great time.</blockquote>
-        <figcaption><span class="q-av">K</span><span class="q-who"><b>King_Apparatus</b><small data-i18n="country.us">United States</small></span>
-        <span class="q-src">BoardGameGeek</span></figcaption>
-      </figure>
-      <figure class="q-card">
-        <p class="q-score">10<span>/10</span></p>
-        <blockquote>Nordic Pirates did a great job: the game is really funny together with friends and has many nice tools like metal coins, bamboo cups and 3D printed ships! &hellip; Strongly suggested!</blockquote>
-        <figcaption><span class="q-av">A</span><span class="q-who"><b>AuGold</b><small data-i18n="country.it">Italy</small></span>
-        <span class="q-src">BoardGameGeek</span></figcaption>
-      </figure>
-      <figure class="q-card">
-        <p class="q-score">10<span>/10</span></p>
-        <blockquote>Pirate theme, easy to learn, easy to teach and bring to the table, even with non boardgamers. The artwork is 10/10, AMAZING. And the components&hellip;.come on!!!!</blockquote>
-        <figcaption><span class="q-av">L</span><span class="q-who"><b>LydiaAthanasiadou</b></span>
-        <span class="q-src">BoardGameGeek</span></figcaption>
-      </figure>
-      <figure class="q-card">
-        <p class="q-score">9<span>/10</span></p>
-        <blockquote>Having a great time playing this one. Quality production throughout. It captures the tavern feel perfectly.</blockquote>
-        <figcaption><span class="q-av">B</span><span class="q-who"><b>Bazmondo123</b><small data-i18n="country.gb">United Kingdom</small></span>
-        <span class="q-src">BoardGameGeek</span></figcaption>
-      </figure>
-            <figure class="q-card">
-        <p class="q-score">10<span>/10</span></p>
-        <blockquote>Excellent game with a lot of replay value!</blockquote>
-        <figcaption><span class="q-av">O</span><span class="q-who"><b>Owmybrains</b><small data-i18n="country.se">Sweden</small></span>
-        <span class="q-src">BoardGameGeek</span></figcaption>
-      </figure>
-      <figure class="q-card">
-        <p class="q-score">10<span>/10</span></p>
-        <blockquote>&ldquo;Lying Pirates&rdquo; is a treasure trove of fun and deception, perfectly blending strategic gameplay with the thrill of bluffing. &hellip; The rules are easy to grasp, making it a great choice for both newcomers and seasoned gamers.</blockquote>
-        <figcaption><span class="q-av">S</span><span class="q-who"><b>Sharrku</b><small data-i18n="country.de">Germany</small></span>
-        <span class="q-src">BoardGameGeek</span></figcaption>
-      </figure>
-    </div>
-  </div>
-</section>
-
-<!-- SHIPPING -->
-<section class="ship">
-  <div class="wrap">
-    <p class="eyebrow center" data-i18n="ship.eyebrow">Shipping</p>
-    <h2 class="ship-title" data-i18n="ship.title">Sent from a warehouse near you</h2>
-    <p class="ship-lede" data-i18n="ship.lede">We hold stock locally, so your box does not cross an ocean to reach you and you are not charged import fees on arrival.</p>
-    <ul class="ship-grid">
-      <li><b>EU</b><span data-i18n="ship.eu">European warehouse</span></li>
-      <li><b>UK</b><span data-i18n="ship.uk">UK warehouse</span></li>
-      <li><b>US</b><span data-i18n="ship.us">United States warehouse</span></li>
-      <li><b>AUS</b><span data-i18n="ship.aus">Australian warehouse</span></li>
+    <div class="ig-head"><p class="eyebrow" data-i18n="ig.eyebrow">#lyingpirates on Instagram</p><h2 class="h2" data-i18n="ig.title">Tables around the world.</h2></div>
+    <ul class="ig-track">
+<li><a href="https://www.instagram.com/reel/Ddo_BBkANYM/" target="_blank" rel="noopener nofollow"><span class="vid"><img src="https://cdn.shopify.com/s/files/1/0792/3217/2379/files/ugc-lyingpirates-Ddo_BBkANYM.jpg?v=1790676604" alt="#lyingpirates video by @boardiacs" width="180" height="226" loading="lazy"></span><span>@boardiacs</span></a></li>
+<li><a href="https://www.instagram.com/reel/Dbd5YeGR4ec/" target="_blank" rel="noopener nofollow"><span class="vid"><img src="https://cdn.shopify.com/s/files/1/0792/3217/2379/files/ugc-lyingpirates-Dbd5YeGR4ec.jpg?v=1790676608" alt="#lyingpirates video by @spielgefluester.lounge" width="180" height="226" loading="lazy"></span><span>@spielgefluester.lounge</span></a></li>
+<li><a href="https://www.instagram.com/p/Da-B39-AIwU/" target="_blank" rel="noopener nofollow"><span class="pic"><img src="https://cdn.shopify.com/s/files/1/0792/3217/2379/files/ugc-lyingpirates-Da-B39-AIwU.jpg?v=1790676649" alt="#lyingpirates photo by @boardwithyou" width="180" height="226" loading="lazy"></span><span>@boardwithyou</span></a></li>
+<li><a href="https://www.instagram.com/p/DanVRVfNExU/" target="_blank" rel="noopener nofollow"><span class="pic"><img src="https://cdn.shopify.com/s/files/1/0792/3217/2379/files/ugc-lyingpirates-DanVRVfNExU.jpg?v=1790676490" alt="#lyingpirates photo by @g.amerg.eek" width="180" height="226" loading="lazy"></span><span>@g.amerg.eek</span></a></li>
+<li><a href="https://www.instagram.com/p/DZHsXbLsV3t/" target="_blank" rel="noopener nofollow"><span class="pic"><img src="https://cdn.shopify.com/s/files/1/0792/3217/2379/files/ugc-lyingpirates-DZHsXbLsV3t.jpg?v=1790676653" alt="#lyingpirates photo by @boardgameswithcouple" width="180" height="226" loading="lazy"></span><span>@boardgameswithcouple</span></a></li>
+<li><a href="https://www.instagram.com/p/DZApVj7Du2K/" target="_blank" rel="noopener nofollow"><span class="pic"><img src="https://cdn.shopify.com/s/files/1/0792/3217/2379/files/ugc-lyingpirates-DZApVj7Du2K.jpg?v=1790676502" alt="#lyingpirates photo by @fiulin.vigevano" width="180" height="226" loading="lazy"></span><span>@fiulin.vigevano</span></a></li>
+<li><a href="https://www.instagram.com/reel/DYw6wu4oxKv/" target="_blank" rel="noopener nofollow"><span class="vid"><img src="https://cdn.shopify.com/s/files/1/0792/3217/2379/files/ugc-lyingpirates-DYw6wu4oxKv.jpg?v=1790676514" alt="#lyingpirates video by @dadi_in_torretta" width="180" height="226" loading="lazy"></span><span>@dadi_in_torretta</span></a></li>
+<li><a href="https://www.instagram.com/p/DWmFVIpkfYE" target="_blank" rel="noopener nofollow"><span class="vid"><img src="https://cdn.shopify.com/s/files/1/0792/3217/2379/files/ugc-lyingpirates-DWmFVIpkfYE.jpg?v=1790676530" alt="#lyingpirates video by @ncboardgaming" width="180" height="226" loading="lazy"></span><span>@ncboardgaming</span></a></li>
+<li><a href="https://www.instagram.com/p/DVaqcWIEhre" target="_blank" rel="noopener nofollow"><span class="vid"><img src="https://cdn.shopify.com/s/files/1/0792/3217/2379/files/ugc-lyingpirates-DVaqcWIEhre.jpg?v=1790676543" alt="#lyingpirates video by @boardlings__aus_board_gamers" width="180" height="226" loading="lazy"></span><span>@boardlings__aus_board_gamers</span></a></li>
+<li><a href="https://www.instagram.com/p/DUYizGrjGfN/" target="_blank" rel="noopener nofollow"><span class="pic"><img src="https://cdn.shopify.com/s/files/1/0792/3217/2379/files/ugc-lyingpirates-DUYizGrjGfN.jpg?v=1790676551" alt="#lyingpirates photo by @meet.the.meeple.people" width="180" height="226" loading="lazy"></span><span>@meet.the.meeple.people</span></a></li>
     </ul>
   </div>
 </section>
-<!-- OFFER -->
+
 <section class="offer" id="offer">
   <div class="wrap">
-    <div class="offer-head">
-      <h2 data-i18n="offer.title">Choose your gift</h2>
-    </div>
-
+    <div class="offer-head"><p class="eyebrow" data-i18n="hero2.eyebrow">A gift for coming back</p><h2 data-i18n="offer.title">Choose your gift</h2></div>
     <form id="giftform">
-      <!-- Two products, one column each, and every column reads the same way down: the
-           box, the language it is printed in, the product name, one line under the name,
-           then the gifts. On the left the two gifts are the choice. On the right the whole
-           column is the choice and both gifts come with it.
-
-           The language is chosen on the box and the gift after it, so the edition tiles
-           sit inside each column above the gifts. There is still exactly ONE set of
-           edition radios on this page, in the left column: the tiles on the right are a
-           second <label for> pointing at those same five controls, so the two columns
-           cannot end up holding two answers to one question. -->
       <fieldset>
         <legend class="vh" data-i18n="offer.legend">Choose one</legend>
         <div class="prods">
 
           <div class="prod">
             <span class="prod-shot">
-              <!-- No alt text on purpose. The product is named in words directly under
-                   this picture, and the five copy tables carry no Base Game alt line. An
-                   English sentence written in here would be the one string on the page
-                   that never translates, so the name below does the naming instead. -->
               <img src="https://www.nordicpirates.com/cdn/shop/files/Skarmavbild2026-03-31kl.12.48.38.png?v=1774954139&width=900"
                    alt="" loading="lazy" width="900" height="783">
             </span>
 
-            <!-- The one set of edition radios, named for a screen reader with the words
-                 that used to be the picker's legend. The edition names themselves stay in
-                 their own language: "Deutsch" is what is printed on the box, in every
-                 language this page is read in. -->
             <span class="eds" role="group"
                   data-i18n-aria-label="offer.edition.legend" aria-label="Which edition should we ship">
               <span class="ed"><input type="radio" name="edition" id="ed-en" value="en" checked><label for="ed-en">English</label></span>
@@ -304,10 +205,6 @@ if (location.hostname === "nordicpirates.com") {
                 </label>
               </div>
 
-              <!-- The joining mark between the two gifts. A mark and not a word: the
-                   layout asks for a small joining word here, and none of the five copy
-                   tables has one. Writing an English "or" into a page that speaks five
-                   languages would put my guess in front of four sets of visitors. -->
               <span class="gift-join" aria-hidden="true"></span>
 
               <div class="pick">
@@ -335,19 +232,13 @@ if (location.hostname === "nordicpirates.com") {
             </p>
 
             <p class="en-warn">
-              <strong data-i18n="offer.warn.head">One thing before you go further.</strong>
-              <span data-i18n="offer.warn.body">The English Base Game ships from our stock in the US, Britain and
-              Australia. Inside the EU we cannot send that edition yet, so if that is where you are, we will offer
-              you the BIG BOX in English with both gifts, or the same game in your own language. Your code stands
-              either way.</span>
+              <strong data-i18n="offer.warn.head">English edition: pre-order.</strong>
+              <span data-i18n="offer.warn.body">Outside the US, Canada, Australia and New Zealand, the English Base Game is the new print on pre-order, delivered in about 14-21 days. Your gift ships with it.</span>
             </p>
           </div>
 
           <div class="pick prod prod--big">
             <input type="radio" name="offer" id="o-bigbox" value="bigbox-both">
-            <!-- Two labels for the one radio, with the edition tiles between them. The
-                 whole column answers a click that way, and the tiles still do not sit
-                 inside a label that answers a different question. -->
             <label for="o-bigbox" class="prod-face">
               <span class="prod-shot">
                 <img src="https://www.nordicpirates.com/cdn/shop/files/Bigbox_Lyingpirates.webp?v=1778497083&width=900"
@@ -356,9 +247,6 @@ if (location.hostname === "nordicpirates.com") {
               </span>
             </label>
 
-            <!-- The same five editions, driving the same five radios in the column beside
-                 this one. Named for a screen reader with the key the picker's own legend
-                 uses, because it is the same question asked in the same words. -->
             <span class="eds eds--mirror" role="group"
                   data-i18n-aria-label="offer.edition.legend" aria-label="Which edition should we ship">
               <span class="ed"><label for="ed-en">English</label></span>
@@ -402,8 +290,6 @@ if (location.hostname === "nordicpirates.com") {
         </div>
       </fieldset>
 
-      <!-- Honeypot. Never shown, never filled by a person, and deliberately not
-           translated: the only readers are bots, and they read the markup. -->
       <div class="hp" aria-hidden="true">
         <label for="company">Company</label>
         <input type="text" id="company" name="company" tabindex="-1" autocomplete="off">
@@ -412,17 +298,11 @@ if (location.hostname === "nordicpirates.com") {
   </div>
 </section>
 
-
-<!-- EMAIL + CODE + ADD TO CART -->
 <section class="claim">
   <div class="wrap">
     <div class="claim-grid">
       <div>
         <p class="eyebrow" data-i18n="claim.eyebrow">Last step</p>
-        <!-- Names the gift they just picked, so the click that brought them here is
-             visibly the one being answered. Rewritten by the page whenever the picker
-             or the language changes, which is why it carries no data-i18n key of its
-             own; this is the wording for the box that starts out chosen. -->
         <h2 id="claim-title">One step and the Kraken is yours</h2>
         <p class="claim-lead" data-i18n="claim.lead">Tell us where to send your code. It appears on this screen straight
         away, so you are not waiting on an email to get going.</p>
@@ -440,9 +320,6 @@ if (location.hostname === "nordicpirates.com") {
       </div>
 
       <div>
-        <!-- Filled in by /gift-offer/page.js once the form comes back. The resting
-             line is a real element rather than CSS content, so it translates with
-             everything else; the first rendered state replaces it. -->
         <div class="states" id="result" aria-live="polite">
           <p class="states-idle" data-i18n="claim.idle">Your code appears here once you send the form.</p>
         </div>
@@ -451,29 +328,41 @@ if (location.hostname === "nordicpirates.com") {
   </div>
 </section>
 
-<!-- The one control that follows the visitor down the page. It starts hidden, shows
-     as soon as the picker is off screen, and changes its job once a box has been
-     chosen: before, it goes to the picker; after, it goes to the email field. The
-     page writes the label for whichever of those two it currently is, in whichever
-     language the page is in, so it carries no data-i18n key of its own. -->
+<section class="shipping" id="shipping">
+  <div class="wrap">
+    <div class="ship-head"><p class="eyebrow" data-i18n="ship.eyebrow">Shipping</p><h2 class="h2" data-i18n="ship.title">Sent from a warehouse near you</h2><p data-i18n="ship.lede">We hold stock locally, so your box does not cross an ocean to reach you and you are not charged import fees on arrival.</p></div>
+    <ul class="ship-grid">
+      <li><b>EU</b><span data-i18n="ship.eu">European warehouse</span></li>
+      <li><b>UK</b><span data-i18n="ship.uk">UK warehouse</span></li>
+      <li><b>US</b><span data-i18n="ship.us">United States warehouse</span></li>
+      <li><b>AUS</b><span data-i18n="ship.aus">Australian warehouse</span></li>
+    </ul>
+  </div>
+</section>
+
+<section class="final">
+  <div class="wrap">
+    <figure class="plate"><img src="/gift-offer/media/gift-final.webp" data-i18n-alt="final.alt" alt="A player in a pirate hat, grinning over his goblet" width="800" height="1152" loading="lazy"></figure>
+    <div class="copy">
+      <p class="eyebrow" data-i18n="final.eyebrow">Not your ordinary game night</p>
+      <h2 data-i18n="final.title">Somebody at your table is lying right now.</h2>
+      <p data-i18n="final.body">Find out who. Your gift is still waiting.</p>
+      <div><a class="btn btn-gold" href="#offer"><span data-i18n="hero2.cta">Pick your free gift</span></a></div>
+    </div>
+  </div>
+</section>
+</main>
+
 <button type="button" class="gift-jump" id="gift-jump" hidden>Pick your gift!</button>
 
 <footer>
   <div class="wrap">
-    <span>Nordic Pirates, Stockholm</span>
-    <span data-i18n="footer.tagline">Lying Pirates is a bluffing dice game for 2 to 6 liars.</span>
-    <span><a href="https://www.nordicpirates.com/policies/privacy-policy" rel="noopener" data-i18n="footer.privacy">Privacy</a></span>
+    <img src="/gift-offer/media/logo-np.png" alt="Nordic Pirates" width="520" height="133" loading="lazy">
+    <p data-i18n="footer.tagline">Lying Pirates is a bluffing dice game for 2 to 6 liars.</p>
+    <p>Nordic Pirates, Stockholm · <a href="https://www.nordicpirates.com/policies/privacy-policy" rel="noopener" data-i18n="footer.privacy">Privacy</a></p>
   </div>
 </footer>
 
-<!-- Result states. One per outcome the claim endpoint can produce, plus the two
-     screens the blocked visitor chooses between. The page translates each one as it
-     clones it, so a state that is already on screen when the language changes is
-     rebuilt in the new language. -->
-
-<!-- Every code reveal uses this one: the plain success, and both endings of the
-     blocked choice. The heading, the line under it and the cart button all get
-     rewritten by the page for whichever code is being handed over. -->
 <template id="tpl-code">
   <div class="state">
     <h3 data-title data-i18n="state.code.title">Welcome aboard</h3>
@@ -481,16 +370,10 @@ if (location.hostname === "nordicpirates.com") {
     <div class="code"><span data-code></span><button type="button" data-copy data-i18n="state.copy">Copy</button></div>
     <a class="btn btn--cart" data-cart data-i18n="state.cart.label">Put the game and the gift in my cart</a>
     <p class="state-note" data-cart-note data-i18n="state.cart.note">One click loads both items.</p>
-    <!-- Only when the page could not load the cart for them. The page unhides it and
-         hangs the same attempt off it; otherwise it is taken out entirely. -->
     <button type="button" class="btn btn--retry" data-retry hidden data-i18n="state.retry">Try my cart again</button>
   </div>
 </template>
 
-<!-- Between the code and the cart. The code the endpoint just issued is ON this
-     screen, because the page is about to move the visitor somewhere else on their
-     behalf and they should have read their code before it does. It holds still long
-     enough to be read rather than the screen vanishing under them. -->
 <template id="tpl-sending">
   <div class="state state--sending">
     <h3 data-i18n="state.sending.title">Code unlocked</h3>
@@ -499,10 +382,6 @@ if (location.hostname === "nordicpirates.com") {
   </div>
 </template>
 
-<!-- Blocked. No code on screen yet: the visitor picks which of the two carts they
-     want first, and the code that fits it follows. Copy is Polly's, verbatim. The
-     two choices are a genuine trade, language against package, so neither button
-     is styled as the lesser one and neither promises a delivery time. -->
 <template id="tpl-blocked">
   <div class="state state--blocked">
     <h3 data-i18n="state.blocked.title">That edition will not reach you</h3>
@@ -522,9 +401,6 @@ if (location.hostname === "nordicpirates.com") {
   </div>
 </template>
 
-<!-- Choice one opens this: the same Base Game in a language we can actually send.
-     The buttons are built from the edition picker further up the page, so there is
-     one list of editions on this page and not two. -->
 <template id="tpl-editions">
   <div class="state state--blocked">
     <h3 data-i18n="state.editions.title">Which edition should we ship</h3>
@@ -544,6 +420,10 @@ if (location.hostname === "nordicpirates.com") {
   </div>
 </template>
 
+<script>
+// The sticky gift button stands down while the hero's own button is on screen.
+(function(){var b=document.querySelector('.hero-cta');if(!b||!('IntersectionObserver' in window))return;new IntersectionObserver(function(e){document.body.classList.toggle('hero-in',e[0].isIntersecting)}).observe(b);})();
+</script>
 <script type="module" src="/gift-offer/page.js"></script>
 </body>
 </html>

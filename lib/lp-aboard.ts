@@ -6,7 +6,7 @@ import { join } from "path";
 import { randomBytes } from "crypto";
 import { SIGNUPS_FILE, appendSignup } from "./lp-aboard-store.ts";
 import { configuredSecret, secretMatches } from "./secret.ts";
-import { EDITIONS, OFFERS, buildCartUrl } from "./offer.js";
+import { EDITIONS, OFFERS, buildCartUrl, enBasePreorder } from "./offer.js";
 
 const REPO_DIR = join(import.meta.dir, "..");
 
@@ -21,16 +21,8 @@ const CODE_BY_OFFER: Record<string, string> = {
   "bigbox-both": CODE_BIGBOX,
 };
 
-// The EU warehouse has no English Base Game, so we do not sell that one edition into
-// the EU and the EEA. Britain is NOT here: Zatu in Norwich stocks it. docs/GIFT-EMAIL.md
-const EUROPE = new Set([
-  "AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR", "DE", "GR", "HU",
-  "IE", "IT", "LV", "LT", "LU", "MT", "NL", "PL", "PT", "RO", "SK", "SI", "ES",
-  "SE", // EU 27
-  "IS", "LI", "NO", // rest of the EEA
-]);
-
-const BLOCKED_OFFERS = new Set(["base-kraken", "base-coins"]);
+// The two offers whose box is a Base Game, the only box with a pre-order print.
+const BASE_OFFERS = new Set(["base-kraken", "base-coins"]);
 
 // The hop's own words for "we do not know where this is", never read as a country.
 // docs/GIFT-OFFER-CLAIM.md
@@ -65,6 +57,15 @@ const ASSETS: Record<string, { file: string; type: string; cache: string }> = {
   "/lp/aboard/media/lp-hero-1080.mp4": { file: "public/lp-aboard-media/lp-hero-1080.mp4", type: "video/mp4", cache: CACHE_MEDIA },
   "/lp/aboard/media/lp-gift-hero.jpg": { file: "public/lp-aboard-media/lp-gift-hero.jpg", type: "image/jpeg", cache: CACHE_MEDIA },
   "/lp/aboard/media/lp-gift-howto.jpg": { file: "public/lp-aboard-media/lp-gift-howto.jpg", type: "image/jpeg", cache: CACHE_MEDIA },
+  "/lp/aboard/media/asul-400.woff2": { file: "public/lp-aboard-media/asul-400.woff2", type: "font/woff2", cache: CACHE_MEDIA },
+  "/lp/aboard/media/asul-700.woff2": { file: "public/lp-aboard-media/asul-700.woff2", type: "font/woff2", cache: CACHE_MEDIA },
+  "/lp/aboard/media/cinzel.woff2": { file: "public/lp-aboard-media/cinzel.woff2", type: "font/woff2", cache: CACHE_MEDIA },
+  "/lp/aboard/media/base.webp": { file: "public/lp-aboard-media/base.webp", type: "image/webp", cache: CACHE_MEDIA },
+  "/lp/aboard/media/gift-crew.webp": { file: "public/lp-aboard-media/gift-crew.webp", type: "image/webp", cache: CACHE_MEDIA },
+  "/lp/aboard/media/gift-final.webp": { file: "public/lp-aboard-media/gift-final.webp", type: "image/webp", cache: CACHE_MEDIA },
+  "/lp/aboard/media/mu-thumb.webp": { file: "public/lp-aboard-media/mu-thumb.webp", type: "image/webp", cache: CACHE_MEDIA },
+  "/lp/aboard/media/logo-lp.png": { file: "public/lp-aboard-media/logo-lp.png", type: "image/png", cache: CACHE_MEDIA },
+  "/lp/aboard/media/logo-np.png": { file: "public/lp-aboard-media/logo-np.png", type: "image/png", cache: CACHE_MEDIA },
 };
 
 const RATE_LIMIT_MAX = 10;
@@ -306,34 +307,25 @@ export async function handleClaim(req: Request): Promise<Response> {
     return Response.json({ error: `Invalid ${problems.join(", ")}` }, { status: 400 });
   }
 
-  // English Base Game with an unknown country lands on blocked: "we do not know" is not
-  // "yes". Nothing else changes. docs/GIFT-OFFER-CLAIM.md
-  const restricted = edition === "en" && BLOCKED_OFFERS.has(offer);
+  // English Base Game: US stock where lib/offer.js says so, the pre-order print everywhere
+  // else and when the country is unknown, which ships anywhere. docs/GIFT-OFFER-CLAIM.md
+  const englishBase = edition === "en" && BASE_OFFERS.has(offer);
   const countryKnown = !UNPLACEABLE.has(country);
 
-  if (restricted && !countryKnown) {
+  if (englishBase && !countryKnown) {
     // Which kind of unknown, never the header: the two need different fixers.
-    // docs/GIFT-OFFER-CLAIM.md
     console.warn(
       `[lp/aboard] trusted hop could not place this visitor (${country ? "not a country" : "nothing sent"}), ` +
-        "treating the English base game as not shippable: check the Worker forwards x-visitor-country"
+        "selling the English base game as the pre-order print: check the Worker forwards x-visitor-country"
     );
   }
 
-  const blocked = restricted && (!countryKnown || EUROPE.has(country));
-  const state = blocked ? "blocked" : "code";
+  const preorder = englishBase && (!countryKnown || enBasePreorder(country));
+  // Every box ships somewhere now, so every claim gets the code for what it picked.
+  const state = "code";
+  const code = CODE_BY_OFFER[offer];
 
-  // The code issued for what they picked, the one emailed; "your original code" when blocked.
-  const issuedCode = CODE_BY_OFFER[offer];
-
-  // Blocked offers the BIG BOX, which a Base Game code does not fit, so it shows and links
-  // the BIG BOX code. docs/GIFT-OFFER-CLAIM.md
-  const target = blocked
-    ? { offer: "bigbox-both", edition, code: CODE_BIGBOX }
-    : { offer, edition, code: issuedCode };
-
-  // Every submission is stored, blocked too, with both codes since they rotate.
-  // docs/GIFT-OFFER-CLAIM.md, and per state what is emailed: docs/GIFT-EMAIL.md
+  // Every submission is stored. Rows keep shownCode for the emailer: docs/GIFT-EMAIL.md
   const event = newEventId();
   const stored = record(
     {
@@ -343,8 +335,9 @@ export async function handleClaim(req: Request): Promise<Response> {
       edition,
       country: country || null,
       state,
-      code: issuedCode,
-      shownCode: target.code,
+      preorder,
+      code,
+      shownCode: code,
     },
     event
   );
@@ -357,23 +350,16 @@ export async function handleClaim(req: Request): Promise<Response> {
     );
   }
 
-  // code and cartUrl describe the state shown, built from the same module the page uses.
-  // docs/GIFT-OFFER-CLAIM.md
-  const cartUrl = buildCartUrl(target.offer, target.edition, target.code);
+  // Built from the same module the page uses, so link and cart agree. docs/GIFT-OFFER-CLAIM.md
+  const cartUrl = buildCartUrl(offer, edition, code, preorder);
   if (!cartUrl) {
-    console.error(
-      `[lp/aboard] no cart url for offer=${target.offer} edition=${target.edition} - check lib/offer.js`
-    );
+    console.error(`[lp/aboard] no cart url for offer=${offer} edition=${edition} - check lib/offer.js`);
   }
-
-  // A blocked visitor chooses between two carts, so baseCode rides along only then.
-  // docs/GIFT-OFFER-CLAIM.md
-  const baseCode = blocked ? issuedCode : "";
 
   return Response.json({
     state,
-    code: target.code,
-    ...(baseCode ? { baseCode } : {}),
+    code,
+    ...(preorder ? { preorder } : {}),
     ...(cartUrl ? { cartUrl } : {}),
   });
 }

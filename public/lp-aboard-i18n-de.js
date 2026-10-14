@@ -17,42 +17,16 @@ export const DE = {
   "nav.aria.main": "Hauptnavigation",
   "nav.aria.langs": "Sprache und Edition",
   "nav.howToPlay": "Spielablauf",
-  "nav.editions": "Editionen",
   "nav.reviews": "Bewertungen",
   "nav.cta": "Spiel sichern",
 
-  "hero.title": "Ein besseres Angebot als dieses wird es von uns nicht geben.",
-  "hero.lede":
-    "Ein Würfelspiel voller Bluffs. Du belügst die Menschen, die du am liebsten magst, und jagst dann ihre Schiffe auf die Felsen.",
-  "hero.point1": "Such dir unten eine Box aus",
-  "hero.point2": "Wir legen etwas hinein, das wir sonst nicht verschenken",
-  "hero.point3": "Du siehst diese Seite nur, weil du beim ersten Mal nicht gekauft hast",
-  "hero.cta": "Sieh, was gratis dazukommt",
-
-  "showcase.alt":
-    "Drei Spieler mitten im Spiel am Tisch, Brett und Teile ausgebreitet, einer lacht",
-
-  "stats.players": "Spieler, ab 14",
-  "stats.length": "eine ganze Partie",
-  "stats.sold": "verkaufte Exemplare",
-  "stats.bgg": "auf BoardGameGeek",
-  "stats.reviews": "Bewertungen aus der Community",
-  "stats.countries": "belieferte Länder",
-
-  "game.eyebrow": "Falls du es vergessen hast",
-  "game.title": "Lügenwürfeln, nur dass alle ein Schiff ins Rennen schicken",
-  "game.alt":
-    "Ein Bambusbecher mit Logo wird angehoben und gibt fünf Würfel auf dem Brett frei",
-  "game.caption": "Heb den Becher an und finde heraus, wer die Wahrheit gesagt hat.",
-
   "how.eyebrow": "Schnell gelernt",
   "how.title": "So wird gespielt",
-  "how.sub": "Drei Phasen pro Runde. Zu jeder gibt es ein Erklärvideo.",
   "how.1.aria": "Wettphase, Würfel verdeckt unter einem Becher",
   "how.1.phase": "Wettphase",
   "how.1.title": "Bluffe deine Crew",
   "how.1.body":
-    "Würfle deine Crew-Würfel verdeckt unter dem Bambusbecher und bluffe dann über die Summen. Erhöhe den Einsatz, leg dich auf eine Zahl fest oder nenne jemanden einen Lügner, genau im richtigen Moment.",
+    "Würfle deine Crew-Würfel verdeckt unter deinem Becher und bluffe dann über die Summen. Erhöhe den Einsatz, leg dich auf eine Zahl fest oder nenne jemanden einen Lügner, genau im richtigen Moment.",
   "how.2.aria": "Segelphase, Schiffe ziehen über die Landkarte",
   "how.2.phase": "Segelphase",
   "how.2.title": "Bring die Flotte in Fahrt",
@@ -64,17 +38,11 @@ export const DE = {
   "how.3.body":
     "Spiel goldene oder silberne Aktionskarten aus, um Rivalen anzugreifen, deine Position zu verteidigen oder deine Crew aufzuwerten. Jede Karte verändert die Lage auf der Landkarte.",
 
-  "reviews.eyebrow": "Von den Leuten, denen es gehört",
-  "reviews.bgg.on": "auf BoardGameGeek",
-  "reviews.bgg.from": "aus 600+ Bewertungen der Community",
   "reviews.title": "Bewertungen der Community",
   "reviews.note":
     "Unbearbeitet, mit den Wertungen ihrer Verfasser. Wo markiert, aus Platzgründen gekürzt.",
   "country.us": "Vereinigte Staaten",
-  "country.it": "Italien",
   "country.gb": "Vereinigtes Königreich",
-  "country.se": "Schweden",
-  "country.de": "Deutschland",
 
   "ship.eyebrow": "Versand",
   "ship.title": "Aus einem Lager in deiner Nähe",
@@ -109,9 +77,9 @@ export const DE = {
   "offer.stock.body":
     "Wenn er ausverkauft ist, wird aus dieser Wahl das Gold, und wir sagen es hier.",
   "offer.edition.legend": "Welche Edition sollen wir schicken",
-  "offer.warn.head": "Eines noch, bevor du weitergehst.",
+  "offer.warn.head": "Englische Edition: Vorbestellung.",
   "offer.warn.body":
-    "Das englische Grundspiel versenden wir aus unseren Lagern in den USA, Großbritannien und Australien. Innerhalb der EU können wir diese Edition noch nicht verschicken, und falls du dort bist, bieten wir dir die BIG BOX auf Englisch mit beiden Geschenken an oder dasselbe Spiel in deiner Sprache. Dein Code bleibt in jedem Fall deiner.",
+    "Außerhalb der USA, Kanadas, Australiens und Neuseelands ist das englische Grundspiel die neue Auflage zur Vorbestellung, geliefert in etwa 14-21 Tagen. Dein Geschenk kommt in derselben Lieferung.",
 
   "claim.eyebrow": "Letzter Schritt",
   "claim.title.kraken": "Ein Schritt und der Kraken gehört dir",
@@ -188,4 +156,40 @@ export const DE = {
   "error.network":
     "Wir konnten das Schiff nicht erreichen. Prüf deine Verbindung und versuch es noch einmal.",
   "error.template": "Bei uns ist etwas schiefgegangen. Bitte versuch es noch einmal.",
+
+  // The light rebuild (Polly, 2026-10-14). Translations are Polly's and want a native read.
+  "nav.gift": "Dein Geschenk",
+  "hero2.eyebrow": "Ein Geschenk für deine Rückkehr",
+  "hero2.title": "Beim ersten Mal bist du mit leeren Händen gegangen. Hier ist deine zweite Chance!",
+  "hero2.offer": "Grundspiel €39.95, dazu ein Geschenk: der Kraken oder 20 Goldmünzen aus Metall.",
+  "hero2.bigbox": "Die BIG BOX, €124.95, bekommt beides.",
+  "why1.b": "Kein Warten, bis du dran bist.",
+  "why1.s": "Alle wetten in jeder Runde, niemand sitzt daneben.",
+  "why2.b": "Niemand greift zum Handy.",
+  "why2.s": "Jede Wette zählt alle Würfel am Tisch, also bleibst du dabei, bis die Becher hochgehen.",
+  "hero2.cta": "Wähle dein Geschenk",
+  "hero2.from": "Ab €39.95",
+  "proof.bgg": "auf BoardGameGeek",
+  "proof.ratings": "600+ Wertungen",
+  "proof.sold": "verkaufte Exemplare",
+  "proof.countries": "Länder",
+  "rev.eyebrow": "Was Spieler sagen",
+  "rev.line": "Wertung der BoardGameGeek-Community, 600+ Wertungen.",
+  "rev.bggLink": "Alle Bewertungen auf BoardGameGeek",
+  "rev.fbTitle": "Aufgeschnappt in den Kommentaren.",
+  "rev.fbNote": "Echte Kommentare unter unseren Facebook-Beiträgen, wörtlich übernommen. Nachnamen abgekürzt.",
+  "rev.swipe": "Wischen für mehr",
+  "how2.sub": "Jede Runde läuft gleich: Wettphase, Segelphase, Aktionsphase. Neue Spieler bluffen schon in der zweiten Runde.",
+  "mu.eyebrow": "Lieber zuschauen?",
+  "mu.title": "Erklärvideo von Meeple University",
+  "mu.body": "Ein Durchgang durch das Grundspiel und die Erweiterung Cities of Greed, auf Englisch. Öffnet sich auf YouTube.",
+  "mu.aria": "Erklärvideo von Meeple University auf YouTube abspielen",
+  "ig.eyebrow": "#lyingpirates auf Instagram",
+  "ig.title": "Spieltische rund um die Welt.",
+  "final.eyebrow": "Kein gewöhnlicher Spieleabend",
+  "final.title": "Jemand an deinem Tisch lügt gerade.",
+  "final.body": "Finde heraus, wer. Dein Geschenk wartet noch.",
+  "country.ca": "Kanada",
+  "hero2.alt": "Zwei Spieler mit Piratenhüten am Lying-Pirates-Brett, Karten in der Hand",
+  "final.alt": "Ein Spieler mit Piratenhut, der über seinem Kelch grinst",
 };

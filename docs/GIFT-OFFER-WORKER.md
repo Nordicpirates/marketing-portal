@@ -42,7 +42,7 @@ describe the Worker, not the person, so the Worker forwards the real visitor as
 
 Those headers are just headers: anyone who can reach this origin directly can send them.
 Believed unconditionally they would hand an attacker a new identity per request - past the
-rate limit, past the Europe check, and straight into the signup file. So they are believed
+rate limit, past the pre-order country check, and straight into the signup file. So they are believed
 ONLY when the request also carries the shared secret the Worker holds, in
 `x-lp-proxy-secret`. No secret, wrong secret, or no `LP_PROXY_SECRET` configured on this
 side means the forwarded headers are ignored entirely.

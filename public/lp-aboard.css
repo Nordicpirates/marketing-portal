@@ -1,492 +1,311 @@
-/* Gift offer page /gift-offer. Lifted from Polly's approved v20 mockup.
-   Rules for markup this page does not have are gone with it: the review-only
-   flags and states, and the rejoin control, which was dropped because this
-   endpoint cannot prove who owns the address it is given. Everything after
-   "PAGE STATES" is new: the result panel is rendered by JS now instead of
-   sitting in the HTML four times over. */
+/* /gift-offer in the light Q4 look: Old Map palette and type from /lp/Q4, plus the gift picker and claim. */
+@font-face{font-family:"Cinzel";src:url("/gift-offer/media/cinzel.woff2") format("woff2");font-weight:400 900;font-display:swap}
+@font-face{font-family:"Asul";src:url("/gift-offer/media/asul-400.woff2") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Asul";src:url("/gift-offer/media/asul-700.woff2") format("woff2");font-weight:700;font-display:swap}
 
 :root{
---navy:#0d1117;--navy-mid:#141b26;--gold:#c8a96e;--gold-light:#e0c28e;--cream:#f5f0e8;--cream-deep:#ede7d9;--body-text:#3d3d4a;--teal:#7f652a;--teal-deep:#141b26;--teal-soft:#a2803f;
---brass:#c8a96e;--brass-soft:#e0c28e;--red:#9c5f3a;
---dark:#0d1117;--off-white:#f5f0e8;--paper:#fbf9f4;
---ink:#23262f;--muted:#7a7a8a;--line:#e2dbcd;--line-dark:#2a3242;
---pad:clamp(1.25rem,4vw,2.5rem);
---serif:'Cinzel',Georgia,serif;
---sans:'Raleway',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
---mono:'SF Mono',Menlo,Consolas,monospace;
+  --parchment:#EDE4D3; --card:#E0D5C1; --paper:#F4EDE0; --border:#C4B8A4;
+  --ink:#1A1A1A; --navy:#1B3A4B; --gold:#B8963E; --gold-deep:#8C6E28; --sienna:#A0522D; --teal:#2E8B7A; --muted:#6B5D4F;
+  --shadow:58 44 26;
+  --display:"Cinzel",Georgia,serif; --body:"Asul",Georgia,serif;
+  --gutter:20px; --max:1160px; --r:10px;
 }
-*{box-sizing:border-box}
+*,*::before,*::after{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
-body{margin:0;background:var(--off-white);color:var(--ink);font-family:var(--serif);
-line-height:1.6;font-size:clamp(1rem,0.5vw + 0.95rem,1.125rem)}
-img,video{max-width:100%;height:auto;display:block}
-.wrap{max-width:1180px;margin:0 auto;padding:0 var(--pad)}
-section{padding:clamp(3rem,7vw,6rem) 0}
-h1,h2,h3{line-height:1.14;margin:0 0 .6em;font-weight:700;letter-spacing:-.015em}
-.eyebrow{font-family:var(--sans);font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;
-font-weight:600;margin:0 0 1.5rem}
-p{margin:0 0 1.1em}
-.lede{font-size:clamp(1.1rem,1vw + 1rem,1.32rem)}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+body{margin:0;background:var(--parchment);color:var(--ink);font:400 17px/1.6 var(--body);overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.55;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .35 0 0 0 0 .26 0 0 0 0 .14 0 0 0 .08 0'/></filter><rect width='240' height='240' filter='url(%23n)'/></svg>")}
+main,header,footer{position:relative;z-index:1}
+img,video{display:block;max-width:100%;height:auto}
+a{color:var(--navy)}
+h1,h2,h3{font-family:var(--display);font-weight:700;line-height:1.1;margin:0;letter-spacing:.01em;text-wrap:balance}
+p{margin:0}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--navy);outline-offset:3px}
+.wrap{max-width:var(--max);margin-inline:auto;padding-inline:var(--gutter)}
+.eyebrow{font-family:var(--display);font-weight:700;font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--sienna)}
+.lead{color:var(--muted);max-width:36em}
+.h2{font-size:clamp(28px,6.2vw,46px)}
+.vh{position:absolute!important;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+section[id]{scroll-margin-top:72px}
 
-/* HERO - text on dark, then the photo FULL and uncropped */
-.hero{background:radial-gradient(60rem 30rem at 15% 0%,#1a2434,transparent 62%),
-linear-gradient(170deg,#0d1117 0%,var(--dark) 100%);color:#f3f1ec;
-padding:clamp(3rem,6vw,5rem) 0 clamp(1.75rem,3vw,2.5rem)}
-.hero .eyebrow{color:var(--brass-soft)}
-.hero h1{font-size:clamp(2.1rem,5.6vw,4.1rem);color:#fff;max-width:24ch}
-.hero .lede{color:#ded8cc;max-width:52ch}
-.hero-nudge{font-family:var(--sans);font-size:.8rem;color:#9a958c;margin:2rem 0 0;
-padding-left:.9rem;border-left:2px solid rgba(201,164,73,.45)}
-.hero-cta{display:inline-block;margin:2rem 0 0;font-family:var(--sans);font-weight:700;
-font-size:.95rem;background:var(--brass);color:#1a1508;border:1px solid var(--brass);
-padding:.95rem 1.8rem;border-radius:2px;text-decoration:none}
-.hero-cta:hover{background:var(--brass-soft)}
-/* full-bleed, nothing cropped: natural aspect ratio kept */
-.showcase{background:var(--dark);padding:0}
-.showcase img{width:100%;height:auto}
-.showcase figcaption{font-family:var(--sans);font-size:.74rem;color:#8a8f9a;
-padding:.85rem var(--pad);max-width:1180px;margin:0 auto}
-figure{margin:0}
+/* buttons: gold only for the act of buying or claiming, ink for everything else */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:52px;padding:14px 26px;border-radius:8px;font:700 14px/1.2 var(--display);letter-spacing:.14em;text-transform:uppercase;text-decoration:none;border:1px solid transparent;cursor:pointer;text-align:center;transition:transform .15s cubic-bezier(.22,1,.36,1),background-color .2s,color .2s,border-color .2s}
+.btn:active{transform:translateY(1px) scale(.99)}
+.btn-gold,.btn{background:var(--gold);color:var(--ink);border-color:var(--gold-deep)}
+.btn-gold{box-shadow:0 10px 24px rgb(var(--shadow)/.22)}
+.btn-gold:hover,.btn:hover{background:#C4A24A}
+.btn:disabled{opacity:.6;cursor:wait}
+.btn-ink{background:var(--ink);color:var(--parchment);border-color:var(--ink)}
+.btn-ink:hover{background:#2C2620}
+.btn-from{flex-direction:column;gap:3px;padding-block:11px}
+.btn-from small{font:700 13px/1 var(--body);letter-spacing:.02em;text-transform:none}
+.textlink{font-family:var(--display);font-weight:700;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--navy);text-decoration:none;border-bottom:1px solid currentColor;padding-bottom:3px;justify-self:start}
 
-/* STAT STRIP */
-.stats{background:#090c12;border-top:1px solid var(--line-dark);
-border-bottom:1px solid var(--line-dark);padding:1.7rem 0}
-.stats ul{list-style:none;margin:0;padding:0;display:grid;gap:1rem 2rem;
-grid-template-columns:repeat(auto-fit,minmax(135px,1fr));font-family:var(--sans)}
-.stats li{color:#8d8981;font-size:.74rem;letter-spacing:.1em;text-transform:uppercase}
-.stats b{display:block;font-family:var(--serif);font-size:clamp(1.15rem,2vw,1.55rem);
-color:var(--brass-soft);letter-spacing:0;text-transform:none;margin-bottom:.15rem}
+/* header: logo, language chips (they also pick the edition), one ink button */
+.top{position:sticky;top:0;z-index:30;background:var(--parchment);border-bottom:1px solid var(--border)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:60px}
+.top .logo img{height:30px;width:auto}
+.top .wrap > nav{display:none;gap:28px}
+.top .wrap > nav a{font:700 12px var(--display);letter-spacing:.18em;text-transform:uppercase;color:var(--muted);text-decoration:none}
+.top .wrap > nav a:hover{color:var(--ink)}
+.top-r{display:flex;align-items:center;gap:10px}
+.top-cta{display:none}
+.top .btn{min-height:42px;padding:10px 14px;font-size:12px;letter-spacing:.1em;white-space:nowrap}
+.np-langs{display:flex;gap:2px;padding:3px;border:1px solid var(--border);border-radius:8px;background:var(--paper)}
+.np-lang{appearance:none;border:0;background:transparent;min-width:34px;min-height:32px;padding:0 5px;border-radius:6px;font:700 11px/1 var(--display);letter-spacing:.06em;color:var(--muted);cursor:pointer}
+.np-lang.is-on{background:var(--ink);color:var(--parchment)}
+.np-lang:enabled:hover:not(.is-on){color:var(--ink)}
+.np-lang:disabled{opacity:.5;cursor:not-allowed}
 
-/* WHAT IT IS */
-.game{background:var(--off-white)}
-.game .eyebrow{color:var(--teal)}
-.game h2{font-size:clamp(1.7rem,3.6vw,2.7rem);max-width:26ch}
-.game-top{display:grid;gap:clamp(1.75rem,4vw,3.5rem);
-grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:center}
-.game-top img{border-radius:3px;border:1px solid var(--line)}
-.game figcaption{font-family:var(--sans);font-size:.74rem;color:var(--muted);margin-top:.6rem}
+/* hero: the gift, the two reasons, the price and the button share the first phone screen */
+.hero{padding-block:18px 36px}
+.hero .wrap{display:grid;gap:28px;align-items:center}
+.hero-copy{display:grid;gap:14px}
+.hero h1{font-size:clamp(25px,6.8vw,58px);font-weight:900;line-height:1.04}
+.deal-strip{display:grid;gap:8px;padding:10px 14px 12px;background:var(--paper);border:1px solid var(--border);border-radius:var(--r)}
+.ds-pics{display:flex;align-items:center;gap:2px}
+.ds-pics img{width:42px;height:42px;object-fit:contain;mix-blend-mode:multiply}
+.ds-pics img:first-child{width:50px;height:50px}
+.ds-plus{font:700 18px/1 var(--display);color:var(--gold-deep);padding:0 2px}
+.deal-strip p{font-size:14.5px;line-height:1.35;color:var(--muted)}
+.deal-strip b{display:block;color:var(--ink);font-weight:700;font-size:15.5px;margin-bottom:2px}
+.why{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.why li{display:grid;grid-template-columns:24px 1fr;column-gap:10px}
+.why li::before{content:'\2713';grid-row:span 2;width:22px;height:22px;border-radius:50%;background:var(--navy);color:var(--parchment);display:grid;place-items:center;font:700 13px/1 system-ui,sans-serif;margin-top:2px}
+.why b{font-family:var(--display);font-size:16px;line-height:1.2}
+.why span{font-size:14px;line-height:1.3;color:var(--muted)}
+.hero-cta .btn{width:100%}
+.proof{display:grid;grid-template-columns:repeat(3,auto);justify-content:start;column-gap:24px;margin:0;padding:12px 0 0;border-top:1px solid var(--border);list-style:none;font-size:13.5px;line-height:1.3;color:var(--muted)}
+.proof li{display:grid;align-content:start;gap:2px;white-space:nowrap}
+.proof b{font-family:var(--display);color:var(--ink);font-size:19px;line-height:1.1}
+.plate{margin:0;padding:10px;background:var(--paper);border:1px solid var(--border);border-radius:var(--r);box-shadow:0 24px 50px rgb(var(--shadow)/.18)}
+.plate img{width:100%;aspect-ratio:3/2;object-fit:cover;border-radius:4px}
 
-/* HOW TO PLAY - reused copy + reused videos from the main LP */
-.how{background:linear-gradient(172deg,var(--teal-deep),#10161f);color:#efece5}
-.how .eyebrow{color:var(--brass-soft)}
-.how h2{font-size:clamp(1.7rem,3.6vw,2.6rem);color:#fff;margin-bottom:.35em}
-.how-sub{color:#a8a49b;font-family:var(--sans);font-size:.92rem;margin:0 0 clamp(2rem,4vw,3rem)}
-.how-cards{display:grid;gap:1.25rem;grid-template-columns:repeat(auto-fit,minmax(270px,1fr))}
-.how-card{background:rgba(255,255,255,.05);border:1px solid #222a38;border-radius:3px;overflow:hidden}
-.how-card video{width:100%;background:#080b10}
-.how-body{padding:1.3rem 1.4rem 1.5rem}
-.how-n{font-family:var(--sans);font-size:.7rem;letter-spacing:.16em;color:var(--brass-soft);
-font-weight:700;display:block;margin-bottom:.5rem}
-.how-card h3{font-size:1.15rem;color:#fff;margin:0 0 .2rem}
-.how-phase{font-family:var(--sans);font-size:.74rem;color:#c9c3b6;text-transform:uppercase;
-letter-spacing:.1em;display:block;margin-bottom:.7rem}
-.how-card p{font-family:var(--sans);font-size:.9rem;color:#c7c1b6;margin:0}
+/* reviews: BoardGameGeek first, then Facebook, then the reviewers */
+.reviews{padding-block:56px;background:var(--card);border-block:1px solid var(--border)}
+.rev-head{display:grid;gap:22px;align-items:end;margin-bottom:28px}
+.bgg{display:grid;gap:10px;align-content:start}
+.bgg .score{font:900 clamp(64px,16vw,112px)/1 var(--display)}
+.bgg .score small{font-size:.28em;font-weight:400;color:var(--muted);margin-left:6px}
+.bgg p{color:var(--muted)}
+.stars{display:flex;gap:4px;color:var(--gold)}
+.stars svg{width:22px;height:22px;display:block}
+.rev-intro{display:grid;gap:10px;max-width:32em}
+.quotes{list-style:none;display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-inline:var(--gutter);margin:0 calc(var(--gutter)*-1);padding:4px var(--gutter) 12px;scrollbar-width:none}
+.quotes::-webkit-scrollbar{display:none}
+.q-card{flex:0 0 min(84%,340px);scroll-snap-align:start;margin:0;background:var(--paper);border:1px solid var(--border);border-radius:var(--r);padding:20px;display:flex;flex-direction:column;gap:12px;position:relative}
+.q-score{position:absolute;top:16px;right:18px;font:700 22px/1 var(--display);color:var(--gold-deep)}
+.q-score span{font-size:12px;color:var(--muted);font-weight:400}
+.q-card blockquote{margin:0;padding-right:44px;font-size:16px;line-height:1.55}
+.q-card figcaption{display:flex;align-items:center;gap:10px;margin-top:auto;padding-top:12px;border-top:1px solid var(--border)}
+.q-av{flex:none;width:34px;height:34px;border-radius:50%;background:var(--navy);color:var(--parchment);font:700 14px/1 var(--display);display:grid;place-items:center}
+.q-who{display:grid;line-height:1.25}
+.q-who b{font-size:15px}
+.q-who small{font-size:13px;color:var(--muted)}
+.q-src{margin-left:auto;font:700 10px var(--display);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.fb-block{margin-top:48px;display:grid;gap:10px}
+.fb-title{font-size:clamp(22px,5vw,32px)}
+.fb{--fbf:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+.fb-track{list-style:none;margin:10px calc(var(--gutter)*-1) 0;padding:4px var(--gutter) 14px;display:flex;gap:14px;align-items:flex-start;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-inline:var(--gutter);scrollbar-width:none}
+.fb-track::-webkit-scrollbar{display:none}
+.fbt{flex:0 0 min(86%,360px);scroll-snap-align:start;display:grid;gap:14px;align-content:start;background:#fff;border-radius:12px;padding:16px 14px;box-shadow:0 1px 2px rgb(var(--shadow)/.14),0 12px 28px rgb(var(--shadow)/.10);font-family:var(--fbf);color:#050505}
+.fbc{display:grid;grid-template-columns:36px minmax(0,1fr);gap:8px;align-items:start}
+.av{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font:600 14px var(--fbf);color:#fff;background:#5B7083}
+.av.t1{background:#B0664B}.av.t2{background:#5E8C61}.av.t3{background:#7A6A9B}
+.bub{justify-self:start;max-width:100%;background:#F0F2F5;border-radius:18px;padding:8px 12px 9px;display:grid;gap:1px}
+.bub b{font:600 13px/1.25 var(--fbf)}
+.bub p{font:400 15px/1.34 var(--fbf);white-space:pre-line;overflow-wrap:anywhere}
+.fb-hint{display:inline-flex;align-items:center;gap:8px;font:700 12px var(--display);letter-spacing:.18em;text-transform:uppercase}
+.fb-hint svg{width:22px;height:22px;animation:nudge 1.6s cubic-bezier(.22,1,.36,1) infinite}
+@keyframes nudge{0%,100%{transform:translateX(0)}50%{transform:translateX(7px)}}
+.press{margin-top:40px;display:grid;border-top:1px solid var(--border)}
+.press figure{margin:0;padding:22px 0;border-bottom:1px solid var(--border);display:grid;grid-template-columns:52px 1fr;gap:16px;align-items:start}
+.press .logo{width:52px;height:52px;border-radius:50%;background:var(--paper);border:1px solid var(--border);overflow:hidden;display:grid;place-items:center}
+.press .logo img{width:100%;height:100%;object-fit:contain;padding:6px}
+.press blockquote{margin:0;font-size:16.5px;line-height:1.5}
+.press figcaption{margin-top:8px;font:700 12px var(--display);letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.press figcaption b{color:var(--ink)}
 
-/* REVIEWS */
-.voices{background:var(--paper)}
-.voices .eyebrow{color:var(--teal)}
-.voices h2{font-size:clamp(1.6rem,3.4vw,2.5rem);max-width:24ch}
-.voices-head{display:grid;gap:1.5rem 3rem;grid-template-columns:minmax(0,1fr) minmax(0,.8fr);
-align-items:end;margin-bottom:clamp(2rem,4vw,3rem)}
-.voices-head p{color:var(--muted);font-family:var(--sans);font-size:.88rem;margin:0}
-.bgg-badge{display:flex;align-items:baseline;gap:.7rem;margin:0 0 1rem}
-.bgg-badge b{font-size:clamp(2.4rem,5vw,3.4rem);color:var(--teal);line-height:1}
-.bgg-badge span{font-family:var(--sans);font-size:.82rem;color:var(--muted)}
-.quotes{display:grid;gap:1.15rem;grid-template-columns:repeat(auto-fit,minmax(255px,1fr))}
-blockquote{margin:0;background:#fff;border:1px solid var(--line);
-border-radius:3px;padding:1.4rem 1.5rem;display:flex;flex-direction:column}
-blockquote p{font-size:.98rem;margin:0 0 1.1rem;flex:1}
-blockquote footer{font-family:var(--sans);font-size:.78rem;color:var(--muted);
-display:flex;justify-content:space-between;gap:1rem;align-items:baseline}
-blockquote cite{font-style:normal;color:var(--ink);font-weight:600}
-.score{color:var(--teal);font-weight:700;white-space:nowrap}
+/* how to play */
+.how{padding-block:56px}
+.how-head{display:grid;gap:12px;margin-bottom:28px;max-width:44em}
+.phases{display:grid;gap:18px}
+.ph{background:var(--paper);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;display:grid}
+.ph video{width:100%;aspect-ratio:16/9;object-fit:cover;background:var(--card)}
+.ph-body{padding:18px 18px 20px;display:grid;gap:6px}
+.ph-n{font:700 12px var(--display);letter-spacing:.24em;text-transform:uppercase;color:var(--sienna)}
+.ph h3{font-size:22px}
+.ph p{color:var(--muted);font-size:15.5px}
+.mu{display:grid;gap:18px;margin-top:40px;align-items:center}
+.mu-play{position:relative;display:block;border-radius:var(--r);overflow:hidden;border:1px solid var(--border);background:var(--ink);aspect-ratio:16/9}
+.mu-play img{width:100%;height:100%;object-fit:cover;transition:transform .5s cubic-bezier(.22,1,.36,1)}
+.mu-play:hover img{transform:scale(1.03)}
+.mu-icon{position:absolute;left:50%;top:50%;width:68px;height:68px;margin:-34px 0 0 -34px;border-radius:50%;background:var(--ink);color:var(--parchment);display:grid;place-items:center;box-shadow:0 10px 28px rgb(var(--shadow)/.45)}
+.mu-icon svg{width:24px;height:24px;margin-left:4px}
+.mu-copy{display:grid;gap:8px;max-width:30em}
+.mu-copy h3{font-size:clamp(21px,5vw,27px)}
+.mu-copy p:not(.eyebrow){color:var(--muted)}
 
-/* OFFER
-   Two product columns: the Base Game with a choice of gift inside it, and the BIG BOX,
-   which is one choice carrying both gifts. Each column is a card that reads the same way
-   down, and the whole of the BIG BOX card is one control. */
-.offer{background:var(--off-white)}
-.offer-head{max-width:36ch;margin-bottom:clamp(2rem,4vw,3.25rem)}
-.offer-head .eyebrow{color:var(--teal)}
-.offer-head h2{font-size:clamp(1.7rem,3.6vw,2.7rem)}
-form{margin:0}
-fieldset{border:0;padding:0;margin:0}
-/* Said to a screen reader, never drawn: the form's legend names a group whose heading is
-   already on screen in words. */
-.vh{position:absolute!important;width:1px;height:1px;margin:-1px;padding:0;
-overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
+/* creators on Instagram */
+.ig{padding-block:56px;background:var(--card);border-block:1px solid var(--border)}
+.ig-head{display:grid;gap:10px;margin-bottom:22px}
+.ig-track{list-style:none;display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-inline:var(--gutter);margin:0 calc(var(--gutter)*-1);padding:0 var(--gutter) 8px;scrollbar-width:none}
+.ig-track::-webkit-scrollbar{display:none}
+.ig-track li{flex:0 0 150px;scroll-snap-align:start}
+.ig-track a{display:grid;gap:6px;text-decoration:none;color:var(--ink)}
+.ig-track img{width:150px;height:190px;object-fit:cover;border-radius:8px;border:1px solid var(--border);background:var(--paper)}
+.ig-track span{font-size:13px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ig-track .vid{position:relative}
+.ig-track .vid::after{content:"";position:absolute;right:8px;top:8px;width:0;height:0;border-style:solid;border-width:7px 0 7px 11px;border-color:transparent transparent transparent #fff;filter:drop-shadow(0 1px 2px rgb(0 0 0/.5))}
 
-.prods{display:grid;gap:1.15rem;grid-template-columns:repeat(2,minmax(0,1fr));align-items:start}
-.prod{position:relative;background:var(--paper);border:1px solid var(--line);border-radius:3px;
-padding:1.4rem 1.4rem 1.6rem;text-align:center;transition:border-color .18s,box-shadow .18s}
-.prod--big{background:linear-gradient(150deg,#141b26,#0d1117);border-color:#212936;color:#f1eee8}
-/* The whole BIG BOX column is the control, so the card itself carries the hover and the
-   chosen edge. The state line inside it says the same thing in words, which is what a
-   browser without :has() is left with. */
-.prod--big:has(input:enabled):hover{border-color:var(--brass)}
-.prod--big:has(input:checked){border-color:var(--brass);
-box-shadow:0 0 0 1px var(--brass),0 18px 40px -24px rgba(0,0,0,.7)}
-.prod--big:has(input:focus-visible){outline:3px solid var(--brass-soft);outline-offset:3px}
-/* The card's own two labels, not the whole card: the edition strip between them is held
-   by its own rule and would be dimmed twice over. */
-.prod--big:has(input:disabled) .prod-face,
-.prod--big:has(input:disabled) .prod-body{opacity:.5;cursor:not-allowed}
-
-/* Product shots get room: contained, never cropped. */
-.prod-shot{display:grid;place-items:center;background:#fff;border:1px solid var(--line);
-border-radius:2px;overflow:hidden;padding:1rem;min-height:210px}
-.prod-shot img{max-height:230px;width:auto;object-fit:contain}
-.prod--big .prod-shot{border-color:#242c3a}
-.prod-name{display:block;font-family:var(--serif);font-size:clamp(1.2rem,2.2vw,1.55rem);
-font-weight:700;letter-spacing:.02em;margin:1.05rem 0 .2rem}
-.prod-line{display:block;font-family:var(--sans);font-size:.86rem;color:var(--muted);
-margin:0 0 1.15rem}
-.prod--big .prod-name{color:#fff}
-.prod--big .prod-line{color:var(--brass-soft)}
-
-/* The gifts inside a column, side by side with the joining mark between them. */
-.gifts{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:.8rem;
-align-items:stretch}
-/* Level with the middle of the two pictures beside it, not with the middle of the whole
-   tile: the tiles carry a name and a description under the picture and the mark belongs
-   to the pictures. Both kinds of tile start with the same border and padding above the
-   picture, so one offset is right in both columns. */
-.gift-join{align-self:start;margin-top:calc(3.85rem + 1px);
-width:.4rem;height:.4rem;border-radius:50%;background:var(--brass)}
-.gift{display:block;border:1px solid transparent;padding:.55rem .55rem .7rem}
-.gift-shot{display:grid;place-items:center;background:#fff;border:1px solid var(--line);
-border-radius:2px;height:7rem;overflow:hidden;padding:.5rem;margin:0 0 .55rem}
-/* The picture's own ceiling, in the same unit as the box around it rather than as a
-   percentage of it: a percentage against a padded box lets a square picture out of the
-   bottom of it, and these pictures are square. Both numbers move together. */
-.gift-shot img{max-height:6rem;max-width:100%;width:auto;object-fit:contain}
-.gift-name{display:block;font-family:var(--sans);font-size:.86rem;font-weight:600}
-.prod--big .gift-shot{border-color:#242c3a}
-
-/* A gift the visitor can choose. The label is the card here, because inside the left
-   column there are two of them and only one is chosen. */
+/* the gift picker: two cards, the Base Game with a choice of gift and the BIG BOX with both */
+.offer{padding-block:56px}
+.offer-head{display:grid;gap:10px;margin-bottom:24px}
+.offer-head h2{font-size:clamp(28px,6.2vw,46px)}
+#giftform fieldset{border:0;margin:0;padding:0;min-width:0}
+.prods{display:grid;gap:18px;align-items:start}
+.prod{position:relative;background:var(--paper);border:1px solid var(--border);border-radius:var(--r);padding:18px;text-align:center}
+.prod--big{border-color:var(--gold-deep);box-shadow:0 24px 54px rgb(var(--shadow)/.18)}
+.prod--big:has(input:checked){box-shadow:0 0 0 2px var(--gold),0 24px 54px rgb(var(--shadow)/.18)}
+.prod--big:has(input:focus-visible){outline:2px solid var(--navy);outline-offset:3px}
+.prod--big:has(input:disabled) .prod-face,.prod--big:has(input:disabled) .prod-body{opacity:.5;cursor:not-allowed}
+.prod-face,.prod-body{display:block;cursor:pointer}
+.prod-shot{display:grid;place-items:center;background:var(--parchment);border:1px solid var(--border);border-radius:8px;overflow:hidden;padding:14px;min-height:190px}
+.prod-shot img{max-height:200px;width:auto;object-fit:contain}
+.prod-name{display:block;font:700 26px/1.1 var(--display);margin:16px 0 4px}
+.prod-line{display:block;font-size:14px;color:var(--muted);margin:0 0 14px}
+.gifts{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:8px;align-items:stretch}
+.gift-join{align-self:center;width:8px;height:8px;background:var(--gold);transform:rotate(45deg)}
+.gift{display:block;padding:8px}
+.gift-shot{display:grid;place-items:center;background:#fff;border:1px solid var(--border);border-radius:6px;height:96px;overflow:hidden;padding:6px;margin:0 0 8px}
+.gift-shot img{max-height:82px;max-width:100%;width:auto;object-fit:contain}
+.gift-name{display:block;font:700 13px var(--display);letter-spacing:.06em}
 .pick{position:relative}
 .pick input{position:absolute;opacity:0;width:1px;height:1px}
-/* A grid rather than a block, so the two gifts beside each other line their prices up
-   with each other however many lines their names and their descriptions take. */
-.gifts .pick label{display:grid;grid-template-rows:auto auto 1fr auto;height:100%;
-border:1px solid transparent;border-radius:3px;
-padding:.55rem .55rem .7rem;cursor:pointer;transition:border-color .18s,background .18s}
-.gifts .pick input:enabled + label:hover{border-color:var(--teal-soft);background:#fff}
-.gifts .pick input:checked + label{border-color:var(--brass);background:rgba(200,169,110,.12)}
-.gifts .pick input:focus-visible + label{outline:3px solid var(--teal-soft);outline-offset:3px}
-/* Held while a claim is in flight and while the cart is being built, alongside the
-   edition radios and the submit button: the gift that was posted is the gift going in
-   the cart, so it may not move under the visitor. The chosen one keeps its brass edge,
-   dimmed, so what is being bought stays legible while it cannot be changed. */
+.gifts .pick label{display:grid;grid-template-rows:auto auto 1fr auto;height:100%;border:1px solid var(--border);border-radius:8px;background:var(--parchment);padding:10px;cursor:pointer;transition:border-color .18s,background-color .18s}
+.gifts .pick input:enabled + label:hover{border-color:var(--gold-deep)}
+.gifts .pick input:checked + label{border-color:var(--gold-deep);background:rgb(184 150 62/.16);box-shadow:inset 0 0 0 1px var(--gold-deep)}
+.gifts .pick input:focus-visible + label{outline:2px solid var(--navy);outline-offset:3px}
 .gifts .pick input:disabled + label{opacity:.5;cursor:not-allowed}
-
-.pick-title{display:block;font-size:.98rem;font-weight:700;margin:0 0 .3rem}
-.pick-what{display:block;font-family:var(--sans);font-size:.8rem;line-height:1.5;
-color:var(--muted);margin:0 0 .7rem}
-.pick-foot{display:block;font-family:var(--sans);border-top:1px solid var(--line);
-padding-top:.6rem}
-.pick-price{display:block;font-size:.8rem;color:var(--muted)}
-.pick-price b{color:var(--ink);font-size:.92rem}
-.pick-state{display:block;font-size:.7rem;letter-spacing:.13em;text-transform:uppercase;
-font-weight:600;color:#b5ad9b;margin-top:.35rem}
+.pick-title{display:block;font:700 15px/1.25 var(--display);margin:0 0 4px}
+.pick-what{display:block;font-size:13.5px;line-height:1.45;color:var(--muted);margin:0 0 10px}
+.pick-foot{display:block;border-top:1px solid var(--border);padding-top:8px}
+.pick-price{display:block;font-size:14px;color:var(--muted)}
+.pick-price b{display:block;color:var(--sienna);font-size:14px}
+.pick-state{display:block;font:700 11px var(--display);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-top:6px}
 .s-on{display:none}
 .pick input:checked ~ label .s-off{display:none}
 .pick input:checked ~ label .s-on{display:inline}
-.pick input:checked ~ label .pick-state{color:var(--brass)}
-.prod--big .pick-title{display:block;font-size:clamp(1.05rem,1.6vw,1.2rem);color:#fff;
-margin:1.15rem 0 .35rem}
-.prod--big .pick-what{color:#a8a49b;font-size:.84rem}
-.prod--big .pick-foot{border-top-color:#242c3a}
-.prod--big .pick-price{color:#a8a49b}
-.prod--big .pick-price b{color:#fff}
-
-.stock-note{font-family:var(--sans);font-size:.8rem;color:var(--red);
-margin:1.4rem 0 0;display:flex;gap:.55rem;align-items:baseline;flex-wrap:wrap;
-justify-content:center;text-align:left}
-.stock-note span{color:var(--muted)}
-
-/* The edition tiles. One set of radios, two strips of labels: the strip in the BIG BOX
-   column points at the same five controls as the strip in the Base Game column. */
-.eds{display:flex;justify-content:center;gap:.4rem;flex-wrap:wrap;margin:1rem 0 0}
+.pick input:checked ~ label .pick-state{color:var(--gold-deep)}
+.prod--big .pick-title{font-size:19px;margin:14px 0 6px}
+.prod--big .gifts{max-width:300px;margin-inline:auto}
+.eds{display:flex;justify-content:center;gap:6px;flex-wrap:wrap;margin:14px 0 0}
 .ed{position:relative}
-/* Fixed rather than merely off screen. A label in the right hand column moves a radio
-   that lives in the left hand one, and a browser scrolls a control it focuses into view,
-   which would drag the visitor to the other box for choosing a language. Fixed, the
-   radio is already in view wherever the page is, so nothing moves under them. */
 .ed input{position:fixed;top:0;left:0;width:1px;height:1px;opacity:0;pointer-events:none}
-.ed label{display:block;font-family:var(--sans);font-size:.8rem;font-weight:600;
-border:1px solid var(--line);background:var(--paper);color:var(--ink);
-padding:.42rem .72rem;border-radius:2px;cursor:pointer;transition:border-color .18s}
-.eds--mirror .ed label{background:rgba(255,255,255,.05);border-color:#2a3242;color:#d9d4c9}
-.ed label:hover{border-color:var(--teal-soft)}
-.eds--mirror .ed label:hover{border-color:var(--brass)}
-/* The chosen edition, in both strips at once. Brass because it has to read on the pale
-   card and on the dark one. The sibling rule under it is the same answer for a browser
-   with no :has(), which reaches the strip the radios themselves live in. */
-#giftform:has(#ed-en:checked) label[for="ed-en"],
-#giftform:has(#ed-de:checked) label[for="ed-de"],
-#giftform:has(#ed-fr:checked) label[for="ed-fr"],
-#giftform:has(#ed-es:checked) label[for="ed-es"],
-#giftform:has(#ed-it:checked) label[for="ed-it"],
-.ed input:checked + label{background:var(--brass);color:#1a1508;border-color:var(--brass)}
-.ed input:focus-visible + label{outline:3px solid var(--teal-soft);outline-offset:2px}
-/* Held while a claim is in flight and while the cart is being built: the edition that
-   was posted is the one going in the cart, so it may not move under the visitor. The
-   one that is chosen keeps its colour, dimmed, so what is being shipped stays legible.
-   Same treatment as the submit button beside it, which is disabled in the same breath.
-   Both strips, because a label whose radio is disabled does nothing when it is pressed
-   and has to look like it. */
-.ed input:disabled + label,
-#giftform:has(input[name="edition"]:disabled) .ed label{opacity:.5;cursor:not-allowed}
-/* honest pre-submit warning: English Base Game is deliberately not sold in the EU.
-   CSS-only via :has(). If :has() is unsupported it stays hidden and the server still answers honestly. */
-.en-warn{display:none;font-family:var(--sans);font-size:.86rem;line-height:1.55;text-align:left;
-color:#6a5214;background:#fdf8ec;border:1px solid #e8dcb4;border-left:3px solid var(--brass);
-border-radius:2px;padding:1rem 1.2rem;margin:1.4rem 0 0}
-.en-warn strong{color:#4a380a}
-#giftform:has(#ed-en:checked):has(#o-kraken:checked) .en-warn,
-#giftform:has(#ed-en:checked):has(#o-coins:checked) .en-warn{display:block}
+.ed label{display:block;font:700 12px var(--body);border:1px solid var(--border);background:var(--parchment);padding:7px 10px;border-radius:6px;cursor:pointer}
+.ed label:hover{border-color:var(--ink)}
+#giftform:has(#ed-en:checked) label[for="ed-en"],#giftform:has(#ed-de:checked) label[for="ed-de"],#giftform:has(#ed-fr:checked) label[for="ed-fr"],
+#giftform:has(#ed-es:checked) label[for="ed-es"],#giftform:has(#ed-it:checked) label[for="ed-it"],.ed input:checked + label{background:var(--ink);color:var(--parchment);border-color:var(--ink)}
+.ed input:focus-visible + label{outline:2px solid var(--navy);outline-offset:2px}
+.ed input:disabled + label,#giftform:has(input[name="edition"]:disabled) .ed label{opacity:.5;cursor:not-allowed}
+.stock-note{font-size:14px;color:var(--sienna);margin:14px 0 0;text-align:left}
+.stock-note span{color:var(--muted)}
+.en-warn{display:none;font-size:14.5px;line-height:1.5;text-align:left;margin-top:14px;padding:12px 14px;border:1px solid var(--sienna);border-radius:8px;background:var(--parchment)}
+.en-warn strong{color:var(--sienna)}
+html:not([data-en-base="stock"]) #giftform:has(#ed-en:checked):has(#o-kraken:checked) .en-warn,html:not([data-en-base="stock"]) #giftform:has(#ed-en:checked):has(#o-coins:checked) .en-warn{display:block}
 
-/* NO SALES */
-.creed{background:linear-gradient(172deg,var(--dark),#0e1420);color:#e8eef0;
-border-top:1px solid var(--line-dark);border-bottom:1px solid var(--line-dark)}
-.creed-grid{display:grid;gap:clamp(1.75rem,4vw,4rem);
-grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);align-items:start}
-.creed h2{font-size:clamp(1.6rem,3.2vw,2.4rem);color:#fff;margin:0}
-.creed p{color:#aebcc4;margin:0 0 1.1em;max-width:54ch}
-.creed p:last-child{margin-bottom:0}
-.creed .eyebrow{color:var(--brass-soft)}
+/* email, code, cart */
+.claim{padding-block:56px;background:var(--card);border-block:1px solid var(--border)}
+.claim-grid{display:grid;gap:28px;align-items:start}
+.claim h2{font-size:clamp(26px,5.6vw,40px);margin-top:10px}
+.claim-lead{color:var(--muted);margin-top:10px;max-width:40em}
+.field{display:grid;gap:8px;margin-top:20px}
+.field label{font:700 11px var(--display);letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+.field input{font:400 17px var(--body);min-height:52px;padding:12px 14px;border:1px solid var(--border);border-radius:8px;background:var(--paper);width:100%}
+.field input:focus{outline:2px solid var(--navy);outline-offset:1px}
+.claim-go{margin-top:14px}
+.claim-go .btn{width:100%}
+.consent{font-size:14px;color:var(--muted);margin-top:14px;line-height:1.5}
+.fine{font-size:14px;color:var(--muted);margin-top:10px}
+.states{display:grid;gap:14px}
+.states-idle{padding:18px;border:1px dashed var(--border);border-radius:var(--r);color:var(--muted);font-size:15px}
+.state{border:1px solid var(--border);background:var(--paper);padding:20px;border-radius:var(--r);display:grid;gap:12px}
+.state--blocked,.state--error{border-color:var(--sienna)}
+.state h3{font-size:21px}
+.state p{font-size:15.5px;color:var(--muted)}
+.code{font:700 clamp(18px,4.6vw,22px)/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.09em;background:var(--parchment);border:1px dashed var(--gold-deep);padding:12px 14px;border-radius:8px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.code button{font:700 11px var(--display);letter-spacing:.14em;text-transform:uppercase;background:none;border:1px solid var(--ink);padding:8px 10px;border-radius:6px;cursor:pointer}
+.btn--cart,.btn--retry{width:100%}
+.btn--retry{background:var(--ink);color:var(--parchment);border-color:var(--ink)}
+.state-note{font-size:14px;color:var(--muted)}
+.choices{display:grid;gap:10px}
+.choice{appearance:none;text-align:left;display:grid;gap:3px;padding:14px;border:1px solid var(--ink);border-radius:8px;background:var(--parchment);cursor:pointer}
+.choice b{font:700 15px var(--display)}
+.choice span{font-size:14.5px;color:var(--muted)}
+.choice:hover{background:var(--card)}
+.choice-back{appearance:none;border:0;background:none;padding:0;color:var(--navy);text-decoration:underline;cursor:pointer}
 
-/* EMAIL + CODE + CART */
-.claim{background:var(--paper)}
-.claim-grid{display:grid;gap:clamp(2rem,5vw,4rem);
-grid-template-columns:minmax(0,1fr) minmax(0,.95fr);align-items:start}
-.claim h2{font-size:clamp(1.6rem,3.2vw,2.3rem)}
-.claim .eyebrow{color:var(--teal)}
-.claim-lead{max-width:46ch}
-.claim-go{margin:1.25rem 0 0}
-.field{display:grid;gap:.7rem;margin:1.75rem 0 0}
-.field label{font-family:var(--sans);font-size:.78rem;letter-spacing:.13em;
-text-transform:uppercase;color:var(--muted);font-weight:600}
-.field input{font-family:var(--sans);font-size:1rem;padding:.95rem 1.05rem;
-border:1px solid var(--line);border-radius:2px;background:#fff;color:var(--ink);width:100%}
-.field input:focus{outline:3px solid var(--teal-soft);outline-offset:1px;border-color:var(--teal)}
-.btn{display:block;text-align:center;font-family:var(--sans);font-weight:700;font-size:.95rem;
-background:var(--gold);color:#1a1508;border:1px solid var(--gold);
-padding:1rem 1.9rem;border-radius:2px;cursor:pointer;transition:background .18s;width:100%;
-text-decoration:none}
-.btn:hover{background:var(--gold-light)}
-.btn--cart{background:var(--brass);border-color:var(--brass);color:#1a1508;margin-top:1rem}
-.btn--cart:hover{background:var(--brass-soft)}
-.fine{font-family:var(--sans);font-size:.78rem;color:var(--muted);margin:1rem 0 0}
-.consent{font-family:var(--sans);font-size:.8rem;color:var(--muted);margin:1.1rem 0 0;line-height:1.55}
-.consent a{color:var(--teal);text-decoration:underline;text-underline-offset:2px}
-.states{display:grid;gap:1.1rem}
-.state{border:1px solid var(--line);border-left:3px solid var(--teal);
-background:#fff;padding:1.35rem 1.5rem;border-radius:2px}
-.state--blocked{border-left-color:var(--red)}
-.state h3{font-size:1.05rem;margin:0 0 .4rem}
-.state p{font-family:var(--sans);font-size:.9rem;color:var(--muted);margin:0 0 1rem}
-.code{font-family:var(--mono);font-size:clamp(1.05rem,2.2vw,1.35rem);font-weight:700;
-letter-spacing:.09em;background:var(--off-white);border:1px dashed var(--line);
-padding:.85rem 1.1rem;border-radius:2px;display:flex;justify-content:space-between;
-align-items:center;gap:1rem}
-.code button{font-family:var(--sans);font-size:.7rem;letter-spacing:.11em;text-transform:uppercase;
-font-weight:700;background:none;border:1px solid var(--line);color:var(--teal);
-padding:.42rem .7rem;border-radius:2px;cursor:pointer}
-.state-note{font-family:var(--sans);font-size:.76rem;color:var(--muted);margin:.85rem 0 0}
+/* shipping */
+.shipping{padding-block:56px}
+.ship-head{display:grid;gap:10px;margin-bottom:22px;max-width:40em}
+.ship-head p:not(.eyebrow){color:var(--muted)}
+.ship-grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--border)}
+.ship-grid li{display:grid;gap:2px;padding:16px 12px 16px 0;border-bottom:1px solid var(--border)}
+.ship-grid b{font:700 20px var(--display)}
+.ship-grid span{font-size:14px;color:var(--muted)}
 
-footer{background:var(--dark);color:#8a8f9a;padding:2.75rem 0;
-font-family:var(--sans);font-size:.82rem;border-top:1px solid var(--line-dark)}
-footer .wrap{display:flex;gap:1rem;justify-content:space-between;flex-wrap:wrap}
-footer a{color:#9fb0b0}
+/* final */
+.final{padding-block:56px;background:var(--card);border-top:1px solid var(--border)}
+.final .wrap{display:grid;gap:28px;align-items:center}
+.final .plate img{aspect-ratio:4/5;object-fit:cover}
+.final h2{font-size:clamp(30px,7vw,52px)}
+.final p{color:var(--muted)}
+.final .copy{display:grid;gap:16px}
 
-@media (max-width:860px){
-.game-top,.creed-grid,.claim-grid,.voices-head{grid-template-columns:1fr}
-/* The two products stack, one whole column after the other. */
-.prods{grid-template-columns:1fr}
+footer{padding-block:44px calc(110px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--border)}
+footer .wrap{display:grid;gap:16px}
+footer img{width:200px;height:auto}
+footer p{color:var(--muted);font-size:15px}
+footer a{color:var(--ink)}
+
+/* the one button that follows the visitor down the page */
+.gift-jump{position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:40;min-height:54px;border-radius:12px;border:1px solid var(--gold-deep);background:var(--gold);color:var(--ink);font:700 14px/1.2 var(--display);letter-spacing:.14em;text-transform:uppercase;box-shadow:0 18px 40px rgb(var(--shadow)/.32);cursor:pointer}
+.gift-jump[hidden],.hero-in .gift-jump{display:none}
+
+@media (min-width:560px){.top-cta{display:inline-flex}}
+@media (min-width:640px){
+  .ship-grid{grid-template-columns:repeat(4,1fr)}
+  .prods{grid-template-columns:1fr 1fr}
+  .phases{grid-template-columns:repeat(3,1fr)}
 }
-/* Narrow enough that two gifts beside each other would be two columns of broken words.
-   They go one above the other, with the joining mark between them where it was. */
-@media (max-width:460px){
-.prods{gap:.9rem}
-.prod{padding:1.1rem 1rem 1.3rem}
-.gifts{grid-template-columns:1fr;gap:.6rem}
-.gift-shot{height:8rem}
-.gift-shot img{max-height:7rem}
-/* Stacked, the mark is between the two of them rather than beside them, so the offset
-   that put it level with the pictures has nothing to line up with any more. */
-.gift-join{align-self:center;justify-self:center;margin-top:0}
+@media (min-width:900px){
+  :root{--gutter:36px}
+  body{font-size:18px}
+  .top .wrap{min-height:68px}
+  .top .logo img{height:34px}
+  .top .wrap > nav{display:flex}
+  .hero{padding-block:48px 64px}
+  .hero .wrap{grid-template-columns:.9fr 1.1fr;gap:56px}
+  .hero h1{font-size:clamp(36px,3.4vw,48px)}
+  .hero-cta .btn{width:auto;min-width:300px}
+  .why b{font-size:19px}
+  .why span{font-size:15.5px}
+  .reviews,.how,.ig,.offer,.claim,.shipping,.final{padding-block:72px}
+  .rev-head{grid-template-columns:auto 1fr;gap:64px}
+  .quotes{display:grid;grid-template-columns:repeat(3,1fr);overflow:visible;margin:0;padding:0}
+  .q-card{flex:none}
+  .fb-track{display:grid;grid-template-columns:repeat(3,1fr);overflow:visible;margin-inline:0;padding-inline:0}
+  .fbt{flex:none}
+  .fb-hint{display:none}
+  .press{grid-template-columns:repeat(3,1fr);column-gap:40px;border-top:0}
+  .press figure{border-top:1px solid var(--border)}
+  .mu{grid-template-columns:1.2fr 1fr;gap:48px}
+  .ig-track{margin-inline:0;padding-inline:0}
+  .ig-track li{flex-basis:180px}
+  .ig-track img{width:180px;height:226px}
+  .claim-grid{grid-template-columns:1fr .95fr;gap:56px}
+  .final .wrap{grid-template-columns:.8fr 1fr;gap:56px}
+  .gift-jump{left:auto;right:24px;bottom:24px;min-width:280px}
 }
-@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}
-video{display:none}}
-
-.hero-points{list-style:none;margin:1.6rem 0 2rem;padding:0;display:grid;gap:.7rem;max-width:44rem}
-.hero-points li{display:flex;align-items:baseline;gap:.85rem;font-size:1.05rem;line-height:1.45;color:#dfeaea}
-/* A small filled dot, not a numbered circle: Mikaela's call, 2026-08-14.
-   It is named, not matched by position, because the second span in each li holds
-   the translated sentence and an over-broad selector squashed that sentence into
-   the disc for two days in August. */
-.hero-points .hero-dot{flex:none;width:.42rem;height:.42rem;border-radius:50%;
-background:var(--brass,#c8a96e);transform:translateY(-.3rem)}
-@media(max-width:600px){.hero-points li{font-size:.98rem}}
-
-.np-nav{position:sticky;top:0;z-index:60;background:rgba(13,17,23,.82);backdrop-filter:blur(10px);
-border-bottom:1px solid rgba(200,169,110,.18)}
-.np-nav-inner{max-width:78rem;margin:0 auto;padding:.75rem var(--pad);display:flex;align-items:center;
-gap:clamp(.8rem,2.2vw,2rem);flex-wrap:nowrap;min-width:0}
-/* The logo is the one thing here that may give up room. Everything else in this bar
-   is either hidden on a small screen or is the CTA, and the CTA is the point. */
-.np-logo{font-family:var(--serif);font-weight:700;letter-spacing:.14em;font-size:.95rem;color:#fff;
-text-decoration:none;white-space:nowrap;min-width:0;overflow:hidden;text-overflow:ellipsis}
-.np-logo span{color:var(--gold)}
-.np-links{display:flex;gap:clamp(.7rem,1.7vw,1.6rem);margin-left:auto}
-.np-links a{color:#e7e3da;text-decoration:none;font-size:.86rem;font-weight:500;white-space:nowrap;padding:.3rem 0;border-bottom:1px solid transparent}
-.np-links a:hover{color:var(--gold);border-bottom-color:var(--gold)}
-.np-langs{display:flex;gap:.15rem;align-items:center}
-.np-lang{font-family:var(--sans);font-size:.72rem;font-weight:600;letter-spacing:.06em;color:#8a8f9a;
-text-decoration:none;padding:.28rem .42rem;border-radius:3px;background:none;border:0;cursor:pointer}
-.np-lang.is-on{background:var(--gold);color:#1a1508}
-.np-lang:enabled:hover:not(.is-on){color:var(--gold)}
-.np-lang:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
-/* The other end of the same held choice as .ed above. These chips are off the page
-   below 720px, which is why the radios carry the same treatment: on a phone they are
-   the whole language control. */
-.np-lang:disabled{opacity:.5;cursor:not-allowed}
-.np-nav-cta{background:var(--gold);color:#1a1508;font-weight:700;font-size:.84rem;text-decoration:none;
-padding:.6rem 1.05rem;border-radius:4px;white-space:nowrap;flex:none}
-.np-nav-cta:hover{background:var(--gold-light)}
-/* "Get the Game" is the only thing in this bar that sells anything, so it survives
-   every width. Nothing below may hide it: the links go first, then the language
-   chips, and on the narrowest phones the CTA gets smaller rather than getting cut
-   off the right hand edge. Measured at 360px: logo, gap and button clear the
-   viewport with room to spare. */
-@media(max-width:1080px){.np-links{display:none}.np-nav-cta{margin-left:auto}}
-/* The chips go at 720, not 560: between those two widths the logo, five chips and
-   the button together are wider than the bar, and the button is what falls off. */
-@media(max-width:720px){.np-langs{display:none}}
-@media(max-width:420px){
-  .np-nav-inner{padding-left:.9rem;padding-right:.9rem;gap:.6rem}
-  .np-logo{font-size:.8rem;letter-spacing:.08em}
-  .np-nav-cta{font-size:.76rem;padding:.5rem .75rem}
-}
-
-.hero{position:relative;overflow:hidden;isolation:isolate}
-.hero-vid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2}
-.hero-veil{position:absolute;inset:0;z-index:-1;
-background:linear-gradient(180deg,rgba(13,17,23,.62) 0%,rgba(13,17,23,.72) 55%,rgba(13,17,23,.92) 100%)}
-.hero-copy{position:relative}
-.hero-ship{margin-top:1.4rem;font-size:.9rem;color:#ded8cc;letter-spacing:.01em}
-.hero-ship strong{color:var(--gold);font-weight:600}
-@media(prefers-reduced-motion:reduce){.hero-vid{display:none}
-.hero{background:#0d1117 url(/gift-offer/media/lp-hero-poster.jpg) center/cover}}
-
-.center{text-align:center}
-
-.quotes{display:grid;grid-template-columns:repeat(auto-fit,minmax(18rem,1fr));gap:1.2rem}
-.q-card{margin:0;background:#fff;border:1px solid var(--line);border-radius:8px;padding:1.5rem;position:relative;display:flex;flex-direction:column;gap:.9rem}
-.q-score{position:absolute;top:1.1rem;right:1.2rem;margin:0;font-family:var(--serif);font-size:1.35rem;font-weight:700;color:var(--gold)}
-.q-score span{font-size:.75rem;color:var(--muted);font-weight:400}
-.q-card blockquote{margin:0;padding-right:3rem;font-size:.98rem;line-height:1.62;color:var(--ink)}
-.q-card figcaption{display:flex;align-items:center;gap:.7rem;margin-top:auto;padding-top:.9rem;border-top:1px solid var(--line)}
-.q-av{flex:none;width:2.2rem;height:2.2rem;border-radius:50%;background:var(--navy);color:var(--gold);font-weight:700;display:grid;place-items:center;font-size:.92rem}
-.q-who{display:flex;flex-direction:column;line-height:1.25}
-.q-who b{font-size:.94rem;color:var(--ink)}
-.q-who small{font-size:.78rem;color:var(--muted)}
-.q-src{margin-left:auto;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
-
-.ship{background:var(--cream-deep);padding:clamp(3rem,6vw,4.5rem) 0}
-.ship-title{font-family:var(--serif);text-align:center;font-size:clamp(1.6rem,3.6vw,2.3rem);margin:.2rem 0 .7rem;color:var(--ink);font-weight:600}
-.ship-lede{text-align:center;max-width:38rem;margin:0 auto 2.2rem;color:var(--body-text,#3d3d4a);font-size:1.02rem;line-height:1.6}
-.ship-grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(9rem,1fr));gap:1rem}
-.ship-grid li{background:#fff;border:1px solid var(--line);border-radius:8px;padding:1.3rem 1rem;text-align:center;display:flex;flex-direction:column;gap:.35rem}
-.ship-grid b{font-family:var(--serif);font-size:1.5rem;color:var(--gold);letter-spacing:.05em}
-.ship-grid span{font-size:.84rem;color:var(--muted)}
-.offer-head{text-align:center;margin-left:auto;margin-right:auto}
-.offer-head .lede{margin-left:auto;margin-right:auto}
-
-@media(max-width:600px){
-  .quotes{display:flex;grid-template-columns:none;overflow-x:auto;scroll-snap-type:x mandatory;
-    gap:.9rem;padding:.2rem .2rem 1rem;margin-inline:-1rem;padding-inline:1rem;
-    scrollbar-width:none;-webkit-overflow-scrolling:touch}
-  .quotes::-webkit-scrollbar{display:none}
-  .q-card{flex:0 0 76%;scroll-snap-align:center;padding:1.15rem;gap:.7rem}
-  .q-card blockquote{font-size:.92rem;line-height:1.5}
-  .q-who b{font-size:.88rem}
-  .q-who small{font-size:.75rem}
-  .q-src{font-size:.68rem}
-  .q-score{font-size:1.05rem}
-}
-
-/* ---- PAGE STATES: everything below is new, not from the mockup ---- */
-
-/* Honeypot. Bots fill in every field they can see in the HTML; people never see
-   this one. Kept out of the tab order and off screen rather than display:none,
-   because some bots skip hidden fields. */
-.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
-
-/* Before the form is submitted the result column is empty, so give it a resting
-   state instead of a hole in the layout. A real element rather than CSS content:
-   the page speaks five languages and a generated-content string cannot be one of
-   the things it translates. The first rendered state replaces it. */
-.states-idle{margin:0;display:block;font-family:var(--sans);font-size:.85rem;color:var(--muted);
-border:1px dashed var(--line);border-radius:2px;padding:1.35rem 1.5rem}
-
-.state--error{border-left-color:var(--red)}
-.state--error p{color:var(--red)}
-
-.btn[aria-busy="true"]{opacity:.6;cursor:progress}
-.btn[disabled]{opacity:.6;cursor:not-allowed}
-/* .btn sets display:block, which beats the browser's own [hidden] rule. Without this
-   the retry button in the code state would be on screen for everybody. */
-.btn[hidden]{display:none}
-
-/* The moment between the code and the cart. The code itself is on this screen, so it
-   gets the same block it gets everywhere else; the line under it explains where the
-   page is about to take them. */
-.state--sending{border-left-color:var(--brass)}
-.state--sending .code{margin:0 0 .9rem}
-/* The way back into a cart that did not load. The cart link above it is the other
-   way, so this one is the quieter of the two. */
-.btn--retry{background:none;border-color:var(--line);color:var(--ink);margin-top:.85rem}
-.btn--retry:hover{background:var(--off-white)}
-
-/* The two ways out of the blocked state, and the edition list behind the first of
-   them. They are a real trade, language against package, so both buttons get exactly
-   the same weight: styling one as the main answer would be us choosing for the
-   visitor. */
-.choices{display:grid;gap:.7rem;margin:0 0 .2rem}
-.choice{display:block;width:100%;text-align:left;font-family:var(--sans);cursor:pointer;
-background:var(--paper);border:1px solid var(--line);border-radius:2px;
-padding:.85rem 1.05rem;color:var(--ink);font-size:.95rem;font-weight:700;
-transition:border-color .18s,background .18s}
-.choice:hover{border-color:var(--teal-soft);background:#fff}
-.choice:focus-visible{outline:3px solid var(--teal-soft);outline-offset:2px}
-.choice b{display:block}
-.choice span{display:block;font-size:.8rem;font-weight:400;color:var(--muted);margin-top:.25rem}
-/* The page moves focus to this heading when the panel answers a click inside itself,
-   so a keyboard visitor is not thrown back to the top of the document. A mouse click
-   should not paint a focus ring for that, a keyboard one still should. */
-.state h3:focus:not(:focus-visible){outline:none}
-.choice-back{font-family:var(--sans);font-size:.76rem;color:var(--teal);background:none;border:0;
-padding:0;cursor:pointer;text-decoration:underline;text-underline-offset:2px;text-align:left}
-.choice-back:hover{color:var(--teal-soft)}
-
-/* The control that follows the visitor down the page: to the picker before they have
-   chosen a box, to the email field after. Small and out of the way, and the page
-   takes it off screen whenever the picker or the email field is in view, so it never
-   sits on top of either. The safe area inset keeps it clear of the iOS Safari bar. */
-.gift-jump{position:fixed;z-index:70;right:clamp(.85rem,3vw,1.6rem);
-bottom:calc(clamp(.85rem,3vw,1.6rem) + env(safe-area-inset-bottom,0px));
-font-family:var(--sans);font-weight:700;font-size:.86rem;
-background:var(--gold);color:#1a1508;border:1px solid var(--gold);
-padding:.72rem 1.15rem;border-radius:999px;cursor:pointer;
-box-shadow:0 12px 28px -14px rgba(13,17,23,.8)}
-.gift-jump:hover{background:var(--gold-light)}
-.gift-jump:focus-visible{outline:3px solid var(--gold-light);outline-offset:3px}
-.gift-jump[hidden]{display:none}
-
-/* The nav is sticky, so anything scrolled to by anchor or by button has to stop
-   below it instead of underneath it. */
-#offer,.claim,#how-to-play,#email,#bgg-reviews{scroll-margin-top:4.75rem}

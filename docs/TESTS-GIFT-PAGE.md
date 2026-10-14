@@ -2,13 +2,24 @@
 
 `tests/lp-aboard-page.test.ts` tests what the gift page DOES in a browser: the picker
 sends you to the email field, the sticky button follows you down the page and changes job
-when you choose, the reviewer section is gone, and a blocked visitor is asked which cart
-they want before any code appears.
+when you choose, the old reviewer section is gone, and a blocked visitor is asked which cart
+they want before any code appears. The claim endpoint no longer returns `blocked`
+(`docs/GIFT-OFFER-CLAIM.md`), but the page still handles it, so those tests drive it with
+a made-up answer and stay until that panel is removed from `public/lp-aboard.js`.
 
 They come straight off the acceptance criteria of the gift page's second and third UX
 rounds. What happens to the CART after a code is issued is the other half of the third
 round and lives in `tests/lp-aboard-cart.test.ts` (see `docs/TESTS-GIFT-CART.md`). The
 harness both files drive the page with is `tests/page-harness.ts`.
+
+## The header button and the old reviewer section
+
+The header's one selling button is `a.top-cta` (`data-i18n="nav.cta"`, to `#offer`) inside
+`header.top`. The `.showcase` section, the `.np-nav-cta` button and the standalone reviewer
+section (`#pros`) went in the light rebuild; the press quotes now sit inside the reviews
+section at `#bgg-reviews`, which the header links to. Under 560px the header button is
+hidden by the stylesheet (the CSS checks are in
+`tests/lp-aboard.test.ts`), and the hero button and the sticky button are what sell there.
 
 ## Arrow keys through the boxes
 
@@ -30,7 +41,13 @@ Every choice replaces the button that was just pressed. Without somewhere to put
 lands back at the top of the document, and a keyboard visitor has to walk the whole page
 again to find out what their answer did.
 
+The test puts focus in the email field before it submits, and checks the submit leaves it
+there. It used to read `activeElement.id` off the page's `<body id="top">`, which only
+passed because the body had an id; the anchor is `main#top` now.
+
 ## A blocked answer with no base code
+
+(Only a made-up answer can be blocked now; see the top of this file.)
 
 The language choice needs the code the visitor was issued. Without it the cart it builds
 would carry no discount at all, which is a gift silently not given. One honest choice
@@ -51,6 +68,7 @@ the change that could introduce one.
 
 ## The warning stays on the Base Game column
 
-The `p.en-warn` note is the only thing on this page that tells a European about the
-English Base Game before they submit. The stylesheet shows it for exactly that pairing,
+The `p.en-warn` note is now a pre-order note. It is the only thing on this page that tells
+a visitor the English Base Game outside the US stock countries is the new print on
+pre-order, before they submit. The stylesheet shows it for exactly that pairing,
 so it has to be inside the form, which is what those rules key off.

@@ -18,6 +18,9 @@ import {
   CART,
   CART_ADD,
   CART_CLEAR,
+  CART_UPDATE,
+  BASE_PREORDER_EN,
+  preorderAnswer,
   CODE_BASE,
   CODE_BIGBOX,
   CODE_VISIBLE_MS,
@@ -51,7 +54,7 @@ test("a successful claim empties the cart, loads it, applies the code, then goes
 
   // The one order that works; clearing first makes this campaign's cart the cart.
   // docs/TESTS-GIFT-CART.md
-  expect(cartPaths(page)).toEqual([CART_CLEAR, CART_ADD, discountPath(CODE_BASE)]);
+  expect(cartPaths(page)).toEqual([CART_CLEAR, CART_ADD, CART_UPDATE, discountPath(CODE_BASE)]);
 
   const [clear, add] = page.cartCalls();
   expect(clear.method).toBe("POST");
@@ -68,6 +71,76 @@ test("a successful claim empties the cart, loads it, applies the code, then goes
   expect(landed).toBe(CART);
   expect(page.navigations.length).toBe(1);
 }, REDIRECT_TEST_MS);
+
+test("the cart is marked lp_arm=gift_offer, between the add and the discount", async () => {
+  const page = await loadPage({ body: codeAnswer });
+  await page.submit();
+  await page.navigated();
+
+  const update = page.cartCalls().find((c) => c.url === CART_UPDATE)!;
+  expect(update.method).toBe("POST");
+  expect(update.body).toEqual({ attributes: { lp_arm: "gift_offer" } });
+  expect(cartPaths(page).indexOf(CART_UPDATE)).toBe(cartPaths(page).indexOf(CART_ADD) + 1);
+}, REDIRECT_TEST_MS);
+
+test("a mark that Shopify refuses is only logged: the cart still loads and they still land on it", async () => {
+  const page = await loadPage({ body: codeAnswer });
+  page.cartStatus = (path) => (path === CART_UPDATE ? 422 : 200);
+
+  await page.submit();
+  const landed = await page.navigated();
+
+  expect(cartPaths(page)).toEqual([CART_CLEAR, CART_ADD, CART_UPDATE, discountPath(CODE_BASE)]);
+  expect(landed).toBe(CART);
+  // No retry panel: nothing the visitor has to act on.
+  expect(page.document.querySelector("#result [data-retry]")).toBeNull();
+}, REDIRECT_TEST_MS);
+
+test("a pre-order claim carts the pre-order print, and the fallback link carries it too", async () => {
+  const page = await loadPage({ body: preorderAnswer });
+  page.cartStatus = (path) => (path === CART_ADD ? 500 : 200);
+  await page.submit();
+  await page.until(() => !!page.document.querySelector("#result [data-retry]"), "the retry button");
+
+  // The link the page builds itself for a cart that would not load.
+  const link = page.document.querySelector("#result [data-cart]");
+  expect(link.href).toContain(BASE_PREORDER_EN);
+  expect(link.href).not.toContain(BASE_EN);
+  expect(link.href).toContain(`discount=${CODE_BASE}`);
+
+  // The retry carts the same print, not the stock one.
+  page.cartStatus = () => 200;
+  await page.click(page.document.querySelector("#result [data-retry]"));
+  await page.navigated();
+  expect(page.cartCalls().filter((c) => c.url === CART_ADD).map((c) => c.body.items[0].id)).toEqual([
+    BASE_PREORDER_EN,
+    BASE_PREORDER_EN,
+  ]);
+  expect(addedIds(page)).toEqual([BASE_PREORDER_EN, KRAKEN]);
+}, REDIRECT_TEST_MS);
+
+test("a pre-order claim loads the pre-order print into the cart", async () => {
+  const page = await loadPage({ body: preorderAnswer });
+  await page.submit();
+  await page.navigated();
+
+  expect(addedIds(page)).toEqual([BASE_PREORDER_EN, KRAKEN]);
+  expect(cartPaths(page)).toEqual([CART_CLEAR, CART_ADD, CART_UPDATE, discountPath(CODE_BASE)]);
+}, REDIRECT_TEST_MS);
+
+test("a pre-order answer never touches the BIG BOX or a non-English edition", async () => {
+  const bigbox = await loadPage({ body: { state: "code", code: CODE_BIGBOX, preorder: true } });
+  selectOffer(bigbox, "o-bigbox");
+  await bigbox.submit();
+  await bigbox.navigated();
+  expect(addedIds(bigbox)).toEqual([BIGBOX_EN, KRAKEN, COINS]);
+
+  const german = await loadPage({ body: preorderAnswer });
+  await german.click(german.document.querySelector('.np-lang[data-lang="de"]'));
+  await german.submit();
+  await german.navigated();
+  expect(addedIds(german)).toEqual([BASE_DE, KRAKEN]);
+}, REDIRECT_TEST_MS * 2);
 
 test("every call goes to a bare path, so it reaches the shop and not the portal", async () => {
   // Bare paths only: absolute is cross-origin, /gift-offer lands on the portal.
@@ -98,7 +171,7 @@ test("the code is on screen, and stays there, before the page moves under them",
 
   // Still there a second later, with the cart already built underneath it. This is the
   // half that matters: the hold is a real one, not the incidental gap a fetch leaves.
-  await page.until(() => page.cartCalls().length === 3, "the cart to finish loading");
+  await page.until(() => page.cartCalls().length === 4, "the cart to finish loading");
   expect(page.navigations).toEqual([]);
   expect(page.document.querySelector("#result [data-code]").textContent.trim()).toBe(CODE_BASE);
 
@@ -114,8 +187,8 @@ test("the BIG BOX loads three items and its own code", async () => {
   await page.navigated();
 
   expect(addedIds(page)).toEqual([BIGBOX_EN, KRAKEN, COINS]);
-  expect(cartPaths(page)[2]).toBe(discountPath(CODE_BIGBOX));
-  expect(cartPaths(page)[2]).not.toContain(CODE_BASE);
+  expect(cartPaths(page)[3]).toBe(discountPath(CODE_BIGBOX));
+  expect(cartPaths(page)[3]).not.toContain(CODE_BASE);
 }, REDIRECT_TEST_MS);
 
 // A box tapped while the claim is in flight must not split what is shown from what is
@@ -197,7 +270,7 @@ test(
     // docs/TESTS-GIFT-CART.md
     const page = await loadPage({ body: codeAnswer });
     await page.submit();
-    await page.until(() => page.cartCalls().length === 3, "the cart to finish loading");
+    await page.until(() => page.cartCalls().length === 4, "the cart to finish loading");
     expect(page.navigations).toEqual([]);
 
     const bigbox = page.document.getElementById("o-bigbox");
@@ -236,7 +309,7 @@ test("the BIG BOX choice loads the BIG BOX cart with the BIG BOX code", async ()
   await page.click(page.document.querySelector('#result [data-choice="package"]'));
   const landed = await page.navigated();
 
-  expect(cartPaths(page)).toEqual([CART_CLEAR, CART_ADD, discountPath(CODE_BIGBOX)]);
+  expect(cartPaths(page)).toEqual([CART_CLEAR, CART_ADD, CART_UPDATE, discountPath(CODE_BIGBOX)]);
   expect(addedIds(page)).toEqual([BIGBOX_EN, KRAKEN, COINS]);
   expect(landed).toBe(CART);
 }, REDIRECT_TEST_MS);
@@ -251,8 +324,8 @@ test("the European edition choice loads that edition with the code they were iss
 
   // The German base game and its gift, on the code the visitor was issued and emailed.
   expect(addedIds(page)).toEqual([BASE_DE, KRAKEN]);
-  expect(cartPaths(page)[2]).toBe(discountPath(CODE_BASE));
-  expect(cartPaths(page)[2]).not.toContain(CODE_BIGBOX);
+  expect(cartPaths(page)[3]).toBe(discountPath(CODE_BASE));
+  expect(cartPaths(page)[3]).not.toContain(CODE_BIGBOX);
   expect(landed).toBe(CART);
 }, REDIRECT_TEST_MS);
 
@@ -294,7 +367,7 @@ test("the retry runs the whole sequence again and takes them to the cart", async
 
   const landed = await page.navigated();
   // The whole sequence over again, not just the call that failed.
-  expect(cartPaths(page).slice(failed)).toEqual([CART_CLEAR, CART_ADD, discountPath(CODE_BASE)]);
+  expect(cartPaths(page).slice(failed)).toEqual([CART_CLEAR, CART_ADD, CART_UPDATE, discountPath(CODE_BASE)]);
   expect(landed).toBe(CART);
 }, REDIRECT_TEST_MS);
 

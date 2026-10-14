@@ -154,22 +154,29 @@ test("each chip translates the whole page and picks the matching edition", async
     expect(page.document.title).toBe(say(lang, "meta.title"));
 
     // A line from every part of the page, top to bottom.
-    expect(on(page, "h1")).toBe(say(lang, "hero.title"));
-    expect(on(page, ".hero-cta")).toBe(say(lang, "hero.cta"));
-    expect(on(page, ".np-nav-cta")).toBe(say(lang, "nav.cta"));
-    expect(on(page, '.np-links a[href="#how-to-play"]')).toBe(say(lang, "nav.howToPlay"));
-    expect(on(page, ".how-card h3")).toBe(say(lang, "how.1.title"));
-    expect(on(page, ".ship-title")).toBe(say(lang, "ship.title"));
+    expect(on(page, "h1")).toBe(say(lang, "hero2.title"));
+    expect(on(page, ".hero-cta span")).toBe(say(lang, "hero2.cta"));
+    expect(on(page, ".deal-strip b")).toBe(say(lang, "hero2.offer"));
+    expect(on(page, ".proof li span")).toBe(say(lang, "proof.bgg"));
+    expect(on(page, "a.top-cta")).toBe(say(lang, "nav.cta"));
+    expect(on(page, 'header.top nav a[href="#how-to-play"]')).toBe(say(lang, "nav.howToPlay"));
+    expect(on(page, ".rev-head .eyebrow")).toBe(say(lang, "rev.eyebrow"));
+    expect(on(page, ".ph h3")).toBe(say(lang, "how.1.title"));
+    expect(on(page, ".mu-copy h3")).toBe(say(lang, "mu.title"));
+    expect(on(page, ".ig-head h2")).toBe(say(lang, "ig.title"));
+    expect(on(page, ".ship-head h2")).toBe(say(lang, "ship.title"));
     expect(on(page, ".offer-head h2")).toBe(say(lang, "offer.title"));
     expect(on(page, ".pick-title")).toBe(say(lang, "pick.kraken.title"));
+    expect(on(page, ".en-warn strong")).toBe(say(lang, "offer.warn.head"));
     expect(on(page, "#claim-title")).toBe(say(lang, "claim.title.kraken"));
     expect(on(page, "#submit-btn")).toBe(say(lang, "claim.submit"));
     expect(on(page, ".states-idle")).toBe(say(lang, "claim.idle"));
-    expect(on(page, "footer .wrap span:nth-child(2)")).toBe(say(lang, "footer.tagline"));
+    expect(on(page, ".final h2")).toBe(say(lang, "final.title"));
+    expect(on(page, 'footer [data-i18n="footer.tagline"]')).toBe(say(lang, "footer.tagline"));
 
     // Copy a visitor hears rather than reads.
-    expect(page.document.querySelector(".showcase img").getAttribute("alt")).toBe(
-      say(lang, "showcase.alt")
+    expect(page.document.querySelector(".hero .plate img").getAttribute("alt")).toBe(
+      say(lang, "hero2.alt")
     );
     expect(page.document.querySelector(".np-langs").getAttribute("aria-label")).toBe(
       say(lang, "nav.aria.langs")
@@ -191,7 +198,9 @@ test("switching away from English leaves no English behind", async () => {
 
   const body = flat(page.document.body.textContent);
   for (const gone of [
-    "We will not have a better offer than this.",
+    "You left empty-handed once.",
+    "Pick your free gift",
+    "English edition: pre-order.",
     "Choose your gift",
     "Get my code",
     "Sent from a warehouse near you",
@@ -201,8 +210,8 @@ test("switching away from English leaves no English behind", async () => {
   }
 
   // The reviews are quoted as their authors wrote them, in English. docs/TESTS-GIFT-I18N.md
-  expect(body).toContain("Excellent game with a lot of replay value!");
-  expect(flat(page.document.querySelector(".voices-head > p").textContent)).toBe(
+  expect(body).toContain("I absolutely love this game! Especially at 6 players.");
+  expect(flat(page.document.querySelector(".rev-intro .lead").textContent)).toBe(
     say("es", "reviews.note")
   );
 });
@@ -215,12 +224,12 @@ test("the edition picker switches the page too, and comes back", async () => {
   italian.checked = true;
   italian.dispatchEvent(new page.window.Event("change", { bubbles: true }));
 
-  expect(on(page, "h1")).toBe(say("it", "hero.title"));
+  expect(on(page, "h1")).toBe(say("it", "hero2.title"));
   expect(chip(page, "it").className).toContain("is-on");
   expect(page.document.documentElement.getAttribute("lang")).toBe("it");
 
   await page.click(chip(page, "en"));
-  expect(on(page, "h1")).toBe(say("en", "hero.title"));
+  expect(on(page, "h1")).toBe(say("en", "hero2.title"));
   expect(page.document.getElementById("ed-en").checked).toBe(true);
 });
 
@@ -354,7 +363,7 @@ test("taking a European edition switches the page into that language", async () 
   // The box they asked for and the words they are reading are the same choice.
   expect(page.document.getElementById("ed-fr").checked).toBe(true);
   expect(page.document.documentElement.getAttribute("lang")).toBe("fr");
-  expect(on(page, "h1")).toBe(say("fr", "hero.title"));
+  expect(on(page, "h1")).toBe(say("fr", "hero2.title"));
   expect(on(page, "#result h3")).toBe(say("fr", "state.edition.title"));
   expect(on(page, "#result [data-lead]")).toBe(say("fr", "state.edition.lead"));
   expect(on(page, "#result [data-code]")).toBe(CODE_BASE);
@@ -373,7 +382,7 @@ test("the BIG BOX branch moves the page onto the box it sells", async () => {
   await page.click(page.document.querySelector('#result [data-choice="package"]'));
 
   expect(page.document.documentElement.getAttribute("lang")).toBe("en");
-  expect(on(page, "h1")).toBe(say("en", "hero.title"));
+  expect(on(page, "h1")).toBe(say("en", "hero2.title"));
   expect(on(page, "#result h3")).toBe(say("en", "state.bigbox.title"));
   expect(on(page, "#result [data-lead]")).toBe(say("en", "state.bigbox.lead"));
   expect(on(page, "#result [data-code]")).toBe(CODE_BIGBOX);
@@ -488,7 +497,7 @@ test(
     // And the box that is kept is the one the claim was made for, in the words to match.
     expect(shown).toBe("en");
     expect(page.document.documentElement.getAttribute("lang")).toBe("en");
-    expect(on(page, "h1")).toBe(say("en", "hero.title"));
+    expect(on(page, "h1")).toBe(say("en", "hero2.title"));
   },
   REDIRECT_TEST_MS
 );
@@ -512,7 +521,7 @@ test("the edition radios are held with the chips, and both are handed back", asy
   french.dispatchEvent(new page.window.Event("change", { bubbles: true }));
 
   expect(page.document.documentElement.getAttribute("lang")).toBe("en");
-  expect(on(page, "h1")).toBe(say("en", "hero.title"));
+  expect(on(page, "h1")).toBe(say("en", "hero2.title"));
 
   release();
   await page.until(() => !!page.document.querySelector("#result [data-code]"), "the code");
@@ -611,7 +620,7 @@ test(
     await page.click(chip(page, "fr"));
     expect(page.document.documentElement.getAttribute("lang")).toBe("fr");
     expect(french.checked).toBe(true);
-    expect(on(page, "h1")).toBe(say("fr", "hero.title"));
+    expect(on(page, "h1")).toBe(say("fr", "hero2.title"));
   },
   REDIRECT_TEST_MS
 );
@@ -679,7 +688,7 @@ test("a page left through the fallback cart link comes back usable", async () =>
   await page.click(chip(page, "fr"));
   expect(page.document.documentElement.getAttribute("lang")).toBe("fr");
   expect(french.checked).toBe(true);
-  expect(on(page, "h1")).toBe(say("fr", "hero.title"));
+  expect(on(page, "h1")).toBe(say("fr", "hero2.title"));
 });
 
 test(
@@ -720,7 +729,7 @@ test(
     expect(shown[0]).toBe("en");
     expect(gift[0].value).toBe("base-kraken");
     expect(page.document.documentElement.getAttribute("lang")).toBe("en");
-    expect(on(page, "h1")).toBe(say("en", "hero.title"));
+    expect(on(page, "h1")).toBe(say("en", "hero2.title"));
   },
   REDIRECT_TEST_MS
 );

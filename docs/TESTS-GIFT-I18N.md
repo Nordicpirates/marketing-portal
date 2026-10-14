@@ -48,6 +48,21 @@ comparison. That comparison is English against itself for the other four and wou
 on passing if this line were dropped from all five at once. The whole point of this lead
 is that the five tables moved together.
 
+### No copy is written and then never shown
+
+Every key in the English table is either asked for by the markup or written out by
+`page.js`. The light rebuild left 25 keys from the old design (the old hero, stats, game
+and reviews copy, the `showcase` alt text, `nav.editions` and three country names) in all
+five tables with nothing asking for them, so they were removed from all five rather than
+the test being loosened.
+
+### Each chip translates the whole page
+
+It reads a line from each part of the light page top to bottom: the hero (`hero2.*`), the
+proof line, the header button (`a.top-cta`), the reviews heading, the first phase card, the
+video block, the Instagram heading, shipping, the picker, the pre-order note
+(`offer.warn.head`), the claim step and the closing block.
+
 ### Switching away from English leaves no English behind
 
 The community reviews are quotes from named people who wrote them in English, and the
@@ -55,6 +70,12 @@ line above them says they are unedited. Translating those would make that senten
 false, so they stay as their authors wrote them.
 
 ## The blocked flow
+
+The claim endpoint no longer returns `blocked` (the English Base Game is a pre-order
+outside the US stock countries, `docs/GIFT-OFFER-CLAIM.md`). `public/lp-aboard.js` still
+draws the panel and these tests drive it with `blockedAnswer` from the harness, a made-up
+answer. They are kept on purpose: the panel is live code, and removing it is a change to
+the page that these tests should be deleted with, not before.
 
 ### The BIG BOX branch moves the page onto the box it sells
 

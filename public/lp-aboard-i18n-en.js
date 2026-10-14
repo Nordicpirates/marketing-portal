@@ -11,44 +11,16 @@ export const EN = {
   "nav.aria.main": "Main",
   "nav.aria.langs": "Language and edition",
   "nav.howToPlay": "How to Play",
-  "nav.editions": "Editions",
   "nav.reviews": "Reviews",
   "nav.cta": "Get the Game",
 
-  "hero.title": "We will not have a better offer than this.",
-  "hero.lede":
-    "A bluffing dice game. You lie to the people you like most, then race their ships into the rocks.",
-  // Rewritten by Mikaela 2026-08-14, her wording, kept verbatim. The other four
-  // tables still carry the older sentences: those are a translation job, not a
-  // copy-paste, and they are deliberately not guessed at here.
-  "hero.point1": "Choose one of the boxes below",
-  "hero.point2": "Something goes in that we would normally charge you for.",
-  "hero.point3": "You left empty-handed once. Here's your second chance!",
-  "hero.cta": "See what comes free",
-
-  "showcase.alt":
-    "Three players around a table mid-game, board and pieces spread out, one laughing",
-
-  "stats.players": "players, 14+",
-  "stats.length": "a full game",
-  "stats.sold": "copies sold",
-  "stats.bgg": "on BoardGameGeek",
-  "stats.reviews": "community reviews",
-  "stats.countries": "countries shipped",
-
-  "game.eyebrow": "In case you forgot",
-  "game.title": "Liar's dice, but everyone is racing a ship",
-  "game.alt": "A branded bamboo cup lifted to reveal five dice on the board",
-  "game.caption": "Lift the cup and find out who was telling the truth.",
-
   "how.eyebrow": "Quick to learn",
   "how.title": "How to play",
-  "how.sub": "Three phases per round. There is a how-to-play video for each one.",
   "how.1.aria": "Betting phase, dice hidden under a cup",
   "how.1.phase": "Betting phase",
   "how.1.title": "Bluff your crew",
   "how.1.body":
-    "Roll your crew dice hidden under the bamboo cup, then bluff on totals. Raise the stakes, lock a number, or call someone a liar, at exactly the right moment.",
+    "Roll your crew dice hidden under your cup, then bluff on totals. Raise the stakes, lock a number, or call someone a liar, at exactly the right moment.",
   "how.2.aria": "Sail phase, ships moving across the board",
   "how.2.phase": "Sail phase",
   "how.2.title": "Move the fleet",
@@ -60,17 +32,11 @@ export const EN = {
   "how.3.body":
     "Deploy Gold or Silver cards to attack rivals, defend your position, or upgrade your crew. Every card changes the board.",
 
-  "reviews.eyebrow": "From the people who own it",
-  "reviews.bgg.on": "on BoardGameGeek",
-  "reviews.bgg.from": "from 600+ community reviews",
   "reviews.title": "Community reviews",
   "reviews.note":
     "Unedited, with the scores their authors gave them. Trimmed for length where marked.",
   "country.us": "United States",
-  "country.it": "Italy",
   "country.gb": "United Kingdom",
-  "country.se": "Sweden",
-  "country.de": "Germany",
 
   "ship.eyebrow": "Shipping",
   "ship.title": "Sent from a warehouse near you",
@@ -104,9 +70,9 @@ export const EN = {
   "offer.stock.head": "Kraken stock is low.",
   "offer.stock.body": "When it runs out this choice becomes the gold, and we will say so here.",
   "offer.edition.legend": "Which edition should we ship",
-  "offer.warn.head": "One thing before you go further.",
+  "offer.warn.head": "English edition: pre-order.",
   "offer.warn.body":
-    "The English Base Game ships from our stock in the US, Britain and Australia. Inside the EU we cannot send that edition yet, so if that is where you are, we will offer you the BIG BOX in English with both gifts, or the same game in your own language. Your code stands either way.",
+    "Outside the US, Canada, Australia and New Zealand, the English Base Game is the new print on pre-order, delivered in about 14-21 days. Your gift ships with it.",
 
   "claim.eyebrow": "Last step",
   "claim.title.kraken": "One step and the Kraken is yours",
@@ -179,4 +145,40 @@ export const EN = {
   "error.generic": "We could not issue your code just now.",
   "error.network": "We could not reach the ship. Check your connection and try again.",
   "error.template": "Something went wrong on our side. Please try again.",
+
+  // The light rebuild (Polly, 2026-10-14). Translations are Polly's and want a native read.
+  "nav.gift": "Your gift",
+  "hero2.eyebrow": "A gift for coming back",
+  "hero2.title": "You left empty-handed once. Here's your second chance!",
+  "hero2.offer": "Base Game €39.95, plus a free gift: the Kraken or 20 metal gold coins.",
+  "hero2.bigbox": "The BIG BOX, €124.95, comes with both.",
+  "why1.b": "No waiting for your turn.",
+  "why1.s": "Everyone bets every round, so nobody sits out.",
+  "why2.b": "Nobody reaches for their phone.",
+  "why2.s": "Every bet counts every die at the table, so you stay in it until the cups come up.",
+  "hero2.cta": "Pick your free gift",
+  "hero2.from": "From €39.95",
+  "proof.bgg": "on BoardGameGeek",
+  "proof.ratings": "600+ ratings",
+  "proof.sold": "copies sold",
+  "proof.countries": "countries",
+  "rev.eyebrow": "What players say",
+  "rev.line": "BoardGameGeek community rating, 600+ ratings.",
+  "rev.bggLink": "Every review on BoardGameGeek",
+  "rev.fbTitle": "Overheard in the comments.",
+  "rev.fbNote": "Real comments on our Facebook posts, copied word for word. Last names shortened.",
+  "rev.swipe": "Swipe for more",
+  "how2.sub": "Each round runs Betting, then Sail, then Action. Same order every time, so new players are bluffing by round two.",
+  "mu.eyebrow": "Prefer to watch?",
+  "mu.title": "How-to-play video by Meeple University",
+  "mu.body": "A walkthrough of the base game and the Cities of Greed expansion, in English. Opens on YouTube.",
+  "mu.aria": "Play the how-to-play video by Meeple University on YouTube",
+  "ig.eyebrow": "#lyingpirates on Instagram",
+  "ig.title": "Tables around the world.",
+  "final.eyebrow": "Not your ordinary game night",
+  "final.title": "Somebody at your table is lying right now.",
+  "final.body": "Find out who. Your gift is still waiting.",
+  "country.ca": "Canada",
+  "hero2.alt": "Two players in pirate hats at the Lying Pirates board, cards in hand",
+  "final.alt": "A player in a pirate hat, grinning over his goblet",
 };

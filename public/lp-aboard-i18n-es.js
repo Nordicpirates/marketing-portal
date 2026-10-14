@@ -20,42 +20,16 @@ export const ES = {
   "nav.aria.main": "Navegación principal",
   "nav.aria.langs": "Idioma y edición",
   "nav.howToPlay": "Cómo se juega",
-  "nav.editions": "Ediciones",
   "nav.reviews": "Opiniones",
   "nav.cta": "Quiero el juego",
 
-  "hero.title": "No vamos a tener una oferta mejor que esta.",
-  "hero.lede":
-    "Un juego de dados y faroles. Mientes a la gente que más quieres y luego mandas sus barcos contra las rocas.",
-  "hero.point1": "Elige cualquier caja de aquí abajo",
-  "hero.point2": "Le metemos algo que normalmente no regalamos",
-  "hero.point3": "Ves esta página solo porque la primera vez no compraste",
-  "hero.cta": "Mira lo que viene gratis",
-
-  "showcase.alt":
-    "Tres jugadores alrededor de una mesa en plena partida, tablero y piezas repartidos, uno se ríe",
-
-  "stats.players": "jugadores, a partir de 14",
-  "stats.length": "una partida entera",
-  "stats.sold": "copias vendidas",
-  "stats.bgg": "en BoardGameGeek",
-  "stats.reviews": "opiniones de la comunidad",
-  "stats.countries": "países con envío",
-
-  "game.eyebrow": "Por si se te había olvidado",
-  "game.title": "El juego del mentiroso, solo que aquí todos corren con un barco",
-  "game.alt":
-    "Un cubilete de bambú con logo levantado que descubre cinco dados sobre el tablero",
-  "game.caption": "Levanta el cubilete y descubre quién decía la verdad.",
-
   "how.eyebrow": "Se aprende rápido",
   "how.title": "Cómo se juega",
-  "how.sub": "Tres fases por ronda. Cada una tiene su vídeo explicativo.",
   "how.1.aria": "Fase de apuestas, dados escondidos bajo un cubilete",
   "how.1.phase": "Fase de apuestas",
   "how.1.title": "Farolea con tu tripulación",
   "how.1.body":
-    "Tira tus dados de tripulación escondidos bajo el cubilete de bambú y luego farolea con los totales. Sube la apuesta, fija un valor o llama mentiroso a alguien, justo en el momento adecuado.",
+    "Tira tus dados de tripulación escondidos bajo tu cubilete y luego farolea con los totales. Sube la apuesta, fija un valor o llama mentiroso a alguien, justo en el momento adecuado.",
   "how.2.aria": "Fase de navegación, barcos avanzando por el mapa",
   "how.2.phase": "Fase de navegación",
   "how.2.title": "Mueve la flota",
@@ -67,17 +41,11 @@ export const ES = {
   "how.3.body":
     "Juega cartas de acción doradas o plateadas para atacar a tus rivales, defender tu posición o mejorar tu tripulación. Cada carta cambia el mapa.",
 
-  "reviews.eyebrow": "De quienes lo tienen en casa",
-  "reviews.bgg.on": "en BoardGameGeek",
-  "reviews.bgg.from": "de 600+ opiniones de la comunidad",
   "reviews.title": "Opiniones de la comunidad",
   "reviews.note":
     "Sin editar, con las notas que les pusieron sus autores. Acortadas donde se indica, solo por espacio.",
   "country.us": "Estados Unidos",
-  "country.it": "Italia",
   "country.gb": "Reino Unido",
-  "country.se": "Suecia",
-  "country.de": "Alemania",
 
   "ship.eyebrow": "Envío",
   "ship.title": "Sale de un almacén cerca de ti",
@@ -112,9 +80,9 @@ export const ES = {
   "offer.stock.body":
     "Cuando se acabe, esta opción pasa a ser el oro, y lo diremos aquí.",
   "offer.edition.legend": "Qué edición te enviamos",
-  "offer.warn.head": "Una cosa antes de seguir.",
+  "offer.warn.head": "Edición en inglés: en preventa.",
   "offer.warn.body":
-    "El juego base en inglés sale de nuestras existencias en Estados Unidos, Reino Unido y Australia. Dentro de la UE todavía no podemos enviar esa edición, y si estás allí te ofrecemos la BIG BOX en inglés con los dos regalos, o el mismo juego en tu idioma. Tu código sigue siendo tuyo en cualquier caso.",
+    "Fuera de Estados Unidos, Canadá, Australia y Nueva Zelanda, el juego base en inglés es la nueva tirada en preventa, con entrega en unos 14-21 días. Tu regalo llega en el mismo envío.",
 
   "claim.eyebrow": "Último paso",
   "claim.title.kraken": "Un paso y el Kraken es tuyo",
@@ -190,4 +158,40 @@ export const ES = {
   "error.generic": "No hemos podido emitir tu código ahora mismo.",
   "error.network": "No hemos podido llegar al barco. Revisa tu conexión e inténtalo otra vez.",
   "error.template": "Algo ha fallado por nuestra parte. Inténtalo otra vez, por favor.",
+
+  // The light rebuild (Polly, 2026-10-14). Translations are Polly's and want a native read.
+  "nav.gift": "Tu regalo",
+  "hero2.eyebrow": "Un regalo por volver",
+  "hero2.title": "Una vez te fuiste con las manos vacías. ¡Aquí tienes tu segunda oportunidad!",
+  "hero2.offer": "Juego base €39.95, con un regalo: el Kraken o 20 monedas de oro de metal.",
+  "hero2.bigbox": "La BIG BOX, €124.95, lleva los dos.",
+  "why1.b": "Nadie espera su turno.",
+  "why1.s": "Todos apuestan en cada ronda, nadie se queda mirando.",
+  "why2.b": "Nadie mira el móvil.",
+  "why2.s": "Cada apuesta cuenta todos los dados de la mesa, así que sigues dentro hasta que se levantan los cubiletes.",
+  "hero2.cta": "Elige tu regalo",
+  "hero2.from": "Desde €39.95",
+  "proof.bgg": "en BoardGameGeek",
+  "proof.ratings": "600+ valoraciones",
+  "proof.sold": "copias vendidas",
+  "proof.countries": "países",
+  "rev.eyebrow": "Lo que dicen los jugadores",
+  "rev.line": "Valoración de la comunidad de BoardGameGeek, 600+ valoraciones.",
+  "rev.bggLink": "Todas las opiniones en BoardGameGeek",
+  "rev.fbTitle": "Oído en los comentarios.",
+  "rev.fbNote": "Comentarios reales en nuestras publicaciones de Facebook, copiados palabra por palabra. Apellidos abreviados.",
+  "rev.swipe": "Desliza para ver más",
+  "how2.sub": "Cada ronda sigue el mismo orden: apuestas, navegación, acción. Quien empieza ya farolea en la segunda ronda.",
+  "mu.eyebrow": "¿Prefieres verlo?",
+  "mu.title": "Vídeo explicativo de Meeple University",
+  "mu.body": "Un repaso del juego base y de la expansión Cities of Greed, en inglés. Se abre en YouTube.",
+  "mu.aria": "Ver en YouTube el vídeo explicativo de Meeple University",
+  "ig.eyebrow": "#lyingpirates en Instagram",
+  "ig.title": "Mesas de todo el mundo.",
+  "final.eyebrow": "No es una noche de juegos cualquiera",
+  "final.title": "Alguien en tu mesa está mintiendo ahora mismo.",
+  "final.body": "Descubre quién. Tu regalo todavía te espera.",
+  "country.ca": "Canadá",
+  "hero2.alt": "Dos jugadores con sombrero pirata junto al tablero de Lying Pirates, cartas en mano",
+  "final.alt": "Un jugador con sombrero pirata, sonriendo sobre su copa",
 };

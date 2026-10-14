@@ -19,42 +19,16 @@ export const IT = {
   "nav.aria.main": "Navigazione principale",
   "nav.aria.langs": "Lingua ed edizione",
   "nav.howToPlay": "Come si gioca",
-  "nav.editions": "Edizioni",
   "nav.reviews": "Recensioni",
   "nav.cta": "Prendi il gioco",
 
-  "hero.title": "Non avremo mai un'offerta migliore di questa.",
-  "hero.lede":
-    "Un gioco di dadi e bluff. Menti alle persone a cui vuoi più bene, poi mandi le loro navi a sbattere sugli scogli.",
-  "hero.point1": "Scegli una scatola qui sotto",
-  "hero.point2": "Ci mettiamo dentro qualcosa che di solito non regaliamo",
-  "hero.point3": "Vedi questa pagina solo perché la prima volta non hai comprato",
-  "hero.cta": "Guarda cosa arriva in regalo",
-
-  "showcase.alt":
-    "Tre giocatori intorno a un tavolo a partita in corso, tabellone e pezzi sparsi, uno ride",
-
-  "stats.players": "giocatori, dai 14 anni",
-  "stats.length": "una partita intera",
-  "stats.sold": "copie vendute",
-  "stats.bgg": "su BoardGameGeek",
-  "stats.reviews": "recensioni della community",
-  "stats.countries": "paesi raggiunti",
-
-  "game.eyebrow": "Nel caso te ne fossi dimenticato",
-  "game.title": "Il gioco del bugiardo, ma qui corrono tutti con una nave",
-  "game.alt":
-    "Un bicchiere di bambù con il logo sollevato che scopre cinque dadi sul tabellone",
-  "game.caption": "Alza il bicchiere e scopri chi stava dicendo la verità.",
-
   "how.eyebrow": "Si impara in fretta",
   "how.title": "Come si gioca",
-  "how.sub": "Tre fasi per turno. Per ognuna c'è un video che la spiega.",
   "how.1.aria": "Fase di Scommessa, dadi nascosti sotto un bicchiere",
   "how.1.phase": "Fase di Scommessa",
   "how.1.title": "Bluffa con la tua ciurma",
   "how.1.body":
-    "Tira i tuoi dadi Ciurma nascosti sotto il bicchiere di bambù, poi bluffa sui totali. Alza la posta, fissa un valore oppure dai del bugiardo a qualcuno, esattamente al momento giusto.",
+    "Tira i tuoi dadi Ciurma nascosti sotto il tuo bicchiere, poi bluffa sui totali. Alza la posta, fissa un valore oppure dai del bugiardo a qualcuno, esattamente al momento giusto.",
   "how.2.aria": "Fase di Navigazione, navi che si muovono sulla mappa",
   "how.2.phase": "Fase di Navigazione",
   "how.2.title": "Muovi la flotta",
@@ -66,17 +40,11 @@ export const IT = {
   "how.3.body":
     "Gioca le carte azione oro o argento per attaccare i rivali, difendere la tua posizione o migliorare la ciurma. Ogni carta cambia la mappa.",
 
-  "reviews.eyebrow": "Da chi ce l'ha in casa",
-  "reviews.bgg.on": "su BoardGameGeek",
-  "reviews.bgg.from": "da 600+ recensioni della community",
   "reviews.title": "Recensioni della community",
   "reviews.note":
     "Non modificate, con i voti dati dai loro autori. Accorciate dove indicato, solo per questioni di spazio.",
   "country.us": "Stati Uniti",
-  "country.it": "Italia",
   "country.gb": "Regno Unito",
-  "country.se": "Svezia",
-  "country.de": "Germania",
 
   "ship.eyebrow": "Spedizione",
   "ship.title": "Spedito da un magazzino vicino a te",
@@ -111,9 +79,9 @@ export const IT = {
   "offer.stock.body":
     "Quando finisce, questa scelta diventa l'oro, e lo scriviamo qui.",
   "offer.edition.legend": "Quale edizione dobbiamo spedirti",
-  "offer.warn.head": "Una cosa prima di andare avanti.",
+  "offer.warn.head": "Edizione inglese: in preordine.",
   "offer.warn.body":
-    "Il gioco base in inglese parte dalle nostre scorte negli Stati Uniti, in Gran Bretagna e in Australia. Dentro l'UE non possiamo ancora spedire quell'edizione, e se ti trovi lì ti offriamo la BIG BOX in inglese con tutti e due i regali, oppure lo stesso gioco nella tua lingua. In ogni caso il tuo codice resta tuo.",
+    "Fuori da Stati Uniti, Canada, Australia e Nuova Zelanda, il gioco base in inglese è la nuova tiratura in preordine, consegnata in circa 14-21 giorni. Il tuo regalo arriva nella stessa spedizione.",
 
   "claim.eyebrow": "Ultimo passo",
   "claim.title.kraken": "Un passo e il Kraken è tuo",
@@ -189,4 +157,40 @@ export const IT = {
   "error.generic": "Non siamo riusciti a emettere il tuo codice in questo momento.",
   "error.network": "Non siamo riusciti a raggiungere la nave. Controlla la connessione e riprova.",
   "error.template": "Da noi è andato storto qualcosa. Riprova, per favore.",
+
+  // The light rebuild (Polly, 2026-10-14). Translations are Polly's and want a native read.
+  "nav.gift": "Il tuo regalo",
+  "hero2.eyebrow": "Un regalo per il tuo ritorno",
+  "hero2.title": "Una volta hai lasciato la nave a mani vuote. Ecco la tua seconda occasione!",
+  "hero2.offer": "Gioco base €39.95, più un regalo: il Kraken oppure 20 monete d'oro in metallo.",
+  "hero2.bigbox": "La BIG BOX, €124.95, li ha entrambi.",
+  "why1.b": "Nessuna attesa del tuo turno.",
+  "why1.s": "Tutti scommettono a ogni turno, nessuno resta a guardare.",
+  "why2.b": "Nessuno prende in mano il telefono.",
+  "why2.s": "Ogni scommessa conta tutti i dadi del tavolo, quindi resti in gioco finché non si alzano i bicchieri.",
+  "hero2.cta": "Scegli il tuo regalo",
+  "hero2.from": "Da €39.95",
+  "proof.bgg": "su BoardGameGeek",
+  "proof.ratings": "600+ voti",
+  "proof.sold": "copie vendute",
+  "proof.countries": "paesi",
+  "rev.eyebrow": "Cosa dicono i giocatori",
+  "rev.line": "Voto della community di BoardGameGeek, 600+ voti.",
+  "rev.bggLink": "Tutte le recensioni su BoardGameGeek",
+  "rev.fbTitle": "Sentito nei commenti.",
+  "rev.fbNote": "Commenti veri sotto i nostri post su Facebook, copiati parola per parola. Cognomi abbreviati.",
+  "rev.swipe": "Scorri per vederne altri",
+  "how2.sub": "Ogni turno segue lo stesso ordine: Scommessa, Navigazione, Azione. Chi è nuovo bluffa già dal secondo turno.",
+  "mu.eyebrow": "Preferisci guardare?",
+  "mu.title": "Video tutorial di Meeple University",
+  "mu.body": "Una spiegazione del gioco base e dell'espansione Cities of Greed, in inglese. Si apre su YouTube.",
+  "mu.aria": "Guarda su YouTube il video tutorial di Meeple University",
+  "ig.eyebrow": "#lyingpirates su Instagram",
+  "ig.title": "Tavoli in tutto il mondo.",
+  "final.eyebrow": "Non la solita serata di giochi",
+  "final.title": "Qualcuno al tuo tavolo sta mentendo proprio ora.",
+  "final.body": "Scopri chi. Il tuo regalo ti aspetta ancora.",
+  "country.ca": "Canada",
+  "hero2.alt": "Due giocatori con cappelli da pirata al tabellone di Lying Pirates, carte in mano",
+  "final.alt": "Un giocatore con il cappello da pirata che sorride sopra il suo calice",
 };

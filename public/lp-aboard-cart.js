@@ -18,6 +18,10 @@ import { cartItems } from "./offer.js";
 export const CART_PATH = "/cart";
 export const CART_CLEAR_PATH = "/cart/clear.js";
 export const CART_ADD_PATH = "/cart/add.js";
+export const CART_UPDATE_PATH = "/cart/update.js";
+
+// Rides into the order as a cart attribute, so Shopify says which page sold it.
+export const LP_ARM = "gift_offer";
 
 /**
  * Shopify's discount link. Applies the code to this browser's session and then sends
@@ -46,13 +50,14 @@ async function postJson(path, body) {
 /**
  * Put the offer in the cart and say where to send the visitor next.
  *
- * Three calls, in this order:
+ * Four calls, in this order:
  *   1. /cart/clear.js   this flow owns the cart it is about to build. Without it a
  *                       visitor who already had something in there is taken to a cart
  *                       our code does not fit, and the gift silently does not appear.
  *   2. /cart/add.js     every variant for the offer, in one call, so the cart is
  *                       either complete or untouched rather than half built.
- *   3. the discount link, which puts the code on the session.
+ *   3. /cart/update.js  marks the cart lp_arm=gift_offer; a failure here is only logged.
+ *   4. the discount link, which puts the code on the session.
  *
  * Never throws. Returns {ok:false} when the CART could not be built, which is the only
  * failure the visitor has to be told about: the caller then keeps the code on screen
@@ -65,15 +70,15 @@ async function postJson(path, body) {
  *
  * @returns {Promise<{ok: true, url: string} | {ok: false, reason: string}>}
  */
-export async function loadCart(offer, edition, code) {
-  const cart = cartItems(offer, edition);
+export async function loadCart(offer, edition, code, preorder = false) {
+  const cart = cartItems(offer, edition, preorder);
   if (!cart) {
     console.error(`[lp/aboard] no cart contents for offer="${offer}" edition="${edition}"`);
     return { ok: false, reason: "unknown-offer" };
   }
 
   console.log(
-    `[lp/aboard] loading cart offer=${offer} edition=${edition} items=${JSON.stringify(cart.items)}`
+    `[lp/aboard] loading cart offer=${offer} edition=${edition} preorder=${preorder} items=${JSON.stringify(cart.items)}`
   );
 
   try {
@@ -82,6 +87,13 @@ export async function loadCart(offer, edition, code) {
   } catch (err) {
     console.error("[lp/aboard] cart could not be built:", err);
     return { ok: false, reason: "cart-failed" };
+  }
+
+  try {
+    await postJson(CART_UPDATE_PATH, { attributes: { lp_arm: LP_ARM } });
+  } catch (err) {
+    // The cart is whole without it; only the order's page label is missing.
+    console.warn("[lp/aboard] could not mark the cart with lp_arm:", err);
   }
 
   if (!cart.discount) return { ok: true, url: CART_PATH };

@@ -13,11 +13,24 @@ records what it was asked for, and `location.assign` is captured instead of tear
 document down. The page harness is `tests/page-harness.ts`; the page's in-browser
 behaviour is covered in `docs/TESTS-GIFT-PAGE.md`.
 
-## Clear, add, apply the code, then go to the cart
+## Clear, add, mark, apply the code, then go to the cart
 
-These are the three calls Shopify needs, in the one order that works. Clearing first is
+These are the calls Shopify needs, in the one order that works. Clearing first is
 what makes this campaign's cart the cart: whatever the visitor had in there before is not
 what our code was issued against.
+
+The third call, `/cart/update.js` with `{attributes: {lp_arm: "gift_offer"}}`, marks the
+cart so Shopify says which page sold the order. It sits between the add and the discount.
+It is not part of the cart: when Shopify refuses it the page only logs a warning and goes
+on, and one test pins that, with the cart still loaded, the code still applied and no retry
+panel. The calls that do fail the cart are the clear and the add.
+
+## The pre-order print
+
+A claim answered with `preorder: true` carts the pre-order print of the English Base Game
+(`54235343880539`) instead of the stock variant, in the Ajax build, in the retry and in the
+fallback link. The flag is ignored for the BIG BOX and for every other edition, because
+only the English Base Game has a pre-order print.
 
 ## Every call goes to a bare path
 
