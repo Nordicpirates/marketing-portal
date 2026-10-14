@@ -20,37 +20,11 @@ export const ES = {
   "nav.aria.main": "Navegación principal",
   "nav.aria.langs": "Idioma y edición",
   "nav.howToPlay": "Cómo se juega",
-  "nav.editions": "Ediciones",
   "nav.reviews": "Opiniones",
   "nav.cta": "Quiero el juego",
 
-  "hero.title": "No vamos a tener una oferta mejor que esta.",
-  "hero.lede":
-    "Un juego de dados y faroles. Mientes a la gente que más quieres y luego mandas sus barcos contra las rocas.",
-  "hero.point1": "Elige cualquier caja de aquí abajo",
-  "hero.point2": "Le metemos algo que normalmente no regalamos",
-  "hero.point3": "Ves esta página solo porque la primera vez no compraste",
-  "hero.cta": "Mira lo que viene gratis",
-
-  "showcase.alt":
-    "Tres jugadores alrededor de una mesa en plena partida, tablero y piezas repartidos, uno se ríe",
-
-  "stats.players": "jugadores, a partir de 14",
-  "stats.length": "una partida entera",
-  "stats.sold": "copias vendidas",
-  "stats.bgg": "en BoardGameGeek",
-  "stats.reviews": "opiniones de la comunidad",
-  "stats.countries": "países con envío",
-
-  "game.eyebrow": "Por si se te había olvidado",
-  "game.title": "El juego del mentiroso, solo que aquí todos corren con un barco",
-  "game.alt":
-    "Un cubilete de bambú con logo levantado que descubre cinco dados sobre el tablero",
-  "game.caption": "Levanta el cubilete y descubre quién decía la verdad.",
-
   "how.eyebrow": "Se aprende rápido",
   "how.title": "Cómo se juega",
-  "how.sub": "Tres fases por ronda. Cada una tiene su vídeo explicativo.",
   "how.1.aria": "Fase de apuestas, dados escondidos bajo un cubilete",
   "how.1.phase": "Fase de apuestas",
   "how.1.title": "Farolea con tu tripulación",
@@ -67,17 +41,11 @@ export const ES = {
   "how.3.body":
     "Juega cartas de acción doradas o plateadas para atacar a tus rivales, defender tu posición o mejorar tu tripulación. Cada carta cambia el mapa.",
 
-  "reviews.eyebrow": "De quienes lo tienen en casa",
-  "reviews.bgg.on": "en BoardGameGeek",
-  "reviews.bgg.from": "de 600+ opiniones de la comunidad",
   "reviews.title": "Opiniones de la comunidad",
   "reviews.note":
     "Sin editar, con las notas que les pusieron sus autores. Acortadas donde se indica, solo por espacio.",
   "country.us": "Estados Unidos",
-  "country.it": "Italia",
   "country.gb": "Reino Unido",
-  "country.se": "Suecia",
-  "country.de": "Alemania",
 
   "ship.eyebrow": "Envío",
   "ship.title": "Sale de un almacén cerca de ti",

@@ -17,37 +17,11 @@ export const DE = {
   "nav.aria.main": "Hauptnavigation",
   "nav.aria.langs": "Sprache und Edition",
   "nav.howToPlay": "Spielablauf",
-  "nav.editions": "Editionen",
   "nav.reviews": "Bewertungen",
   "nav.cta": "Spiel sichern",
 
-  "hero.title": "Ein besseres Angebot als dieses wird es von uns nicht geben.",
-  "hero.lede":
-    "Ein Würfelspiel voller Bluffs. Du belügst die Menschen, die du am liebsten magst, und jagst dann ihre Schiffe auf die Felsen.",
-  "hero.point1": "Such dir unten eine Box aus",
-  "hero.point2": "Wir legen etwas hinein, das wir sonst nicht verschenken",
-  "hero.point3": "Du siehst diese Seite nur, weil du beim ersten Mal nicht gekauft hast",
-  "hero.cta": "Sieh, was gratis dazukommt",
-
-  "showcase.alt":
-    "Drei Spieler mitten im Spiel am Tisch, Brett und Teile ausgebreitet, einer lacht",
-
-  "stats.players": "Spieler, ab 14",
-  "stats.length": "eine ganze Partie",
-  "stats.sold": "verkaufte Exemplare",
-  "stats.bgg": "auf BoardGameGeek",
-  "stats.reviews": "Bewertungen aus der Community",
-  "stats.countries": "belieferte Länder",
-
-  "game.eyebrow": "Falls du es vergessen hast",
-  "game.title": "Lügenwürfeln, nur dass alle ein Schiff ins Rennen schicken",
-  "game.alt":
-    "Ein Bambusbecher mit Logo wird angehoben und gibt fünf Würfel auf dem Brett frei",
-  "game.caption": "Heb den Becher an und finde heraus, wer die Wahrheit gesagt hat.",
-
   "how.eyebrow": "Schnell gelernt",
   "how.title": "So wird gespielt",
-  "how.sub": "Drei Phasen pro Runde. Zu jeder gibt es ein Erklärvideo.",
   "how.1.aria": "Wettphase, Würfel verdeckt unter einem Becher",
   "how.1.phase": "Wettphase",
   "how.1.title": "Bluffe deine Crew",
@@ -64,17 +38,11 @@ export const DE = {
   "how.3.body":
     "Spiel goldene oder silberne Aktionskarten aus, um Rivalen anzugreifen, deine Position zu verteidigen oder deine Crew aufzuwerten. Jede Karte verändert die Lage auf der Landkarte.",
 
-  "reviews.eyebrow": "Von den Leuten, denen es gehört",
-  "reviews.bgg.on": "auf BoardGameGeek",
-  "reviews.bgg.from": "aus 600+ Bewertungen der Community",
   "reviews.title": "Bewertungen der Community",
   "reviews.note":
     "Unbearbeitet, mit den Wertungen ihrer Verfasser. Wo markiert, aus Platzgründen gekürzt.",
   "country.us": "Vereinigte Staaten",
-  "country.it": "Italien",
   "country.gb": "Vereinigtes Königreich",
-  "country.se": "Schweden",
-  "country.de": "Deutschland",
 
   "ship.eyebrow": "Versand",
   "ship.title": "Aus einem Lager in deiner Nähe",

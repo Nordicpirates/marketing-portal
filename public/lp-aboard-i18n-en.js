@@ -11,39 +11,11 @@ export const EN = {
   "nav.aria.main": "Main",
   "nav.aria.langs": "Language and edition",
   "nav.howToPlay": "How to Play",
-  "nav.editions": "Editions",
   "nav.reviews": "Reviews",
   "nav.cta": "Get the Game",
 
-  "hero.title": "We will not have a better offer than this.",
-  "hero.lede":
-    "A bluffing dice game. You lie to the people you like most, then race their ships into the rocks.",
-  // Rewritten by Mikaela 2026-08-14, her wording, kept verbatim. The other four
-  // tables still carry the older sentences: those are a translation job, not a
-  // copy-paste, and they are deliberately not guessed at here.
-  "hero.point1": "Choose one of the boxes below",
-  "hero.point2": "Something goes in that we would normally charge you for.",
-  "hero.point3": "You left empty-handed once. Here's your second chance!",
-  "hero.cta": "See what comes free",
-
-  "showcase.alt":
-    "Three players around a table mid-game, board and pieces spread out, one laughing",
-
-  "stats.players": "players, 14+",
-  "stats.length": "a full game",
-  "stats.sold": "copies sold",
-  "stats.bgg": "on BoardGameGeek",
-  "stats.reviews": "community reviews",
-  "stats.countries": "countries shipped",
-
-  "game.eyebrow": "In case you forgot",
-  "game.title": "Liar's dice, but everyone is racing a ship",
-  "game.alt": "A branded bamboo cup lifted to reveal five dice on the board",
-  "game.caption": "Lift the cup and find out who was telling the truth.",
-
   "how.eyebrow": "Quick to learn",
   "how.title": "How to play",
-  "how.sub": "Three phases per round. There is a how-to-play video for each one.",
   "how.1.aria": "Betting phase, dice hidden under a cup",
   "how.1.phase": "Betting phase",
   "how.1.title": "Bluff your crew",
@@ -60,17 +32,11 @@ export const EN = {
   "how.3.body":
     "Deploy Gold or Silver cards to attack rivals, defend your position, or upgrade your crew. Every card changes the board.",
 
-  "reviews.eyebrow": "From the people who own it",
-  "reviews.bgg.on": "on BoardGameGeek",
-  "reviews.bgg.from": "from 600+ community reviews",
   "reviews.title": "Community reviews",
   "reviews.note":
     "Unedited, with the scores their authors gave them. Trimmed for length where marked.",
   "country.us": "United States",
-  "country.it": "Italy",
   "country.gb": "United Kingdom",
-  "country.se": "Sweden",
-  "country.de": "Germany",
 
   "ship.eyebrow": "Shipping",
   "ship.title": "Sent from a warehouse near you",

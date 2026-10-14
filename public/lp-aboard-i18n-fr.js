@@ -18,37 +18,11 @@ export const FR = {
   "nav.aria.main": "Navigation principale",
   "nav.aria.langs": "Langue et édition",
   "nav.howToPlay": "Comment jouer",
-  "nav.editions": "Éditions",
   "nav.reviews": "Avis",
   "nav.cta": "Je prends le jeu",
 
-  "hero.title": "Nous n'aurons pas de meilleure offre que celle-ci.",
-  "hero.lede":
-    "Un jeu de dés et de bluff. Vous mentez aux gens que vous aimez le plus, puis vous envoyez leurs bateaux droit sur les rochers.",
-  "hero.point1": "Choisissez une boîte ci-dessous",
-  "hero.point2": "On y glisse quelque chose que l'on n'offre pas d'habitude",
-  "hero.point3": "Vous voyez cette page uniquement parce que vous n'avez pas acheté la première fois",
-  "hero.cta": "Voir ce qui est offert",
-
-  "showcase.alt":
-    "Trois joueurs autour d'une table en pleine partie, plateau et pièces étalés, l'un d'eux rit",
-
-  "stats.players": "joueurs, 14 ans et plus",
-  "stats.length": "une partie complète",
-  "stats.sold": "exemplaires vendus",
-  "stats.bgg": "sur BoardGameGeek",
-  "stats.reviews": "avis de la communauté",
-  "stats.countries": "pays livrés",
-
-  "game.eyebrow": "Au cas où vous auriez oublié",
-  "game.title": "Le jeu du menteur, sauf que tout le monde y court avec un navire",
-  "game.alt":
-    "Un gobelet en bambou marqué que l'on soulève et qui découvre cinq dés sur le plateau",
-  "game.caption": "Soulevez le gobelet et découvrez qui disait la vérité.",
-
   "how.eyebrow": "Vite appris",
   "how.title": "Comment jouer",
-  "how.sub": "Trois phases par tour. Chacune a sa vidéo d'explication.",
   "how.1.aria": "Phase de paris, dés cachés sous un gobelet",
   "how.1.phase": "Phase de paris",
   "how.1.title": "Bluffez votre équipage",
@@ -65,17 +39,11 @@ export const FR = {
   "how.3.body":
     "Jouez des cartes Action dorées ou argentées pour attaquer vos rivaux, défendre votre position ou améliorer votre équipage. Chaque carte change le plateau.",
 
-  "reviews.eyebrow": "De la part de ceux qui l'ont chez eux",
-  "reviews.bgg.on": "sur BoardGameGeek",
-  "reviews.bgg.from": "sur 600+ avis de la communauté",
   "reviews.title": "Avis de la communauté",
   "reviews.note":
     "Non retouchés, avec les notes que leurs auteurs ont données. Raccourcis là où c'est indiqué, pour tenir dans la place.",
   "country.us": "États-Unis",
-  "country.it": "Italie",
   "country.gb": "Royaume-Uni",
-  "country.se": "Suède",
-  "country.de": "Allemagne",
 
   "ship.eyebrow": "Livraison",
   "ship.title": "Expédié depuis un entrepôt près de chez vous",

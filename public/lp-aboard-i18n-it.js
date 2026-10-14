@@ -19,37 +19,11 @@ export const IT = {
   "nav.aria.main": "Navigazione principale",
   "nav.aria.langs": "Lingua ed edizione",
   "nav.howToPlay": "Come si gioca",
-  "nav.editions": "Edizioni",
   "nav.reviews": "Recensioni",
   "nav.cta": "Prendi il gioco",
 
-  "hero.title": "Non avremo mai un'offerta migliore di questa.",
-  "hero.lede":
-    "Un gioco di dadi e bluff. Menti alle persone a cui vuoi più bene, poi mandi le loro navi a sbattere sugli scogli.",
-  "hero.point1": "Scegli una scatola qui sotto",
-  "hero.point2": "Ci mettiamo dentro qualcosa che di solito non regaliamo",
-  "hero.point3": "Vedi questa pagina solo perché la prima volta non hai comprato",
-  "hero.cta": "Guarda cosa arriva in regalo",
-
-  "showcase.alt":
-    "Tre giocatori intorno a un tavolo a partita in corso, tabellone e pezzi sparsi, uno ride",
-
-  "stats.players": "giocatori, dai 14 anni",
-  "stats.length": "una partita intera",
-  "stats.sold": "copie vendute",
-  "stats.bgg": "su BoardGameGeek",
-  "stats.reviews": "recensioni della community",
-  "stats.countries": "paesi raggiunti",
-
-  "game.eyebrow": "Nel caso te ne fossi dimenticato",
-  "game.title": "Il gioco del bugiardo, ma qui corrono tutti con una nave",
-  "game.alt":
-    "Un bicchiere di bambù con il logo sollevato che scopre cinque dadi sul tabellone",
-  "game.caption": "Alza il bicchiere e scopri chi stava dicendo la verità.",
-
   "how.eyebrow": "Si impara in fretta",
   "how.title": "Come si gioca",
-  "how.sub": "Tre fasi per turno. Per ognuna c'è un video che la spiega.",
   "how.1.aria": "Fase di Scommessa, dadi nascosti sotto un bicchiere",
   "how.1.phase": "Fase di Scommessa",
   "how.1.title": "Bluffa con la tua ciurma",
@@ -66,17 +40,11 @@ export const IT = {
   "how.3.body":
     "Gioca le carte azione oro o argento per attaccare i rivali, difendere la tua posizione o migliorare la ciurma. Ogni carta cambia la mappa.",
 
-  "reviews.eyebrow": "Da chi ce l'ha in casa",
-  "reviews.bgg.on": "su BoardGameGeek",
-  "reviews.bgg.from": "da 600+ recensioni della community",
   "reviews.title": "Recensioni della community",
   "reviews.note":
     "Non modificate, con i voti dati dai loro autori. Accorciate dove indicato, solo per questioni di spazio.",
   "country.us": "Stati Uniti",
-  "country.it": "Italia",
   "country.gb": "Regno Unito",
-  "country.se": "Svezia",
-  "country.de": "Germania",
 
   "ship.eyebrow": "Spedizione",
   "ship.title": "Spedito da un magazzino vicino a te",
