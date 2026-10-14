@@ -509,9 +509,8 @@ async function completeWith(claim) {
     // ship, and the one the code was issued against. Handing the choice back here would
     // let the visitor move the page to another language and then press a button that
     // carts the old one, which is the same disagreement one screen further on. It would
-    // also let them move it to the English Base Game, which is the one combination the
-    // endpoint refuses for a European visitor and the only one it can decide: it knows
-    // where they are and this page never does.
+    // also let them move it to the English Base Game, whose print (stock or pre-order) only
+    // the endpoint can decide: it knows where they are and this page never does.
     //
     // So the choice comes back when nothing is pending, which here means the cart they
     // end up on. There are two roads to it off this panel and the hold is handed back on

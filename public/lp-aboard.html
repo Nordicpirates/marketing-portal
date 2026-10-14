@@ -18,7 +18,7 @@ if (location.hostname === "nordicpirates.com") location.replace("https://www.nor
 <script src="/lp/lp-market.v1.js"></script>
 <script>
 // The pre-order note on the English Base Game stays down where it ships from US stock (lp-market.v1.js).
-window.lpMarket&&window.lpMarket.then(function(m){if(m&&m.enBase)document.documentElement.setAttribute("data-en-base",m.enBase);});
+window.lpMarket&&window.lpMarket.then(function(m){if(m&&m.enBase)document.documentElement.setAttribute("data-en-base",m.enBase);}).catch(function(e){console.warn("[lp/aboard] no market, pre-order note stays up",e);});
 </script><script src="/lp/consent.v1.js"></script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-LYH6PJYVMZ"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-LYH6PJYVMZ');</script>
