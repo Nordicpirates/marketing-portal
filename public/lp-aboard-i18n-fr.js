@@ -191,5 +191,5 @@ export const FR = {
   "final.body": "Découvrez qui. Votre cadeau vous attend toujours.",
   "country.ca": "Canada",
   "hero2.alt": "Deux joueurs en chapeau de pirate au plateau de Lying Pirates, cartes en main",
-  "final.alt": "Un joueur coiffé d'un chapeau de pirate, souriant derrière sa coupe",
+  "final.alt": "Des amis qui rient et se montrent du doigt autour d'une partie de Lying Pirates",
 };

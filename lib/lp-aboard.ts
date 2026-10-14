@@ -62,7 +62,7 @@ const ASSETS: Record<string, { file: string; type: string; cache: string }> = {
   "/lp/aboard/media/cinzel.woff2": { file: "public/lp-aboard-media/cinzel.woff2", type: "font/woff2", cache: CACHE_MEDIA },
   "/lp/aboard/media/base.webp": { file: "public/lp-aboard-media/base.webp", type: "image/webp", cache: CACHE_MEDIA },
   "/lp/aboard/media/gift-crew.webp": { file: "public/lp-aboard-media/gift-crew.webp", type: "image/webp", cache: CACHE_MEDIA },
-  "/lp/aboard/media/gift-final.webp": { file: "public/lp-aboard-media/gift-final.webp", type: "image/webp", cache: CACHE_MEDIA },
+  "/lp/aboard/media/gift-table.webp": { file: "public/lp-aboard-media/gift-table.webp", type: "image/webp", cache: CACHE_MEDIA },
   "/lp/aboard/media/mu-thumb.webp": { file: "public/lp-aboard-media/mu-thumb.webp", type: "image/webp", cache: CACHE_MEDIA },
   "/lp/aboard/media/logo-lp.png": { file: "public/lp-aboard-media/logo-lp.png", type: "image/png", cache: CACHE_MEDIA },
   "/lp/aboard/media/logo-np.png": { file: "public/lp-aboard-media/logo-np.png", type: "image/png", cache: CACHE_MEDIA },

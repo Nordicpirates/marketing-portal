@@ -191,5 +191,5 @@ export const DE = {
   "final.body": "Finde heraus, wer. Dein Geschenk wartet noch.",
   "country.ca": "Kanada",
   "hero2.alt": "Zwei Spieler mit Piratenhüten am Lying-Pirates-Brett, Karten in der Hand",
-  "final.alt": "Ein Spieler mit Piratenhut, der über seinem Kelch grinst",
+  "final.alt": "Freunde, die lachend über einer Partie Lying Pirates aufeinander zeigen",
 };

@@ -180,5 +180,5 @@ export const EN = {
   "final.body": "Find out who. Your gift is still waiting.",
   "country.ca": "Canada",
   "hero2.alt": "Two players in pirate hats at the Lying Pirates board, cards in hand",
-  "final.alt": "A player in a pirate hat, grinning over his goblet",
+  "final.alt": "Friends laughing and pointing at each other across a Lying Pirates game",
 };

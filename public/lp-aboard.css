@@ -259,7 +259,7 @@ html:not([data-en-base="stock"]) #giftform:has(#ed-en:checked):has(#o-kraken:che
 /* final */
 .final{padding-block:56px;background:var(--card);border-top:1px solid var(--border)}
 .final .wrap{display:grid;gap:28px;align-items:center}
-.final .plate img{aspect-ratio:4/5;object-fit:cover}
+.final .plate img{aspect-ratio:800/552;object-fit:cover}
 .final h2{font-size:clamp(30px,7vw,52px)}
 .final p{color:var(--muted)}
 .final .copy{display:grid;gap:16px}
@@ -306,6 +306,6 @@ footer a{color:var(--ink)}
   .ig-track li{flex-basis:180px}
   .ig-track img{width:180px;height:226px}
   .claim-grid{grid-template-columns:1fr .95fr;gap:56px}
-  .final .wrap{grid-template-columns:.8fr 1fr;gap:56px}
+  .final .wrap{grid-template-columns:1.1fr 1fr;gap:56px}
   .gift-jump{left:auto;right:24px;bottom:24px;min-width:280px}
 }
