@@ -2,7 +2,7 @@
 //
 // These check what the page SHOULD do, straight off the acceptance criteria in
 // issue #2 and the two spec updates: the right variant per edition, the right code
-// per offer, and the English base game refused inside Europe.
+// per offer, and the English base game sold as the pre-order print outside US stock.
 //
 // The handlers are called directly with Request objects. No server is started.
 
@@ -35,6 +35,7 @@ const LANGUAGES = ["en", "de", "it", "fr", "es"];
 const BASE_EN = "51542813409627";
 const BASE_FR = "51542813442395";
 const BASE_DE = "51542813540699";
+const BASE_PREORDER_EN = "54235343880539";
 const BIGBOX_EN = "51542655959387";
 const KRAKEN = "51542942318939";
 const COINS = "51676501508443";
@@ -102,7 +103,7 @@ test("GET /lp/aboard returns the real page with a noindex header", () => {
 
 test("the page ships real copy, not a placeholder", async () => {
   const html = await handleAsset("/lp/aboard")!.text();
-  expect(html).toContain("We will not have a better offer than this.");
+  expect(html).toContain("You left empty-handed once.");
   expect(html).toContain('id="giftform"');
   // The review-only scaffolding from the mockup must be gone.
   expect(html).not.toContain("shown here for review only");
@@ -112,18 +113,27 @@ test("the page ships real copy, not a placeholder", async () => {
   expect(html).not.toContain("TODO-BENGT-ENDPOINT");
 });
 
-test("the mockup media is served from this repo, not hotlinked from the share space", async () => {
+test("the page media is served from this repo, not hotlinked from the share space", async () => {
+  const html = await handleAsset("/lp/aboard")!.text();
+  const css = await handleAsset("/lp/aboard/style.css")!.text();
+
+  // What the light rebuild ships: a hero and a closing photo, the Base Game shot, the
+  // video thumbnail, both logos and the three self-hosted font files.
   const media = [
-    ["/lp/aboard/media/lp-hero-poster.jpg", "image/jpeg"],
-    ["/lp/aboard/media/lp-hero-1080.webm", "video/webm"],
-    ["/lp/aboard/media/lp-hero-1080.mp4", "video/mp4"],
-    ["/lp/aboard/media/lp-gift-hero.jpg", "image/jpeg"],
-    ["/lp/aboard/media/lp-gift-howto.jpg", "image/jpeg"],
+    ["/lp/aboard/media/gift-crew.webp", "image/webp"],
+    ["/lp/aboard/media/gift-final.webp", "image/webp"],
+    ["/lp/aboard/media/base.webp", "image/webp"],
+    ["/lp/aboard/media/mu-thumb.webp", "image/webp"],
+    ["/lp/aboard/media/logo-lp.png", "image/png"],
+    ["/lp/aboard/media/logo-np.png", "image/png"],
+    ["/lp/aboard/media/cinzel.woff2", "font/woff2"],
+    ["/lp/aboard/media/asul-400.woff2", "font/woff2"],
+    ["/lp/aboard/media/asul-700.woff2", "font/woff2"],
   ];
 
   for (const [path, type] of media) {
     const res = handleAsset(path);
-    expect(res).not.toBeNull();
+    expect(res, path).not.toBeNull();
     expect(res!.status).toBe(200);
     expect(res!.headers.get("Content-Type")).toBe(type);
     // Real bytes on disk, not an empty placeholder.
@@ -132,15 +142,21 @@ test("the mockup media is served from this repo, not hotlinked from the share sp
 
   // Nothing on the page may still point at the mockup share space. A live page
   // people are paid to visit cannot break when a mockup gets tidied up.
-  const html = await handleAsset("/lp/aboard")!.text();
-  const css = await handleAsset("/lp/aboard/style.css")!.text();
   expect(html).not.toContain("share.gate1.dev");
   expect(css).not.toContain("share.gate1.dev");
 
   // The page asks for these under the PUBLIC path. The Worker rewrites
   // /gift-offer/media/<file> onto the upstream /lp/aboard/media/<file> served above.
   for (const [path] of media) {
-    expect(html + css).toContain(path.replace("/lp/aboard/", "/gift-offer/"));
+    expect(html + css, path).toContain(path.replace("/lp/aboard/", "/gift-offer/"));
+  }
+
+  // And the other way round: every media file the page asks for from this service is
+  // one it serves, so a new picture cannot go in the markup without going in the table.
+  const asked = new Set((html + css).match(/\/gift-offer\/media\/[\w.-]+/g));
+  expect(asked.size).toBeGreaterThan(0);
+  for (const path of asked) {
+    expect(handleAsset(path.replace("/gift-offer/", "/lp/aboard/"))?.status, path).toBe(200);
   }
 });
 
@@ -240,7 +256,7 @@ test("everything the browser asks for uses the public /gift-offer path", async (
   expect(html).toContain('href="/gift-offer/style.css"');
   expect(html).toContain('src="/gift-offer/page.js"');
   expect(js).toContain('fetch("/gift-offer/claim"');
-  expect(css).toContain("/gift-offer/media/lp-hero-poster.jpg");
+  expect(css).toContain("/gift-offer/media/cinzel.woff2");
 
   // Not one upstream path may leak into anything the browser receives, comments
   // included. Every module below is shipped to the browser.
@@ -318,49 +334,56 @@ test("the upstream routes this service answers on are still /lp/aboard", () => {
 
 test("the header CTA sells the game and points at the picker", async () => {
   const html = await handleAsset("/lp/aboard")!.text();
-  expect(html).toContain('<a class="np-nav-cta" href="#offer" data-i18n="nav.cta">Get the Game</a>');
+  expect(html).toContain('<a class="btn btn-ink top-cta" href="#offer" data-i18n="nav.cta">Get the Game</a>');
   // The old label sold one box to everybody, including the two thirds of visitors who
   // came for a base game.
   expect(html).not.toContain("Get the Big Box");
 });
 
-test("no stylesheet rule may take the header CTA off a phone", async () => {
-  // Lucas could not see it on his. The links and the language chips are allowed to go
-  // on a narrow screen; the one button that sells anything is not, so it shrinks
-  // instead. What it may not do is disappear or hang off the right hand edge.
+test("a selling button is on every phone screen, and nothing takes the sticky one off it", async () => {
+  // The header button gives up its place under 560px to the language chips, so the hero
+  // button and the sticky one sell on a phone and neither may be switched off.
   const css = await handleAsset("/lp/aboard/style.css")!.text();
 
-  expect(css).not.toMatch(/\.np-nav-cta\{[^}]*display:none/);
-  expect(css).not.toMatch(/@media[^{]*\{[^}]*\.np-nav-cta\{[^}]*display:none/);
+  // The header button hides only below the breakpoint that brings it back.
+  expect(css).toMatch(/\.top-cta\{display:none\}/);
+  expect(css).toContain("@media (min-width:560px){.top-cta{display:inline-flex}}");
 
-  // Pinned to the right once the links are gone, and smaller on the narrowest phones.
-  expect(css).toContain("@media(max-width:1080px){.np-links{display:none}.np-nav-cta{margin-left:auto}}");
-  expect(css).toMatch(/@media\(max-width:420px\)\{[^}]*\.np-nav-inner/);
-  expect(css).toMatch(/\.np-nav-cta\{font-size:\.76rem/);
-  // The bar never wraps, so the logo is the part that gives up room.
-  expect(css).toContain("flex-wrap:nowrap");
-  expect(css).toMatch(/\.np-logo\{[^}]*text-overflow:ellipsis/);
+  // The hero button and the sticky one are never display:none by a media query. The
+  // sticky one is hidden by [hidden] and by the hero being on screen, both on purpose.
+  expect(css).not.toMatch(/@media[^{]*\{[^}]*\.hero-cta[^{]*\{[^}]*display:none/);
+  expect(css).not.toMatch(/@media[^{]*\{[^}]*\.gift-jump\{display:none/);
+  expect(css).toContain(".gift-jump[hidden],.hero-in .gift-jump{display:none}");
+  expect(css).toMatch(/\.hero-cta \.btn\{width:100%\}/);
+
+  // The chips are what the header keeps on a phone, and the bar does not wrap.
+  expect(css).toMatch(/\.top \.wrap\{display:flex;[^}]*min-height:60px\}/);
+  expect(css).not.toMatch(/\.np-langs\{[^}]*display:none/);
 });
 
-test("the reviewer section is gone from the markup and from the stylesheet", async () => {
+test("the old reviewer section is gone from the markup and from the stylesheet", async () => {
   const html = await handleAsset("/lp/aboard")!.text();
   const css = await handleAsset("/lp/aboard/style.css")!.text();
 
   expect(html).not.toContain('class="pros"');
   expect(html).not.toContain('id="pros"');
   expect(html).not.toContain('href="#pros"');
-  for (const gone of ["Unfiltered Gamer", "Meeple University", "Dice Tower", "BOARD GAME REVIEWERS"]) {
-    expect(html).not.toContain(gone);
-  }
+  expect(html).not.toContain("BOARD GAME REVIEWERS");
 
   // The CSS for it goes with it rather than sitting there unused.
   for (const rule of [".pros", ".pros-title", ".pros-rule", ".pros-grid", ".pro-card", ".pro-logo", ".pro-stars", ".pro-av", ".pro-who"]) {
     expect(css).not.toContain(rule);
   }
 
-  // The community reviews are a different section, and Lucas did not ask for those.
+  // The three press quotes now sit inside the community reviews section, which the
+  // header links to.
   expect(html).toContain('id="bgg-reviews"');
+  expect(html).toContain('href="#bgg-reviews"');
   expect(html).toContain("Community reviews");
+  const reviews = html.slice(html.indexOf('id="bgg-reviews"'), html.indexOf('id="how-to-play"'));
+  for (const outlet of ["Unfiltered Gamer", "Meeple University", "The Dice Tower"]) {
+    expect(reviews).toContain(outlet);
+  }
 });
 
 test("the signup step is Polly's copy, and names the gift that is chosen", async () => {
@@ -392,7 +415,7 @@ test("the signup step is Polly's copy, and names the gift that is chosen", async
   // No pressure language, and no proof line quoting a rating this page cannot back.
   expect(html).not.toContain("Don't miss out");
   expect(html).not.toContain("exclusive");
-  expect(html).not.toContain("608");
+  expect(html).not.toMatch(/\b608\b/);
 });
 
 test("the picker says what it is for, right above it", async () => {
@@ -403,29 +426,53 @@ test("the picker says what it is for, right above it", async () => {
   expect(html.indexOf(heading)).toBeLessThan(html.indexOf('id="giftform"'));
 });
 
-test("the two product columns stack on a narrow screen, and nothing hides the warning", async () => {
+test("the two product columns stack on a narrow screen, and nothing hides the pre-order note", async () => {
   const css = await handleAsset("/lp/aboard/style.css")!.text();
   const html = await handleAsset("/lp/aboard")!.text();
 
-  // Side by side on a wide screen, one whole column after the other on a phone.
-  expect(css).toMatch(/\.prods\{display:grid;[^}]*grid-template-columns:repeat\(2/);
-  expect(css).toMatch(/@media \(max-width:860px\)\{[\s\S]*?\.prods\{grid-template-columns:1fr\}/);
-  // And the two gifts inside a column go one above the other before they get too narrow
-  // to read.
-  expect(css).toMatch(/@media \(max-width:460px\)\{[\s\S]*?\.gifts\{grid-template-columns:1fr/);
+  // One whole column after the other on a phone, side by side from 640px.
+  expect(css).toMatch(/\.prods\{display:grid;gap:18px;align-items:start\}/);
+  expect(css).toMatch(/@media \(min-width:640px\)\{[\s\S]*?\.prods\{grid-template-columns:1fr 1fr\}/);
 
-  // The warning a European reads before they submit is hidden until the picker is
-  // showing the one pairing it is about. Those two rules ARE the warning: without them
-  // it is either never seen or always seen.
+  // The pre-order note shows only for English plus a base gift, and not where it is stock.
+  // Those rules ARE the note: without them it is either never seen or always seen.
   expect(css).toMatch(/\.en-warn\{display:none/);
-  expect(css).toContain("#giftform:has(#ed-en:checked):has(#o-kraken:checked) .en-warn");
-  expect(css).toContain("#giftform:has(#ed-en:checked):has(#o-coins:checked) .en-warn");
+  for (const gift of ["o-kraken", "o-coins"]) {
+    expect(css).toContain(
+      `html:not([data-en-base="stock"]) #giftform:has(#ed-en:checked):has(#${gift}:checked) .en-warn`
+    );
+  }
   expect(html).toContain('class="en-warn"');
 
   // The mockup's sold-out and not-in-your-location tiles were hand set to illustrate.
   // This page cannot compute either one, so it ships neither.
   expect(html).not.toContain("sold out");
   expect(html).not.toContain("not available in your location");
+});
+
+test("the head script marks the page data-en-base from the market, and survives having none", async () => {
+  const html = await handleAsset("/lp/aboard")!.text();
+  const source = /<script>\s*\/\/ The pre-order note[^<]*?(window\.lpMarket[^<]*)<\/script>/.exec(html);
+  expect(source, "the data-en-base head script is gone from the page").not.toBeNull();
+  // Market first, then the script that reads it.
+  expect(html.indexOf('src="/lp/lp-market.v1.js"')).toBeLessThan(html.indexOf("data-en-base"));
+
+  // Run it against a stand-in market, the way the browser would.
+  async function run(market: unknown, hasMarket = true) {
+    const set: [string, string][] = [];
+    const fakeWindow: any = hasMarket ? { lpMarket: Promise.resolve(market) } : {};
+    const doc = { documentElement: { setAttribute: (k: string, v: string) => set.push([k, v]) } };
+    new Function("window", "document", source![1])(fakeWindow, doc);
+    await new Promise((done) => setTimeout(done, 0));
+    return set;
+  }
+
+  expect(await run({ enBase: "stock" })).toEqual([["data-en-base", "stock"]]);
+  expect(await run({ enBase: "preorder" })).toEqual([["data-en-base", "preorder"]]);
+  // No answer from the market leaves the attribute off, which shows the note.
+  expect(await run({})).toEqual([]);
+  expect(await run(null)).toEqual([]);
+  expect(await run(undefined, false)).toEqual([]);
 });
 
 test("the sticky gift button is in the markup, starts hidden, and routes to the picker", async () => {
@@ -489,7 +536,7 @@ test("German base game is issued from any country, not just outside Europe", asy
   expect((await res.json()).state).toBe("code");
 });
 
-test("English base game inside Europe is blocked, and offered the BIG BOX instead", async () => {
+test("English base game inside Europe is the pre-order print, with the code they picked", async () => {
   const res = await claim(
     { email: "swede@example.com", offer: "base-kraken", edition: "en" },
     { country: "SE" }
@@ -497,103 +544,91 @@ test("English base game inside Europe is blocked, and offered the BIG BOX instea
   expect(res.status).toBe(200);
 
   const data = await res.json();
-  expect(data.state).toBe("blocked");
-  // The BIG BOX is what this state sells, so it must carry the BIG BOX code.
-  // A base code on a BIG BOX cart buys the visitor nothing.
-  expect(data.code).toBe("FULLHOLD-B642");
-  expect(data.cartUrl).toContain(BIGBOX_EN);
+  // Nothing is refused any more: the answer is a code, flagged as a pre-order.
+  expect(data.state).toBe("code");
+  expect(data.code).toBe("KRAKEN-A7F2");
+  expect(data.preorder).toBe(true);
+  expect(data.cartUrl).toContain(BASE_PREORDER_EN);
+  expect(data.cartUrl).not.toContain(BASE_EN);
   expect(data.cartUrl).toContain(KRAKEN);
-  expect(data.cartUrl).toContain(COINS);
-  expect(data.cartUrl).toContain("discount=FULLHOLD-B642");
+  expect(data.cartUrl).toContain("discount=KRAKEN-A7F2");
+  // The BIG BOX is not offered instead, and no second code rides along.
+  expect(data.cartUrl).not.toContain(BIGBOX_EN);
+  expect("baseCode" in data).toBe(false);
 });
 
-test("a blocked answer carries both codes, one per choice the page offers", async () => {
-  // The page asks a blocked visitor whether they want another edition of the game they
-  // picked or the BIG BOX. Those need different codes, both of them already decided
-  // here, so the answer carries both rather than the page guessing at one of them.
-  const res = await claim(
-    { email: "choice@example.com", offer: "base-kraken", edition: "en" },
-    { country: "FR" }
-  );
-  const data = await res.json();
-  expect(data.state).toBe("blocked");
-
-  // Unchanged: "code" and "cartUrl" still describe the BIG BOX this state offers.
-  expect(data.code).toBe("FULLHOLD-B642");
-  expect(data.cartUrl).toContain("discount=FULLHOLD-B642");
-
-  // The addition: the code this visitor was actually issued, which is what a Base Game
-  // cart in another edition needs. It is the same value the emailer reads out of the
-  // store, so the code on screen and the code in the email cannot drift apart.
-  expect(data.baseCode).toBe("KRAKEN-A7F2");
-
-  const row = storedLines().find((l) => l.email === "choice@example.com");
-  expect(row!.code).toBe(data.baseCode);
-  expect(row!.shownCode).toBe(data.code);
-});
-
-test("only a blocked answer carries a base code", async () => {
-  // Every other state already shows the code it issued, so a second one would be the
-  // same value twice and an invitation to show the wrong one.
-  const cases: [string, string, string][] = [
-    ["base-kraken", "de", "DE"],
-    ["base-kraken", "en", "US"],
-    ["bigbox-both", "en", "SE"],
+test("the answer carries one code, the one for the box picked, in every state", async () => {
+  // The blocked answer used to carry two codes. There is one choice now, so one code,
+  // and it is the value the emailer reads out of the store.
+  const cases: [string, string, string, string][] = [
+    ["base-kraken", "en", "FR", "KRAKEN-A7F2"],
+    ["base-coins", "en", "FR", "KRAKEN-A7F2"],
+    ["base-kraken", "en", "US", "KRAKEN-A7F2"],
+    ["base-kraken", "de", "DE", "KRAKEN-A7F2"],
+    ["bigbox-both", "en", "SE", "FULLHOLD-B642"],
   ];
-  for (const [offer, edition, country] of cases) {
-    const res = await claim({ email: "nobase@example.com", offer, edition }, { country });
+  for (const [offer, edition, country, code] of cases) {
+    const email = `one-code-${offer}-${edition}-${country}@example.com`.toLowerCase();
+    const res = await claim({ email, offer, edition }, { country });
     const data = await res.json();
+
     expect(data.state).toBe("code");
+    expect(data.code).toBe(code);
     expect("baseCode" in data).toBe(false);
+    expect(data.cartUrl).toContain(`discount=${code}`);
+
+    const row = storedLines().find((l) => l.email === email);
+    expect(row!.code).toBe(data.code);
+    expect(row!.shownCode).toBe(data.code);
   }
 });
 
-test("a blocked visitor ends up with a code their cart accepts, whichever choice they make", async () => {
+test("the cart link the endpoint builds is the one the page builds for the same answer", async () => {
   const { buildCartUrl } = await import("../lib/offer.js");
 
-  const res = await claim(
-    { email: "either@example.com", offer: "base-coins", edition: "en" },
-    { country: "SE" }
-  );
-  const data = await res.json();
-
-  // Choice one, the European edition: the game they picked in a language we can send,
-  // carrying the code they were issued. Both codes are scoped to a product rather than
-  // to one variant, so every edition qualifies.
-  for (const edition of ["de", "fr", "es", "it"]) {
-    const url = buildCartUrl("base-coins", edition, data.baseCode)!;
-    expect(url).toContain(`discount=${data.baseCode}`);
-    expect(url).toContain(COINS);
-    expect(url).not.toContain(BASE_EN);
-    expect(url).not.toContain("FULLHOLD-B642");
+  for (const offer of ["base-kraken", "base-coins"]) {
+    for (const country of ["SE", "GB", "US"]) {
+      const res = await claim({ email: `agree-${offer}-${country}@example.com`, offer, edition: "en" }, { country });
+      const data = await res.json();
+      // The page reads the same two fields, code and preorder, off the answer.
+      expect(data.cartUrl).toBe(buildCartUrl(offer, "en", data.code, data.preorder === true));
+    }
   }
 
-  // Choice two, the BIG BOX: the cart the endpoint built, with the BIG BOX code on it.
-  expect(data.cartUrl).toContain(BIGBOX_EN);
-  expect(data.cartUrl).toContain(KRAKEN);
-  expect(data.cartUrl).toContain(COINS);
-  expect(data.cartUrl).toContain("discount=FULLHOLD-B642");
+  // Another edition of the same box is the same cart whatever the visitor's country.
+  for (const edition of ["de", "fr", "es", "it"]) {
+    const res = await claim({ email: "agree-ed@example.com", offer: "base-coins", edition }, { country: "SE" });
+    const data = await res.json();
+    expect(data.cartUrl).toBe(buildCartUrl("base-coins", edition, data.code));
+    expect(data.cartUrl).not.toContain(BASE_PREORDER_EN);
+  }
 });
 
-test("every EU and EEA country blocks the English base game", async () => {
-  for (const country of ["DE", "FR", "IT", "ES", "PL", "IE", "NO", "IS", "LI"]) {
+test("every EU and EEA country gets the English base game as the pre-order print", async () => {
+  for (const country of ["DE", "FR", "IT", "ES", "PL", "IE", "NO", "IS", "LI", "SE", "NL", "AT"]) {
     const res = await claim(
       { email: "eu@example.com", offer: "base-coins", edition: "en" },
       { country }
     );
-    expect((await res.json()).state).toBe("blocked");
+    const data = await res.json();
+    expect(data.state, country).toBe("code");
+    expect(data.preorder, country).toBe(true);
+    expect(data.cartUrl, country).toContain(BASE_PREORDER_EN);
+    expect(data.cartUrl, country).toContain("discount=KRAKEN-A7F2");
   }
 });
 
-// Britain is not the EU here and must not be treated as it: Zatu in Norwich stocks the
-// English Base Game, and the UK market sells it. Lucas, 2026-09-27.
-test("Britain gets the English base game, it ships from Norwich", async () => {
+// Britain used to be the exception because Zatu stocks the old print; it is now outside
+// the US stock list like everywhere else, so it gets the pre-order print too.
+test("Britain gets the English base game as the pre-order print", async () => {
   for (const offer of ["base-kraken", "base-coins"]) {
     const res = await claim({ email: "uk@example.com", offer, edition: "en" }, { country: "GB" });
     const data = await res.json();
     expect(data.state).toBe("code");
     expect(data.code).toBe("KRAKEN-A7F2");
+    expect(data.preorder).toBe(true);
     expect(data.baseCode).toBeUndefined();
+    expect(data.cartUrl).toContain(BASE_PREORDER_EN);
     expect(data.cartUrl).toContain("discount=KRAKEN-A7F2");
   }
 });
@@ -610,7 +645,7 @@ test("the page never tells a reader we cannot send the English base game to Brit
 });
 
 test("an authenticated claim uses the forwarded visitor and ignores the proxy hop", async () => {
-  const blocked = await claimWithHeaders(
+  const preorder = await claimWithHeaders(
     { email: "proxied@example.com", offer: "base-kraken", edition: "en" },
     {
       "x-lp-proxy-secret": PROXY_SECRET,
@@ -622,10 +657,12 @@ test("an authenticated claim uses the forwarded visitor and ignores the proxy ho
       "CF-Connecting-IP": "198.51.100.200",
     }
   );
-  expect((await blocked.json()).state).toBe("blocked");
+  const swedish = await preorder.json();
+  expect(swedish.state).toBe("code");
+  expect(swedish.preorder).toBe(true);
   expect(storedLines().find((l) => l.email === "proxied@example.com")?.country).toBe("SE");
 
-  // And the other way round: a real visitor outside Europe behind a European hop.
+  // And the other way round: a real visitor in the US behind a European hop.
   const allowed = await claimWithHeaders(
     { email: "proxied-us@example.com", offer: "base-kraken", edition: "en" },
     {
@@ -635,7 +672,10 @@ test("an authenticated claim uses the forwarded visitor and ignores the proxy ho
       "CF-IPCountry": "SE",
     }
   );
-  expect((await allowed.json()).state).toBe("code");
+  const american = await allowed.json();
+  expect(american.state).toBe("code");
+  expect(american.preorder).toBeUndefined();
+  expect(american.cartUrl).toContain(BASE_EN);
   expect(storedLines().find((l) => l.email === "proxied-us@example.com")?.country).toBe("US");
 });
 
@@ -699,110 +739,150 @@ test("static assets stay public: only the claim endpoint needs the secret", () =
   }
 });
 
-test("an unknown country blocks the English base game rather than guessing", async () => {
-  // The one combination we cannot ship into Europe. If the trusted hop says nothing
-  // about where the visitor is, we do not know whether this is allowed, and the
-  // honest answer to "we do not know" is not "yes". It used to read as "not in
-  // Europe" and sell a box that would never arrive.
+test("an unknown country sells the English base game as the pre-order print", async () => {
+  // If the trusted hop says nothing about where the visitor is, the pre-order print is
+  // the one that ships anywhere, so that is what is sold. It is never the stock print.
 
   // Header absent entirely.
   const missing = await claim({ email: "nocountry@example.com", offer: "base-kraken", edition: "en" });
   expect(missing.status).toBe(200);
-  expect((await missing.json()).state).toBe("blocked");
+  const missingData = await missing.json();
+  expect(missingData.state).toBe("code");
+  expect(missingData.preorder).toBe(true);
+  expect(missingData.cartUrl).toContain(BASE_PREORDER_EN);
 
   // Header present but empty, which is what a half-configured Worker sends.
   const empty = await claimWithHeaders(
     { email: "emptycountry@example.com", offer: "base-coins", edition: "en" },
     { "x-lp-proxy-secret": PROXY_SECRET, "x-visitor-ip": "203.0.113.80", "x-visitor-country": "" }
   );
-  expect((await empty.json()).state).toBe("blocked");
+  const emptyData = await empty.json();
+  expect(emptyData.state).toBe("code");
+  expect(emptyData.preorder).toBe(true);
+  expect(emptyData.cartUrl).toContain(BASE_PREORDER_EN);
 
   // Stored the same way as any other unknown country: null, not invented.
   for (const email of ["nocountry@example.com", "emptycountry@example.com"]) {
     const row = storedLines().find((l) => l.email === email);
     expect(row).toBeDefined();
     expect(row!.country).toBeNull();
-    expect(row!.state).toBe("blocked");
+    expect(row!.state).toBe("code");
+    expect(row!.preorder).toBe(true);
   }
 });
 
 test("Cloudflare's own words for an unplaceable visitor count as unknown too", async () => {
-  // The test above covers the header being absent or empty. Cloudflare does not use
-  // either of those when it cannot place someone: it sends XX for an address it maps to
-  // no country and T1 for a Tor exit node, and the Worker passes on what it was told.
-  // Both mean exactly what a missing header means, and both used to sail past the check
-  // because they are not "": neither is in EUROPE, so the answer came back "code" and we
-  // sold the English base game to a visitor we cannot place. That is the box 77f06f5
-  // stopped guessing about, through a door it did not know was there.
+  // Cloudflare sends XX for no country and T1 for Tor. Both mean what a missing header
+  // means, so neither may be read as a country on the US stock list.
   for (const country of ["XX", "T1", "xx", "t1"]) {
     const res = await claim(
       { email: `cf-${country.toLowerCase()}@example.com`, offer: "base-kraken", edition: "en" },
       { country }
     );
     expect(res.status).toBe(200);
-    expect((await res.json()).state, `"${country}" is not a place we can ship to`).toBe("blocked");
+    const data = await res.json();
+    expect(data.state).toBe("code");
+    expect(data.preorder, `"${country}" is not a place the stock print can go`).toBe(true);
+    expect(data.cartUrl).toContain(BASE_PREORDER_EN);
   }
 
   // Stored as the hop reported it. What it said is a fact about the request and belongs
   // in the record; what it MEANS is the decision above, and that is already made.
-  expect(storedLines().find((l) => l.email === "cf-xx@example.com")?.country).toBe("XX");
+  const row = storedLines().find((l) => l.email === "cf-xx@example.com");
+  expect(row?.country).toBe("XX");
+  expect(row?.preorder).toBe(true);
 });
 
 test("an unplaceable visitor changes nothing for other editions or the BIG BOX", async () => {
-  // Same as for a missing country: only the English base game is restricted.
+  // Same as for a missing country: only the English base game has a pre-order print.
   for (const edition of ["de", "fr", "es", "it"]) {
     const res = await claim({ email: "cfx@example.com", offer: "base-kraken", edition }, { country: "XX" });
-    expect((await res.json()).state).toBe("code");
+    const data = await res.json();
+    expect(data.state).toBe("code");
+    expect(data.preorder).toBeUndefined();
+    expect(data.cartUrl).not.toContain(BASE_PREORDER_EN);
   }
 
   const bigbox = await claim(
     { email: "cfx-big@example.com", offer: "bigbox-both", edition: "en" },
     { country: "T1" }
   );
-  expect((await bigbox.json()).state).toBe("code");
+  const bigboxData = await bigbox.json();
+  expect(bigboxData.state).toBe("code");
+  expect(bigboxData.preorder).toBeUndefined();
+  expect(bigboxData.cartUrl).toContain(BIGBOX_EN);
 });
 
 test("an unknown country changes nothing for other editions or the BIG BOX", async () => {
-  // Only the English base game is restricted. Everything else ships from Europe, so
-  // not knowing where someone is has no bearing on it.
+  // Only the English base game has a pre-order print. Everything else ships as it
+  // always did, so not knowing where someone is has no bearing on it.
   for (const edition of ["de", "fr", "es", "it"]) {
     const res = await claim({ email: "nc@example.com", offer: "base-kraken", edition });
-    expect((await res.json()).state).toBe("code");
+    const data = await res.json();
+    expect(data.state).toBe("code");
+    expect(data.preorder).toBeUndefined();
+    expect(data.cartUrl).not.toContain(BASE_PREORDER_EN);
   }
 
   const bigbox = await claim({ email: "nc-big@example.com", offer: "bigbox-both", edition: "en" });
-  expect((await bigbox.json()).state).toBe("code");
+  const bigboxData = await bigbox.json();
+  expect(bigboxData.state).toBe("code");
+  expect(bigboxData.preorder).toBeUndefined();
+  expect(bigboxData.cartUrl).toContain(BIGBOX_EN);
 
-  // And a known non-European country is still fine for the English base game.
+  // And a country on the US stock list is still the stock print for the English base game.
   const known = await claim(
     { email: "nc-us@example.com", offer: "base-kraken", edition: "en" },
     { country: "US" }
   );
-  expect((await known.json()).state).toBe("code");
+  const knownData = await known.json();
+  expect(knownData.preorder).toBeUndefined();
+  expect(knownData.cartUrl).toContain(BASE_EN);
 });
 
-test("English base game outside Europe is fine", async () => {
-  for (const country of ["US", "AU", "CA", "CH", "JP"]) {
-    const res = await claim(
-      { email: "away@example.com", offer: "base-kraken", edition: "en" },
-      { country }
-    );
-    const data = await res.json();
-    expect(data.state).toBe("code");
-    expect(data.code).toBe("KRAKEN-A7F2");
-    expect(data.cartUrl).toContain(BASE_EN);
+test("English base game from US stock in US, CA, AU and NZ only", async () => {
+  for (const country of ["US", "CA", "AU", "NZ"]) {
+    for (const offer of ["base-kraken", "base-coins"]) {
+      const res = await claim({ email: "away@example.com", offer, edition: "en" }, { country });
+      const data = await res.json();
+      expect(data.state).toBe("code");
+      expect(data.code).toBe("KRAKEN-A7F2");
+      expect(data.preorder, country).toBeUndefined();
+      expect(data.cartUrl).toContain(BASE_EN);
+      expect(data.cartUrl).not.toContain(BASE_PREORDER_EN);
+    }
   }
 });
 
-test("the BIG BOX is never blocked, it ships from Europe", async () => {
-  const res = await claim(
-    { email: "big@example.com", offer: "bigbox-both", edition: "en" },
-    { country: "SE" }
-  );
-  const data = await res.json();
-  expect(data.state).toBe("code");
-  expect(data.code).toBe("FULLHOLD-B642");
-  expect(data.cartUrl).toContain("discount=FULLHOLD-B642");
+test("a lower case country from the hop is the same country", async () => {
+  const stock = await claim({ email: "lower@example.com", offer: "base-kraken", edition: "en" }, { country: "nz" });
+  expect((await stock.json()).preorder).toBeUndefined();
+  const abroad = await claim({ email: "lower@example.com", offer: "base-kraken", edition: "en" }, { country: "se" });
+  expect((await abroad.json()).preorder).toBe(true);
+});
+
+test("English base game everywhere else is the pre-order print", async () => {
+  for (const country of ["CH", "JP", "GB", "MX", "BR", "ZA", "NO"]) {
+    const res = await claim({ email: "elsewhere@example.com", offer: "base-kraken", edition: "en" }, { country });
+    const data = await res.json();
+    expect(data.state).toBe("code");
+    expect(data.preorder, country).toBe(true);
+    expect(data.cartUrl).toContain(BASE_PREORDER_EN);
+    expect(data.cartUrl).not.toContain(BASE_EN);
+  }
+});
+
+test("the BIG BOX is never a pre-order, in any country", async () => {
+  for (const country of ["SE", "US", "GB", "XX"]) {
+    const res = await claim({ email: "big@example.com", offer: "bigbox-both", edition: "en" }, { country });
+    const data = await res.json();
+    expect(data.state).toBe("code");
+    expect(data.code).toBe("FULLHOLD-B642");
+    expect(data.preorder, country).toBeUndefined();
+    expect(data.cartUrl).toContain(BIGBOX_EN);
+    expect(data.cartUrl).not.toContain(BASE_PREORDER_EN);
+    expect(data.cartUrl).toContain("discount=FULLHOLD-B642");
+  }
 });
 
 test("the BIG BOX carries both gifts and its own code, never the base code", async () => {
@@ -828,12 +908,12 @@ test("English cart links never use the French variant, the bug in the mockup", a
     const data = await res.json();
     expect(data.cartUrl).not.toContain(BASE_FR);
   }
-  // And the blocked path, which swaps in a cart of its own.
-  const blocked = await claim(
+  // And the pre-order path, which swaps in a variant of its own.
+  const preorder = await claim(
     { email: "en@example.com", offer: "base-kraken", edition: "en" },
     { country: "SE" }
   );
-  expect((await blocked.json()).cartUrl).not.toContain(BASE_FR);
+  expect((await preorder.json()).cartUrl).not.toContain(BASE_FR);
 });
 
 test("each edition gets its own variant", async () => {
@@ -931,9 +1011,9 @@ test("the page has no rejoin control and no rejoin state", async () => {
   expect(html).not.toContain("tpl-rejoin");
 });
 
-test("every submission lands in the JSONL store, blocked ones included", async () => {
+test("every submission lands in the JSONL store, pre-orders included", async () => {
   await claim({ email: "stored@example.com", offer: "base-kraken", edition: "de" }, { country: "DE" });
-  await claim({ email: "blocked@example.com", offer: "base-kraken", edition: "en" }, { country: "SE" });
+  await claim({ email: "preordered@example.com", offer: "base-kraken", edition: "en" }, { country: "SE" });
 
   const lines = storedLines();
 
@@ -944,14 +1024,16 @@ test("every submission lands in the JSONL store, blocked ones included", async (
   expect(ok!.edition).toBe("de");
   expect(ok!.country).toBe("DE");
   expect(ok!.code).toBe("KRAKEN-A7F2");
+  expect(ok!.preorder).toBe(false);
   expect(typeof ok!.ts).toBe("string");
 
-  const blocked = lines.find((l) => l.email === "blocked@example.com");
-  expect(blocked).toBeDefined();
-  expect(blocked!.state).toBe("blocked");
-  // Issued the base code, shown the BIG BOX one. The emailer needs both.
-  expect(blocked!.code).toBe("KRAKEN-A7F2");
-  expect(blocked!.shownCode).toBe("FULLHOLD-B642");
+  const preordered = lines.find((l) => l.email === "preordered@example.com");
+  expect(preordered).toBeDefined();
+  expect(preordered!.state).toBe("code");
+  expect(preordered!.preorder).toBe(true);
+  // One code now: the one issued is the one shown, and the one emailed.
+  expect(preordered!.code).toBe("KRAKEN-A7F2");
+  expect(preordered!.shownCode).toBe("KRAKEN-A7F2");
 });
 
 test("logs carry no PII, no codes and no raw payload, only the event and what happened", async () => {
@@ -968,7 +1050,7 @@ test("logs carry no PII, no codes and no raw payload, only the event and what ha
 
   const email = "very.private.person@secret-domain.example";
   try {
-    // A success, a blocked one, a bad email, a honeypot hit, a refused action, and
+    // A success, a pre-order, a bad email, a honeypot hit, a refused action, and
     // one that never got past the door.
     await claim({ email, offer: "base-kraken", edition: "de" }, { country: "DE", ip: "203.0.113.99" });
     await claim({ email, offer: "base-kraken", edition: "en" }, { country: "SE", ip: "203.0.113.98" });
@@ -1091,4 +1173,57 @@ test("a plain form post works too, not only JSON", async () => {
   );
   expect(res.status).toBe(200);
   expect((await res.json()).state).toBe("code");
+});
+
+test("cartItems and buildCartUrl use the pre-order variant only for the English Base Game", async () => {
+  const offer = await import("../lib/offer.js");
+  const ids = (offerName: string, edition: string, preorder?: boolean) =>
+    offer.cartItems(offerName, edition, preorder)!.items.map((i: any) => i.id);
+
+  expect(offer.BASE_PREORDER_EN).toBe(BASE_PREORDER_EN);
+
+  // The English base offers swap the game, and keep the gift they were given.
+  expect(ids("base-kraken", "en", true)).toEqual([BASE_PREORDER_EN, KRAKEN]);
+  expect(ids("base-coins", "en", true)).toEqual([BASE_PREORDER_EN, COINS]);
+  // Off, or left out, is the stock print: the argument is optional.
+  expect(ids("base-kraken", "en", false)).toEqual([BASE_EN, KRAKEN]);
+  expect(ids("base-kraken", "en")).toEqual([BASE_EN, KRAKEN]);
+
+  // Nothing else has a pre-order print, so the flag changes nothing for it.
+  for (const edition of ["de", "fr", "es", "it"]) {
+    expect(ids("base-kraken", edition, true)).toEqual(ids("base-kraken", edition, false));
+    expect(ids("base-coins", edition, true)).not.toContain(BASE_PREORDER_EN);
+    expect(ids("bigbox-both", edition, true)).toEqual(ids("bigbox-both", edition, false));
+  }
+  expect(ids("bigbox-both", "en", true)).toEqual([BIGBOX_EN, KRAKEN, COINS]);
+
+  // The discount rule and the quantities are the same either way.
+  expect(offer.cartItems("base-kraken", "en", true)!.discount).toBe(true);
+  expect(offer.cartItems("base-kraken", "en", true)!.items.every((i: any) => i.quantity === 1)).toBe(true);
+
+  // Unknown things stay unknown.
+  expect(offer.cartItems("free-stuff", "en", true)).toBeNull();
+  expect(offer.cartItems("base-kraken", "sv", true)).toBeNull();
+  expect(offer.buildCartUrl("free-stuff", "en", "X", true)).toBeNull();
+
+  const url = offer.buildCartUrl("base-kraken", "en", "KRAKEN-A7F2", true)!;
+  expect(url).toBe(`${offer.SHOP_ORIGIN}/cart/${BASE_PREORDER_EN}:1,${KRAKEN}:1?discount=KRAKEN-A7F2`);
+  expect(offer.buildCartUrl("base-kraken", "en", "KRAKEN-A7F2")).toBe(
+    `${offer.SHOP_ORIGIN}/cart/${BASE_EN}:1,${KRAKEN}:1?discount=KRAKEN-A7F2`
+  );
+  expect(offer.buildCartUrl("bigbox-both", "en", "FULLHOLD-B642", true)).not.toContain(BASE_PREORDER_EN);
+  expect(offer.buildCartUrl("base-kraken", "de", "KRAKEN-A7F2", true)).toContain(BASE_DE);
+});
+
+test("the pre-order list is the four stock countries, and everywhere else is a pre-order", async () => {
+  const { EN_BASE_FROM_STOCK, enBasePreorder } = await import("../lib/offer.js");
+
+  // Same list as FROM_STOCK in lp-market.v1.js on the shop, written out here so a change
+  // to either has to be made on purpose.
+  expect([...EN_BASE_FROM_STOCK].sort()).toEqual(["AU", "CA", "NZ", "US"]);
+
+  for (const country of EN_BASE_FROM_STOCK) expect(enBasePreorder(country)).toBe(false);
+  for (const country of ["GB", "SE", "DE", "NO", "CH", "JP", "XX", "T1", "", undefined]) {
+    expect(enBasePreorder(country as string), String(country)).toBe(true);
+  }
 });

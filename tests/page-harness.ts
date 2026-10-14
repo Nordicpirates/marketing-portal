@@ -49,12 +49,14 @@ let copies = 0;
 /** The Shopify paths the page talks to, as the browser sees them: same-origin. */
 export const CART_CLEAR = "/cart/clear.js";
 export const CART_ADD = "/cart/add.js";
+export const CART_UPDATE = "/cart/update.js";
 export const CART = "/cart";
 export const discountPath = (code: string) => `/discount/${encodeURIComponent(code)}?redirect=/cart`;
 
 /** Variant ids and codes, the same values the claim endpoint deals in. */
 export const BASE_EN = "51542813409627";
 export const BASE_DE = "51542813540699";
+export const BASE_PREORDER_EN = "54235343880539";
 export const BIGBOX_EN = "51542655959387";
 export const KRAKEN = "51542942318939";
 export const COINS = "51676501508443";
@@ -62,6 +64,9 @@ export const CODE_BASE = "KRAKEN-A7F2";
 export const CODE_BIGBOX = "FULLHOLD-B642";
 
 export const codeAnswer = { state: "code", code: CODE_BASE, cartUrl: "https://nordicpirates.com/cart/x" };
+// The claim endpoint's answer for the English Base Game sold as the pre-order print.
+export const preorderAnswer = { ...codeAnswer, preorder: true };
+// The server no longer sends this, but page.js still handles it, so its tests keep the shape.
 export const blockedAnswer = {
   state: "blocked",
   code: CODE_BIGBOX,

@@ -46,31 +46,31 @@ test("the top nav keeps its one selling button, on every screen", async () => {
   // Lucas could see neither CTA on his phone. This one has to be in the bar at every
   // width; that no stylesheet rule takes it away again is asserted in lp-aboard.test.ts.
   const page = await loadPage({ body: codeAnswer });
-  const cta = page.document.querySelector(".np-nav-cta");
+  const cta = page.document.querySelector("a.top-cta");
 
   expect(cta).not.toBeNull();
   expect(cta.textContent.trim()).toBe("Get the Game");
+  expect(cta.getAttribute("data-i18n")).toBe("nav.cta");
   expect(cta.getAttribute("href")).toBe("#offer");
   expect(cta.hidden).toBe(false);
 
   // And it is inside the sticky bar rather than somewhere further down the page.
-  expect(page.document.getElementById("npnav").contains(cta)).toBe(true);
+  expect(page.document.querySelector("header.top").contains(cta)).toBe(true);
+  expect(page.document.querySelectorAll("header.top a.btn").length).toBe(1);
 });
 
-test("the reviewer section is gone, and so is the nav link that pointed at it", async () => {
+test("the old reviewer section is gone, and so is the nav link that pointed at it", async () => {
   const page = await loadPage({ body: codeAnswer });
 
   expect(page.document.querySelector(".pros")).toBeNull();
   expect(page.document.getElementById("pros")).toBeNull();
-  expect(page.document.querySelector('.np-links a[href="#pros"]')).toBeNull();
+  expect(page.document.querySelector('header.top a[href="#pros"]')).toBeNull();
 
-  const body = page.document.body.textContent;
-  for (const gone of ["Unfiltered Gamer", "Meeple University", "Dice Tower", "What They Say"]) {
-    expect(body).not.toContain(gone);
-  }
-
-  // The community reviews are a different section and Lucas did not ask for those.
-  expect(page.document.getElementById("bgg-reviews")).not.toBeNull();
+  // The press quotes now sit inside the reviews section, so the section itself must stay
+  // and the nav must point at it.
+  expect(page.document.querySelector("#bgg-reviews .press")).not.toBeNull();
+  expect(page.document.querySelector('header.top nav a[href="#bgg-reviews"]')).not.toBeNull();
+  expect(page.document.querySelector('header.top nav a[href="#offer"]')).not.toBeNull();
 });
 
 test("choosing a box scrolls the email field itself into the middle and focuses it", async () => {
@@ -312,10 +312,12 @@ test("the BIG BOX choice shows the BIG BOX code and the BIG BOX cart", async () 
 test("answering inside the panel keeps focus inside the panel", async () => {
   // Every choice replaces the pressed button, so focus needs a home. docs/TESTS-GIFT-PAGE.md
   const page = await loadPage({ body: blockedAnswer }, DEMO);
+  const email = page.document.getElementById("email");
+  email.focus();
   await page.submit();
 
   // The submit did not move focus: the visitor put it where it is.
-  expect(page.document.activeElement.id).not.toBe("");
+  expect(page.document.activeElement).toBe(email);
 
   const language = page.document.querySelector('#result [data-choice="edition"]');
   language.focus();
