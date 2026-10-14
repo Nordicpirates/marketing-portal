@@ -326,7 +326,7 @@ function render(kind, data = {}, options = {}) {
   const cart = node.querySelector("[data-cart]");
   if (cart) {
     if (copyFor) cart.textContent = t(copyFor.label);
-    const cartUrl = buildCartUrl(data.offer, data.edition, data.code);
+    const cartUrl = buildCartUrl(data.offer, data.edition, data.code, data.preorder);
     if (cartUrl) {
       cart.href = cartUrl;
       // What the href holds, which is what it has to be checked against at the bottom of
@@ -502,7 +502,7 @@ async function completeWith(claim) {
   // Reading it back rather than passing the claim straight through is the point: if the
   // two ever came apart, the cart would follow the visitor's eyes and not a value that
   // was captured before they last looked at the page.
-  const cart = await loadCart(live.offer, live.edition, claim.code);
+  const cart = await loadCart(live.offer, live.edition, claim.code, claim.preorder);
   if (!cart.ok) {
     // The hold stays. The panel that lands carries a retry, and the retry builds a cart
     // for THIS claim: the edition that was posted, the one the endpoint agreed it could
@@ -755,7 +755,7 @@ async function submit() {
     giftJump.retire();
 
     if (data.state === "blocked") showBlocked({ code: data.code, baseCode: data.baseCode, offer, edition });
-    else await completeWith({ code: data.code, offer, edition });
+    else await completeWith({ code: data.code, offer, edition, preorder: data.preorder === true });
   } catch (err) {
     console.error("[lp/aboard] claim request never completed:", err);
     showError("error.network");
