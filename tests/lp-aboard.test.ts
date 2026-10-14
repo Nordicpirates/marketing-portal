@@ -121,7 +121,7 @@ test("the page media is served from this repo, not hotlinked from the share spac
   // video thumbnail, both logos and the three self-hosted font files.
   const media = [
     ["/lp/aboard/media/gift-crew.webp", "image/webp"],
-    ["/lp/aboard/media/gift-final.webp", "image/webp"],
+    ["/lp/aboard/media/gift-table.webp", "image/webp"],
     ["/lp/aboard/media/base.webp", "image/webp"],
     ["/lp/aboard/media/mu-thumb.webp", "image/webp"],
     ["/lp/aboard/media/logo-lp.png", "image/png"],
