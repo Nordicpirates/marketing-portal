@@ -14,17 +14,21 @@ The codes are rotatable without a code change: set `GIFT_CODE_BASE` / `GIFT_CODE
 in Studio settings. The page never hardcodes either - it only shows the one code this
 endpoint sends back, which is always the code for the offer that state is selling.
 
-## Where the English Base Game is not sold
+## Where the English Base Game is a pre-order
 
-`EUROPE` is the EU 27 plus the rest of the EEA (IS, LI, NO). The EU warehouse has no
-English Base Game, so that one edition is not sold into those countries. Britain is NOT in
-the list: Zatu in Norwich stocks it.
+Nothing is refused any more (the owner approved this on 2026-10-14). The English Base Game
+(offers `base-kraken` and `base-coins`, edition `en`) is sold from US stock only in the
+countries in `EN_BASE_FROM_STOCK` in `lib/offer.js`: US, CA, AU and NZ. It is the same list
+as `FROM_STOCK` in `nordicpirates.com/lp/lp-market.v1.js`, and the two change together.
+Everywhere else, Britain and the whole of Europe included, it is the new print on
+pre-order, variant `54235343880539`, and `handleClaim` answers with `preorder: true`.
+`enBasePreorder(country)` is the one place that decides it.
 
 `UNPLACEABLE` is what the trusted hop says when it cannot place the visitor. An empty
 string is a half-configured Worker; XX and T1 are Cloudflare's own, and it uses them for an
 address that maps to no country and for a Tor exit node. All three mean "we do not know",
-and none of them is in `EUROPE`, so believing them as countries would sell the English
-base game to exactly the visitor we decided not to guess about.
+and none of them is on the stock list, so they land on the pre-order like any other
+country the stock does not cover: the pre-order print ships anywhere.
 
 ## Rate limit
 
@@ -60,42 +64,45 @@ field checks below.
 
 ## The English Base Game when the country is unknown
 
-The English Base Game is the one combination we cannot ship into Europe. If the trusted
-hop cannot tell us where the visitor is, we do not know whether this is allowed, and the
-honest answer to "we do not know" is not "yes". It used to read as "not in Europe" and sold
-them a box that would never arrive. Unknown lands on blocked, which offers the BIG BOX
-instead: worst case someone outside Europe is offered the wrong thing and can pick another
-edition, rather than being charged for something we cannot send.
+If the trusted hop cannot tell us where the visitor is, the English Base Game is sold as the
+pre-order print. It used to land on a blocked state, because the old stock could not go
+into Europe and "we do not know" is not "yes". The pre-order print has no such limit, so
+the unknown visitor gets a code and a cart that will arrive.
 
 "Cannot tell us" is more than a missing header: see `UNPLACEABLE` above. A country code
 that is not a country is the hop saying it does not know, in its own words.
 
-Only this combination is affected. A known country, any other edition and the BIG BOX all
-behave exactly as before.
+Only this combination is affected. Any other edition and the BIG BOX are never a pre-order,
+whatever the country.
 
 When this happens the log says which of the two it was, and not the header itself:
 countries stay out of the log like everything else identifying. A blank means the Worker
 is not forwarding the header at all; a code that is not a country means it is forwarding
-an answer Cloudflare could not give, and those need different people to fix them.
+an answer Cloudflare could not give, and those need different people to fix them. The
+visitor is still served, and the log line is what tells the fixer that the stock countries
+(US, CA, AU, NZ) are being sold the pre-order print by mistake.
 
-## The blocked state and its codes
+## One state, one code
 
-The code issued for what they picked is the one that gets emailed, and for a blocked
-visitor it stays valid for the Base Game in any other edition - what the blocked copy
-calls "your original code".
+The answer is always state `code`, with the code for the offer they chose: `KRAKEN-A7F2`
+for either base game, `FULLHOLD-B642` for the BIG BOX. That code is the one emailed, and
+`preorder: true` rides along only when the cart holds the pre-order print. There used to be
+a `blocked` state that offered the BIG BOX instead and carried two codes; the endpoint no
+longer produces it, although `public/lp-aboard.js` still knows how to draw it and rows from
+before 2026-10-14 still carry it (`docs/GIFT-EMAIL.md`).
 
-The blocked state does not offer what they picked, it offers the BIG BOX in the same
-edition, and a Base Game code does not fit a BIG BOX cart. So the blocked state shows the
-BIG BOX code and the cart link carries it. Every other state shows and links the offer
-they actually chose.
+The KRAKEN-A7F2 rule in Shopify counts the pre-order product as well as the stock Base Game
+since 2026-10-14, so the free gift applies to either cart.
 
 ## What is stored
 
-Every submission is stored, blocked ones included. Blocked people still asked for a code,
-and Bengt still needs to mail it to them.
+Every submission is stored. `state` is `code`, and `preorder` is true on the rows where the
+cart held the pre-order print, so Bengt can tell the visitors who are waiting for a box from
+the ones who are not.
 
-Both codes are stored (`code`, the one issued, and `shownCode`, the one on screen) because
-they rotate and the emailer reads this file later, so it cannot re-derive them.
+`code` and `shownCode` are both stored, and they are the same value now. They stay two
+fields because they rotate and the emailer reads this file later, so it cannot re-derive
+them, and because older rows can still differ.
 
 `record()` appends one submission to the JSONL store and returns false if it did not land.
 The caller must not answer with a code when it returns false. The page tells people the
@@ -116,21 +123,14 @@ Every stored submission gets an event id that goes into both the log line and th
 row, so a line in the log can be tied back to its record by whoever is allowed to open the
 protected file. The file stays the record; the log is only ever a trace of what happened.
 
-## The answer: `code`, `cartUrl` and `baseCode`
+## The answer: `code`, `cartUrl` and `preorder`
 
 `code` and `cartUrl` always describe the state being shown, so they agree with each other.
 The page rebuilds the same link from the same shared module (`lib/offer.js`), so if these
 two ever disagree it is a bug in one of the two callers, not a mismatch the visitor can end
 up clicking. A missing cart url is logged as an error pointing at `lib/offer.js`.
 
-A blocked visitor is no longer handed one answer. The page asks them whether they want the
-same game in a language we can send or the BIG BOX in English, and each of those needs a
-different code: a Base Game cart wants the code they were issued, a BIG BOX cart wants the
-BIG BOX one. Both are already decided here, so the answer carries both rather than the page
-guessing or a second request going out.
-
-`code` and `cartUrl` mean exactly what they always did - the code and the cart of the BIG
-BOX this state offers - so nothing that reads this answer today changes. `baseCode` is the
-addition: the code this visitor was issued and will be emailed, the same value stored as
-`code` in the signup row. It rides along only on a blocked answer, because that is the
-only state with a choice left in it.
+`preorder` is present, and true, only when the cart holds the pre-order print. The page
+passes it into `buildCartUrl`, `loadCart` and the fallback cart link, so the link it builds
+and the cart it loads are the ones the endpoint described. There is no `baseCode`: with one
+choice there is one code.

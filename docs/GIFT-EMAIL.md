@@ -12,18 +12,28 @@ Rows come from `GET /lp/aboard/signups` (unsent, oldest first) and are marked wi
 
 ```json
 {"event":"72cb...","ts":"...","email":"...","offer":"base-kraken","edition":"en",
- "country":"DE","state":"blocked","code":"KRAKEN-A7F2","shownCode":"FULLHOLD-B642"}
+ "country":"DE","state":"code","preorder":true,"code":"KRAKEN-A7F2","shownCode":"KRAKEN-A7F2"}
 ```
 
 `code` is the code the visitor was issued for what they picked. `shownCode` is the code the
-state they landed on displays.
+state they landed on displays. `preorder` is true when the cart held the English Base Game as
+the pre-order print (new print, delivered in about 14-21 days, `docs/GIFT-OFFER-CLAIM.md`),
+and false otherwise. Rows from before 2026-10-14 have no `preorder` field.
 
 ## state: "code" - send one code
 
-They picked something we can ship and the page showed them `code`. Email that one, and
-nothing else. `code` and `shownCode` are the same value on these rows.
+Every new row is this state. The visitor picked something and the page showed them `code`.
+Email that one, and nothing else. `code` and `shownCode` are the same value on these rows.
 
-## state: "blocked" - send BOTH codes, each labelled with the cart it fits
+If `preorder` is true, say so in the email: the English Base Game they chose is the new print
+on pre-order, delivered in about 14-21 days, and the gift ships with it. That is what the
+page told them too, so the email must not read as though the box leaves tomorrow.
+
+## state: "blocked" - old rows only, send BOTH codes, each labelled with the cart it fits
+
+The endpoint stopped producing this state on 2026-10-14, when the English Base Game became
+sellable everywhere as a pre-order. Rows written before that are still in the file and still
+unsent ones may be among them, so the rule for them stays.
 
 A blocked visitor asked for the English Base Game inside Europe. The page does not hand
 them one answer: it asks whether they want the same game in an edition we can send, or the
