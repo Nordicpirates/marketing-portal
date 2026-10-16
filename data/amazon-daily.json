@@ -6,163 +6,170 @@
    "orders": 4,
    "sales_usd": 144.8,
    "source": "sheet",
-   "sales_eur": 129.34
+   "sales_eur": 129.19
   },
   {
    "date": "2026-09-26",
    "orders": 7,
    "sales_usd": 379.65,
    "source": "sheet",
-   "sales_eur": 339.12
+   "sales_eur": 338.73
   },
   {
    "date": "2026-09-27",
    "orders": 2,
    "sales_usd": 189.9,
    "source": "sheet",
-   "sales_eur": 169.63
+   "sales_eur": 169.43
   },
   {
    "date": "2026-09-28",
    "orders": 3,
    "sales_usd": 234.85,
    "source": "sheet",
-   "sales_eur": 209.78
+   "sales_eur": 209.54
   },
   {
    "date": "2026-09-29",
    "orders": 7,
    "sales_usd": 314.65,
    "source": "sheet",
-   "sales_eur": 281.06
+   "sales_eur": 280.74
   },
   {
    "date": "2026-09-30",
    "orders": 5,
    "sales_usd": 289.75,
    "source": "sheet",
-   "sales_eur": 258.82
+   "sales_eur": 258.52
   },
   {
    "date": "2026-10-01",
    "orders": 5,
    "sales_usd": 324.75,
    "source": "sheet",
-   "sales_eur": 290.08
+   "sales_eur": 289.75
   },
   {
    "date": "2026-10-02",
    "orders": 3,
    "sales_usd": 132.39,
    "source": "sheet",
-   "sales_eur": 118.26
+   "sales_eur": 118.12
   },
   {
    "date": "2026-10-03",
    "orders": 7,
    "sales_usd": 404.75,
    "source": "sheet",
-   "sales_eur": 361.55
+   "sales_eur": 361.13
   },
   {
    "date": "2026-10-04",
    "orders": 3,
    "sales_usd": 334.85,
    "source": "sheet",
-   "sales_eur": 299.11
+   "sales_eur": 298.76
   },
   {
    "date": "2026-10-05",
    "orders": 3,
    "sales_usd": 134.85,
    "source": "sheet",
-   "sales_eur": 120.46
+   "sales_eur": 120.32
   },
   {
    "date": "2026-10-06",
    "orders": 19,
    "sales_usd": 1067.1,
    "source": "sheet",
-   "sales_eur": 953.19
+   "sales_eur": 952.09
   },
   {
    "date": "2026-10-07",
    "orders": 6,
    "sales_usd": 369.7,
    "source": "sheet",
-   "sales_eur": 330.24
+   "sales_eur": 329.85
   },
   {
    "date": "2026-10-08",
    "orders": 2,
    "sales_usd": 89.9,
    "source": "sheet",
-   "sales_eur": 80.3
+   "sales_eur": 80.21
   },
   {
    "date": "2026-10-10",
    "orders": 1,
    "sales_usd": 44.59,
    "source": "sheet",
-   "sales_eur": 39.83
+   "sales_eur": 39.78
   },
   {
    "date": "2026-10-11",
    "orders": 3,
    "sales_usd": 434.85,
    "source": "sheet",
-   "sales_eur": 388.43
+   "sales_eur": 387.98
   },
   {
    "date": "2026-10-12",
    "orders": 4,
    "sales_usd": 479.8,
    "source": "sheet",
-   "sales_eur": 428.58
+   "sales_eur": 428.09
   },
   {
    "date": "2026-10-13",
    "orders": 2,
    "sales_usd": 189.9,
    "source": "sheet",
-   "sales_eur": 169.63
+   "sales_eur": 169.43
+  },
+  {
+   "date": "2026-10-14",
+   "orders": 6,
+   "sales_usd": 259.7,
+   "source": "sheet",
+   "sales_eur": 231.71
   }
  ],
- "as_of": "2026-10-13",
+ "as_of": "2026-10-14",
  "pending": false,
  "fx_used": {
-  "usd_per_eur": 1.1195,
-  "date": "2026-10-14",
+  "usd_per_eur": 1.1208,
+  "date": "2026-10-15",
   "source": "ECB eurofxref-daily"
  },
  "note": "Amazon US gross sales per day in USD, typed into the sheet from Seller Central > Business Reports, converted at the ECB reference rate on the day the portal refreshed. No rows yet = no number shown; nothing is estimated.",
  "by_period": {
   "7d": {
-   "orders": 12,
-   "sales_usd": 1239.04,
-   "sales_eur": 1106.77,
+   "orders": 16,
+   "sales_usd": 1408.84,
+   "sales_eur": 1256.99,
    "days_covered": 5,
    "days_total": 7
   },
   "30d": {
-   "orders": 86,
-   "sales_usd": 5561.03,
-   "sales_eur": 4967.41,
-   "days_covered": 18,
+   "orders": 92,
+   "sales_usd": 5820.73,
+   "sales_eur": 5193.37,
+   "days_covered": 19,
    "days_total": 30
   },
   "thismonth": {
-   "orders": 58,
-   "sales_usd": 4007.43,
-   "sales_eur": 3579.66,
-   "days_covered": 12,
-   "days_total": 14
+   "orders": 64,
+   "sales_usd": 4267.13,
+   "sales_eur": 3807.22,
+   "days_covered": 13,
+   "days_total": 15
   },
   "90d": {
-   "orders": 86,
-   "sales_usd": 5561.03,
-   "sales_eur": 4967.41,
-   "days_covered": 18,
+   "orders": 92,
+   "sales_usd": 5820.73,
+   "sales_eur": 5193.37,
+   "days_covered": 19,
    "days_total": 90
   },
   "yesterday": {
@@ -176,7 +183,7 @@
  "sheet_id": "1BhaN6Xq8_K41ufkE0ypeU6CA-HLKbpgVBmd_leEmwx0",
  "source_mix": {
   "spapi": 0,
-  "sheet": 18
+  "sheet": 19
  },
- "sheet_read_at": "2026-10-15T05:16:09+00:00"
+ "sheet_read_at": "2026-10-16T05:16:14+00:00"
 }
