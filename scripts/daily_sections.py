@@ -240,6 +240,7 @@ def main():
     ap.add_argument("--property", default="250338585")
     ap.add_argument("--today", help="YYYY-MM-DD, default today in Stockholm")
     ap.add_argument("--dry-run", action="store_true")
+    ap.add_argument("--no-ga", action="store_true", help="GA4 not delegated: write stock and orders, keep channels and visits")
     args = ap.parse_args()
 
     today = date.fromisoformat(args.today) if args.today else datetime.now(TZ).date()
@@ -257,20 +258,21 @@ def main():
               f"{p['days']:>4} days  {p['status']}")
 
     c_start, c_end = (yesterday - timedelta(days=29)).isoformat(), yesterday.isoformat()
-    snap["channels_30d"], ga_purchases = channels_section(args.property, c_start, c_end)
-    print(f"channels {c_start}..{c_end}: {len(snap['channels_30d'])} rows, {ga_purchases} GA4 purchases")
-
     s_start = (yesterday - timedelta(days=13)).isoformat()
-    snap.setdefault("chart_data", {})["organic_14d"] = sessions_chart(args.property, s_start, c_end)
-    snap["chart_data"]["orders_9d"] = orders_chart(args.shopify_daily, yesterday - timedelta(days=9), yesterday)
-    print(f"sessions chart {s_start}..{c_end}, orders chart {yesterday - timedelta(days=9)}..{c_end}")
+    if not args.no_ga:
+        snap["channels_30d"], ga_purchases = channels_section(args.property, c_start, c_end)
+        print(f"channels {c_start}..{c_end}: {len(snap['channels_30d'])} rows, {ga_purchases} GA4 purchases")
+        snap.setdefault("chart_data", {})["organic_14d"] = sessions_chart(args.property, s_start, c_end)
+    snap.setdefault("chart_data", {})["orders_9d"] = orders_chart(args.shopify_daily, yesterday - timedelta(days=9), yesterday)
+    print(f"orders chart {yesterday - timedelta(days=9)}..{c_end}" + ("; --no-ga: channels and visits kept" if args.no_ga else ""))
 
     pulled = today.isoformat()
     sources = snap["sources"]
     sources["inventory"] = {"as_of": pulled, "pulled": pulled}
-    sources["channels"] = {"as_of": c_end, "pulled": pulled,
-                           "note": f"GA4 by channel {c_start} to {c_end}; GA4 sees fewer purchases than Shopify"}
-    sources["sessions_chart"] = {"as_of": c_end, "pulled": pulled}
+    if not args.no_ga:
+        sources["channels"] = {"as_of": c_end, "pulled": pulled,
+                               "note": f"GA4 by channel {c_start} to {c_end}; GA4 sees fewer purchases than Shopify"}
+        sources["sessions_chart"] = {"as_of": c_end, "pulled": pulled}
 
     if args.dry_run:
         print("\n--dry-run: nothing written")

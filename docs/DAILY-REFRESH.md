@@ -140,7 +140,9 @@ gate vault exec --env CID=Shopify_client_ID --env SEC=SHOPIFYFULL -- \
   python3 scripts/daily_sections.py --shopify-daily shopify.json
 ```
 
-Run it last. It writes, from that morning's pulls:
+Run it last. When `gate ga accounts` shows no delegation, add `--no-ga`: stock and the
+orders chart are still written, channels and the sessions chart keep their last pull and
+their `as_of`. It writes, from that morning's pulls:
 
 - `inventory_data`: Shopify's `available` per SKU in Bridge, Armarlo, Meeples and Zatu (the
   showroom is the office, not stock), velocity as units sold per day over the last 30 closed
