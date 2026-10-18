@@ -352,7 +352,8 @@
    "title": "Lager och orderkurva nyhämtade 18 oktober, övriga siffror står på 16 oktober",
    "who": "Bengt",
    "status": "queue",
-   "desc": "Lagret och orderkurvan är lästa ur Shopify 18 oktober och täcker till och med 17 oktober. Perioderna (butik, Meta, Google Ads, ordrar per land) står kvar på 16 oktober: GATE tappade kopplingen till Google Ads på natten mot 18 oktober, och perioderna skrivs inte utan den, hellre än med en påhittad nolla. Besök, kanaler och landningssidor står på 15 oktober och Amazon på 14 oktober, eftersom kopplingarna till Google Analytics och Google Drive föll 17 oktober. Anmält till GATE-teamet."
+   "desc": "Lagret och orderkurvan är lästa ur Shopify 18 oktober och täcker till och med 17 oktober. Perioderna (butik, Meta, Google Ads, ordrar per land) står kvar på 16 oktober: GATE tappade kopplingen till Google Ads på natten mot 18 oktober, och perioderna skrivs inte utan den, hellre än med en påhittad nolla. Besök, kanaler och landningssidor står på 15 oktober och Amazon på 14 oktober, eftersom kopplingarna till Google Analytics och Google Drive föll 17 oktober. Anmält till GATE-teamet.",
+   "role": "freshness"
   },
   {
    "icon": "🔧",

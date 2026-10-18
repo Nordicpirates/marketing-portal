@@ -57,7 +57,9 @@ dates than its window, or when the orders per country do not add up to the perio
   an order has none), sorted by revenue.
 - Google Ads: per window and per campaign. A zero is a zero the pull returned, not an assumption.
 - Flags carrying a `date` leave every window that no longer holds that day; undated flags stay.
-- It dates the "Alla siffror nyhämtade" status card, `sources.shopify|meta|gads`, `gads.as_of`
+- It dates the freshness status card (found by `role: freshness`, or by a title starting with "Alla
+  siffror nyhämtade" / "Butik och Google nyhämtade" in older data; a hand-written title on that card is
+  fine as long as the role stays), `sources.shopify|meta|gads`, `gads.as_of`
   and `gads_periods.until`. Hand-written status cards and flags are not its business.
 - It drops any per-period `sources` override: the period is rewritten from this morning's
   pulls, so an override left by an earlier partial run would describe numbers that are gone.

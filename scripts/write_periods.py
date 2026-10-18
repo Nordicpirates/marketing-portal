@@ -261,8 +261,10 @@ def main():
         gp["until"] = yesterday.isoformat()
         gp["days"] = (yesterday - date.fromisoformat(gp["since"])).days + 1
     for card in snap.get("dashboard_status", []):
-        if not card.get("title", "").startswith((FRESH_CARD, PARTIAL_CARD)):
+        # role marks the freshness card even after a hand-written title; the prefixes cover older data
+        if card.get("role") != "freshness" and not card.get("title", "").startswith((FRESH_CARD, PARTIAL_CARD)):
             continue
+        card["role"] = "freshness"
         if a.no_meta:
             card.update(icon="🔄", status="queue")
             card["title"] = f"{PARTIAL_CARD} {sv_date(today)}, Meta saknas"
