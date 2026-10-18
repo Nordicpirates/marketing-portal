@@ -39,8 +39,8 @@
    "note": "GA4 by channel 2026-09-16 to 2026-10-15; GA4 sees fewer purchases than Shopify"
   },
   "inventory": {
-   "as_of": "2026-10-17",
-   "pulled": "2026-10-17"
+   "as_of": "2026-10-18",
+   "pulled": "2026-10-18"
   },
   "roas_series": {
    "as_of": "2026-10-16",
@@ -176,7 +176,6 @@
  "chart_data": {
   "orders_9d": {
    "labels": [
-    "7/10",
     "8/10",
     "9/10",
     "10/10",
@@ -185,10 +184,10 @@
     "13/10",
     "14/10",
     "15/10",
-    "16/10"
+    "16/10",
+    "17/10"
    ],
    "revenue": [
-    299,
     1265,
     480,
     138,
@@ -197,10 +196,10 @@
     498,
     303,
     924,
-    1050
+    1050,
+    1444
    ],
    "orders": [
-    4,
     11,
     7,
     1,
@@ -209,7 +208,8 @@
     8,
     4,
     9,
-    15
+    15,
+    14
    ]
   },
   "organic_14d": {
@@ -349,10 +349,10 @@
  "dashboard_status": [
   {
    "icon": "🔄",
-   "title": "Alla siffror nyhämtade 17 oktober utom besök och Amazon",
+   "title": "Lager och orderkurva nyhämtade 18 oktober, övriga siffror står på 16 oktober",
    "who": "Bengt",
    "status": "queue",
-   "desc": "Butik, Meta och Google Ads är lästa samma morgon och täcker till och med 16 oktober, ordrar per land inräknade; butikens 16 oktober är omkontrollerad kl 23:50 och stämmer på öret (15 ordrar, 1 049,91 EUR). Lagret och orderkurvan är nyhämtade ur Shopify kl 23:50. Besök, kanaler och landningssidor står kvar på 15 oktober och Amazon på 14 oktober: GATE tappade kopplingarna till Google Analytics och Google Drive på morgonen 17 oktober, anmält till GATE-teamet."
+   "desc": "Lagret och orderkurvan är lästa ur Shopify 18 oktober och täcker till och med 17 oktober. Perioderna (butik, Meta, Google Ads, ordrar per land) står kvar på 16 oktober: GATE tappade kopplingen till Google Ads på natten mot 18 oktober, och perioderna skrivs inte utan den, hellre än med en påhittad nolla. Besök, kanaler och landningssidor står på 15 oktober och Amazon på 14 oktober, eftersom kopplingarna till Google Analytics och Google Drive föll 17 oktober. Anmält till GATE-teamet."
   },
   {
    "icon": "🔧",
@@ -1754,7 +1754,7 @@
   }
  ],
  "inventory_data": {
-  "updated_at": "2026-10-17",
+  "updated_at": "2026-10-18",
   "velocity_window_days": 30,
   "filter_note": "Add-On Box + Upgrade Box exkluderade per Lucas 2026-07-24 (irrelevanta produkter)",
   "warehouses": [
@@ -1785,15 +1785,15 @@
     "title": "BIG BOX",
     "variant": "English",
     "sku": "NPGLPGFBB01EN",
-    "velocity": 3.0,
+    "velocity": 3.13,
     "stock": {
      "bridge": 11,
-     "armarlo": 112,
+     "armarlo": 111,
      "meeples": 0,
      "zatu": 108,
-     "total": 231
+     "total": 230
     },
-    "days": 77,
+    "days": 73,
     "status": "ok",
     "warehouse_scope": [
      "bridge",
@@ -1878,15 +1878,15 @@
     "title": "Base Game",
     "variant": "English",
     "sku": "NPGLPGFRT01EN",
-    "velocity": 1.7,
+    "velocity": 1.67,
     "stock": {
-     "bridge": 719,
+     "bridge": 718,
      "armarlo": 54,
      "meeples": 0,
      "zatu": 0,
-     "total": 773
+     "total": 772
     },
-    "days": 455,
+    "days": 462,
     "status": "ok",
     "warehouse_scope": [
      "bridge",
@@ -1899,7 +1899,7 @@
     "title": "Base Game",
     "variant": "Italian",
     "sku": "NPGLPGFRT01IT",
-    "velocity": 0.0,
+    "velocity": 0.03,
     "stock": {
      "bridge": 0,
      "armarlo": 0,
@@ -1917,7 +1917,7 @@
     "title": "Base Game",
     "variant": "German",
     "sku": "NPGLPGFRT01DE",
-    "velocity": 0.1,
+    "velocity": 0.07,
     "stock": {
      "bridge": 0,
      "armarlo": 0,
@@ -1925,7 +1925,7 @@
      "zatu": 0,
      "total": 10
     },
-    "days": 100,
+    "days": 143,
     "status": "ok",
     "warehouse_scope": [
      "meeples"
@@ -1971,15 +1971,15 @@
     "title": "Kraken Mini-Expansion",
     "variant": "Default",
     "sku": "NPGKMP01",
-    "velocity": 3.37,
+    "velocity": 3.5,
     "stock": {
      "bridge": 88,
      "armarlo": 45,
      "meeples": 4,
-     "zatu": 103,
-     "total": 240
+     "zatu": 102,
+     "total": 239
     },
-    "days": 71,
+    "days": 68,
     "status": "ok",
     "warehouse_scope": [
      "bridge",
@@ -1992,15 +1992,15 @@
     "title": "Cities of Greed",
     "variant": "Default",
     "sku": "NPGLPGFCOG01",
-    "velocity": 0.67,
+    "velocity": 0.7,
     "stock": {
-     "bridge": 105,
+     "bridge": 104,
      "armarlo": 147,
      "meeples": 0,
      "zatu": 21,
-     "total": 273
+     "total": 272
     },
-    "days": 407,
+    "days": 389,
     "status": "ok",
     "warehouse_scope": [
      "bridge",
