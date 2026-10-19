@@ -3,8 +3,10 @@
     {
       "id": "test",
       "name": "test",
-      "command": "bun test tests/",
-      "required": true
+      "required": true,
+      "exec": {
+        "command": "bun test tests/"
+      }
     }
   ]
 }
