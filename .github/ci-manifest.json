@@ -6,7 +6,8 @@
       "required": true,
       "exec": {
         "command": "bun test tests/",
-        "weight": "cheap"
+        "weight": "cheap",
+        "timeoutMinutes": 10
       }
     }
   ]
