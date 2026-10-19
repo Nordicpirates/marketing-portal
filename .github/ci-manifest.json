@@ -9,7 +9,7 @@
         "timeoutMinutes": 10,
         "installs": [],
         "steps": [
-          { "name": "bun test", "run": "bun test tests/" }
+          { "name": "bun test", "argv": ["bun", "test", "tests/"] }
         ]
       }
     }
