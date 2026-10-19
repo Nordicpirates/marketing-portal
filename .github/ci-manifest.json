@@ -8,7 +8,9 @@
         "weight": "cheap",
         "timeoutMinutes": 10,
         "installs": [],
-        "steps": ["bun test tests/"]
+        "steps": [
+          { "name": "bun test", "run": "bun test tests/" }
+        ]
       }
     }
   ]
