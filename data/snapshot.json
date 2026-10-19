@@ -69,6 +69,11 @@
    "as_of": "2026-10-18",
    "pulled": "2026-10-19",
    "note": "Shopify's own sessions, storefront only, so the landing pages are not in it"
+  },
+  "buy_path": {
+   "as_of": "2026-10-18",
+   "pulled": "2026-10-19",
+   "note": "Shopify orders by lp_arm, GA4 property 250338585 sessions by landing page"
   }
  },
  "owner": "Bengt 🦉 (data) + Polly (analysis)",
@@ -679,55 +684,55 @@
    ],
    "landing_pages": [
     {
-     "name": "/lp/Q4",
+     "name": "Light checkout",
      "path": "/lp/Q4",
-     "sessions": 455,
+     "sessions": 458,
      "conv_pct": 0.66,
      "alert": true
     },
     {
-     "name": "/lp/Q4v2",
+     "name": "Light cart",
      "path": "/lp/Q4v2",
-     "sessions": 451,
-     "conv_pct": 0.89,
-     "alert": true
+     "sessions": 458,
+     "conv_pct": 1.09
     },
     {
-     "name": "/lp/v2",
+     "name": "Dark checkout",
      "path": "/lp/v2",
-     "sessions": 413,
-     "conv_pct": 0.97,
+     "sessions": 421,
+     "conv_pct": 0.95,
      "alert": true
     },
     {
      "name": "Homepage",
      "path": "/",
-     "sessions": 408,
-     "conv_pct": 2.94
+     "sessions": 415,
+     "conv_pct": 2.89
     },
     {
-     "name": "/lp/v3",
+     "name": "Dark cart",
      "path": "/lp/v3",
-     "sessions": 400,
-     "conv_pct": 1.0
+     "sessions": 403,
+     "conv_pct": 0.99,
+     "alert": true
     },
     {
      "name": "Base Game (product)",
      "path": "/products/lying-pirates-base-game",
-     "sessions": 147,
-     "conv_pct": 0.68
+     "sessions": 150,
+     "conv_pct": 0.67
     },
     {
      "name": "Big Box (product)",
      "path": "/products/lying-pirates-big-box",
-     "sessions": 112,
-     "conv_pct": 2.68
+     "sessions": 113,
+     "conv_pct": 2.65
     },
     {
      "name": "Gift offer (LP)",
      "path": "/gift-offer",
-     "sessions": 101,
-     "conv_pct": 0.99
+     "sessions": 105,
+     "conv_pct": 0.95
     }
    ],
    "flags": [
@@ -917,54 +922,54 @@
     {
      "name": "CoG Big Box LP (B)",
      "path": "/lp/lying-pirates-cities-of-greed-big-box-b",
-     "sessions": 3494,
-     "conv_pct": 0.72,
+     "sessions": 3498,
+     "conv_pct": 0.71,
      "alert": true
     },
     {
      "name": "CoG Big Box LP (A)",
      "path": "/lp/lying-pirates-cities-of-greed-big-box",
-     "sessions": 3407,
+     "sessions": 3412,
      "conv_pct": 0.59,
      "alert": true
     },
     {
      "name": "Homepage",
      "path": "/",
-     "sessions": 1459,
-     "conv_pct": 2.54
+     "sessions": 1466,
+     "conv_pct": 2.52
     },
     {
      "name": "Big Box (product)",
      "path": "/products/lying-pirates-big-box",
-     "sessions": 758,
+     "sessions": 759,
      "conv_pct": 1.45
     },
     {
-     "name": "/lp/Q4",
+     "name": "Light checkout",
      "path": "/lp/Q4",
-     "sessions": 721,
+     "sessions": 723,
      "conv_pct": 0.83,
      "alert": true
     },
     {
-     "name": "/lp/Q4v2",
+     "name": "Light cart",
      "path": "/lp/Q4v2",
-     "sessions": 674,
-     "conv_pct": 0.74,
+     "sessions": 681,
+     "conv_pct": 0.88,
      "alert": true
     },
     {
-     "name": "/lp/v2",
+     "name": "Dark checkout",
      "path": "/lp/v2",
-     "sessions": 605,
-     "conv_pct": 0.83,
+     "sessions": 613,
+     "conv_pct": 0.82,
      "alert": true
     },
     {
-     "name": "/lp/v3",
+     "name": "Dark cart",
      "path": "/lp/v3",
-     "sessions": 596,
+     "sessions": 599,
      "conv_pct": 1.17
     }
    ],
@@ -1158,54 +1163,54 @@
     {
      "name": "CoG Big Box LP (B)",
      "path": "/lp/lying-pirates-cities-of-greed-big-box-b",
-     "sessions": 1255,
+     "sessions": 1258,
      "conv_pct": 0.48,
      "alert": true
     },
     {
      "name": "CoG Big Box LP (A)",
      "path": "/lp/lying-pirates-cities-of-greed-big-box",
-     "sessions": 1216,
+     "sessions": 1218,
      "conv_pct": 0.66,
      "alert": true
     },
     {
      "name": "Homepage",
      "path": "/",
-     "sessions": 940,
-     "conv_pct": 2.87
+     "sessions": 947,
+     "conv_pct": 2.85
     },
     {
-     "name": "/lp/Q4",
+     "name": "Light checkout",
      "path": "/lp/Q4",
-     "sessions": 721,
-     "conv_pct": 0.83,
+     "sessions": 741,
+     "conv_pct": 0.81,
      "alert": true
     },
     {
-     "name": "/lp/Q4v2",
+     "name": "Light cart",
      "path": "/lp/Q4v2",
-     "sessions": 674,
-     "conv_pct": 0.74,
+     "sessions": 681,
+     "conv_pct": 0.88,
      "alert": true
     },
     {
-     "name": "/lp/v2",
+     "name": "Dark checkout",
      "path": "/lp/v2",
-     "sessions": 605,
-     "conv_pct": 0.83,
+     "sessions": 613,
+     "conv_pct": 0.82,
      "alert": true
     },
     {
-     "name": "/lp/v3",
+     "name": "Dark cart",
      "path": "/lp/v3",
-     "sessions": 596,
+     "sessions": 599,
      "conv_pct": 1.17
     },
     {
      "name": "Big Box (product)",
      "path": "/products/lying-pirates-big-box",
-     "sessions": 534,
+     "sessions": 535,
      "conv_pct": 1.31
     }
    ],
@@ -1483,34 +1488,34 @@
     {
      "name": "CoG Big Box LP (B)",
      "path": "/lp/lying-pirates-cities-of-greed-big-box-b",
-     "sessions": 9650,
+     "sessions": 9660,
      "conv_pct": 0.77,
      "alert": true
     },
     {
      "name": "CoG Big Box LP (A)",
      "path": "/lp/lying-pirates-cities-of-greed-big-box",
-     "sessions": 9610,
+     "sessions": 9609,
      "conv_pct": 0.81,
      "alert": true
     },
     {
      "name": "Homepage",
      "path": "/",
-     "sessions": 5015,
-     "conv_pct": 1.56
+     "sessions": 5024,
+     "conv_pct": 1.55
     },
     {
      "name": "Base Game (product)",
      "path": "/products/lying-pirates-base-game",
-     "sessions": 4698,
+     "sessions": 4697,
      "conv_pct": 0.6,
      "alert": true
     },
     {
      "name": "Big Box (product)",
      "path": "/products/lying-pirates-big-box",
-     "sessions": 3411,
+     "sessions": 3409,
      "conv_pct": 1.44
     },
     {
@@ -1521,17 +1526,17 @@
      "alert": true
     },
     {
-     "name": "/lp/Q4",
+     "name": "Light checkout",
      "path": "/lp/Q4",
-     "sessions": 721,
+     "sessions": 723,
      "conv_pct": 0.83,
      "alert": true
     },
     {
-     "name": "/lp/Q4v2",
+     "name": "Light cart",
      "path": "/lp/Q4v2",
-     "sessions": 674,
-     "conv_pct": 0.74,
+     "sessions": 681,
+     "conv_pct": 0.88,
      "alert": true
     }
    ],
@@ -1695,50 +1700,50 @@
     {
      "name": "Homepage",
      "path": "/",
-     "sessions": 42,
+     "sessions": 50,
      "conv_pct": 0.0
     },
     {
-     "name": "/lp/v3",
-     "path": "/lp/v3",
-     "sessions": 35,
-     "conv_pct": 0.0
-    },
-    {
-     "name": "/lp/v2",
+     "name": "Dark checkout",
      "path": "/lp/v2",
-     "sessions": 32,
+     "sessions": 40,
      "conv_pct": 0.0
     },
     {
-     "name": "/lp/Q4v2",
+     "name": "Light cart",
      "path": "/lp/Q4v2",
-     "sessions": 30,
-     "conv_pct": 3.33
+     "sessions": 38,
+     "conv_pct": 5.26
     },
     {
-     "name": "/lp/Q4",
+     "name": "Dark cart",
+     "path": "/lp/v3",
+     "sessions": 38,
+     "conv_pct": 0.0
+    },
+    {
+     "name": "Light checkout",
      "path": "/lp/Q4",
-     "sessions": 26,
+     "sessions": 29,
      "conv_pct": 0.0
     },
     {
      "name": "Base Game (product)",
      "path": "/products/lying-pirates-base-game",
-     "sessions": 25,
-     "conv_pct": 0.0
-    },
-    {
-     "name": "Big Box (product)",
-     "path": "/products/lying-pirates-big-box",
-     "sessions": 13,
+     "sessions": 28,
      "conv_pct": 0.0
     },
     {
      "name": "CoG Big Box LP (B)",
      "path": "/lp/lying-pirates-cities-of-greed-big-box-b",
-     "sessions": 11,
-     "conv_pct": 9.09
+     "sessions": 14,
+     "conv_pct": 7.14
+    },
+    {
+     "name": "Big Box (product)",
+     "path": "/products/lying-pirates-big-box",
+     "sessions": 14,
+     "conv_pct": 0.0
     }
    ],
    "flags": [],
@@ -2656,5 +2661,174 @@
     "blended_mer_total": null
    }
   ]
+ },
+ "buy_path": {
+  "windows": {
+   "test": {
+    "start": "2026-10-07",
+    "end": "2026-10-18",
+    "arms": [
+     {
+      "arm": "dark_checkout",
+      "name": "Dark checkout",
+      "path": "/lp/v2",
+      "sessions": 612,
+      "ga_purchases": 5,
+      "orders": 10,
+      "revenue_eur": 951.82,
+      "conv_pct": 1.63,
+      "eur_per_100": 155.53
+     },
+     {
+      "arm": "dark_cart",
+      "name": "Dark cart",
+      "path": "/lp/v3",
+      "sessions": 598,
+      "ga_purchases": 7,
+      "orders": 8,
+      "revenue_eur": 950.03,
+      "conv_pct": 1.34,
+      "eur_per_100": 158.87
+     },
+     {
+      "arm": "light_checkout",
+      "name": "Light checkout",
+      "path": "/lp/Q4",
+      "sessions": 728,
+      "ga_purchases": 6,
+      "orders": 9,
+      "revenue_eur": 934.56,
+      "conv_pct": 1.24,
+      "eur_per_100": 128.37
+     },
+     {
+      "arm": "light_cart",
+      "name": "Light cart",
+      "path": "/lp/Q4v2",
+      "sessions": 680,
+      "ga_purchases": 6,
+      "orders": 8,
+      "revenue_eur": 845.48,
+      "conv_pct": 1.18,
+      "eur_per_100": 124.34
+     }
+    ],
+    "campaign": [
+     {
+      "arm": "campaign_eu_3for2",
+      "orders": 4,
+      "revenue_eur": 161.16
+     },
+     {
+      "arm": "campaign_uk_gift",
+      "orders": 1,
+      "revenue_eur": 145.83
+     },
+     {
+      "arm": "campaign_eu_gift",
+      "orders": 1,
+      "revenue_eur": 137.9
+     },
+     {
+      "arm": "gift_offer",
+      "orders": 1,
+      "revenue_eur": 50.97
+     },
+     {
+      "arm": "campaign_us_gift",
+      "orders": 1,
+      "revenue_eur": 48.84
+     },
+     {
+      "arm": "campaign_us_3for2",
+      "orders": 1,
+      "revenue_eur": 27.41
+     }
+    ]
+   },
+   "7d": {
+    "start": "2026-10-12",
+    "end": "2026-10-18",
+    "arms": [
+     {
+      "arm": "dark_checkout",
+      "name": "Dark checkout",
+      "path": "/lp/v2",
+      "sessions": 421,
+      "ga_purchases": 4,
+      "orders": 7,
+      "revenue_eur": 712.71,
+      "conv_pct": 1.66,
+      "eur_per_100": 169.29
+     },
+     {
+      "arm": "dark_cart",
+      "name": "Dark cart",
+      "path": "/lp/v3",
+      "sessions": 403,
+      "ga_purchases": 4,
+      "orders": 4,
+      "revenue_eur": 398.2,
+      "conv_pct": 0.99,
+      "eur_per_100": 98.81
+     },
+     {
+      "arm": "light_checkout",
+      "name": "Light checkout",
+      "path": "/lp/Q4",
+      "sessions": 458,
+      "ga_purchases": 3,
+      "orders": 4,
+      "revenue_eur": 503.11,
+      "conv_pct": 0.87,
+      "eur_per_100": 109.85
+     },
+     {
+      "arm": "light_cart",
+      "name": "Light cart",
+      "path": "/lp/Q4v2",
+      "sessions": 458,
+      "ga_purchases": 5,
+      "orders": 7,
+      "revenue_eur": 792.54,
+      "conv_pct": 1.53,
+      "eur_per_100": 173.04
+     }
+    ],
+    "campaign": [
+     {
+      "arm": "campaign_eu_3for2",
+      "orders": 4,
+      "revenue_eur": 161.16
+     },
+     {
+      "arm": "campaign_uk_gift",
+      "orders": 1,
+      "revenue_eur": 145.83
+     },
+     {
+      "arm": "campaign_eu_gift",
+      "orders": 1,
+      "revenue_eur": 137.9
+     },
+     {
+      "arm": "gift_offer",
+      "orders": 1,
+      "revenue_eur": 50.97
+     },
+     {
+      "arm": "campaign_us_gift",
+      "orders": 1,
+      "revenue_eur": 48.84
+     },
+     {
+      "arm": "campaign_us_3for2",
+      "orders": 1,
+      "revenue_eur": 27.41
+     }
+    ]
+   }
+  },
+  "note": "Orders carry the page's own tag; visits are Google Analytics sessions and miss visitors who decline cookies, so the rates are ceilings. An order without a tag is unattributed, not proof it never saw a landing page."
  }
 }

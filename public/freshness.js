@@ -17,6 +17,7 @@
     amazon: "Amazon",
     sessions: "Sessions",
     landing_pages: "Landing pages",
+    buy_path: "Buy-path test",
     channels: "Channels",
     inventory: "Stock",
     sessions_chart: "Sessions chart",

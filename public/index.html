@@ -9,6 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Asul:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script src="/freshness.js"></script>
+<script src="/buy-path.js"></script>
 <style>
   :root{
     --cream:#f2ede4;--cream-2:#ece4d6;--paper:#fffdf8;--paper-2:#fbf6ec;
@@ -205,7 +206,7 @@
   a.link .t{font-weight:600;font-size:14px}a.link .d{font-size:12px;color:var(--muted)}
   footer{border-top:1px solid var(--line);margin-top:42px;padding-top:22px;font-size:12px;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
   footer b{color:var(--ink-soft)}
-  @media(max-width:680px){.id-grid{grid-template-columns:1fr}.lp-metrics{gap:14px}.lp-path{display:none}}
+  @media(max-width:680px){.id-grid{grid-template-columns:1fr}.lp-metrics{gap:14px}}
 </style>
 </head>
 <body>
@@ -298,6 +299,15 @@
       <tbody id="gads-body"></tbody>
     </table></div>
     <p class="h2sub" id="gads-note" style="margin-top:10px;font-style:italic"></p>
+  </section>
+
+  <!-- BUY-PATH TEST -->
+  <section id="bp-section">
+    <h2><span class="dot"></span>Buy-path test - dark and light</h2>
+    <p class="h2sub" id="bp-caption">…</p>
+    <div id="fr-bp"></div>
+    <div class="bp-grid" id="bp-grid"></div>
+    <p class="h2sub" id="bp-note" style="margin-top:10px;font-style:italic"></p>
   </section>
 
   <!-- LANDING PAGES -->
@@ -414,6 +424,7 @@ const SECTION_SOURCES = {
   'fr-roas': ['roas_series','fx'],
   'fr-pgads': ['gads'],
   'fr-gads': ['gads'],
+  'fr-bp': ['buy_path'],
   'fr-lp': ['landing_pages'],
   'fr-oc': ['shopify'],
   'fr-flags': ['shopify','meta'],
@@ -454,6 +465,7 @@ async function load() {
   paintFreshness();
   renderTracking();
   renderGads();
+  renderBuyPath();
   renderRoasTrend();
   renderIds();
   await renderTasks();
@@ -711,6 +723,13 @@ function renderPeriodGads(g) {
     <tr><td>${c.name}</td><td>${c.spend_label||'—'}</td><td>${fmtInt(c.conv)}</td><td>${c.value_label||'—'}</td>
     <td><b>${fmtRoas(c.roas)}</b></td></tr>`).join('');
   document.getElementById('pgads-note').textContent = g._note||'';
+}
+
+// Two fixed windows, not the period toggle's: the test has its own start date.
+function renderBuyPath() {
+  const sec = document.getElementById('bp-section'); if (!sec) return;
+  if (!window.BuyPath) { console.error('buy-path.js did not load, so the buy-path test cannot be drawn'); sec.style.display='none'; return; }
+  sec.style.display = window.BuyPath.render(document, DATA.buy_path) ? '' : 'none';
 }
 
 function renderGads() {

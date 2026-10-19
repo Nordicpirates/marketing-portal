@@ -9,6 +9,7 @@ const REPO = join(import.meta.dir, "..");
 
 export const SNAPSHOT = JSON.parse(readFileSync(join(REPO, "data", "snapshot.json"), "utf8"));
 export const FRESHNESS_JS = readFileSync(join(REPO, "public", "freshness.js"), "utf8");
+const BUY_PATH_JS = readFileSync(join(REPO, "public", "buy-path.js"), "utf8");
 
 export function pageHtml(file: string): string {
   return readFileSync(join(REPO, "public", file), "utf8");
@@ -71,6 +72,7 @@ export async function loadPortalPage(file: string, answers: Record<string, any>)
   // The page loads /freshness.js as a real script tag, which this window does not fetch.
   // Evaluating it against the same window is what the browser would have done.
   new Function("window", FRESHNESS_JS)(window);
+  if (html.includes('<script src="/buy-path.js">')) new Function("window", BUY_PATH_JS)(window);
 
   // Chart.js comes from a CDN the browser fetches. The pages only ever construct charts,
   // so a constructor that records nothing is enough to exercise the path they take.
