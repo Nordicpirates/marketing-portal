@@ -33,12 +33,6 @@ def name_for(names, path):
     return hit[1] if hit else path
 
 
-def canonical(names, path):
-    """The names file's spelling of a path it knows, else the path as given."""
-    hit = names.get(key_of(path))
-    return hit[0] if hit else path
-
-
 def merge(names, rows):
     """[(path, sessions, purchases)] to {canonical path: [sessions, purchases]}, case variants summed.
     The canonical spelling is the names file's, else the variant with the most sessions."""

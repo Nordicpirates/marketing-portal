@@ -948,15 +948,15 @@
     {
      "name": "Light checkout",
      "path": "/lp/Q4",
-     "sessions": 723,
-     "conv_pct": 0.83,
+     "sessions": 741,
+     "conv_pct": 0.81,
      "alert": true
     },
     {
      "name": "Light cart",
      "path": "/lp/Q4v2",
-     "sessions": 681,
-     "conv_pct": 0.88,
+     "sessions": 687,
+     "conv_pct": 0.87,
      "alert": true
     },
     {
@@ -1190,8 +1190,8 @@
     {
      "name": "Light cart",
      "path": "/lp/Q4v2",
-     "sessions": 681,
-     "conv_pct": 0.88,
+     "sessions": 687,
+     "conv_pct": 0.87,
      "alert": true
     },
     {
@@ -1528,15 +1528,15 @@
     {
      "name": "Light checkout",
      "path": "/lp/Q4",
-     "sessions": 723,
-     "conv_pct": 0.83,
+     "sessions": 741,
+     "conv_pct": 0.81,
      "alert": true
     },
     {
      "name": "Light cart",
      "path": "/lp/Q4v2",
-     "sessions": 681,
-     "conv_pct": 0.88,
+     "sessions": 687,
+     "conv_pct": 0.87,
      "alert": true
     }
    ],

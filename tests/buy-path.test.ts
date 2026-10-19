@@ -2,7 +2,8 @@
 // runs on hand-made rows, never on real pulls; the page half through tests/portal-harness.ts.
 
 import { describe, expect, test } from "bun:test";
-import { readFileSync } from "fs";
+import { mkdirSync, mkdtempSync, readFileSync, readdirSync, writeFileSync } from "fs";
+import { tmpdir } from "os";
 import { join } from "path";
 import { loadPortalPage, snapshotWith } from "./portal-harness.ts";
 
@@ -10,6 +11,46 @@ const REPO = join(import.meta.dir, "..");
 const NAMES = JSON.parse(readFileSync(join(REPO, "data", "landing-page-names.json"), "utf8"));
 const EXPERIMENTS = JSON.parse(readFileSync(join(REPO, "data", "experiments.json"), "utf8"));
 const TASKS = JSON.parse(readFileSync(join(REPO, "data", "tasks.json"), "utf8"));
+
+// The 29 entries of the NAMES dict ga_landing_pages.py carried before the names file, unchanged.
+const MIGRATED: [string, string][] = [
+  ["/", "Homepage"],
+  ["/products/lying-pirates-base-game", "Base Game (product)"],
+  ["/products/lying-pirates-big-box", "Big Box (product)"],
+  ["/products/lying-pirates-upgrade-box", "Upgrade Box (product)"],
+  ["/products/lying-pirates-custom-insert", "Custom Insert (product)"],
+  ["/products/gold-coins-20-pcs", "Gold Coins (product)"],
+  ["/products/lying-pirates-cities-of-greed", "Cities of Greed (product)"],
+  ["/pages/newslettersignup", "Newsletter signup"],
+  ["/pages/faq", "FAQ"],
+  ["/pages/about-us", "About us"],
+  ["/pages/contact", "Contact"],
+  ["/collections/all", "All products"],
+  ["/search", "Search"],
+  ["/cart", "Cart"],
+  ["/gift-offer", "Gift offer (LP)"],
+  ["/lp/lying-pirates-cities-of-greed-big-box", "CoG Big Box LP (A)"],
+  ["/lp/lying-pirates-cities-of-greed-big-box-b", "CoG Big Box LP (B)"],
+  ["/lp/play", "Big Box LP (play)"],
+  ["/lp/lying-pirates-it", "Lying Pirates LP (IT)"],
+  ["/lp/lying-pirates-cities-of-greed-big-box-it", "CoG Big Box LP (A, IT)"],
+  ["/lp/lying-pirates-cities-of-greed-big-box-b-it", "CoG Big Box LP (B, IT)"],
+  ["/lp/lying-pirates-cities-of-greed-big-box-de", "CoG Big Box LP (A, DE)"],
+  ["/lp/lying-pirates-cities-of-greed-big-box-b-de", "CoG Big Box LP (B, DE)"],
+  ["/products/cities-of-greed", "Cities of Greed (product)"],
+  ["/products/kraken-mini-expansion", "Kraken Mini (product)"],
+  ["/collections", "Collections"],
+  ["/collections/lying-pirates", "Lying Pirates (collection)"],
+  ["/pages/sticker-fix", "Sticker fix"],
+  ["/blogs/news", "Blog"],
+];
+
+const ADDED: [string, string][] = [
+  ["/lp/v2", "Dark checkout"], ["/lp/v3", "Dark cart"], ["/lp/Q4", "Light checkout"], ["/lp/Q4v2", "Light cart"],
+  ["/lp/dark", "Dark split entry"], ["/lp/light", "Light split entry"], ["/lp/offer", "Campaign (all markets)"],
+  ["/lp/offer-us", "Campaign US"], ["/lp/offer-eu", "Campaign EU"], ["/lp/offer-uk", "Campaign UK"],
+  ["/lp/offer-au", "Campaign AU"], ["/lp/lying-pirates-cities-of-greed-big-box-c", "Big Box C (old dark)"],
+];
 
 /** Run Python against the repo's scripts and read back the JSON it prints. */
 function py(code: string): any {
@@ -140,20 +181,18 @@ print(json.dumps(g.page_rows(names, lp_names.merge(names, raw), 8)))`);
 
   test("the names file parses, every entry has a name, and no path is in it twice", () => {
     const keys = Object.keys(NAMES);
-    expect(keys.length).toBeGreaterThan(30);
     for (const path of keys) {
       expect(path.startsWith("/"), path).toBe(true);
       expect(typeof NAMES[path].name, path).toBe("string");
       expect(NAMES[path].name.trim().length, path).toBeGreaterThan(0);
     }
     expect(new Set(keys.map((k) => k.toLowerCase())).size).toBe(keys.length);
-    for (const [path, name] of [
-      ["/lp/v2", "Dark checkout"], ["/lp/v3", "Dark cart"], ["/lp/Q4", "Light checkout"], ["/lp/Q4v2", "Light cart"],
-      ["/lp/dark", "Dark split entry"], ["/lp/light", "Light split entry"], ["/lp/offer", "Campaign (all markets)"],
-      ["/lp/offer-us", "Campaign US"], ["/lp/offer-eu", "Campaign EU"], ["/lp/offer-uk", "Campaign UK"],
-      ["/lp/offer-au", "Campaign AU"], ["/lp/lying-pirates-cities-of-greed-big-box-c", "Big Box C (old dark)"],
-      ["/", "Homepage"], ["/gift-offer", "Gift offer (LP)"],
-    ]) expect(NAMES[path]?.name, path).toBe(name);
+  });
+
+  test("all 29 names from the old inline dict and the 12 new ones are there, word for word", () => {
+    expect(MIGRATED).toHaveLength(29);
+    expect(ADDED).toHaveLength(12);
+    for (const [path, name] of [...MIGRATED, ...ADDED]) expect(NAMES[path]?.name, path).toBe(name);
   });
 });
 
@@ -185,5 +224,139 @@ print(json.dumps(buy_path.window_block(names, "2026-10-07", "2026-10-18", orders
     expect([light.sessions, light.orders, light.conv_pct, light.eur_per_100]).toEqual([0, 1, null, null]);
     expect(block.arms[2].conv_pct).toBeNull();
     expect(block.campaign).toEqual([{ arm: "campaign_us_gift", orders: 1, revenue_eur: 40 }]);
+  });
+});
+
+// A stand-in for `gate ga report`, so ga_rows runs its real parsing on hand-made rows.
+const GA_FAKE = `
+import subprocess
+calls = []
+def fake_ga(payload, code=0):
+    def run(cmd, **kw):
+        calls.append(cmd)
+        return subprocess.CompletedProcess(cmd, code, json.dumps(payload), "GA refused")
+    subprocess.run = run
+def report(rows, row_count="all"):
+    data = {"rows": [{"dimensionValues": [{"value": p}], "metricValues": [{"value": str(s)}, {"value": str(b)}]}
+                     for p, s, b in rows]}
+    if row_count == "all": data["rowCount"] = len(rows)
+    elif row_count is not None: data["rowCount"] = row_count
+    return {"ok": True, "data": data}
+`;
+
+describe("reading GA4", () => {
+  test("every row is read before the merge, so a small twin past row 32 is still summed", () => {
+    const out = py(GA_FAKE + `
+import ga_landing_pages as g, lp_names
+names = lp_names.load(".")
+rows = [("/lp/Q4", 723, 6)] + [(f"/p{i}", 500 - i, 0) for i in range(38)] + [("/lp/q4", 18, 0)]
+fake_ga(report(rows))
+top = g.page_rows(names, lp_names.merge(names, g.ga_rows("1", "2026-09-19", "2026-10-18")), 8)[0]
+print(json.dumps({"top": top, "limit": calls[0][calls[0].index("--limit") + 1]}))`);
+    expect(out.limit).toBe("2000");
+    expect(out.top).toEqual({ name: "Light checkout", path: "/lp/Q4", sessions: 741, conv_pct: 0.81, alert: true });
+  });
+
+  test("a report with rows but no rowCount, or more pages than were read, is refused", () => {
+    const out = py(GA_FAKE + `
+import ga_landing_pages as g
+said = []
+for payload in (report([("/lp/v2", 1, 0)], None), report([("/lp/v2", 1, 0)], 2001)):
+    fake_ga(payload)
+    try:
+        g.ga_rows("1", "2026-10-07", "2026-10-18")
+        said.append("read")
+    except SystemExit as e:
+        said.append(str(e))
+fake_ga(report([], None))
+said.append(g.ga_rows("1", "2026-10-07", "2026-10-18"))
+print(json.dumps(said))`);
+    expect(out[0]).toContain("no rowCount");
+    expect(out[1]).toContain("2001 landing pages");
+    expect(out[2]).toEqual([]);
+  });
+
+  test("an arm the names file has lost still gets its visits, under GA's busiest spelling", () => {
+    const light = py(`
+import buy_path, lp_names
+names = lp_names.load(".")
+del names[lp_names.key_of("/lp/Q4v2")]
+ga = lp_names.merge(names, [("/lp/q4v2", 30, 1), ("/lp/Q4V2", 5, 0)])
+print(json.dumps(buy_path.window_block(names, "2026-10-07", "2026-10-18", [], ga)["arms"][3]))`);
+    expect([light.arm, light.path, light.sessions, light.ga_purchases]).toEqual(["light_cart", "/lp/Q4v2", 35, 1]);
+  });
+});
+
+// Shopify's orders query answered from hand-made pages; the cursor each call sent is kept.
+const SHOPIFY_FAKE = `
+import buy_path, io, urllib.request
+from datetime import date
+sent = []
+def order(created, arms=("dark_cart",), amount="10.00", cur="EUR", test=False, cancelled=None):
+    return {"createdAt": created, "cancelledAt": cancelled, "test": test,
+            "customAttributes": [{"key": "lp_arm", "value": a} for a in arms],
+            "currentTotalPriceSet": {"shopMoney": {"amount": amount, "currencyCode": cur}}}
+def page(nodes, cursor=None):
+    return {"nodes": nodes, "pageInfo": {"hasNextPage": cursor is not None, "endCursor": cursor}}
+def run(pages):
+    def answer(req, timeout=None):
+        sent.append(json.loads(req.data)["variables"]["after"])
+        return io.BytesIO(json.dumps({"data": {"orders": pages[len(sent) - 1]}}).encode())
+    urllib.request.urlopen = answer
+    buy_path.time.sleep = lambda s: None
+    try:
+        got = buy_path.tagged_orders("token", date(2026, 10, 7), date(2026, 10, 18))
+        return {"orders": [[d, a, str(e)] for d, a, e in got], "sent": sent}
+    except SystemExit as e:
+        return {"refused": str(e)}
+`;
+
+describe("scripts/buy_path.py's Shopify read", () => {
+  test("both pages are read, test, cancelled and untagged orders left out, days counted in Stockholm", () => {
+    const out = py(SHOPIFY_FAKE + `
+print(json.dumps(run([
+    page([order("2026-10-06T21:30:00Z"),                      # 23:30 on 6 Oct in Stockholm: before the test
+          order("2026-10-06T22:30:00Z", amount="12.50"),      # 00:30 on 7 Oct: the first counted minute
+          order("2026-10-08T10:00:00Z", test=True),
+          order("2026-10-08T10:00:00Z", cancelled="2026-10-08T12:00:00Z"),
+          order("2026-10-09T10:00:00Z", arms=())], "cursor-1"),
+    page([order("2026-10-18T21:59:00Z", arms=("light_cart",)),  # 23:59 on 18 Oct
+          order("2026-10-18T22:00:00Z")]),                       # midnight, 19 Oct: after the window
+])))`);
+    expect(out.sent).toEqual([null, "cursor-1"]);
+    expect(out.orders).toEqual([
+      ["2026-10-07", "dark_cart", "12.50"],
+      ["2026-10-18", "light_cart", "10.00"],
+    ]);
+  });
+
+  test("an order with two different tags, or not in EUR, stops the read", () => {
+    const twoTags = py(SHOPIFY_FAKE + `print(json.dumps(run([page([order("2026-10-08T10:00:00Z", arms=("dark_cart", "light_cart"))])])))`);
+    expect(twoTags.refused).toContain("two lp_arm values");
+    const sek = py(SHOPIFY_FAKE + `print(json.dumps(run([page([order("2026-10-08T10:00:00Z", cur="SEK")])])))`);
+    expect(sek.refused).toContain("is in SEK");
+  });
+});
+
+describe("a failed pull writes nothing", () => {
+  test("GA4 refusing leaves data/snapshot.json byte for byte as it was, and no temp file behind", () => {
+    const dir = mkdtempSync(join(tmpdir(), "buy-path-"));
+    mkdirSync(join(dir, "data"));
+    const before = JSON.stringify({ sources: { buy_path: { as_of: "2026-10-01", pulled: "2026-10-02" } }, buy_path: { old: true } });
+    writeFileSync(join(dir, "data", "snapshot.json"), before);
+    writeFileSync(join(dir, "data", "landing-page-names.json"), JSON.stringify(NAMES));
+    const out = py(GA_FAKE + SHOPIFY_FAKE + `
+fake_ga({}, code=1)
+buy_path.shopify_token = lambda: "token"
+urllib.request.urlopen = lambda req, timeout=None: io.BytesIO(json.dumps({"data": {"orders": page([])}}).encode())
+sys.argv = ["buy_path.py", "--repo", ${JSON.stringify(dir)}, "--today", "2026-10-19"]
+try:
+    buy_path.main()
+    print(json.dumps("wrote"))
+except SystemExit as e:
+    print(json.dumps(str(e)))`);
+    expect(out).toContain("gate ga report failed");
+    expect(readFileSync(join(dir, "data", "snapshot.json"), "utf8")).toBe(before);
+    expect(readdirSync(join(dir, "data")).sort()).toEqual(["landing-page-names.json", "snapshot.json"]);
   });
 });

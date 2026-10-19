@@ -442,6 +442,8 @@ function paintFreshness() {
   if (!painted) console.error('no section had a place to show its date: this markup is older than freshness.js');
 }
 
+// Text from the snapshot goes into markup through freshness.js's escaper; without it, the markup characters are dropped.
+function esc(v){ return window.Freshness ? window.Freshness.esc(v) : String(v ?? '').replace(/[&<>"]/g, ''); }
 function fmtInt(n){ return (n===null||n===undefined)?'—':Number(n).toLocaleString('en-US'); }
 // ROAS the way the rest of the page writes it: Swedish decimal comma, trailing ×.
 function fmtRoas(v){ return (v===null||v===undefined)?'—':String(v).replace('.',',')+'×'; }
@@ -570,8 +572,8 @@ function renderPeriod(i) {
       return `<div class="lp-row ${warn}">
         <div class="lp-rank">${idx+1}</div>
         <div class="lp-info">
-          <div class="lp-name"><a href="https://www.nordicpirates.com${lp.path}" target="_blank">${lp.name}</a></div>
-          <div class="lp-path">${lp.path}</div>
+          <div class="lp-name"><a href="https://www.nordicpirates.com${esc(lp.path)}" target="_blank">${esc(lp.name)}</a></div>
+          <div class="lp-path">${esc(lp.path)}</div>
         </div>
         <div class="lp-metrics">
           <div class="lp-stat sess"><b>${fmtInt(lp.sessions)}</b><small>sessions</small></div>
@@ -729,7 +731,9 @@ function renderPeriodGads(g) {
 function renderBuyPath() {
   const sec = document.getElementById('bp-section'); if (!sec) return;
   if (!window.BuyPath) { console.error('buy-path.js did not load, so the buy-path test cannot be drawn'); sec.style.display='none'; return; }
-  sec.style.display = window.BuyPath.render(document, DATA.buy_path) ? '' : 'none';
+  // A bad value hides this section only, never the rest of the dashboard.
+  try { sec.style.display = window.BuyPath.render(document, DATA.buy_path) ? '' : 'none'; }
+  catch (e) { console.error('the buy-path test could not be drawn, so its section is hidden:', e); sec.style.display='none'; }
 }
 
 function renderGads() {

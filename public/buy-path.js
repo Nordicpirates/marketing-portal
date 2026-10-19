@@ -30,17 +30,13 @@
     (doc.head || doc.documentElement).appendChild(el);
   }
 
-  function esc(s) {
-    return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) {
-      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c];
-    });
-  }
-
+  // Escaping and day labels are freshness.js's, so the two scripts cannot disagree.
+  function esc(s) { return root.Freshness.esc(s); }
   // Null is "no visits to divide by", so it prints a hyphen and never a zero.
   function int(n) { return n == null ? "-" : Number(n).toLocaleString("en-US"); }
   function pct(v) { return v == null ? "-" : v.toFixed(2) + "%"; }
   function eur(v) { return v == null ? "-" : "€" + v.toFixed(2); }
-  function day(iso) { return root.Freshness ? root.Freshness.short(iso) : iso; }
+  function day(iso) { return root.Freshness.short(iso); }
 
   function row(a, week) {
     var w = week

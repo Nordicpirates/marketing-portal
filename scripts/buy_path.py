@@ -28,7 +28,6 @@ from ga_landing_pages import ga_rows  # noqa: E402
 SHOP = "2b988c-3.myshopify.com"
 TZ = ZoneInfo("Europe/Stockholm")
 TEST_START = "2026-10-07"
-GA_LIMIT = 2000
 
 # The four arms in the order the page pairs them; /lp/dark and /lp/light split 50/50 into each pair.
 ARMS = [
@@ -93,11 +92,8 @@ def tagged_orders(token, start, end):
 
 
 def ga_sessions(prop, names, start, end):
-    """{canonical path: [sessions, purchases]}; refuses a report GA4 cut short."""
-    rows, row_count = ga_rows(prop, start, end, GA_LIMIT)
-    if row_count > GA_LIMIT:
-        raise SystemExit(f"GA4 has {row_count} landing pages for {start}..{end}, above the {GA_LIMIT} read; nothing written")
-    return lp_names.merge(names, rows)
+    """{canonical path: [sessions, purchases]}; ga_rows refuses a report GA4 cut short."""
+    return lp_names.merge(names, ga_rows(prop, start, end))
 
 
 def ratio(top, sessions):
@@ -111,9 +107,11 @@ def window_block(names, start, end, orders, ga):
         if start <= day <= end:
             by_arm[arm][0] += 1
             by_arm[arm][1] += eur
+    # By key, not spelling: an arm missing from the names file is keyed by GA's busiest spelling.
+    visits = {lp_names.key_of(p): v for p, v in ga.items()}
     arms = []
     for arm, path in ARMS:
-        sessions, purchases = ga.get(lp_names.canonical(names, path), [0, 0])
+        sessions, purchases = visits.get(lp_names.key_of(path), [0, 0])
         count, eur = by_arm.get(arm, [0, Decimal("0")])
         revenue = float(round(eur, 2))
         arms.append({
@@ -165,7 +163,11 @@ def main():
     if args.dry_run:
         print("\n--dry-run: nothing written")
         return
-    open(path, "w").write(json.dumps(snap, ensure_ascii=False, indent=1))
+    # A failed write must not leave half a snapshot: the old file stays until the new one is whole.
+    tmp = path + ".tmp"
+    with open(tmp, "w") as handle:
+        handle.write(json.dumps(snap, ensure_ascii=False, indent=1))
+    os.replace(tmp, path)
     print(f"\nwritten: {path}, sources.buy_path as_of {yesterday}")
 
 

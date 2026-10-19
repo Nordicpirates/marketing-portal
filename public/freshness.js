@@ -130,5 +130,5 @@
     return true;
   }
 
-  root.Freshness = { render: render, html: html, pill: pill, state: state, ageDays: ageDays, short: short, LABELS: LABELS, AGING: AGING, STALE: STALE };
+  root.Freshness = { render: render, html: html, pill: pill, state: state, ageDays: ageDays, short: short, esc: esc, LABELS: LABELS, AGING: AGING, STALE: STALE };
 })(typeof window !== "undefined" ? window : globalThis);
