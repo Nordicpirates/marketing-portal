@@ -9,8 +9,9 @@ comes from a pull made that morning; nothing is carried over or estimated.
 2. `scripts/write_periods.py`: the five periods, the yesterday block, orders per country.
 3. `scripts/build_snapshot_extras.py`: exchange rates, Amazon, the ROAS series.
 4. `scripts/ga_landing_pages.py`: landing pages per period.
-5. `scripts/conversion.py`: conversion with all four denominators, and Sessions.
-6. `scripts/daily_sections.py`: stock, channels, the sessions chart and the orders chart.
+5. `scripts/buy_path.py`: the buy-path test, dark and light x checkout and cart.
+6. `scripts/conversion.py`: conversion with all four denominators, and Sessions.
+7. `scripts/daily_sections.py`: stock, channels, the sessions chart and the orders chart.
 
 Work in a copy of the checkout under your own home: the shared checkout holds files you cannot
 write. Commit, push, and let the webhook deploy.
@@ -104,7 +105,8 @@ and the period cards agree; the ECB SEK rate is stored in `fx` for the day the r
 
 ## Where it shows
 
-`public/index.html`: the Store performance row (Total, Shopify, Amazon, Orders, Conversion,
+`public/index.html`: the section "Buy-path test - dark and light" (cards drawn by
+`public/buy-path.js`), the Store performance row (Total, Shopify, Amazon, Orders, Conversion,
 Sessions), a sales note with the rate and the sheet link, a fourth Meta stat "Blended incl.
 Amazon", and the section "ROAS per day · last 30 days" (Chart.js, spend bars, two or three lines).
 
@@ -124,6 +126,39 @@ the site stayed missing from this table for seven weeks.
 
 GA4 purchases undercount against Shopify (consent mode, blockers, iOS), so the conversion
 column is GA4's own rate and the page caption says so.
+
+GA4 reports paths case-sensitively, so `/lp/Q4` and `/lp/q4` arrive as two pages. They are one
+row here, sessions and purchases summed, under the names file's spelling of the path.
+
+## Landing-page names
+
+`data/landing-page-names.json` is the only place a page gets its name:
+`{"<path>": {"name": "<name>", "group": "<group>"}}`, matched on the path without regard to case
+or a trailing slash. The page shows the name, with the path small under it. A path with no
+entry is shown under its own path. Renaming a page, or naming a new one, is an edit to that
+file; the name reaches the page with the next run of `ga_landing_pages.py` and `buy_path.py`.
+
+## The buy-path test
+
+```
+gate vault exec --env CID=Shopify_client_ID --env SEC=SHOPIFYFULL -- python3 scripts/buy_path.py
+```
+
+Run it after `ga_landing_pages.py`. The entry pages `/lp/dark` and `/lp/light` split visitors
+50/50 to a pair: Dark checkout `/lp/v2` and Dark cart `/lp/v3`, Light checkout `/lp/Q4` and
+Light cart `/lp/Q4v2`. The test started 7 October 2026 (Stockholm).
+
+It writes `buy_path` with two windows, `test` (7 October to yesterday) and `7d`. Per window,
+for the four arms: Shopify orders and EUR (`currentTotalPriceSet`) by the order's `lp_arm` cart
+attribute, Stockholm days, test and cancelled orders left out; GA4 sessions and purchases by
+`landingPage`, case variants summed; `conv_pct` and `eur_per_100` per 100 sessions, null when
+there were no sessions. Every other `lp_arm` value seen (`campaign_*`, `gift_offer`) is listed
+under `campaign` with orders and money only. It dates `sources.buy_path`.
+
+If Shopify or GA4 cannot be read, or an order carries two tags, or a total is not in EUR, it
+writes nothing and exits non-zero: the old block keeps its old date. `--today YYYY-MM-DD`
+with `--dry-run` reruns an earlier day without writing, which is how the control figures
+are checked.
 
 ## Conversion, all four denominators
 

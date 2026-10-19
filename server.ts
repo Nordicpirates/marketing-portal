@@ -457,12 +457,12 @@ const server = Bun.serve({
       return handleQrStats();
     }
 
-    // The freshness pills every page draws. One file so two pages cannot disagree
-    // about how old a number is: public/freshness.js, docs/FRESHNESS.md.
-    if (path === "/freshness.js") {
-      const fresh = join(DIR, "public", "freshness.js");
-      if (existsSync(fresh)) {
-        return new Response(readFileSync(fresh), {
+    // The freshness pills every page draws (docs/FRESHNESS.md), and the buy-path cards
+    // Marketing HQ draws (docs/DAILY-REFRESH.md). No-cache, like the markup that loads them.
+    if (path === "/freshness.js" || path === "/buy-path.js") {
+      const script = join(DIR, "public", path.slice(1));
+      if (existsSync(script)) {
+        return new Response(readFileSync(script), {
           headers: { "Content-Type": "text/javascript; charset=utf-8", "Cache-Control": NO_CACHE },
         });
       }

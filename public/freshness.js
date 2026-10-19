@@ -17,6 +17,7 @@
     amazon: "Amazon",
     sessions: "Sessions",
     landing_pages: "Landing pages",
+    buy_path: "Buy-path test",
     channels: "Channels",
     inventory: "Stock",
     sessions_chart: "Sessions chart",
@@ -129,5 +130,5 @@
     return true;
   }
 
-  root.Freshness = { render: render, html: html, pill: pill, state: state, ageDays: ageDays, short: short, LABELS: LABELS, AGING: AGING, STALE: STALE };
+  root.Freshness = { render: render, html: html, pill: pill, state: state, ageDays: ageDays, short: short, esc: esc, LABELS: LABELS, AGING: AGING, STALE: STALE };
 })(typeof window !== "undefined" ? window : globalThis);
