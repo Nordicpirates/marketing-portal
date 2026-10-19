@@ -2,6 +2,7 @@
   "jobs": [
     {
       "id": "test",
+      "name": "test",
       "command": "bun test tests/",
       "required": true
     }
