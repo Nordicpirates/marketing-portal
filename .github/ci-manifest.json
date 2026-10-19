@@ -5,10 +5,10 @@
       "name": "test",
       "required": true,
       "exec": {
-        "command": "bun test tests/",
         "weight": "cheap",
         "timeoutMinutes": 10,
-        "installs": []
+        "installs": [],
+        "steps": ["bun test tests/"]
       }
     }
   ]
