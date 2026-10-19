@@ -5,7 +5,8 @@
       "name": "test",
       "required": true,
       "exec": {
-        "command": "bun test tests/"
+        "command": "bun test tests/",
+        "weight": "cheap"
       }
     }
   ]
