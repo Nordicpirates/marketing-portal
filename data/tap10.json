@@ -1,42 +1,42 @@
 {
- "generated_at": "2026-10-19",
+ "generated_at": "2026-10-20",
  "launch_date": "2026-10-06",
  "sources": {
   "signups": {
-   "as_of": "2026-10-19",
-   "pulled": "2026-10-19"
+   "as_of": "2026-10-20",
+   "pulled": "2026-10-20"
   },
   "ga": {
-   "as_of": "2026-10-19",
-   "pulled": "2026-10-19"
+   "as_of": "2026-10-20",
+   "pulled": "2026-10-20"
   },
   "ads": {
-   "as_of": "2026-10-15",
-   "pulled": "2026-10-19"
+   "as_of": "2026-10-20",
+   "pulled": "2026-10-20"
   },
   "ks_followers": {
-   "as_of": "2026-10-19",
-   "pulled": "2026-10-19"
+   "as_of": "2026-10-20",
+   "pulled": "2026-10-20"
   },
   "ks_pageviews": {
-   "as_of": "2026-10-16",
-   "pulled": "2026-10-19"
+   "as_of": "2026-10-20",
+   "pulled": "2026-10-20"
   }
  },
  "days": [
   {
-   "date": "2026-10-19",
-   "signups": 16,
-   "waitlist_total": 395,
-   "waitlist_blacklisted": 9,
-   "ks_followers": 256,
-   "ks_pageviews": null,
+   "date": "2026-10-20",
+   "signups": 5,
+   "waitlist_total": 410,
+   "waitlist_blacklisted": 11,
+   "ks_followers": 257,
+   "ks_pageviews": 8,
    "ks_ga_sessions": 0,
    "ga_sessions": 0,
    "ga_users": 0,
    "avg_session_sec": null,
-   "ad_spend_sek": null,
-   "ad_clicks": null,
+   "ad_spend_sek": 511.19,
+   "ad_clicks": 50,
    "film_starts": 0,
    "film_completes": 0,
    "reel_starts": 0,
@@ -48,39 +48,60 @@
    "partial": true
   },
   {
-   "date": "2026-10-18",
-   "signups": 33,
-   "waitlist_total": 379,
-   "waitlist_blacklisted": 9,
-   "ks_followers": 253,
-   "ks_pageviews": null,
-   "ks_ga_sessions": 5,
-   "ga_sessions": 42,
-   "ga_users": 41,
-   "avg_session_sec": 141,
-   "ad_spend_sek": null,
-   "ad_clicks": null,
-   "film_starts": 1,
-   "film_completes": 1,
+   "date": "2026-10-19",
+   "signups": 31,
+   "waitlist_total": 405,
+   "waitlist_blacklisted": 11,
+   "ks_followers": 256,
+   "ks_pageviews": 43,
+   "ks_ga_sessions": 1,
+   "ga_sessions": 22,
+   "ga_users": 22,
+   "avg_session_sec": 129,
+   "ad_spend_sek": 1427.44,
+   "ad_clicks": 127,
+   "film_starts": 0,
+   "film_completes": 0,
    "reel_starts": 0,
    "reel_completes": 0,
-   "demo_starts": 3,
-   "demo_completes": 28,
+   "demo_starts": 2,
+   "demo_completes": 2,
+   "demo_star_clicks": 0
+  },
+  {
+   "date": "2026-10-18",
+   "signups": 33,
+   "waitlist_total": 375,
+   "waitlist_blacklisted": 10,
+   "ks_followers": 253,
+   "ks_pageviews": 21,
+   "ks_ga_sessions": 6,
+   "ga_sessions": 77,
+   "ga_users": 73,
+   "avg_session_sec": 115,
+   "ad_spend_sek": 1853.49,
+   "ad_clicks": 171,
+   "film_starts": 1,
+   "film_completes": 1,
+   "reel_starts": 1,
+   "reel_completes": 1,
+   "demo_starts": 4,
+   "demo_completes": 29,
    "demo_star_clicks": 0
   },
   {
    "date": "2026-10-17",
    "signups": 31,
-   "waitlist_total": 346,
-   "waitlist_blacklisted": 9,
+   "waitlist_total": 342,
+   "waitlist_blacklisted": 10,
    "ks_followers": 249,
-   "ks_pageviews": null,
+   "ks_pageviews": 38,
    "ks_ga_sessions": 10,
    "ga_sessions": 56,
    "ga_users": 54,
    "avg_session_sec": 134,
-   "ad_spend_sek": null,
-   "ad_clicks": null,
+   "ad_spend_sek": 1238.26,
+   "ad_clicks": 121,
    "film_starts": 4,
    "film_completes": 1,
    "reel_starts": 0,
@@ -92,16 +113,16 @@
   {
    "date": "2026-10-16",
    "signups": 48,
-   "waitlist_total": 315,
+   "waitlist_total": 312,
    "waitlist_blacklisted": 9,
    "ks_followers": 229,
-   "ks_pageviews": 6,
+   "ks_pageviews": 113,
    "ks_ga_sessions": 27,
    "ga_sessions": 68,
    "ga_users": 63,
    "avg_session_sec": 185,
-   "ad_spend_sek": null,
-   "ad_clicks": null,
+   "ad_spend_sek": 1359.61,
+   "ad_clicks": 149,
    "film_starts": 2,
    "film_completes": 1,
    "reel_starts": 2,
@@ -113,7 +134,7 @@
   {
    "date": "2026-10-15",
    "signups": 30,
-   "waitlist_total": 268,
+   "waitlist_total": 265,
    "waitlist_blacklisted": 8,
    "ks_followers": 226,
    "ks_pageviews": 19,
@@ -121,7 +142,7 @@
    "ga_sessions": 71,
    "ga_users": 69,
    "avg_session_sec": 94,
-   "ad_spend_sek": 1426.2,
+   "ad_spend_sek": 1428.97,
    "ad_clicks": 126,
    "film_starts": 13,
    "film_completes": 7,
@@ -133,8 +154,8 @@
   },
   {
    "date": "2026-10-14",
-   "signups": 53,
-   "waitlist_total": 238,
+   "signups": 51,
+   "waitlist_total": 235,
    "waitlist_blacklisted": 8,
    "ks_followers": 222,
    "ks_pageviews": 47,
@@ -155,7 +176,7 @@
   {
    "date": "2026-10-13",
    "signups": 13,
-   "waitlist_total": 187,
+   "waitlist_total": 186,
    "waitlist_blacklisted": 6,
    "ks_followers": 219,
    "ks_pageviews": 46,
@@ -176,7 +197,7 @@
   {
    "date": "2026-10-12",
    "signups": 27,
-   "waitlist_total": 175,
+   "waitlist_total": 174,
    "waitlist_blacklisted": 5,
    "ks_followers": 219,
    "ks_pageviews": 18,
@@ -197,7 +218,7 @@
   {
    "date": "2026-10-11",
    "signups": 29,
-   "waitlist_total": 149,
+   "waitlist_total": 148,
    "waitlist_blacklisted": 4,
    "ks_followers": 217,
    "ks_pageviews": 13,
@@ -217,8 +238,8 @@
   },
   {
    "date": "2026-10-10",
-   "signups": 26,
-   "waitlist_total": 121,
+   "signups": 25,
+   "waitlist_total": 120,
    "waitlist_blacklisted": 3,
    "ks_followers": 215,
    "ks_pageviews": 25,
@@ -329,8 +350,8 @@
   },
   {
    "title": "Reel @tiktokboardgames",
-   "starts": 12,
-   "completes": 7
+   "starts": 13,
+   "completes": 8
   },
   {
    "title": "Reel @meeple_university",
@@ -346,15 +367,15 @@
  "signups_by_form": [
   {
    "form": "hero",
-   "count": 184
+   "count": 190
   },
   {
    "form": "join",
-   "count": 77
+   "count": 84
   },
   {
    "form": "offer",
-   "count": 55
+   "count": 59
   },
   {
    "form": "bar",
@@ -368,23 +389,23 @@
  "signups_by_medium": [
   {
    "medium": "Facebook_Mobile_Reels",
-   "count": 126
+   "count": 133
   },
   {
    "medium": "Facebook_Mobile_Feed",
-   "count": 88
+   "count": 90
   },
   {
    "medium": "-",
-   "count": 48
+   "count": 51
   },
   {
    "medium": "Instagram_Stories",
-   "count": 29
+   "count": 31
   },
   {
    "medium": "Instagram_Reels",
-   "count": 21
+   "count": 24
   },
   {
    "medium": "email",
@@ -406,13 +427,18 @@
  "ga_sources": [
   {
    "source": "fb",
-   "medium": "Facebook_Mobile_Feed",
-   "sessions": 208
+   "medium": "Facebook_Mobile_Reels",
+   "sessions": 230
   },
   {
    "source": "fb",
-   "medium": "Facebook_Mobile_Reels",
-   "sessions": 208
+   "medium": "Facebook_Mobile_Feed",
+   "sessions": 222
+  },
+  {
+   "source": "ig",
+   "medium": "Instagram_Stories",
+   "sessions": 57
   },
   {
    "source": "sendinblue",
@@ -422,17 +448,12 @@
   {
    "source": "(direct)",
    "medium": "(none)",
-   "sessions": 52
-  },
-  {
-   "source": "ig",
-   "medium": "Instagram_Stories",
-   "sessions": 47
+   "sessions": 54
   },
   {
    "source": "ig",
    "medium": "Instagram_Feed",
-   "sessions": 29
+   "sessions": 31
   },
   {
    "source": "(not set)",
@@ -442,7 +463,7 @@
   {
    "source": "ig",
    "medium": "Instagram_Reels",
-   "sessions": 17
+   "sessions": 21
   },
   {
    "source": "l.facebook.com",
@@ -452,12 +473,12 @@
   {
    "source": "fb",
    "medium": "Facebook_Stories",
-   "sessions": 13
+   "sessions": 15
   },
   {
    "source": "google",
    "medium": "organic",
-   "sessions": 11
+   "sessions": 10
   },
   {
    "source": "qr",
