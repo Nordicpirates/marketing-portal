@@ -1,51 +1,72 @@
 {
- "generated_at": "2026-10-22",
+ "generated_at": "2026-10-23",
  "launch_date": "2026-10-06",
  "sources": {
   "signups": {
-   "as_of": "2026-10-22",
-   "pulled": "2026-10-22"
+   "as_of": "2026-10-23",
+   "pulled": "2026-10-23"
   },
   "ga": {
-   "as_of": "2026-10-22",
-   "pulled": "2026-10-22"
+   "as_of": "2026-10-23",
+   "pulled": "2026-10-23"
   },
   "ads": {
-   "as_of": "2026-10-21",
-   "pulled": "2026-10-22"
+   "as_of": "2026-10-22",
+   "pulled": "2026-10-23"
   },
   "ks_followers": {
-   "as_of": "2026-10-22",
-   "pulled": "2026-10-22"
+   "as_of": "2026-10-23",
+   "pulled": "2026-10-23"
   },
   "ks_pageviews": {
-   "as_of": "2026-10-22",
-   "pulled": "2026-10-22"
+   "as_of": "2026-10-23",
+   "pulled": "2026-10-23"
   }
  },
  "days": [
   {
-   "date": "2026-10-22",
-   "signups": 9,
-   "waitlist_total": 460,
+   "date": "2026-10-23",
+   "signups": 10,
+   "waitlist_total": 499,
    "waitlist_blacklisted": 11,
-   "ks_followers": 260,
-   "ks_pageviews": 4,
+   "ks_followers": 262,
+   "ks_pageviews": 8,
    "ks_ga_sessions": 0,
    "ga_sessions": 17,
    "ga_users": 17,
-   "avg_session_sec": 50,
+   "avg_session_sec": 59,
    "ad_spend_sek": null,
    "ad_clicks": null,
    "film_starts": 0,
    "film_completes": 0,
-   "reel_starts": 2,
-   "reel_completes": 1,
-   "demo_starts": 0,
-   "demo_completes": 0,
+   "reel_starts": 0,
+   "reel_completes": 0,
+   "demo_starts": 1,
+   "demo_completes": 1,
    "demo_star_clicks": 0,
    "provisional": true,
    "partial": true
+  },
+  {
+   "date": "2026-10-22",
+   "signups": 38,
+   "waitlist_total": 489,
+   "waitlist_blacklisted": 11,
+   "ks_followers": 260,
+   "ks_pageviews": 25,
+   "ks_ga_sessions": 1,
+   "ga_sessions": 52,
+   "ga_users": 49,
+   "avg_session_sec": 88,
+   "ad_spend_sek": 1485.24,
+   "ad_clicks": 143,
+   "film_starts": 2,
+   "film_completes": 0,
+   "reel_starts": 2,
+   "reel_completes": 1,
+   "demo_starts": 3,
+   "demo_completes": 4,
+   "demo_star_clicks": 1
   },
   {
    "date": "2026-10-21",
@@ -57,8 +78,8 @@
    "ks_ga_sessions": 5,
    "ga_sessions": 59,
    "ga_users": 55,
-   "avg_session_sec": 90,
-   "ad_spend_sek": 1425.6,
+   "avg_session_sec": 119,
+   "ad_spend_sek": 1427.31,
    "ad_clicks": 134,
    "film_starts": 1,
    "film_completes": 1,
@@ -387,7 +408,7 @@
  "videos": [
   {
    "title": "TAP 10 film",
-   "starts": 77,
+   "starts": 79,
    "completes": 34
   },
   {
@@ -409,41 +430,41 @@
  "signups_by_form": [
   {
    "form": "hero",
-   "count": 216
+   "count": 228
   },
   {
    "form": "join",
-   "count": 99
+   "count": 107
   },
   {
    "form": "offer",
-   "count": 67
+   "count": 71
   },
   {
    "form": "bar",
-   "count": 43
+   "count": 47
   },
   {
    "form": "unknown",
-   "count": 1
+   "count": 12
   }
  ],
  "signups_by_medium": [
   {
    "medium": "Facebook_Mobile_Reels",
-   "count": 148
+   "count": 162
   },
   {
    "medium": "Facebook_Mobile_Feed",
-   "count": 101
+   "count": 110
   },
   {
    "medium": "-",
-   "count": 60
+   "count": 72
   },
   {
    "medium": "Instagram_Stories",
-   "count": 36
+   "count": 39
   },
   {
    "medium": "Instagram_Reels",
@@ -451,7 +472,7 @@
   },
   {
    "medium": "Instagram_Feed",
-   "count": 20
+   "count": 21
   },
   {
    "medium": "email",
@@ -470,17 +491,17 @@
   {
    "source": "fb",
    "medium": "Facebook_Mobile_Reels",
-   "sessions": 272
+   "sessions": 297
   },
   {
    "source": "fb",
    "medium": "Facebook_Mobile_Feed",
-   "sessions": 265
+   "sessions": 280
   },
   {
    "source": "ig",
    "medium": "Instagram_Stories",
-   "sessions": 77
+   "sessions": 80
   },
   {
    "source": "(direct)",
@@ -490,7 +511,7 @@
   {
    "source": "sendinblue",
    "medium": "email",
-   "sessions": 60
+   "sessions": 61
   },
   {
    "source": "ig",
@@ -500,12 +521,17 @@
   {
    "source": "ig",
    "medium": "Instagram_Feed",
-   "sessions": 37
+   "sessions": 38
   },
   {
    "source": "(not set)",
    "medium": "(not set)",
    "sessions": 36
+  },
+  {
+   "source": "google",
+   "medium": "organic",
+   "sessions": 20
   },
   {
    "source": "l.facebook.com",
@@ -516,11 +542,6 @@
    "source": "fb",
    "medium": "Facebook_Stories",
    "sessions": 18
-  },
-  {
-   "source": "google",
-   "medium": "organic",
-   "sessions": 15
   },
   {
    "source": "facebook.com",
@@ -540,7 +561,7 @@
   {
    "source": "backdrop",
    "medium": "qr",
-   "sessions": 4
+   "sessions": 5
   },
   {
    "source": "l.instagram.com",
@@ -568,9 +589,9 @@
    "sessions": 2
   },
   {
-   "source": "(data not available)",
-   "medium": "(data not available)",
-   "sessions": 1
+   "source": "price_burst",
+   "medium": "",
+   "sessions": 2
   },
   {
    "source": "fb",
@@ -593,12 +614,12 @@
    "sessions": 1
   },
   {
-   "source": "price_burst",
-   "medium": "",
+   "source": "share.gate1.dev",
+   "medium": "referral",
    "sessions": 1
   },
   {
-   "source": "share.gate1.dev",
+   "source": "youtube.com",
    "medium": "referral",
    "sessions": 1
   }
