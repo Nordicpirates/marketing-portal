@@ -138,8 +138,8 @@ def main():
         g_digits = re.sub(r"[^0-9.]", "", (g.get("spend_label") or "").replace(",", "").replace(" ", ""))
         gads_spend_sek = float(g_digits) if g_digits else 0.0
         ad_spend = (meta_spend_sek or 0) + gads_spend_sek
-        # without Meta's spend the bottom of the fraction is missing, so there is no figure
-        if meta_spend_sek is None:
+        # without Meta's or Google's spend the bottom of the fraction is missing, so there is no figure
+        if meta_spend_sek is None or not g_digits:
             mt["blended_mer_total"] = None
         elif have_amz and k["total_sales_eur"] is not None and ad_spend > 0 and sek_per_eur:
             mt["blended_mer_total"] = round(k["total_sales_eur"] * sek_per_eur / ad_spend, 2)

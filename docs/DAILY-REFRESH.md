@@ -79,6 +79,16 @@ of the page still refreshes; Lucas chose this on 5 Oct 2026 over a page frozen o
 - The status card is titled "Butik och Google nyhämtade <day>, Meta saknas". The next full run
   renames it back to "Alla siffror nyhämtade" and clears the Meta note.
 
+## When Google Ads cannot be pulled
+
+Pass `--no-gads` to `write_periods.py` instead of `--gads`, `--gads-since` and `--gads-until`
+(it combines with `--no-meta`). Every period's Google block reads `Unavailable` with ROAS,
+conversions and value null, `sources.gads` gets `as_of: null`, `text: "unavailable"` and the last
+covered day, and the freshness card names what is missing. Blended and blended incl. Amazon stay
+null: without Google's cost the bottom of the fraction is short and a Meta-only figure would read
+better than it is. The builder treats an `Unavailable` Google label the same way. First used
+24 Oct 2026, when `gate gads` was still on Google's blocked API v22 and the connector was down.
+
 ## The builder
 
 ```

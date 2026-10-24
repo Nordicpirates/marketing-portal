@@ -126,15 +126,20 @@ def no_meta_note(e, today, shop, gads):
 def meta_note(pid, s, e, today, hours, m, shop, gads):
     msp, mval, mpur = m
     orders, revenue, shop_sek = shop
-    spend = msp + gads
+    spend = None if gads is None else msp + gads
     blended = shop_sek / spend if spend else None
     if pid == "yesterday":
         read = f", läst {hours} timmar efter dygnets slut" if hours is not None else ""
         claim = f" Metas anspråk är därmed {round(mval / shop_sek * 100)} procent av hela kassan." if shop_sek else ""
-        real = f" Mätt mot riktiga pengar: {sv(blended)} tillbaka per annonskrona." if blended else ""
+        real = (f" Mätt mot riktiga pengar: {sv(blended)} tillbaka per annonskrona." if blended else
+                " Google Ads gick inte att hämta, så den blandade siffran räknas inte." if gads is None else "")
         return (f"Allt hämtat {sv_date(today)}{read}. {sv_date(e)}: Meta drog {kr(msp)} och bokför {mpur} köp "
                 f"värda {kr(mval)}, alltså {sv(mval / msp) if msp else '0'} tillbaka enligt kontot. Butiken tog in "
                 f"{sv(revenue)} EUR på {orders} ordrar, cirka {kr(shop_sek)} från ALLA kanaler.{claim}{real}")
+    if gads is None:
+        return (f"Meta {s} till {e}, hämtat {sv_date(today)}. {kr(mval)} tillbaka på {kr(msp)} satsat, {mpur} köp "
+                f"enligt kontot. Google Ads gick inte att hämta, så blandad avkastning räknas inte: utan Googles "
+                f"kostnad saknas en del av nämnaren, och en siffra på bara Meta skulle se bättre ut än den är.")
     google = f"Google drog {kr(gads)} i fönstret. " if gads else "Google hade ingen spend i fönstret. "
     return (f"Meta {s} till {e}, hämtat {sv_date(today)}. {kr(mval)} tillbaka på {kr(msp)} satsat, {mpur} köp "
             f"enligt kontot. {google}Blandad avkastning = butikens hela försäljning ({kr(shop_sek)}) delad med "
@@ -151,13 +156,17 @@ def main():
     ap.add_argument("--no-meta", action="store_true",
                     help="Meta could not be pulled: its figures are written as unavailable, never as zero")
     ap.add_argument("--shopify-daily", required=True, help="output of scripts/shopify_daily.py")
-    ap.add_argument("--gads", required=True, help="output of gate gads campaign-metrics")
-    ap.add_argument("--gads-since", required=True)
-    ap.add_argument("--gads-until", required=True)
+    ap.add_argument("--gads", help="output of gate gads campaign-metrics")
+    ap.add_argument("--gads-since")
+    ap.add_argument("--gads-until")
+    ap.add_argument("--no-gads", action="store_true",
+                    help="Google Ads could not be pulled: its figures are written as unavailable, never as zero")
     ap.add_argument("--today", help="YYYY-MM-DD, default today in Stockholm")
     a = ap.parse_args()
     if a.no_meta == bool(a.meta_daily) or (a.no_meta and a.meta_total):
         raise SystemExit("give --meta-daily (with any --meta-total), or --no-meta alone")
+    if a.no_gads == bool(a.gads) or (not a.no_gads and not (a.gads_since and a.gads_until)):
+        raise SystemExit("give --gads with --gads-since and --gads-until, or --no-gads alone")
 
     now = datetime.now(TZ)
     today = date.fromisoformat(a.today) if a.today else now.date()
@@ -182,9 +191,9 @@ def main():
         totals[pid] = (float(spend), float(value), int(purchases))
     shop_file = json.load(open(a.shopify_daily))
     shop = {d["date"]: d for d in shop_file["days"]}
-    gads_rows = json.load(open(a.gads))["data"].get("results") or []
+    gads_rows = [] if a.no_gads else json.load(open(a.gads))["data"].get("results") or []
     first = min(s for s, _ in win.values())
-    if a.gads_since > first.isoformat() or a.gads_until < yesterday.isoformat():
+    if not a.no_gads and (a.gads_since > first.isoformat() or a.gads_until < yesterday.isoformat()):
         raise SystemExit(f"Google Ads pull {a.gads_since}..{a.gads_until} does not cover {first}..{yesterday}")
     spent_days = sorted(r["segments"]["date"] for r in gads_rows if int(r["metrics"]["costMicros"]) > 0)
     last_gads = date.fromisoformat(spent_days[-1]) if spent_days else None
@@ -197,9 +206,9 @@ def main():
         s, e = win[pid]
         m = None if a.no_meta else meta_window(meta, totals, pid, s, e)
         orders, revenue, by_country = shop_window(shop, shop_file["since"], s, e)
-        gsp, gconv, gval, gcamps = gads_window(gads_rows, s, e)
+        gsp, gconv, gval, gcamps = (None, None, None, []) if a.no_gads else gads_window(gads_rows, s, e)
         shop_sek = revenue * rate
-        spend = m[0] + gsp if m else None
+        spend = m[0] + gsp if (m and gsp is not None) else None
 
         p.update(range_start=s.isoformat(), range_end=e.isoformat(), days=(e - s).days + 1)
         # an override left by an earlier partial run describes numbers this run replaces
@@ -221,12 +230,18 @@ def main():
                 spend_label=NO_META, spend_window=None, meta_roas=None, blended_mer=None,
                 _note=no_meta_note(e, today, (orders, revenue, shop_sek), gsp))
         last = f" Senaste spend var {sv_date(last_gads)}." if last_gads else ""
-        p.setdefault("gads", {}).update(
-            spend_label=kr(gsp), gads_roas=round(gval / gsp, 2) if gsp else 0.0, conv=round(gconv),
-            value_label=kr(gval), campaigns=gcamps,
-            _note=f"Google Ads, nyhämtat {sv_date(today)}, "
-                  + ("ingen spend i fönstret - verifierat med en egen hämtning, inte antaget." if not gsp
-                     else "siffran gäller de dagar i fönstret som hade spend.") + last)
+        if a.no_gads:
+            p.setdefault("gads", {}).update(
+                spend_label=NO_META, gads_roas=None, conv=None, value_label=None, campaigns=[],
+                _note=f"Google Ads gick inte att hämta {sv_date(today)}. Rutorna står tomma, inte på noll, "
+                      f"och inga äldre siffror återanvänds.")
+        else:
+            p.setdefault("gads", {}).update(
+                spend_label=kr(gsp), gads_roas=round(gval / gsp, 2) if gsp else 0.0, conv=round(gconv),
+                value_label=kr(gval), campaigns=gcamps,
+                _note=f"Google Ads, nyhämtat {sv_date(today)}, "
+                      + ("ingen spend i fönstret - verifierat med en egen hämtning, inte antaget." if not gsp
+                         else "siffran gäller de dagar i fönstret som hade spend.") + last)
         # a dated flag describes one day, so it leaves every window that no longer holds that day
         p["flags"] = [f for f in p.get("flags", []) if not f.get("date") or s.isoformat() <= f["date"] <= e.isoformat()]
 
@@ -234,14 +249,28 @@ def main():
             snap["yesterday"] = {
                 "date": e.isoformat(), "orders": orders, "revenue_eur": round(revenue, 2),
                 "revenue_sek": round(shop_sek), "sessions": None, "conversions": orders,
-                "gads_spend": None, "gads_spend_sek": round(gsp), "gads_roas": round(gval / gsp, 2) if gsp else 0.0,
-                "gads_conv": round(gconv), "meta_spend_sek": round(m[0]) if m else None, "_note": p["meta"]["_note"]}
+                "gads_spend": None, "gads_spend_sek": None if gsp is None else round(gsp),
+                "gads_roas": None if gsp is None else (round(gval / gsp, 2) if gsp else 0.0),
+                "gads_conv": None if gconv is None else round(gconv),
+                "meta_spend_sek": round(m[0]) if m else None, "_note": p["meta"]["_note"]}
             quiet = not last_gads or (yesterday - last_gads).days >= 7
-            snap["gads"]["yesterday_label"] = kr(gsp) + (" (pausat)" if quiet and not gsp else "")
+            snap["gads"]["yesterday_label"] = NO_META if gsp is None else kr(gsp) + (" (pausat)" if quiet and not gsp else "")
 
     snap["generated_at"] = today.isoformat()
-    for k in ("shopify", "gads") if a.no_meta else ("shopify", "meta", "gads"):
+    for k in ["shopify"] + ([] if a.no_meta else ["meta"]) + ([] if a.no_gads else ["gads"]):
         snap["sources"].setdefault(k, {}).update(as_of=yesterday.isoformat(), pulled=today.isoformat())
+    if a.no_gads:
+        old = snap["sources"].get("gads") or {}
+        last = old.get("last_as_of") or old.get("as_of")
+        snap["sources"]["gads"] = {
+            "as_of": None, "pulled": None, "last_as_of": last, "text": "unavailable",
+            "note": f"Google Ads could not be fetched on {today.isoformat()}. Google figures are blank, not zero, "
+                    f"and nothing older is reused. The last Google pull covered up to {last or 'an unknown day'}."}
+    else:
+        for key in ("text", "last_as_of"):
+            snap["sources"]["gads"].pop(key, None)
+        if (snap["sources"]["gads"].get("note") or "").startswith("Google Ads could not be fetched"):
+            snap["sources"]["gads"].pop("note")
     if a.no_meta:
         old = snap["sources"].get("meta") or {}
         last = old.get("last_as_of") or old.get("as_of")
@@ -255,9 +284,10 @@ def main():
         snap["sources"]["meta"].pop("last_as_of", None)
         if (snap["sources"]["meta"].get("note") or "").startswith("Meta could not be fetched"):
             snap["sources"]["meta"].pop("note")
-    snap["gads"]["as_of"] = f"{yesterday.day} {EN_MONTHS[yesterday.month]}"
+    if not a.no_gads:
+        snap["gads"]["as_of"] = f"{yesterday.day} {EN_MONTHS[yesterday.month]}"
     gp = snap.get("gads_periods")
-    if gp and gp.get("since"):
+    if gp and gp.get("since") and not a.no_gads:
         gp["until"] = yesterday.isoformat()
         gp["days"] = (yesterday - date.fromisoformat(gp["since"])).days + 1
     for card in snap.get("dashboard_status", []):
@@ -265,7 +295,15 @@ def main():
         if card.get("role") != "freshness" and not card.get("title", "").startswith((FRESH_CARD, PARTIAL_CARD)):
             continue
         card["role"] = "freshness"
-        if a.no_meta:
+        if a.no_gads:
+            gone = "Meta och Google Ads" if a.no_meta else "Google Ads"
+            got = "Butiken" if a.no_meta else "Butik och Meta"
+            card.update(icon="🔄", status="queue")
+            card["title"] = f"{got} nyhämtade {sv_date(today)}, {gone} saknas"
+            card["desc"] = (f"{got} är lästa samma morgon och täcker till och med {sv_date(yesterday)}, ordrar per land "
+                            f"inräknade. {gone} gick inte att hämta: rutorna står tomma, inte på noll, och den blandade "
+                            f"avkastningen räknas inte förrän alla annonskostnader finns.")
+        elif a.no_meta:
             card.update(icon="🔄", status="queue")
             card["title"] = f"{PARTIAL_CARD} {sv_date(today)}, Meta saknas"
             card["desc"] = (f"Butik och Google Ads är lästa samma morgon och täcker till och med {sv_date(yesterday)}, "
