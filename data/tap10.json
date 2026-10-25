@@ -1,63 +1,84 @@
 {
- "generated_at": "2026-10-24",
+ "generated_at": "2026-10-25",
  "launch_date": "2026-10-06",
  "sources": {
   "signups": {
-   "as_of": "2026-10-24",
-   "pulled": "2026-10-24"
+   "as_of": "2026-10-25",
+   "pulled": "2026-10-25"
   },
   "ga": {
-   "as_of": "2026-10-24",
-   "pulled": "2026-10-24"
+   "as_of": "2026-10-25",
+   "pulled": "2026-10-25"
   },
   "ads": {
    "as_of": "2026-10-22",
-   "pulled": "2026-10-24"
+   "pulled": "2026-10-25"
   },
   "ks_followers": {
-   "as_of": "2026-10-24",
-   "pulled": "2026-10-24"
+   "as_of": "2026-10-25",
+   "pulled": "2026-10-25"
   },
   "ks_pageviews": {
    "as_of": "2026-10-23",
-   "pulled": "2026-10-24"
+   "pulled": "2026-10-25"
   }
  },
  "days": [
   {
-   "date": "2026-10-24",
-   "signups": 7,
-   "waitlist_total": 531,
+   "date": "2026-10-25",
+   "signups": 15,
+   "waitlist_total": 574,
    "waitlist_blacklisted": 12,
-   "ks_followers": 266,
+   "ks_followers": 270,
    "ks_pageviews": null,
    "ks_ga_sessions": 0,
-   "ga_sessions": 4,
-   "ga_users": 4,
-   "avg_session_sec": 80,
+   "ga_sessions": 15,
+   "ga_users": 14,
+   "avg_session_sec": 118,
    "ad_spend_sek": null,
    "ad_clicks": null,
    "film_starts": 0,
    "film_completes": 0,
    "reel_starts": 0,
    "reel_completes": 0,
-   "demo_starts": 0,
-   "demo_completes": 0,
-   "demo_star_clicks": 0,
+   "demo_starts": 3,
+   "demo_completes": 6,
+   "demo_star_clicks": 1,
    "provisional": true,
    "partial": true
   },
   {
+   "date": "2026-10-24",
+   "signups": 37,
+   "waitlist_total": 559,
+   "waitlist_blacklisted": 12,
+   "ks_followers": 266,
+   "ks_pageviews": null,
+   "ks_ga_sessions": 5,
+   "ga_sessions": 41,
+   "ga_users": 39,
+   "avg_session_sec": 150,
+   "ad_spend_sek": null,
+   "ad_clicks": null,
+   "film_starts": 1,
+   "film_completes": 1,
+   "reel_starts": 0,
+   "reel_completes": 0,
+   "demo_starts": 4,
+   "demo_completes": 17,
+   "demo_star_clicks": 0
+  },
+  {
    "date": "2026-10-23",
    "signups": 39,
-   "waitlist_total": 524,
+   "waitlist_total": 522,
    "waitlist_blacklisted": 12,
    "ks_followers": 262,
    "ks_pageviews": 8,
    "ks_ga_sessions": 4,
    "ga_sessions": 56,
    "ga_users": 51,
-   "avg_session_sec": 74,
+   "avg_session_sec": 76,
    "ad_spend_sek": null,
    "ad_clicks": null,
    "film_starts": 1,
@@ -71,7 +92,7 @@
   {
    "date": "2026-10-22",
    "signups": 38,
-   "waitlist_total": 486,
+   "waitlist_total": 484,
    "waitlist_blacklisted": 11,
    "ks_followers": 260,
    "ks_pageviews": 25,
@@ -92,7 +113,7 @@
   {
    "date": "2026-10-21",
    "signups": 26,
-   "waitlist_total": 448,
+   "waitlist_total": 446,
    "waitlist_blacklisted": 11,
    "ks_followers": 259,
    "ks_pageviews": 22,
@@ -113,7 +134,7 @@
   {
    "date": "2026-10-20",
    "signups": 23,
-   "waitlist_total": 422,
+   "waitlist_total": 420,
    "waitlist_blacklisted": 11,
    "ks_followers": 257,
    "ks_pageviews": 17,
@@ -133,8 +154,8 @@
   },
   {
    "date": "2026-10-19",
-   "signups": 30,
-   "waitlist_total": 399,
+   "signups": 29,
+   "waitlist_total": 397,
    "waitlist_blacklisted": 11,
    "ks_followers": 256,
    "ks_pageviews": 43,
@@ -154,8 +175,8 @@
   },
   {
    "date": "2026-10-18",
-   "signups": 31,
-   "waitlist_total": 370,
+   "signups": 30,
+   "waitlist_total": 369,
    "waitlist_blacklisted": 10,
    "ks_followers": 253,
    "ks_pageviews": 21,
@@ -429,8 +450,8 @@
  "videos": [
   {
    "title": "TAP 10 film",
-   "starts": 80,
-   "completes": 34
+   "starts": 81,
+   "completes": 35
   },
   {
    "title": "Reel @tiktokboardgames",
@@ -451,49 +472,49 @@
  "signups_by_form": [
   {
    "form": "hero",
-   "count": 237
+   "count": 246
   },
   {
    "form": "join",
-   "count": 111
+   "count": 120
   },
   {
    "form": "offer",
-   "count": 75
+   "count": 81
   },
   {
    "form": "bar",
-   "count": 50
+   "count": 52
   },
   {
    "form": "unknown",
-   "count": 25
+   "count": 42
   }
  ],
  "signups_by_medium": [
   {
    "medium": "Facebook_Mobile_Reels",
-   "count": 170
+   "count": 183
   },
   {
    "medium": "Facebook_Mobile_Feed",
-   "count": 112
+   "count": 118
   },
   {
    "medium": "-",
-   "count": 88
+   "count": 108
   },
   {
    "medium": "Instagram_Stories",
-   "count": 40
+   "count": 41
   },
   {
    "medium": "Instagram_Reels",
-   "count": 32
+   "count": 33
   },
   {
    "medium": "Instagram_Feed",
-   "count": 23
+   "count": 24
   },
   {
    "medium": "email",
@@ -501,7 +522,7 @@
   },
   {
    "medium": "Facebook_Stories",
-   "count": 11
+   "count": 12
   },
   {
    "medium": "Facebook_Desktop_Feed",
@@ -516,52 +537,52 @@
   {
    "source": "fb",
    "medium": "Facebook_Mobile_Reels",
-   "sessions": 307
+   "sessions": 325
   },
   {
    "source": "fb",
    "medium": "Facebook_Mobile_Feed",
-   "sessions": 289
+   "sessions": 302
   },
   {
    "source": "ig",
    "medium": "Instagram_Stories",
-   "sessions": 85
+   "sessions": 86
   },
   {
    "source": "(direct)",
    "medium": "(none)",
-   "sessions": 62
+   "sessions": 65
   },
   {
    "source": "sendinblue",
    "medium": "email",
-   "sessions": 61
+   "sessions": 63
   },
   {
    "source": "ig",
    "medium": "Instagram_Reels",
-   "sessions": 49
+   "sessions": 52
   },
   {
    "source": "ig",
    "medium": "Instagram_Feed",
-   "sessions": 43
+   "sessions": 45
   },
   {
    "source": "(not set)",
    "medium": "(not set)",
-   "sessions": 39
+   "sessions": 44
+  },
+  {
+   "source": "google",
+   "medium": "organic",
+   "sessions": 26
   },
   {
    "source": "l.facebook.com",
    "medium": "referral",
    "sessions": 22
-  },
-  {
-   "source": "google",
-   "medium": "organic",
-   "sessions": 21
   },
   {
    "source": "fb",
@@ -571,12 +592,12 @@
   {
    "source": "facebook.com",
    "medium": "referral",
-   "sessions": 11
+   "sessions": 12
   },
   {
    "source": "qr",
    "medium": "print",
-   "sessions": 11
+   "sessions": 12
   },
   {
    "source": "n5sq0.r.sp1-brevo.net",
@@ -587,6 +608,11 @@
    "source": "backdrop",
    "medium": "qr",
    "sessions": 5
+  },
+  {
+   "source": "bing",
+   "medium": "organic",
+   "sessions": 3
   },
   {
    "source": "l.instagram.com",
