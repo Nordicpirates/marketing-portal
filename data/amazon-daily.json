@@ -201,17 +201,17 @@
  "note": "Amazon US gross sales per day in USD, typed into the sheet from Seller Central > Business Reports, converted at the ECB reference rate on the day the portal refreshed. No rows yet = no number shown; nothing is estimated.",
  "by_period": {
   "7d": {
-   "orders": 34,
-   "sales_usd": 2138.3,
-   "sales_eur": 1910.38,
-   "days_covered": 5,
+   "orders": 28,
+   "sales_usd": 1778.6,
+   "sales_eur": 1589.02,
+   "days_covered": 4,
    "days_total": 7
   },
   "30d": {
-   "orders": 138,
-   "sales_usd": 8488.43,
-   "sales_eur": 7583.71,
-   "days_covered": 27,
+   "orders": 134,
+   "sales_usd": 8343.63,
+   "sales_eur": 7454.34,
+   "days_covered": 26,
    "days_total": 30
   },
   "thismonth": {
@@ -219,7 +219,7 @@
    "sales_usd": 6934.83,
    "sales_eur": 6195.69,
    "days_covered": 21,
-   "days_total": 24
+   "days_total": 25
   },
   "90d": {
    "orders": 138,
@@ -241,5 +241,5 @@
   "spapi": 0,
   "sheet": 27
  },
- "sheet_read_at": "2026-10-25T05:16:37+00:00"
+ "sheet_read_at": "2026-10-26T05:16:11+00:00"
 }
