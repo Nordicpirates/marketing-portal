@@ -1,65 +1,86 @@
 {
- "generated_at": "2026-10-26",
+ "generated_at": "2026-10-27",
  "launch_date": "2026-10-06",
  "sources": {
   "signups": {
-   "as_of": "2026-10-26",
-   "pulled": "2026-10-26"
+   "as_of": "2026-10-27",
+   "pulled": "2026-10-27"
   },
   "ga": {
-   "as_of": "2026-10-26",
-   "pulled": "2026-10-26"
+   "as_of": "2026-10-27",
+   "pulled": "2026-10-27"
   },
   "ads": {
-   "as_of": "2026-10-22",
-   "pulled": "2026-10-26"
+   "as_of": "2026-10-26",
+   "pulled": "2026-10-27"
   },
   "ks_followers": {
-   "as_of": "2026-10-26",
-   "pulled": "2026-10-26"
+   "as_of": "2026-10-27",
+   "pulled": "2026-10-27"
   },
   "ks_pageviews": {
    "as_of": "2026-10-23",
-   "pulled": "2026-10-26"
+   "pulled": "2026-10-27"
   }
  },
  "days": [
   {
-   "date": "2026-10-26",
-   "signups": 7,
-   "waitlist_total": 615,
-   "waitlist_blacklisted": 12,
-   "ks_followers": 276,
+   "date": "2026-10-27",
+   "signups": 5,
+   "waitlist_total": 630,
+   "waitlist_blacklisted": 13,
+   "ks_followers": 279,
    "ks_pageviews": null,
-   "ks_ga_sessions": 2,
-   "ga_sessions": 11,
-   "ga_users": 11,
-   "avg_session_sec": 115,
+   "ks_ga_sessions": 1,
+   "ga_sessions": 5,
+   "ga_users": 5,
+   "avg_session_sec": 56,
    "ad_spend_sek": null,
    "ad_clicks": null,
    "film_starts": 0,
    "film_completes": 0,
    "reel_starts": 0,
    "reel_completes": 0,
-   "demo_starts": 2,
-   "demo_completes": 4,
-   "demo_star_clicks": 1,
+   "demo_starts": 1,
+   "demo_completes": 1,
+   "demo_star_clicks": 0,
    "provisional": true,
    "partial": true
   },
   {
+   "date": "2026-10-26",
+   "signups": 21,
+   "waitlist_total": 625,
+   "waitlist_blacklisted": 13,
+   "ks_followers": 276,
+   "ks_pageviews": null,
+   "ks_ga_sessions": 7,
+   "ga_sessions": 46,
+   "ga_users": 44,
+   "avg_session_sec": 102,
+   "ad_spend_sek": 1508.95,
+   "ad_clicks": 129,
+   "film_starts": 0,
+   "film_completes": 0,
+   "reel_starts": 0,
+   "reel_completes": 0,
+   "demo_starts": 7,
+   "demo_completes": 19,
+   "demo_star_clicks": 4
+  },
+  {
    "date": "2026-10-25",
-   "signups": 49,
-   "waitlist_total": 608,
+   "signups": 48,
+   "waitlist_total": 605,
    "waitlist_blacklisted": 12,
    "ks_followers": 270,
    "ks_pageviews": null,
    "ks_ga_sessions": 9,
    "ga_sessions": 64,
    "ga_users": 59,
-   "avg_session_sec": 112,
-   "ad_spend_sek": null,
-   "ad_clicks": null,
+   "avg_session_sec": 121,
+   "ad_spend_sek": 1731.18,
+   "ad_clicks": 157,
    "film_starts": 0,
    "film_completes": 0,
    "reel_starts": 2,
@@ -70,8 +91,8 @@
   },
   {
    "date": "2026-10-24",
-   "signups": 37,
-   "waitlist_total": 559,
+   "signups": 36,
+   "waitlist_total": 557,
    "waitlist_blacklisted": 12,
    "ks_followers": 266,
    "ks_pageviews": null,
@@ -79,8 +100,8 @@
    "ga_sessions": 41,
    "ga_users": 39,
    "avg_session_sec": 198,
-   "ad_spend_sek": null,
-   "ad_clicks": null,
+   "ad_spend_sek": 1433.18,
+   "ad_clicks": 125,
    "film_starts": 1,
    "film_completes": 1,
    "reel_starts": 0,
@@ -92,7 +113,7 @@
   {
    "date": "2026-10-23",
    "signups": 39,
-   "waitlist_total": 522,
+   "waitlist_total": 521,
    "waitlist_blacklisted": 12,
    "ks_followers": 262,
    "ks_pageviews": 8,
@@ -100,8 +121,8 @@
    "ga_sessions": 56,
    "ga_users": 51,
    "avg_session_sec": 76,
-   "ad_spend_sek": null,
-   "ad_clicks": null,
+   "ad_spend_sek": 1311.36,
+   "ad_clicks": 116,
    "film_starts": 1,
    "film_completes": 0,
    "reel_starts": 0,
@@ -113,7 +134,7 @@
   {
    "date": "2026-10-22",
    "signups": 38,
-   "waitlist_total": 484,
+   "waitlist_total": 483,
    "waitlist_blacklisted": 11,
    "ks_followers": 260,
    "ks_pageviews": 25,
@@ -121,7 +142,7 @@
    "ga_sessions": 52,
    "ga_users": 49,
    "avg_session_sec": 90,
-   "ad_spend_sek": 1485.24,
+   "ad_spend_sek": 1487.35,
    "ad_clicks": 143,
    "film_starts": 2,
    "film_completes": 0,
@@ -134,7 +155,7 @@
   {
    "date": "2026-10-21",
    "signups": 26,
-   "waitlist_total": 446,
+   "waitlist_total": 445,
    "waitlist_blacklisted": 11,
    "ks_followers": 259,
    "ks_pageviews": 22,
@@ -155,7 +176,7 @@
   {
    "date": "2026-10-20",
    "signups": 23,
-   "waitlist_total": 420,
+   "waitlist_total": 419,
    "waitlist_blacklisted": 11,
    "ks_followers": 257,
    "ks_pageviews": 17,
@@ -176,7 +197,7 @@
   {
    "date": "2026-10-19",
    "signups": 29,
-   "waitlist_total": 397,
+   "waitlist_total": 396,
    "waitlist_blacklisted": 11,
    "ks_followers": 256,
    "ks_pageviews": 43,
@@ -196,8 +217,8 @@
   },
   {
    "date": "2026-10-18",
-   "signups": 30,
-   "waitlist_total": 369,
+   "signups": 29,
+   "waitlist_total": 368,
    "waitlist_blacklisted": 10,
    "ks_followers": 253,
    "ks_pageviews": 21,
@@ -493,49 +514,49 @@
  "signups_by_form": [
   {
    "form": "hero",
-   "count": 257
+   "count": 262
   },
   {
    "form": "join",
-   "count": 128
+   "count": 132
   },
   {
    "form": "offer",
-   "count": 83
+   "count": 86
   },
   {
    "form": "unknown",
-   "count": 58
+   "count": 61
   },
   {
    "form": "bar",
-   "count": 56
+   "count": 57
   }
  ],
  "signups_by_medium": [
   {
    "medium": "Facebook_Mobile_Reels",
-   "count": 193
+   "count": 199
   },
   {
    "medium": "-",
-   "count": 127
+   "count": 130
   },
   {
    "medium": "Facebook_Mobile_Feed",
-   "count": 124
+   "count": 125
   },
   {
    "medium": "Instagram_Stories",
-   "count": 43
+   "count": 45
   },
   {
    "medium": "Instagram_Reels",
-   "count": 36
+   "count": 37
   },
   {
    "medium": "Instagram_Feed",
-   "count": 24
+   "count": 26
   },
   {
    "medium": "email",
@@ -546,11 +567,11 @@
    "count": 12
   },
   {
-   "medium": "Facebook_Desktop_Feed",
-   "count": 1
+   "medium": "print",
+   "count": 2
   },
   {
-   "medium": "print",
+   "medium": "Facebook_Desktop_Feed",
    "count": 1
   },
   {
@@ -562,22 +583,22 @@
   {
    "source": "fb",
    "medium": "Facebook_Mobile_Reels",
-   "sessions": 347
+   "sessions": 363
   },
   {
    "source": "fb",
    "medium": "Facebook_Mobile_Feed",
-   "sessions": 316
+   "sessions": 323
   },
   {
    "source": "ig",
    "medium": "Instagram_Stories",
-   "sessions": 89
+   "sessions": 95
   },
   {
    "source": "(direct)",
    "medium": "(none)",
-   "sessions": 66
+   "sessions": 67
   },
   {
    "source": "sendinblue",
@@ -587,12 +608,12 @@
   {
    "source": "ig",
    "medium": "Instagram_Reels",
-   "sessions": 57
+   "sessions": 61
   },
   {
    "source": "ig",
    "medium": "Instagram_Feed",
-   "sessions": 49
+   "sessions": 52
   },
   {
    "source": "(not set)",
@@ -602,7 +623,7 @@
   {
    "source": "google",
    "medium": "organic",
-   "sessions": 29
+   "sessions": 30
   },
   {
    "source": "l.facebook.com",
@@ -615,13 +636,13 @@
    "sessions": 21
   },
   {
-   "source": "facebook.com",
-   "medium": "referral",
-   "sessions": 13
-  },
-  {
    "source": "qr",
    "medium": "print",
+   "sessions": 14
+  },
+  {
+   "source": "facebook.com",
+   "medium": "referral",
    "sessions": 13
   },
   {
