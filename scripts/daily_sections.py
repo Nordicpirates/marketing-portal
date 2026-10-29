@@ -41,8 +41,8 @@ CATALOGUE = [
     ("NPGLPGFBB01DE", "BIG BOX", "German", ["meeples"]),
     ("NPGLPGFBB01FR", "BIG BOX", "French", ["meeples"]),
     ("NPGLPGFBB01ES", "BIG BOX", "Spanish", ["meeples"]),
-    ("NPGLPGFRT01EN", "Base Game", "English", ALL),
-    ("NPGLPGFRT01IT", "Base Game", "Italian", ["meeples"]),
+    ("NPGLPGFRT02EN", "Base Game", "English", ALL),
+    ("NPGLPGFRT02IT", "Base Game", "Italian", ["meeples"]),
     ("NPGLPGFRT01DE", "Base Game", "German", ["meeples"]),
     ("NPGLPGFRT01FR", "Base Game", "French", ["meeples"]),
     ("NPGLPGFRT01ES", "Base Game", "Spanish", ["meeples"]),
@@ -52,6 +52,8 @@ CATALOGUE = [
     ("NPG8PCP01", "8-Player Components", "Default", ALL),
 ]
 THRESHOLDS = {"critical": 14, "low": 30, "watch": 60}
+# Base Game English and Italian moved to the V2 numbers on 28 Oct 2026; older orders still carry V1
+SOLD_AS = {"NPGLPGFRT01EN": "NPGLPGFRT02EN", "NPGLPGFRT01IT": "NPGLPGFRT02IT"}
 
 # GA4's channel names as the dashboard shows them, with the dot colour per channel.
 CHANNELS = {
@@ -99,12 +101,12 @@ def stock_by_sku(token):
         for v in data["nodes"]:
             if v["sku"] not in wanted:
                 continue
-            row = {w: 0 for w in ALL}
+            # one SKU can sit on two products (regular and pre-order), so their stock adds up
+            row = found.setdefault(v["sku"], {w: 0 for w in ALL})
             for lv in v["inventoryItem"]["inventoryLevels"]["nodes"]:
                 wid = by_location.get(lv["location"]["name"])
                 if wid:
                     row[wid] += int(lv["quantities"][0]["quantity"])
-            found[v["sku"]] = row
         if not data["pageInfo"]["hasNextPage"]:
             break
         after = data["pageInfo"]["endCursor"]
@@ -129,7 +131,7 @@ def units_sold(token, start, end):
                 continue
             for li in o["lineItems"]["nodes"]:
                 if li["sku"]:
-                    units[li["sku"]] += int(li["currentQuantity"])
+                    units[SOLD_AS.get(li["sku"], li["sku"])] += int(li["currentQuantity"])
         if not data["pageInfo"]["hasNextPage"]:
             break
         after = data["pageInfo"]["endCursor"]
