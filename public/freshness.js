@@ -33,6 +33,8 @@
     ads: "Meta ads",
     ks_followers: "KS followers",
     ks_pageviews: "KS page views (pixel)",
+    ks_campaign: "KS backers",
+    ks_ads: "Meta ads (Kickstarter)",
   };
 
   var CSS =

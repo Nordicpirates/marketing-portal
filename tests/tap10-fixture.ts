@@ -16,6 +16,12 @@ export const FULL_ARGS = [
   "--ks-pageviews", join(FIX, "pageviews-a.json"), "--ks-pageviews", join(FIX, "pageviews-b.json"),
 ];
 
+// The Kickstarter phase: launch day 3 Nov, backers from 4 Nov, today 5 Nov still running.
+export const KS_ARGS = [
+  "--since", "2026-11-02", "--until", "2026-11-05", "--today", "2026-11-05",
+  "--ks-csv", join(FIX, "kickstarter-campaign.csv"), "--ks-ads", join(FIX, "ks-ads.json"),
+];
+
 /** Run the builder into a temp file; out is null when it refused. */
 export function build(args: string[]) {
   const dir = mkdtempSync(join(tmpdir(), "tap10-build-"));

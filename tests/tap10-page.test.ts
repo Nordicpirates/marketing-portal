@@ -5,12 +5,15 @@ import { describe, expect, test } from "bun:test";
 import { readdirSync, readFileSync } from "fs";
 import { join } from "path";
 import { freshness, loadPortalPage, pageHtml } from "./portal-harness.ts";
-import { FULL_ARGS, build } from "./tap10-fixture.ts";
+import { FULL_ARGS, KS_ARGS, build } from "./tap10-fixture.ts";
 
 const F = freshness();
 const BUILT = build(FULL_ARGS);
 if (BUILT.code !== 0) throw new Error(`the builder refused the fixtures: ${BUILT.stderr}`);
 const DATA = BUILT.out;
+const KS_BUILT = build(KS_ARGS);
+if (KS_BUILT.code !== 0) throw new Error(`the builder refused the Kickstarter fixtures: ${KS_BUILT.stderr}`);
+const KS_DATA = KS_BUILT.out;
 
 const tap10 = (data: any = DATA) => loadPortalPage("tap10.html", { "/api/tap10": data });
 const copy = (mutate: (d: any) => void) => {
@@ -23,9 +26,9 @@ const COLUMNS = ["Dag", "Anmälningar", "Väntelista totalt", "KS-följare", "Ki
   "Reels start/klar", "Demo start/klar", '"Try the demo"-klick', "Snittid per besök"];
 const col = (name: string) => COLUMNS.indexOf(name);
 
-async function kpis(page: any): Promise<Record<string, string>> {
+async function kpis(page: any, grid = "kpi-grid"): Promise<Record<string, string>> {
   const out: Record<string, string> = {};
-  for (const card of page.el("kpi-grid").querySelectorAll(".kpi")) {
+  for (const card of page.el(grid).querySelectorAll(".kpi")) {
     out[card.querySelector(".k").textContent] = card.querySelector(".n").textContent.replace(/\s/g, " ");
   }
   return out;
@@ -40,7 +43,7 @@ describe("the TAP 10 page", () => {
   test("every freshness slot is filled, each from its own source", async () => {
     const page = await tap10();
     const ids = page.freshnessIds();
-    expect(ids).toEqual(["fr-kpis", "fr-chart", "fr-days", "fr-videos", "fr-forms", "fr-ga-sources"]);
+    expect(ids).toEqual(["fr-ks", "fr-kpis", "fr-chart", "fr-days", "fr-videos", "fr-forms", "fr-ga-sources"]);
     for (const id of ids) expect(page.html(id), `#${id} has no pill`).toContain("fr-");
     expect(page.text("fr-videos")).toContain(F.short(DATA.sources.ga.as_of));
     expect(page.text("fr-forms")).toContain("Signups (Brevo)");
@@ -48,7 +51,7 @@ describe("the TAP 10 page", () => {
 
   test("the table has every column the brief asks for, newest day first", async () => {
     const page = await tap10();
-    const heads = [...page.document.querySelectorAll("thead")][0].querySelectorAll("th");
+    const heads = page.el("days-body").closest("table").querySelectorAll("thead th");
     expect([...heads].map((th: any) => th.textContent)).toEqual(COLUMNS);
     expect(page.rows("days-body").map((r) => r[0].slice(0, 10))).toEqual(["2026-10-09", "2026-10-08", "2026-10-07", "2026-10-06"]);
   });
@@ -159,6 +162,66 @@ describe("the TAP 10 page", () => {
     const page = await tap10();
     expect(page.document.body.textContent).not.toMatch(/[–—]/);
     expect(pageHtml("tap10.html")).not.toMatch(/[–—]/);
+  });
+});
+
+describe("the Kickstarter section", () => {
+  const spaced = (rows: string[][]) => rows.map((r) => r.map((c) => c.replace(/\s/g, " ")));
+  // The runtime's own sv-SE format, so the test does not hard-code its digit grouping.
+  const sv = (n: number) => n.toLocaleString("sv-SE").replace(/\s/g, " ");
+
+  test("is absent while there is no backer reading, before the first build too", async () => {
+    expect((await tap10()).shown("ks-section")).toBe(false);
+    expect((await tap10({ days: [] })).shown("ks-section")).toBe(false);
+  });
+
+  test("sits on top once there are backers, with no console errors", async () => {
+    const page = await tap10(KS_DATA);
+    expect(page.errors).toEqual([]);
+    expect(page.shown("ks-section")).toBe(true);
+    const order = [...page.document.querySelectorAll("section")].map((s: any) => s.id || s.querySelector("h2")?.textContent);
+    expect(order[0]).toBe("ks-section");
+    expect(page.text("fr-ks")).toContain("KS backers");
+    expect(page.text("fr-ks")).toContain("Meta ads (Kickstarter)");
+  });
+
+  test("backers and % funded now, pledged at its own last reading, ad spend over whole days only", async () => {
+    const k = await kpis(await tap10(KS_DATA), "ks-kpi-grid");
+    expect(k["Backers nu"]).toBe("157");
+    expect(k["Finansierat nu"]).toBe("631 %");
+    expect(k["Insamlat"]).toBe(`${sv(49978)} kr`);
+    // Today's 400 kr is still running and stays out: 1 353,11 + 3 846,43.
+    expect(k["Kickstarter-annonskostnad"]).toBe(`${sv(5200)} kr`);
+    expect(k["Kickstarter-annonsklick"]).toBe("244");
+    expect(k["Annonskostnad per backer"]).toBe("33 kr");
+    const text = (await tap10(KS_DATA)).text("ks-kpi-grid");
+    expect(text).toContain("räknar alla nya backers, inte bara de som kom via annonser");
+    expect(text).toContain(`mål ${sv(10948)} kr`);
+  });
+
+  test("no pledged reading means no pledged card, never a figure worked out from the goal", async () => {
+    const page = await tap10({ ...KS_DATA, days: KS_DATA.days.map((r: any) => ({ ...r, ks_pledged_sek: null })) });
+    expect(Object.keys(await kpis(page, "ks-kpi-grid"))).not.toContain("Insamlat");
+  });
+
+  test("one row per day since launch, new backers as the change since the day before", async () => {
+    const rows = spaced((await tap10(KS_DATA)).rows("ks-days-body"));
+    expect(rows.map((r) => r[0].slice(0, 10))).toEqual(["2026-11-05", "2026-11-04", "2026-11-03"]);
+    expect(rows[0][0]).toContain("pågår");
+    expect(rows.map((r) => r.slice(1))).toEqual([
+      ["157", "42", "631 %", "-", "400", "20"],
+      ["115", "115", "456 %", sv(49978), sv(3846.43), "179"],
+      ["-", "-", "-", "-", sv(1353.11), "65"],
+    ]);
+  });
+
+  test("the followers figure says it stops at launch, and only once the window passes it", async () => {
+    expect((await tap10(KS_DATA)).text("kpi-grid")).toContain("slutar vid lanseringen 2026-11-03, Kickstarter visar backers i stället");
+    expect((await tap10()).text("kpi-grid")).not.toContain("slutar vid lanseringen");
+  });
+
+  test("no em or en dash in the section", async () => {
+    expect((await tap10(KS_DATA)).document.body.textContent).not.toMatch(/[–—]/);
   });
 });
 

@@ -19,7 +19,7 @@ på https://marketing.nordicpirate.com/ som en egen flik?"
 
 ```
 python3 scripts/tap10_snapshot.py --repo . \
-  --brevo-contacts brevo/ --ga-pull ga.json --ads ads.json \
+  --brevo-contacts brevo/ --ga-pull ga.json --ads ads.json --ks-ads ks-ads-daily.json \
   --ks-csv /home/shared/lyingpirates/tap10-signups/kickstarter-followers.csv \
   --ks-pageviews pv-1.json [--ks-pageviews pv-2.json ...]
 ```
@@ -35,7 +35,9 @@ It refuses to write (exit 2, nothing written) when:
 - a count is negative;
 - the ads rows skip a day inside their own span, which would read as no spend;
 - a GA report's `rowCount` differs from the rows it returned, or it has rows and no `rowCount`;
-- two ads files or two page view files disagree about the same day or hour;
+- the Kickstarter ads rows skip a day, the same check as the Leads ads;
+- two ads files, two Kickstarter ads files or two page view files disagree about the same day or hour;
+- a CSV cell for followers, backers, pledged or % funded is not a number;
 - a Brevo contact has neither `SIGNUP_DATE` nor `createdAt`.
 
 ## Inputs
@@ -48,8 +50,11 @@ It refuses to write (exit 2, nothing written) when:
   report is asked again once with GA's own `rowCount` as the limit, then refused.
 - `--ads <file>`, repeatable: `[{date, spend_sek, link_clicks}]` for the Meta campaign
   "YMP - 29 Sept - TAP 10 - Leads -  US/UK", pulled by Polly through the Meta connector.
-- `--ks-csv`: `stockholm_time,ks_followers,waitlist,note,polytopia`. Waitlist is ignored: Brevo
-  is the count.
+- `--ks-ads <file>`, repeatable: the same shape for the Meta campaign "Ada | TAP 10 | Kickstarter
+  Pledges" (120252012579070126), spending from 2026-11-03.
+- `--ks-csv`: `stockholm_time,ks_followers,waitlist,note,polytopia,backers,pledged_sek,pct_funded`.
+  Waitlist and polytopia are ignored: Brevo is the count. Followers stop at the launch, since
+  Kickstarter shows backers instead; backers and % funded start on 2026-11-04, pledged only some days.
 - `--ks-pageviews <file>`, repeatable: the raw Meta dataset stats for PageView by host,
   `{"stats":[{"timestamp":"2026-10-06T15:00:00-0700","data":[{"value":"www.kickstarter.com","count":4}]}]}`.
 
@@ -66,10 +71,17 @@ It refuses to write (exit 2, nothing written) when:
 | `ga_sessions`, `ga_users` | GA sessions and users on tap10game.com and www.tap10game.com | GA4 |
 | `avg_session_sec` | average session length on those two hosts, weighted by sessions | GA4 |
 | `ad_spend_sek`, `ad_clicks` | spend and link clicks of the TAP 10 Leads campaign | Meta |
+| `ks_ad_spend_sek`, `ks_ad_clicks` | spend and link clicks of the Kickstarter Pledges campaign | Meta |
+| `ks_backers`, `ks_pledged_sek`, `ks_pct_funded` | the last reading of the day, null when the cell is blank | the CSV |
 | `film_starts`, `film_completes` | `video_start` / `video_complete` with title "TAP 10 film" | GA4 |
 | `reel_starts`, `reel_completes` | the same for titles starting "Reel " | GA4 |
 | `demo_starts`, `demo_completes` | `demo_start` / `demo_complete` | GA4 |
 | `demo_star_clicks` | `try_demo_click`, the "Try the demo" star | GA4 |
+
+Each CSV field takes its own last non-blank reading of the day, so a blank pledged cell never
+hides an earlier one that day and is never worked out from `ks_goal_sek`. The top level also
+carries `ks_launch_date` (2026-11-03, live 17:00 Stockholm) and `ks_goal_sek` (10948). Sources:
+`ks_ads` and `ks_campaign` (backers, pledged, % funded).
 
 The signup day is `SIGNUP_DATE` when it is a `YYYY-MM-DD`, else `createdAt` in Stockholm time.
 Signups by form (`SIGNUP_FORM`) and by placement (`UTM_MEDIUM`, "-" when empty) count signups
@@ -78,6 +90,11 @@ from `--since` to `--until`. Videos and GA traffic sources are totals over the s
 On the page the windows (since launch, 7 days, yesterday) end on the newest whole day, so
 today's partial row is in the table and never in a total. Cost per signup divides spend by
 the signups of the days that have spend.
+
+The Kickstarter section sits on top once any day has `ks_backers`, and covers the whole campaign
+whatever window is picked. Backers and % funded are the newest reading, today's included; ad
+spend sums whole days. New backers is the change since the previous day's reading, from zero at
+the launch. Ad spend per backer divides by every backer, not only those who came through ads.
 
 ## Known limits
 
