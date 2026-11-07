@@ -51,7 +51,7 @@ describe("the TAP 10 page", () => {
 
   test("the table has every column the brief asks for, newest day first", async () => {
     const page = await tap10();
-    const heads = [...page.document.querySelectorAll("thead")][0].querySelectorAll("th");
+    const heads = page.el("days-body").closest("table").querySelectorAll("thead th");
     expect([...heads].map((th: any) => th.textContent)).toEqual(COLUMNS);
     expect(page.rows("days-body").map((r) => r[0].slice(0, 10))).toEqual(["2026-10-09", "2026-10-08", "2026-10-07", "2026-10-06"]);
   });
