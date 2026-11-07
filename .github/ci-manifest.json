@@ -6,10 +6,18 @@
       "required": true,
       "exec": {
         "weight": "cheap",
-        "timeoutMinutes": 10,
-        "installs": [],
+        "timeoutMinutes": 15,
+        "installs": [
+          "."
+        ],
         "steps": [
-          { "name": "bun test", "argv": ["bun", "test", "tests/"] }
+          {
+            "name": "bun test",
+            "argv": [
+              "bash",
+              "scripts/ci-test.sh"
+            ]
+          }
         ]
       }
     }

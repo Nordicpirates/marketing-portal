@@ -5,3 +5,4 @@ scripts/__pycache__/
 
 # Print files scripts/qr_files.py writes before an edge deploy; never committed.
 edge/qr/public/files/
+.ci/
