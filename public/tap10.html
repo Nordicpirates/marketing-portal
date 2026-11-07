@@ -123,6 +123,17 @@
 <div class="wrap">
   <div id="load-error"></div>
 
+  <section id="ks-section" style="display:none">
+    <h2><span class="dot"></span>Kickstarter</h2>
+    <p class="h2sub" id="ks-sub">Sedan lanseringen.</p>
+    <div id="fr-ks"></div>
+    <div class="kpis" id="ks-kpi-grid"></div>
+    <div class="panel" style="margin-top:13px"><table>
+      <thead><tr><th>Dag</th><th>Backers</th><th>Nya backers</th><th>Finansierat</th><th>Insamlat SEK</th><th>KS-annonskostnad SEK</th><th>KS-annonsklick</th></tr></thead>
+      <tbody id="ks-days-body"></tbody>
+    </table></div>
+  </section>
+
   <div class="rangebar" id="rangebar"></div>
   <div class="range-caption" id="range-caption">…</div>
 
@@ -195,6 +206,8 @@
         <li>Anmälningarna räknas i Brevo och är exakta.</li>
         <li>Kickstarter-sidvisningar är TAP 10:s Meta-pixels PageView på kickstarter.com och är en indikation. Kickstarter-besök (GA) är GA:s egna besök på www.kickstarter.com och räknas aldrig in i besökarna på tap10game.com.</li>
         <li>Cloudflares cookiefria räknare finns, men ingen nyckel kan läsa den än.</li>
+        <li>Backers, finansiering och insamlat läses av på Kickstarter varje morgon. Nya backers är ändringen sedan förra dagens läsning, och första läsningen räknas från noll vid lanseringen.</li>
+        <li>Kickstarter visar inte antal följare efter lanseringen, bara backers, så följarsiffran slutar där.</li>
         <li>Ett streck betyder att källan saknas för den dagen, aldrig noll.</li>
       </ul>
     </div>
@@ -214,6 +227,7 @@ let CHART = null;
 // Which sources each section rests on. Pills come from tap10.json "sources" through
 // /freshness.js; docs/TAP10.md says what each key covers.
 const SECTION_SOURCES = {
+  'fr-ks': ['ks_campaign','ks_ads'],
   'fr-kpis': ['signups','ks_followers','ks_pageviews','ga','ads'],
   'fr-chart': ['signups','ks_followers'],
   'fr-days': ['signups','ks_followers','ks_pageviews','ga','ads'],
@@ -264,6 +278,7 @@ async function load() {
   rb.querySelectorAll('.preset').forEach(b => b.onclick = () => renderWindow(b.dataset.w));
 
   paintFreshness();
+  renderKickstarter();
   renderDays();
   renderChart();
   renderVideos();
@@ -322,6 +337,8 @@ function renderWindow(id) {
   const pv = sum(w.days, 'ks_pageviews'), ksGa = sum(w.days, 'ks_ga_sessions'), ga = sum(w.days, 'ga_sessions');
   const all = DATA.days || [];
   const wl = level(all, w, 'waitlist_total'), ks = level(all, w, 'ks_followers');
+  const lastFollow = all.find(d => isNum(d.ks_followers));
+  if (DATA.ks_launch_date && lastFollow && w.end > DATA.ks_launch_date) ks.note = `slutar vid lanseringen ${DATA.ks_launch_date}, Kickstarter visar backers i stället`;
 
   document.getElementById('kpi-grid').innerHTML = [
     kpi(fmt(signups.value), 'Anmälningar', missingNote(signups, n) || 'Brevo, exakt', 'terra'),
@@ -335,6 +352,43 @@ function renderWindow(id) {
     kpi(fmt(starts), 'Filmstarter', isNum(starts) ? `film ${fmt(film.value)} · reels ${fmt(reels.value)}` : ''),
     kpi(fmt(demo.value), 'Demospel', isNum(demo.value) ? `${fmt(demoDone.value)} spelade klart` : ''),
   ].join('');
+}
+
+// Shown once there is a backer reading; it covers the whole campaign, not the window below.
+function renderKickstarter() {
+  const all = DATA.days || [];
+  const sec = document.getElementById('ks-section');
+  const latest = key => all.find(d => isNum(d[key]));
+  const backers = latest('ks_backers');
+  if (!backers) { sec.style.display = 'none'; return; }
+  sec.style.display = '';
+  const launch = DATA.ks_launch_date;
+  const days = all.filter(d => d.date >= launch);
+  const pct = latest('ks_pct_funded'), pledged = latest('ks_pledged_sek');
+  const whole = days.filter(d => !d.partial);
+  const spend = sum(whole, 'ks_ad_spend_sek'), clicks = sum(whole, 'ks_ad_clicks');
+  const spendDays = whole.filter(d => isNum(d.ks_ad_spend_sek));
+  const span = spendDays.length ? `${spendDays[spendDays.length - 1].date} till ${spendDays[0].date}` : '';
+  document.getElementById('ks-sub').textContent = `Sedan lanseringen ${launch} kl 17.00, hela kampanjen oavsett period nedan.`;
+  const goal = isNum(DATA.ks_goal_sek) ? `, mål ${kr(DATA.ks_goal_sek)}` : '';
+  document.getElementById('ks-kpi-grid').innerHTML = [
+    kpi(fmt(backers.ks_backers), 'Backers nu', `per ${backers.date}`, 'terra'),
+    kpi(pct ? `${fmt(pct.ks_pct_funded)} %` : '-', 'Finansierat nu', pct ? `per ${pct.date}${goal}` : ''),
+    pledged ? kpi(kr(pledged.ks_pledged_sek), 'Insamlat', `per ${pledged.date}`) : '',
+    kpi(kr(spend.value), 'Kickstarter-annonskostnad', missingNote(spend, whole.length) || span),
+    kpi(fmt(clicks.value), 'Kickstarter-annonsklick', missingNote(clicks, whole.length) || span),
+    kpi(perSignup(spend.value, backers.ks_backers), 'Annonskostnad per backer', 'räknar alla nya backers, inte bara de som kom via annonser'),
+  ].join('');
+  document.getElementById('ks-days-body').innerHTML = days.map((d, i) => {
+    const prev = days[i + 1];
+    const base = prev && isNum(prev.ks_backers) ? prev.ks_backers : prev && prev.date <= launch ? 0 : null;
+    const fresh = isNum(d.ks_backers) && isNum(base) ? d.ks_backers - base : null;
+    return `<tr>
+    <td>${esc(d.date)}${d.partial ? '<span class="tag">pågår</span>' : ''}</td>
+    <td>${fmt(d.ks_backers)}</td><td>${fmt(fresh)}</td><td>${isNum(d.ks_pct_funded) ? fmt(d.ks_pct_funded) + ' %' : '-'}</td>
+    <td>${fmt(d.ks_pledged_sek)}</td><td>${fmt(d.ks_ad_spend_sek)}</td><td>${fmt(d.ks_ad_clicks)}</td>
+  </tr>`;
+  }).join('');
 }
 
 function renderDays() {

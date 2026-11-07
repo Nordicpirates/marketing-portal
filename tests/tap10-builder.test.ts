@@ -5,7 +5,7 @@ import { describe, expect, test } from "bun:test";
 import { existsSync, mkdtempSync, readFileSync, writeFileSync } from "fs";
 import { tmpdir } from "os";
 import { join } from "path";
-import { FIX, FULL_ARGS, build } from "./tap10-fixture.ts";
+import { FIX, FULL_ARGS, KS_ARGS, build } from "./tap10-fixture.ts";
 
 const day = (out: any, d: string) => out.days.find((r: any) => r.date === d);
 
@@ -126,6 +126,50 @@ describe("the full fixture", () => {
   });
 });
 
+describe("the Kickstarter phase", () => {
+  const { code, out, stderr } = build(KS_ARGS);
+
+  test("it writes, and carries the launch day and the goal", () => {
+    expect(stderr).toBe("");
+    expect(code).toBe(0);
+    expect(out.ks_launch_date).toBe("2026-11-03");
+    expect(out.ks_goal_sek).toBe(10948);
+  });
+
+  test("backers, pledged and % funded are the day's last reading by time, not by file order", () => {
+    // 4 Nov has an 08:00 reading of 100 below the 09:01 one of 115.
+    expect(day(out, "2026-11-04")).toMatchObject({ ks_backers: 115, ks_pledged_sek: 49978, ks_pct_funded: 456 });
+    expect(day(out, "2026-11-05")).toMatchObject({ ks_backers: 157, ks_pct_funded: 631 });
+  });
+
+  test("a blank cell is a null, never derived from the goal or another day", () => {
+    expect(day(out, "2026-11-05").ks_pledged_sek).toBeNull();
+    expect(day(out, "2026-11-03")).toMatchObject({ ks_followers: 293, ks_backers: null, ks_pledged_sek: null, ks_pct_funded: null });
+    expect(day(out, "2026-11-05").ks_followers).toBeNull();
+  });
+
+  test("Kickstarter ad spend and clicks per day, apart from the Leads campaign", () => {
+    expect(out.days.map((d: any) => [d.date, d.ks_ad_spend_sek, d.ks_ad_clicks, d.ad_spend_sek])).toEqual([
+      ["2026-11-05", 400, 20, null], ["2026-11-04", 3846.43, 179, null],
+      ["2026-11-03", 1353.11, 65, null], ["2026-11-02", null, null, null],
+    ]);
+  });
+
+  test("each part has its own freshness, and followers say why they stop", () => {
+    expect(out.sources.ks_campaign).toEqual({ as_of: "2026-11-05", pulled: "2026-11-05" });
+    expect(out.sources.ks_ads).toEqual({ as_of: "2026-11-05", pulled: "2026-11-05" });
+    expect(out.sources.ks_followers.as_of).toBe("2026-11-03");
+    expect(out.sources.ks_followers.note).toContain("backers instead of followers");
+  });
+
+  test("the signup-era CSV, without backer columns, gives null backers", () => {
+    const full = build(FULL_ARGS).out;
+    for (const row of full.days) expect(row.ks_backers).toBeNull();
+    expect(full.sources.ks_campaign).toMatchObject({ as_of: null, text: "unavailable" });
+    expect(full.sources.ks_followers.note).toBeUndefined();
+  });
+});
+
 describe("page views across the October clock change", () => {
   test("each hour lands on its own Stockholm day, CEST before and CET after", () => {
     const dir = mkdtempSync(join(tmpdir(), "tap10-dst-"));
@@ -152,7 +196,7 @@ describe("a missing input is a null, never a number", () => {
     for (const row of out.days) {
       for (const [k, v] of Object.entries(row)) if (k !== "date") expect(v, `${row.date} ${k}`).toBeNull();
     }
-    for (const key of ["signups", "ga", "ads", "ks_followers", "ks_pageviews"]) {
+    for (const key of ["signups", "ga", "ads", "ks_ads", "ks_followers", "ks_campaign", "ks_pageviews"]) {
       expect(out.sources[key]).toMatchObject({ as_of: null, text: "unavailable" });
     }
   });
@@ -179,6 +223,26 @@ describe("it refuses to write", () => {
       { date: "2026-10-08", spend_sek: 1, link_clicks: 1 },
     ]);
     refused([...base, "--ads", ads], /skip 2026-10-07/);
+  });
+
+  test("a day missing in the middle of the Kickstarter ads", () => {
+    const ads = tmpJson(dir, "ksgap.json", [
+      { date: "2026-10-06", spend_sek: 1, link_clicks: 1 },
+      { date: "2026-10-08", spend_sek: 1, link_clicks: 1 },
+    ]);
+    refused([...base, "--ks-ads", ads], /Kickstarter ads rows skip 2026-10-07/);
+  });
+
+  test("two Kickstarter ads files that disagree about the same day", () => {
+    const a = tmpJson(dir, "ksa.json", [{ date: "2026-10-06", spend_sek: 1, link_clicks: 1 }]);
+    const b = tmpJson(dir, "ksb.json", [{ date: "2026-10-06", spend_sek: 2, link_clicks: 1 }]);
+    refused([...base, "--ks-ads", a, "--ks-ads", b], /two Kickstarter ads files disagree about 2026-10-06/);
+  });
+
+  test("a backer count that is not a number", () => {
+    const csv = join(dir, "badbackers.csv");
+    writeFileSync(csv, "stockholm_time,ks_followers,waitlist,note,polytopia,backers,pledged_sek,pct_funded\n2026-10-06 09:00,,1,x,,many,,\n");
+    refused([...base, "--ks-csv", csv], /backers at '2026-10-06 09:00' is 'many', not a number/);
   });
 
   test("a GA report that holds more rows than it returned", () => {

@@ -14,6 +14,8 @@ from zoneinfo import ZoneInfo
 
 STOCKHOLM = ZoneInfo("Europe/Stockholm")
 LAUNCH = "2026-10-06"
+KS_LAUNCH = "2026-11-03"
+KS_GOAL_SEK = 10948
 WAITLIST_LIST_ID = 10
 GA_PROPERTY = "542188652"
 KS_HOST = "www.kickstarter.com"
@@ -33,6 +35,7 @@ GA_REPORTS = {
 
 DAY_FIELDS = ["signups", "waitlist_total", "waitlist_blacklisted", "ks_followers", "ks_pageviews",
               "ks_ga_sessions", "ga_sessions", "ga_users", "avg_session_sec", "ad_spend_sek", "ad_clicks",
+              "ks_backers", "ks_pledged_sek", "ks_pct_funded", "ks_ad_spend_sek", "ks_ad_clicks",
               "film_starts", "film_completes", "reel_starts", "reel_completes",
               "demo_starts", "demo_completes", "demo_star_clicks"]
 
@@ -214,9 +217,10 @@ def ga_counts(ga, days):
     return per_day, videos, sources, (covered[-1] if covered else None)
 
 
-# Ads, Kickstarter followers, Kickstarter page views
+# Ads, the Kickstarter CSV, Kickstarter page views
 
-def ads_counts(files):
+def ads_counts(files, prefix="ad", what="ads"):
+    """Spend and clicks per day as {prefix}_spend_sek and {prefix}_clicks."""
     rows = {}
     for path in files:
         data = load_json(path)
@@ -226,32 +230,46 @@ def ads_counts(files):
             d = r.get("date")
             if not isinstance(d, str) or not DAY_RE.match(d):
                 raise Refused(f"{path} has a row without a YYYY-MM-DD date: {r}")
-            row = {"ad_spend_sek": round(float(r["spend_sek"]), 2), "ad_clicks": int(r["link_clicks"])}
+            row = {f"{prefix}_spend_sek": round(float(r["spend_sek"]), 2), f"{prefix}_clicks": int(r["link_clicks"])}
             if d in rows and rows[d] != row:
-                raise Refused(f"two ads files disagree about {d}: {rows[d]} and {row}")
+                raise Refused(f"two {what} files disagree about {d}: {rows[d]} and {row}")
             rows[d] = row
     span = sorted(rows)
     if span:
         gaps = [d for d in days_between(span[0], span[-1]) if d not in rows]
         if gaps:
-            raise Refused(f"the ads rows skip {', '.join(gaps)}: a missing day would read as no spend")
+            raise Refused(f"the {what} rows skip {', '.join(gaps)}: a missing day would read as no spend")
     return rows
 
 
-def ks_followers(path):
-    """The last reading of each Stockholm day."""
-    last = {}
+KS_CSV_FIELDS = {"ks_followers": "ks_followers", "backers": "ks_backers",
+                 "pledged_sek": "ks_pledged_sek", "pct_funded": "ks_pct_funded"}
+
+
+def csv_number(path, stamp, column, value):
+    try:
+        n = float(value)
+    except ValueError:
+        raise Refused(f"{path}: {column} at {stamp!r} is {value!r}, not a number")
+    return int(n) if n.is_integer() else n
+
+
+def ks_readings(path):
+    """Per field, the last reading of each Stockholm day; a blank cell is no reading."""
+    last = {field: {} for field in KS_CSV_FIELDS.values()}
     with open(path, encoding="utf-8", newline="") as f:
         for r in csv.DictReader(f):
-            stamp, value = (r.get("stockholm_time") or "").strip(), (r.get("ks_followers") or "").strip()
-            if not stamp or not value:
+            stamp = (r.get("stockholm_time") or "").strip()
+            if not stamp:
                 continue
             day = stamp[:10]
             if not DAY_RE.match(day):
                 raise Refused(f"{path}: {stamp!r} is not a Stockholm time")
-            if day not in last or stamp >= last[day][0]:
-                last[day] = (stamp, int(value))
-    return {d: v for d, (_, v) in last.items()}
+            for column, field in KS_CSV_FIELDS.items():
+                value = (r.get(column) or "").strip()
+                if value and (day not in last[field] or stamp >= last[field][day][0]):
+                    last[field][day] = (stamp, csv_number(path, stamp, column, value))
+    return {field: {d: v for d, (_, v) in per_day.items()} for field, per_day in last.items()}
 
 
 def ks_pageviews(files):
@@ -300,7 +318,8 @@ def build(a):
     days = days_between(a.since, a.until)
     rows = {d: {"date": d, **{k: None for k in DAY_FIELDS}} for d in days}
     sources = {}
-    out = {"generated_at": today, "launch_date": LAUNCH, "sources": sources, "days": [],
+    out = {"generated_at": today, "launch_date": LAUNCH, "ks_launch_date": KS_LAUNCH, "ks_goal_sek": KS_GOAL_SEK,
+           "sources": sources, "days": [],
            "videos": [], "signups_by_form": [], "signups_by_medium": [], "ga_sources": []}
 
     if a.brevo_contacts:
@@ -338,15 +357,31 @@ def build(a):
     else:
         sources["ads"] = unavailable("no Meta ads file was given")
 
-    if a.ks_csv:
-        ks = ks_followers(a.ks_csv)
+    if a.ks_ads:
+        ks_ads = ads_counts(a.ks_ads, "ks_ad", "Kickstarter ads")
         for d in days:
-            if d in ks:
-                rows[d]["ks_followers"] = ks[d]
-        covered = [d for d in days if d in ks]
+            if d in ks_ads:
+                rows[d].update(ks_ads[d])
+        covered = [d for d in days if d in ks_ads]
+        sources["ks_ads"] = {"as_of": covered[-1], "pulled": today} if covered else unavailable("the Kickstarter ads file covers none of these days")
+    else:
+        sources["ks_ads"] = unavailable("no Meta Kickstarter ads file was given")
+
+    if a.ks_csv:
+        ks = ks_readings(a.ks_csv)
+        for field, per_day in ks.items():
+            for d in days:
+                if d in per_day:
+                    rows[d][field] = per_day[d]
+        covered = [d for d in days if d in ks["ks_followers"]]
         sources["ks_followers"] = {"as_of": covered[-1], "pulled": today} if covered else unavailable("no follower reading on these days")
+        if days[-1] > KS_LAUNCH:
+            sources["ks_followers"]["note"] = f"Kickstarter shows backers instead of followers since the launch on {KS_LAUNCH}"
+        campaign = [d for d in days if any(d in ks[f] for f in ("ks_backers", "ks_pledged_sek", "ks_pct_funded"))]
+        sources["ks_campaign"] = {"as_of": campaign[-1], "pulled": today} if campaign else unavailable("no backer reading on these days")
     else:
         sources["ks_followers"] = unavailable("no Kickstarter follower CSV was given")
+        sources["ks_campaign"] = unavailable("no Kickstarter CSV was given")
 
     if a.ks_pageviews:
         pv, last = ks_pageviews(a.ks_pageviews)
@@ -378,6 +413,7 @@ def main(argv=None):
     ap.add_argument("--ga-pull", help="ask GA through gate ga report and save the raw reports here")
     ap.add_argument("--ga-property", default=GA_PROPERTY)
     ap.add_argument("--ads", action="append", help="[{date, spend_sek, link_clicks}], repeatable")
+    ap.add_argument("--ks-ads", action="append", help="[{date, spend_sek, link_clicks}] of the Kickstarter campaign, repeatable")
     ap.add_argument("--ks-csv", help="kickstarter-followers.csv")
     ap.add_argument("--ks-pageviews", action="append", help="raw Meta dataset stats for PageView, repeatable")
     ap.add_argument("--dry-run", action="store_true")
