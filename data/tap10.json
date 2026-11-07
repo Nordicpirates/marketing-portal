@@ -1,37 +1,37 @@
 {
- "generated_at": "2026-11-06",
+ "generated_at": "2026-11-07",
  "launch_date": "2026-10-06",
  "sources": {
   "signups": {
-   "as_of": "2026-11-06",
-   "pulled": "2026-11-06"
+   "as_of": "2026-11-07",
+   "pulled": "2026-11-07"
   },
   "ga": {
-   "as_of": "2026-11-06",
-   "pulled": "2026-11-06"
+   "as_of": "2026-11-07",
+   "pulled": "2026-11-07"
   },
   "ads": {
    "as_of": "2026-11-03",
-   "pulled": "2026-11-06"
+   "pulled": "2026-11-07"
   },
   "ks_followers": {
    "as_of": "2026-11-03",
-   "pulled": "2026-11-06"
+   "pulled": "2026-11-07"
   },
   "ks_pageviews": {
    "as_of": "2026-10-23",
-   "pulled": "2026-11-06"
+   "pulled": "2026-11-07"
   }
  },
  "days": [
   {
-   "date": "2026-11-06",
+   "date": "2026-11-07",
    "signups": 0,
    "waitlist_total": 807,
    "waitlist_blacklisted": 30,
    "ks_followers": null,
    "ks_pageviews": null,
-   "ks_ga_sessions": 14,
+   "ks_ga_sessions": 11,
    "ga_sessions": 0,
    "ga_users": 0,
    "avg_session_sec": null,
@@ -48,6 +48,27 @@
    "partial": true
   },
   {
+   "date": "2026-11-06",
+   "signups": 0,
+   "waitlist_total": 807,
+   "waitlist_blacklisted": 30,
+   "ks_followers": null,
+   "ks_pageviews": null,
+   "ks_ga_sessions": 79,
+   "ga_sessions": 4,
+   "ga_users": 3,
+   "avg_session_sec": 2818,
+   "ad_spend_sek": null,
+   "ad_clicks": null,
+   "film_starts": 0,
+   "film_completes": 0,
+   "reel_starts": 0,
+   "reel_completes": 0,
+   "demo_starts": 1,
+   "demo_completes": 2,
+   "demo_star_clicks": 0
+  },
+  {
    "date": "2026-11-05",
    "signups": 0,
    "waitlist_total": 807,
@@ -57,7 +78,7 @@
    "ks_ga_sessions": 154,
    "ga_sessions": 14,
    "ga_users": 8,
-   "avg_session_sec": 214,
+   "avg_session_sec": 219,
    "ad_spend_sek": null,
    "ad_clicks": null,
    "film_starts": 1,
@@ -808,7 +829,7 @@
   {
    "source": "(direct)",
    "medium": "(none)",
-   "sessions": 96
+   "sessions": 97
   },
   {
    "source": "ig",
@@ -838,7 +859,7 @@
   {
    "source": "(not set)",
    "medium": "(not set)",
-   "sessions": 36
+   "sessions": 38
   },
   {
    "source": "l.facebook.com",
@@ -853,7 +874,7 @@
   {
    "source": "backdrop",
    "medium": "qr",
-   "sessions": 24
+   "sessions": 26
   },
   {
    "source": "facebook.com",
@@ -891,6 +912,11 @@
    "sessions": 3
   },
   {
+   "source": "kickstarter.com",
+   "medium": "referral",
+   "sessions": 3
+  },
+  {
    "source": "l.instagram.com",
    "medium": "referral",
    "sessions": 3
@@ -908,11 +934,6 @@
   {
    "source": "ig",
    "medium": "Others",
-   "sessions": 2
-  },
-  {
-   "source": "kickstarter.com",
-   "medium": "referral",
    "sessions": 2
   },
   {
