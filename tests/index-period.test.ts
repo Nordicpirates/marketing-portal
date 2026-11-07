@@ -112,7 +112,9 @@ describe("Google Ads follows the period", () => {
       page.pick(period.label);
       const grid = page.text("pgads-grid");
       expect(grid).toContain(period.gads.spend_label);
-      expect(grid).toContain(period.gads.value_label);
+      // A period without Google Ads data has no value label; it must not print as "null".
+      if (period.gads.value_label != null) expect(grid).toContain(period.gads.value_label);
+      else expect(grid).not.toMatch(/null|undefined/);
       expect(page.text("pgads-note")).toBe(asRendered(period.gads._note));
       expect(page.text("pgads-period")).toContain(period.label);
     }
