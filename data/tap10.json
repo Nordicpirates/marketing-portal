@@ -1,56 +1,56 @@
 {
- "generated_at": "2026-11-07",
+ "generated_at": "2026-11-08",
  "launch_date": "2026-10-06",
  "ks_launch_date": "2026-11-03",
  "ks_goal_sek": 10948,
  "sources": {
   "signups": {
-   "as_of": "2026-11-07",
-   "pulled": "2026-11-07"
+   "as_of": "2026-11-08",
+   "pulled": "2026-11-08"
   },
   "ga": {
-   "as_of": "2026-11-07",
-   "pulled": "2026-11-07"
+   "as_of": "2026-11-08",
+   "pulled": "2026-11-08"
   },
   "ads": {
    "as_of": "2026-11-03",
-   "pulled": "2026-11-07"
+   "pulled": "2026-11-08"
   },
   "ks_ads": {
-   "as_of": "2026-11-06",
-   "pulled": "2026-11-07"
+   "as_of": "2026-11-07",
+   "pulled": "2026-11-08"
   },
   "ks_followers": {
    "as_of": "2026-11-03",
-   "pulled": "2026-11-07",
+   "pulled": "2026-11-08",
    "note": "Kickstarter shows backers instead of followers since the launch on 2026-11-03"
   },
   "ks_campaign": {
-   "as_of": "2026-11-07",
-   "pulled": "2026-11-07"
+   "as_of": "2026-11-08",
+   "pulled": "2026-11-08"
   },
   "ks_pageviews": {
    "as_of": "2026-10-23",
-   "pulled": "2026-11-07"
+   "pulled": "2026-11-08"
   }
  },
  "days": [
   {
-   "date": "2026-11-07",
+   "date": "2026-11-08",
    "signups": 0,
    "waitlist_total": 807,
    "waitlist_blacklisted": 30,
    "ks_followers": null,
    "ks_pageviews": null,
-   "ks_ga_sessions": 11,
-   "ga_sessions": 0,
-   "ga_users": 0,
-   "avg_session_sec": null,
+   "ks_ga_sessions": 21,
+   "ga_sessions": 1,
+   "ga_users": 1,
+   "avg_session_sec": 16,
    "ad_spend_sek": null,
    "ad_clicks": null,
-   "ks_backers": 180,
-   "ks_pledged_sek": null,
-   "ks_pct_funded": 738,
+   "ks_backers": 190,
+   "ks_pledged_sek": 86588,
+   "ks_pct_funded": 791,
    "ks_ad_spend_sek": null,
    "ks_ad_clicks": null,
    "film_starts": 0,
@@ -64,6 +64,32 @@
    "partial": true
   },
   {
+   "date": "2026-11-07",
+   "signups": 0,
+   "waitlist_total": 807,
+   "waitlist_blacklisted": 30,
+   "ks_followers": null,
+   "ks_pageviews": null,
+   "ks_ga_sessions": 59,
+   "ga_sessions": 7,
+   "ga_users": 3,
+   "avg_session_sec": 370,
+   "ad_spend_sek": null,
+   "ad_clicks": null,
+   "ks_backers": 180,
+   "ks_pledged_sek": null,
+   "ks_pct_funded": 738,
+   "ks_ad_spend_sek": 1688.33,
+   "ks_ad_clicks": 62,
+   "film_starts": 0,
+   "film_completes": 0,
+   "reel_starts": 0,
+   "reel_completes": 0,
+   "demo_starts": 0,
+   "demo_completes": 0,
+   "demo_star_clicks": 0
+  },
+  {
    "date": "2026-11-06",
    "signups": 0,
    "waitlist_total": 807,
@@ -73,13 +99,13 @@
    "ks_ga_sessions": 81,
    "ga_sessions": 4,
    "ga_users": 3,
-   "avg_session_sec": 2818,
+   "avg_session_sec": 3137,
    "ad_spend_sek": null,
    "ad_clicks": null,
    "ks_backers": 174,
    "ks_pledged_sek": null,
    "ks_pct_funded": 713,
-   "ks_ad_spend_sek": 1195.12,
+   "ks_ad_spend_sek": 1195.15,
    "ks_ad_clicks": 48,
    "film_starts": 0,
    "film_completes": 0,
@@ -105,7 +131,7 @@
    "ks_backers": 157,
    "ks_pledged_sek": null,
    "ks_pct_funded": 631,
-   "ks_ad_spend_sek": 3400.44,
+   "ks_ad_spend_sek": 3400.49,
    "ks_ad_clicks": 150,
    "film_starts": 1,
    "film_completes": 0,
@@ -1005,7 +1031,7 @@
   {
    "source": "(direct)",
    "medium": "(none)",
-   "sessions": 97
+   "sessions": 98
   },
   {
    "source": "ig",
@@ -1020,7 +1046,7 @@
   {
    "source": "sendinblue",
    "medium": "email",
-   "sessions": 70
+   "sessions": 71
   },
   {
    "source": "google",
@@ -1035,7 +1061,12 @@
   {
    "source": "(not set)",
    "medium": "(not set)",
-   "sessions": 38
+   "sessions": 37
+  },
+  {
+   "source": "backdrop",
+   "medium": "qr",
+   "sessions": 30
   },
   {
    "source": "l.facebook.com",
@@ -1046,11 +1077,6 @@
    "source": "fb",
    "medium": "Facebook_Stories",
    "sessions": 29
-  },
-  {
-   "source": "backdrop",
-   "medium": "qr",
-   "sessions": 26
   },
   {
    "source": "facebook.com",
@@ -1120,6 +1146,11 @@
   {
    "source": "fb",
    "medium": "Facebook_Right_Column",
+   "sessions": 1
+  },
+  {
+   "source": "ig",
+   "medium": "social",
    "sessions": 1
   },
   {
