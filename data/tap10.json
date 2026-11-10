@@ -1,56 +1,56 @@
 {
- "generated_at": "2026-11-09",
+ "generated_at": "2026-11-10",
  "launch_date": "2026-10-06",
  "ks_launch_date": "2026-11-03",
  "ks_goal_sek": 10948,
  "sources": {
   "signups": {
-   "as_of": "2026-11-09",
-   "pulled": "2026-11-09"
+   "as_of": "2026-11-10",
+   "pulled": "2026-11-10"
   },
   "ga": {
-   "as_of": "2026-11-09",
-   "pulled": "2026-11-09"
+   "as_of": "2026-11-10",
+   "pulled": "2026-11-10"
   },
   "ads": {
    "as_of": "2026-11-03",
-   "pulled": "2026-11-09"
+   "pulled": "2026-11-10"
   },
   "ks_ads": {
-   "as_of": "2026-11-08",
-   "pulled": "2026-11-09"
+   "as_of": "2026-11-09",
+   "pulled": "2026-11-10"
   },
   "ks_followers": {
    "as_of": "2026-11-03",
-   "pulled": "2026-11-09",
+   "pulled": "2026-11-10",
    "note": "Kickstarter shows backers instead of followers since the launch on 2026-11-03"
   },
   "ks_campaign": {
-   "as_of": "2026-11-09",
-   "pulled": "2026-11-09"
+   "as_of": "2026-11-10",
+   "pulled": "2026-11-10"
   },
   "ks_pageviews": {
    "as_of": "2026-10-23",
-   "pulled": "2026-11-09"
+   "pulled": "2026-11-10"
   }
  },
  "days": [
   {
-   "date": "2026-11-09",
+   "date": "2026-11-10",
    "signups": 0,
    "waitlist_total": 807,
    "waitlist_blacklisted": 30,
    "ks_followers": null,
    "ks_pageviews": null,
    "ks_ga_sessions": 20,
-   "ga_sessions": 0,
-   "ga_users": 0,
-   "avg_session_sec": null,
+   "ga_sessions": 1,
+   "ga_users": 1,
+   "avg_session_sec": 4,
    "ad_spend_sek": null,
    "ad_clicks": null,
-   "ks_backers": 193,
-   "ks_pledged_sek": 87737,
-   "ks_pct_funded": 801,
+   "ks_backers": 198,
+   "ks_pledged_sek": 89653,
+   "ks_pct_funded": 819,
    "ks_ad_spend_sek": null,
    "ks_ad_clicks": null,
    "film_starts": 0,
@@ -64,6 +64,32 @@
    "partial": true
   },
   {
+   "date": "2026-11-09",
+   "signups": 0,
+   "waitlist_total": 807,
+   "waitlist_blacklisted": 30,
+   "ks_followers": null,
+   "ks_pageviews": null,
+   "ks_ga_sessions": 58,
+   "ga_sessions": 7,
+   "ga_users": 7,
+   "avg_session_sec": 219,
+   "ad_spend_sek": null,
+   "ad_clicks": null,
+   "ks_backers": 193,
+   "ks_pledged_sek": 87737,
+   "ks_pct_funded": 801,
+   "ks_ad_spend_sek": 867.99,
+   "ks_ad_clicks": 32,
+   "film_starts": 0,
+   "film_completes": 0,
+   "reel_starts": 0,
+   "reel_completes": 0,
+   "demo_starts": 1,
+   "demo_completes": 1,
+   "demo_star_clicks": 0
+  },
+  {
    "date": "2026-11-08",
    "signups": 0,
    "waitlist_total": 807,
@@ -73,7 +99,7 @@
    "ks_ga_sessions": 52,
    "ga_sessions": 7,
    "ga_users": 5,
-   "avg_session_sec": 8,
+   "avg_session_sec": 261,
    "ad_spend_sek": null,
    "ad_clicks": null,
    "ks_backers": 190,
@@ -1057,7 +1083,7 @@
   {
    "source": "(direct)",
    "medium": "(none)",
-   "sessions": 99
+   "sessions": 100
   },
   {
    "source": "ig",
@@ -1077,7 +1103,7 @@
   {
    "source": "google",
    "medium": "organic",
-   "sessions": 48
+   "sessions": 49
   },
   {
    "source": "n5sq0.r.sp1-brevo.net",
@@ -1087,12 +1113,12 @@
   {
    "source": "(not set)",
    "medium": "(not set)",
-   "sessions": 37
+   "sessions": 38
   },
   {
    "source": "backdrop",
    "medium": "qr",
-   "sessions": 33
+   "sessions": 35
   },
   {
    "source": "l.facebook.com",
@@ -1120,12 +1146,17 @@
    "sessions": 7
   },
   {
+   "source": "m.facebook.com",
+   "medium": "referral",
+   "sessions": 6
+  },
+  {
    "source": "n5sq0.r.bh.d.sendibt3.com",
    "medium": "referral",
    "sessions": 5
   },
   {
-   "source": "m.facebook.com",
+   "source": "kickstarter.com",
    "medium": "referral",
    "sessions": 4
   },
@@ -1137,11 +1168,6 @@
   {
    "source": "fb",
    "medium": "Facebook_Desktop_Feed",
-   "sessions": 3
-  },
-  {
-   "source": "kickstarter.com",
-   "medium": "referral",
    "sessions": 3
   },
   {
@@ -1165,9 +1191,9 @@
    "sessions": 2
   },
   {
-   "source": "",
-   "medium": "",
-   "sessions": 1
+   "source": "ig",
+   "medium": "social",
+   "sessions": 2
   },
   {
    "source": "fb",
@@ -1177,11 +1203,6 @@
   {
    "source": "fb",
    "medium": "Facebook_Right_Column",
-   "sessions": 1
-  },
-  {
-   "source": "ig",
-   "medium": "social",
    "sessions": 1
   },
   {
