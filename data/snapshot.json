@@ -1,56 +1,56 @@
 {
- "generated_at": "2026-11-09",
+ "generated_at": "2026-11-10",
  "sources": {
   "shopify": {
-   "as_of": "2026-11-08",
-   "pulled": "2026-11-09"
+   "as_of": "2026-11-09",
+   "pulled": "2026-11-10"
   },
   "meta": {
-   "as_of": "2026-11-08",
-   "pulled": "2026-11-09"
+   "as_of": "2026-11-09",
+   "pulled": "2026-11-10"
   },
   "gads": {
    "as_of": null,
    "pulled": null,
    "last_as_of": "2026-11-03",
    "text": "unavailable",
-   "note": "Google Ads could not be fetched on 2026-11-09. Google figures are blank, not zero, and nothing older is reused. The last Google pull covered up to 2026-11-03."
+   "note": "Google Ads could not be fetched on 2026-11-10. Google figures are blank, not zero, and nothing older is reused. The last Google pull covered up to 2026-11-03."
   },
   "amazon": {
-   "as_of": "2026-11-04",
-   "pulled": "2026-11-09",
+   "as_of": "2026-11-08",
+   "pulled": "2026-11-10",
    "note": "typed into the sheet by hand from Seller Central, so the last row is as far as Amazon goes"
   },
   "sessions": {
-   "as_of": "2026-11-08",
-   "pulled": "2026-11-09",
+   "as_of": "2026-11-09",
+   "pulled": "2026-11-10",
    "note": "GA4 property 250338585: the only count that includes the landing pages"
   },
   "sessions_chart": {
-   "as_of": "2026-11-08",
-   "pulled": "2026-11-09"
+   "as_of": "2026-11-09",
+   "pulled": "2026-11-10"
   },
   "landing_pages": {
-   "as_of": "2026-11-08",
-   "pulled": "2026-11-09",
+   "as_of": "2026-11-09",
+   "pulled": "2026-11-10",
    "note": "GA4 property 250338585, sessions and purchases per landing page"
   },
   "channels": {
-   "as_of": "2026-11-08",
-   "pulled": "2026-11-09",
-   "note": "GA4 by channel 2026-10-10 to 2026-11-08; GA4 sees fewer purchases than Shopify"
+   "as_of": "2026-11-09",
+   "pulled": "2026-11-10",
+   "note": "GA4 by channel 2026-10-11 to 2026-11-09; GA4 sees fewer purchases than Shopify"
   },
   "inventory": {
-   "as_of": "2026-11-09",
-   "pulled": "2026-11-09"
+   "as_of": "2026-11-10",
+   "pulled": "2026-11-10"
   },
   "roas_series": {
-   "as_of": "2026-11-08",
-   "pulled": "2026-11-09"
+   "as_of": "2026-11-09",
+   "pulled": "2026-11-10"
   },
   "fx": {
-   "as_of": "2026-11-06",
-   "pulled": "2026-11-09"
+   "as_of": "2026-11-09",
+   "pulled": "2026-11-10"
   },
   "tracking": {
    "as_of": null,
@@ -68,13 +68,13 @@
    "note": "written when something changes, so no pull date applies"
   },
   "shopify_sessions": {
-   "as_of": "2026-11-08",
-   "pulled": "2026-11-09",
+   "as_of": "2026-11-09",
+   "pulled": "2026-11-10",
    "note": "Shopify's own sessions, storefront only, so the landing pages are not in it"
   },
   "buy_path": {
-   "as_of": "2026-11-08",
-   "pulled": "2026-11-09",
+   "as_of": "2026-11-09",
+   "pulled": "2026-11-10",
    "note": "Shopify orders by lp_arm, GA4 property 250338585 sessions by landing page"
   }
  },
@@ -88,18 +88,18 @@
   "link_gmc": "https://merchants.google.com"
  },
  "yesterday": {
-  "date": "2026-11-08",
-  "orders": 10,
-  "revenue_eur": 632.91,
-  "revenue_sek": 7215,
+  "date": "2026-11-09",
+  "orders": 12,
+  "revenue_eur": 869.45,
+  "revenue_sek": 9912,
   "sessions": null,
-  "conversions": 10,
+  "conversions": 12,
   "gads_spend": null,
   "gads_spend_sek": null,
   "gads_roas": null,
   "gads_conv": null,
-  "meta_spend_sek": 6742,
-  "_note": "Allt hämtat 9 november, läst 6 timmar efter dygnets slut. 8 november: Meta drog 6 742 kr och bokför 8 köp värda 6 324 kr, alltså 0,94 tillbaka enligt kontot. Butiken tog in 632,91 EUR på 10 ordrar, cirka 7 215 kr från ALLA kanaler. Metas anspråk är därmed 88 procent av hela kassan. Google Ads gick inte att hämta, så den blandade siffran räknas inte."
+  "meta_spend_sek": 4737,
+  "_note": "Allt hämtat 10 november, läst 6 timmar efter dygnets slut. 9 november: Meta drog 4 737 kr och bokför 10 köp värda 8 196 kr, alltså 1,73 tillbaka enligt kontot. Butiken tog in 869,45 EUR på 12 ordrar, cirka 9 912 kr från ALLA kanaler. Metas anspråk är därmed 83 procent av hela kassan. Google Ads gick inte att hämta, så den blandade siffran räknas inte."
  },
  "gads": {
   "live_since": "8 July",
@@ -183,7 +183,6 @@
  "chart_data": {
   "orders_9d": {
    "labels": [
-    "30/10",
     "31/10",
     "1/11",
     "2/11",
@@ -192,10 +191,10 @@
     "5/11",
     "6/11",
     "7/11",
-    "8/11"
+    "8/11",
+    "9/11"
    ],
    "revenue": [
-    40,
     411,
     560,
     96,
@@ -203,11 +202,11 @@
     667,
     452,
     1746,
-    1342,
-    633
+    1334,
+    633,
+    869
    ],
    "orders": [
-    2,
     3,
     7,
     3,
@@ -216,12 +215,12 @@
     7,
     25,
     19,
-    10
+    10,
+    12
    ]
   },
   "organic_14d": {
    "labels": [
-    "26/10",
     "27/10",
     "28/10",
     "29/10",
@@ -234,10 +233,10 @@
     "5/11",
     "6/11",
     "7/11",
-    "8/11"
+    "8/11",
+    "9/11"
    ],
    "sessions": [
-    254,
     236,
     193,
     133,
@@ -250,10 +249,10 @@
     708,
     855,
     436,
-    348
+    348,
+    281
    ],
    "conversions": [
-    4,
     1,
     6,
     3,
@@ -266,7 +265,8 @@
     7,
     19,
     15,
-    7
+    7,
+    10
    ]
   }
  },
@@ -274,29 +274,29 @@
   {
    "name": "Organisk social",
    "dot": "#14b8a6",
-   "sessions": 4289,
-   "conversions": 40,
+   "sessions": 4199,
+   "conversions": 39,
    "cvr": 0.93,
    "cvr_good": false,
-   "revenue_sek": 44940,
+   "revenue_sek": 43493,
    "source": "ga4"
   },
   {
    "name": "Betald social (Meta)",
    "dot": "#4a90e2",
-   "sessions": 2152,
-   "conversions": 32,
-   "cvr": 1.49,
+   "sessions": 2255,
+   "conversions": 36,
+   "cvr": 1.6,
    "cvr_good": false,
-   "revenue_sek": 24421,
+   "revenue_sek": 27027,
    "source": "ga4"
   },
   {
    "name": "Direkt",
    "dot": "#8b5cf6",
-   "sessions": 1522,
+   "sessions": 1531,
    "conversions": 26,
-   "cvr": 1.71,
+   "cvr": 1.7,
    "cvr_good": false,
    "revenue_sek": 19812,
    "source": "ga4"
@@ -304,19 +304,19 @@
   {
    "name": "Organisk sökning",
    "dot": "#2f8f4e",
-   "sessions": 899,
-   "conversions": 30,
-   "cvr": 3.34,
+   "sessions": 913,
+   "conversions": 31,
+   "cvr": 3.4,
    "cvr_good": true,
-   "revenue_sek": 31610,
+   "revenue_sek": 33524,
    "source": "ga4"
   },
   {
    "name": "Betald sökning (Google Ads)",
    "dot": "#ea4335",
-   "sessions": 711,
+   "sessions": 730,
    "conversions": 16,
-   "cvr": 2.25,
+   "cvr": 2.19,
    "cvr_good": true,
    "revenue_sek": 15407,
    "source": "ga4"
@@ -324,19 +324,19 @@
   {
    "name": "Okänd",
    "dot": "#8a8073",
-   "sessions": 436,
-   "conversions": 32,
-   "cvr": 7.34,
+   "sessions": 469,
+   "conversions": 36,
+   "cvr": 7.68,
    "cvr_good": true,
-   "revenue_sek": 20912,
+   "revenue_sek": 22727,
    "source": "ga4"
   },
   {
    "name": "E-post",
    "dot": "#c96a3d",
-   "sessions": 218,
+   "sessions": 225,
    "conversions": 7,
-   "cvr": 3.21,
+   "cvr": 3.11,
    "cvr_good": true,
    "revenue_sek": 3427,
    "source": "ga4"
@@ -344,11 +344,11 @@
   {
    "name": "Övrigt",
    "dot": "#8a8073",
-   "sessions": 334,
-   "conversions": 4,
-   "cvr": 1.2,
+   "sessions": 322,
+   "conversions": 5,
+   "cvr": 1.55,
    "cvr_good": false,
-   "revenue_sek": 3632,
+   "revenue_sek": 4321,
    "source": "ga4"
   }
  ],
@@ -356,10 +356,10 @@
  "dashboard_status": [
   {
    "icon": "🔄",
-   "title": "Butik och Meta nyhämtade 9 november, Google Ads saknas",
+   "title": "Butik och Meta nyhämtade 10 november, Google Ads saknas",
    "who": "Bengt",
    "status": "queue",
-   "desc": "Butik och Meta är lästa samma morgon och täcker till och med 8 november, ordrar per land inräknade. Google Ads gick inte att hämta: rutorna står tomma, inte på noll, och den blandade avkastningen räknas inte förrän alla annonskostnader finns.",
+   "desc": "Butik och Meta är lästa samma morgon och täcker till och med 9 november, ordrar per land inräknade. Google Ads gick inte att hämta: rutorna står tomma, inte på noll, och den blandade avkastningen räknas inte förrän alla annonskostnader finns.",
    "role": "freshness"
   },
   {
@@ -568,28 +568,28 @@
   {
    "id": "7d",
    "label": "Last 7 days",
-   "range_start": "2026-11-02",
-   "range_end": "2026-11-08",
+   "range_start": "2026-11-03",
+   "range_end": "2026-11-09",
    "days": 7,
    "kpis": {
-    "sessions": 3170,
-    "conversion_label": "2,30%",
-    "sales_label": "€4 972",
-    "orders": 73,
-    "shopify_sales_eur": 4971.75,
-    "amazon_sales_eur": 612.72,
-    "amazon_sales_usd": 684.1,
-    "amazon_days_covered": 3,
-    "amazon_label": "€613",
-    "total_sales_eur": 5584.47,
-    "total_label": "€5 584"
+    "sessions": 3306,
+    "conversion_label": "2,48%",
+    "sales_label": "€5 737",
+    "orders": 82,
+    "shopify_sales_eur": 5736.92,
+    "amazon_sales_eur": 1110.83,
+    "amazon_sales_usd": 1243.35,
+    "amazon_days_covered": 6,
+    "amazon_label": "€1 111",
+    "total_sales_eur": 6847.75,
+    "total_label": "€6 848"
    },
    "meta": {
-    "spend_label": "48 611 kr",
-    "spend_window": "2-8 nov (Meta, hämtad 9 nov)",
-    "meta_roas": 1.18,
+    "spend_label": "49 611 kr",
+    "spend_window": "3-9 nov (Meta, hämtad 10 nov)",
+    "meta_roas": 1.32,
     "blended_mer": null,
-    "_note": "Meta 2026-11-02 till 2026-11-08, hämtat 9 november. 57 405 kr tillbaka på 48 611 kr satsat, 86 köp enligt kontot. Google Ads gick inte att hämta, så blandad avkastning räknas inte: utan Googles kostnad saknas en del av nämnaren, och en siffra på bara Meta skulle se bättre ut än den är.",
+    "_note": "Meta 2026-11-03 till 2026-11-09, hämtat 10 november. 65 410 kr tillbaka på 49 611 kr satsat, 95 köp enligt kontot. Google Ads gick inte att hämta, så blandad avkastning räknas inte: utan Googles kostnad saknas en del av nämnaren, och en siffra på bara Meta skulle se bättre ut än den är.",
     "blended_mer_total": null
    },
    "gads": {
@@ -597,45 +597,45 @@
     "gads_roas": null,
     "conv": null,
     "value_label": null,
-    "_note": "Google Ads gick inte att hämta 9 november. Rutorna står tomma, inte på noll, och inga äldre siffror återanvänds.",
+    "_note": "Google Ads gick inte att hämta 10 november. Rutorna står tomma, inte på noll, och inga äldre siffror återanvänds.",
     "campaigns": []
    },
    "orders_by_country": [
     {
+     "name": "USA",
+     "flag": "🇺🇸",
+     "orders": 20,
+     "revenue": "€1 443"
+    },
+    {
      "name": "UK",
      "flag": "🇬🇧",
      "orders": 18,
-     "revenue": "€1 393"
-    },
-    {
-     "name": "USA",
-     "flag": "🇺🇸",
-     "orders": 16,
-     "revenue": "€1 170"
+     "revenue": "€1 414"
     },
     {
      "name": "Spain",
      "flag": "🇪🇸",
-     "orders": 10,
-     "revenue": "€628"
+     "orders": 13,
+     "revenue": "€855"
     },
     {
      "name": "Italy",
      "flag": "🇮🇹",
-     "orders": 9,
-     "revenue": "€574"
+     "orders": 11,
+     "revenue": "€673"
     },
     {
      "name": "Belgium",
      "flag": "🇧🇪",
-     "orders": 6,
-     "revenue": "€409"
+     "orders": 7,
+     "revenue": "€570"
     },
     {
      "name": "Denmark",
      "flag": "🇩🇰",
-     "orders": 6,
-     "revenue": "€367"
+     "orders": 5,
+     "revenue": "€350"
     },
     {
      "name": "Germany",
@@ -660,19 +660,19 @@
     {
      "name": "/lp/blackbeard-us",
      "path": "/lp/blackbeard-us",
-     "sessions": 554,
-     "conv_pct": 1.62
+     "sessions": 601,
+     "conv_pct": 1.66
     },
     {
      "name": "Homepage",
      "path": "/",
-     "sessions": 331,
-     "conv_pct": 1.51
+     "sessions": 326,
+     "conv_pct": 1.84
     },
     {
      "name": "CoG Big Box LP (B)",
      "path": "/lp/lying-pirates-cities-of-greed-big-box-b",
-     "sessions": 269,
+     "sessions": 270,
      "conv_pct": 0.74,
      "alert": true
     },
@@ -686,27 +686,27 @@
     {
      "name": "/lp/blackbeard-uk",
      "path": "/lp/blackbeard-uk",
-     "sessions": 200,
-     "conv_pct": 0.5,
+     "sessions": 210,
+     "conv_pct": 0.95,
      "alert": true
     },
     {
      "name": "/lp/blackbeard-eu",
      "path": "/lp/blackbeard-eu",
-     "sessions": 189,
-     "conv_pct": 0.53
+     "sessions": 192,
+     "conv_pct": 0.52
     },
     {
      "name": "/lp/blackbeard-it",
      "path": "/lp/blackbeard-it",
-     "sessions": 129,
-     "conv_pct": 1.55
+     "sessions": 143,
+     "conv_pct": 1.4
     },
     {
      "name": "/lp/blackbeard-es",
      "path": "/lp/blackbeard-es",
-     "sessions": 111,
-     "conv_pct": 0.9
+     "sessions": 127,
+     "conv_pct": 1.57
     }
    ],
    "flags": [
@@ -730,44 +730,44 @@
     }
    ],
    "conversion": {
-    "orders": 73,
-    "sessions_ga4": 3170,
-    "sessions_shopify": 1075,
-    "sessions_landing_pages": 2175,
-    "sessions_store": 995,
-    "shopify_pct": 6.79,
-    "blended_pct": 2.3,
-    "landing_pages_pct": 1.27,
-    "store_pct": 4.56,
-    "ga4_purchases_seen": 45,
+    "orders": 82,
+    "sessions_ga4": 3306,
+    "sessions_shopify": 1140,
+    "sessions_landing_pages": 2265,
+    "sessions_store": 1041,
+    "shopify_pct": 7.19,
+    "blended_pct": 2.48,
+    "landing_pages_pct": 1.45,
+    "store_pct": 4.73,
+    "ga4_purchases_seen": 50,
     "split_is_estimated": true
    }
   },
   {
    "id": "30d",
    "label": "Last 30 days",
-   "range_start": "2026-10-10",
-   "range_end": "2026-11-08",
+   "range_start": "2026-10-11",
+   "range_end": "2026-11-09",
    "days": 30,
    "kpis": {
-    "sessions": 10255,
-    "conversion_label": "3,95%",
-    "sales_label": "€32 902",
-    "orders": 405,
-    "shopify_sales_eur": 32901.69,
-    "amazon_sales_eur": 7165.96,
-    "amazon_sales_usd": 8000.77,
-    "amazon_days_covered": 26,
-    "amazon_label": "€7 166",
-    "total_sales_eur": 40067.65,
-    "total_label": "€40 068"
+    "sessions": 10287,
+    "conversion_label": "4,04%",
+    "sales_label": "€33 625",
+    "orders": 416,
+    "shopify_sales_eur": 33624.91,
+    "amazon_sales_eur": 7799.68,
+    "amazon_sales_usd": 8730.18,
+    "amazon_days_covered": 29,
+    "amazon_label": "€7 800",
+    "total_sales_eur": 41424.59,
+    "total_label": "€41 425"
    },
    "meta": {
-    "spend_label": "205 327 kr",
-    "spend_window": "10 okt-8 nov (Meta, hämtad 9 nov)",
-    "meta_roas": 0.75,
+    "spend_label": "204 857 kr",
+    "spend_window": "11 okt-9 nov (Meta, hämtad 10 nov)",
+    "meta_roas": 0.79,
     "blended_mer": null,
-    "_note": "Meta 2026-10-10 till 2026-11-08, hämtat 9 november. 154 919 kr tillbaka på 205 327 kr satsat, 172 köp enligt kontot. Google Ads gick inte att hämta, så blandad avkastning räknas inte: utan Googles kostnad saknas en del av nämnaren, och en siffra på bara Meta skulle se bättre ut än den är.",
+    "_note": "Meta 2026-10-11 till 2026-11-09, hämtat 10 november. 161 561 kr tillbaka på 204 857 kr satsat, 181 köp enligt kontot. Google Ads gick inte att hämta, så blandad avkastning räknas inte: utan Googles kostnad saknas en del av nämnaren, och en siffra på bara Meta skulle se bättre ut än den är.",
     "blended_mer_total": null
    },
    "gads": {
@@ -775,7 +775,7 @@
     "gads_roas": null,
     "conv": null,
     "value_label": null,
-    "_note": "Google Ads gick inte att hämta 9 november. Rutorna står tomma, inte på noll, och inga äldre siffror återanvänds.",
+    "_note": "Google Ads gick inte att hämta 10 november. Rutorna står tomma, inte på noll, och inga äldre siffror återanvänds.",
     "campaigns": []
    },
    "orders_by_country": [
@@ -788,20 +788,20 @@
     {
      "name": "USA",
      "flag": "🇺🇸",
-     "orders": 72,
-     "revenue": "€7 162"
+     "orders": 75,
+     "revenue": "€7 297"
     },
     {
      "name": "UK",
      "flag": "🇬🇧",
-     "orders": 68,
-     "revenue": "€6 762"
+     "orders": 69,
+     "revenue": "€6 812"
     },
     {
      "name": "Belgium",
      "flag": "🇧🇪",
-     "orders": 17,
-     "revenue": "€1 424"
+     "orders": 19,
+     "revenue": "€1 635"
     },
     {
      "name": "Denmark",
@@ -810,22 +810,22 @@
      "revenue": "€1 366"
     },
     {
-     "name": "Germany",
-     "flag": "🇩🇪",
-     "orders": 12,
-     "revenue": "€810"
-    },
-    {
      "name": "Spain",
      "flag": "🇪🇸",
-     "orders": 11,
-     "revenue": "€801"
+     "orders": 14,
+     "revenue": "€1 028"
     },
     {
      "name": "Italy",
      "flag": "🇮🇹",
-     "orders": 15,
-     "revenue": "€787"
+     "orders": 17,
+     "revenue": "€887"
+    },
+    {
+     "name": "Germany",
+     "flag": "🇩🇪",
+     "orders": 12,
+     "revenue": "€810"
     },
     {
      "name": "Australia",
@@ -886,51 +886,52 @@
     {
      "name": "Homepage",
      "path": "/",
-     "sessions": 1333,
-     "conv_pct": 2.4
-    },
-    {
-     "name": "Light checkout",
-     "path": "/lp/Q4",
-     "sessions": 898,
-     "conv_pct": 1.0
+     "sessions": 1347,
+     "conv_pct": 2.45
     },
     {
      "name": "Dark checkout",
      "path": "/lp/v2",
-     "sessions": 889,
-     "conv_pct": 0.9,
+     "sessions": 858,
+     "conv_pct": 0.93,
+     "alert": true
+    },
+    {
+     "name": "Light checkout",
+     "path": "/lp/Q4",
+     "sessions": 853,
+     "conv_pct": 0.94,
      "alert": true
     },
     {
      "name": "Light cart",
      "path": "/lp/Q4v2",
-     "sessions": 868,
-     "conv_pct": 0.58,
+     "sessions": 843,
+     "conv_pct": 0.59,
      "alert": true
     },
     {
      "name": "Dark cart",
      "path": "/lp/v3",
-     "sessions": 787,
-     "conv_pct": 1.4
+     "sessions": 776,
+     "conv_pct": 1.42
     },
     {
      "name": "/lp/blackbeard-us",
      "path": "/lp/blackbeard-us",
-     "sessions": 554,
-     "conv_pct": 1.62
+     "sessions": 601,
+     "conv_pct": 1.66
     },
     {
      "name": "CoG Big Box LP (B)",
      "path": "/lp/lying-pirates-cities-of-greed-big-box-b",
-     "sessions": 515,
+     "sessions": 516,
      "conv_pct": 1.36
     },
     {
      "name": "CoG Big Box LP (A)",
      "path": "/lp/lying-pirates-cities-of-greed-big-box",
-     "sessions": 477,
+     "sessions": 475,
      "conv_pct": 0.84,
      "alert": true
     }
@@ -984,16 +985,16 @@
     }
    ],
    "conversion": {
-    "orders": 405,
-    "sessions_ga4": 10255,
-    "sessions_shopify": 4685,
-    "sessions_landing_pages": 6412,
-    "sessions_store": 3843,
-    "shopify_pct": 8.64,
-    "blended_pct": 3.95,
-    "landing_pages_pct": 2.46,
-    "store_pct": 6.43,
-    "ga4_purchases_seen": 164,
+    "orders": 416,
+    "sessions_ga4": 10287,
+    "sessions_shopify": 4740,
+    "sessions_landing_pages": 6396,
+    "sessions_store": 3891,
+    "shopify_pct": 8.78,
+    "blended_pct": 4.04,
+    "landing_pages_pct": 2.54,
+    "store_pct": 6.52,
+    "ga4_purchases_seen": 169,
     "split_is_estimated": true
    }
   },
@@ -1001,27 +1002,27 @@
    "id": "thismonth",
    "label": "November (month to date)",
    "range_start": "2026-11-01",
-   "range_end": "2026-11-08",
-   "days": 8,
+   "range_end": "2026-11-09",
+   "days": 9,
    "kpis": {
-    "sessions": 3297,
-    "conversion_label": "2,43%",
-    "sales_label": "€5 531",
-    "orders": 80,
-    "shopify_sales_eur": 5531.35,
-    "amazon_sales_eur": 782.63,
-    "amazon_sales_usd": 873.8,
-    "amazon_days_covered": 4,
-    "amazon_label": "€783",
-    "total_sales_eur": 6313.98,
-    "total_label": "€6 314"
+    "sessions": 3563,
+    "conversion_label": "2,58%",
+    "sales_label": "€6 393",
+    "orders": 92,
+    "shopify_sales_eur": 6392.85,
+    "amazon_sales_eur": 1472.17,
+    "amazon_sales_usd": 1647.8,
+    "amazon_days_covered": 8,
+    "amazon_label": "€1 472",
+    "total_sales_eur": 7865.02,
+    "total_label": "€7 865"
    },
    "meta": {
-    "spend_label": "53 209 kr",
-    "spend_window": "1-8 nov (Meta, hämtad 9 nov)",
-    "meta_roas": 1.14,
+    "spend_label": "57 958 kr",
+    "spend_window": "1-9 nov (Meta, hämtad 10 nov)",
+    "meta_roas": 1.18,
     "blended_mer": null,
-    "_note": "Meta 2026-11-01 till 2026-11-08, hämtat 9 november. 60 456 kr tillbaka på 53 209 kr satsat, 89 köp enligt kontot. Google Ads gick inte att hämta, så blandad avkastning räknas inte: utan Googles kostnad saknas en del av nämnaren, och en siffra på bara Meta skulle se bättre ut än den är.",
+    "_note": "Meta 2026-11-01 till 2026-11-09, hämtat 10 november. 68 652 kr tillbaka på 57 958 kr satsat, 99 köp enligt kontot. Google Ads gick inte att hämta, så blandad avkastning räknas inte: utan Googles kostnad saknas en del av nämnaren, och en siffra på bara Meta skulle se bättre ut än den är.",
     "blended_mer_total": null
    },
    "gads": {
@@ -1029,39 +1030,39 @@
     "gads_roas": null,
     "conv": null,
     "value_label": null,
-    "_note": "Google Ads gick inte att hämta 9 november. Rutorna står tomma, inte på noll, och inga äldre siffror återanvänds.",
+    "_note": "Google Ads gick inte att hämta 10 november. Rutorna står tomma, inte på noll, och inga äldre siffror återanvänds.",
     "campaigns": []
    },
    "orders_by_country": [
     {
      "name": "UK",
      "flag": "🇬🇧",
-     "orders": 22,
-     "revenue": "€1 725"
+     "orders": 23,
+     "revenue": "€1 775"
     },
     {
      "name": "USA",
      "flag": "🇺🇸",
-     "orders": 17,
-     "revenue": "€1 232"
+     "orders": 21,
+     "revenue": "€1 506"
     },
     {
      "name": "Spain",
      "flag": "🇪🇸",
-     "orders": 10,
-     "revenue": "€628"
+     "orders": 13,
+     "revenue": "€855"
     },
     {
      "name": "Italy",
      "flag": "🇮🇹",
-     "orders": 9,
-     "revenue": "€574"
+     "orders": 11,
+     "revenue": "€673"
     },
     {
      "name": "Belgium",
      "flag": "🇧🇪",
-     "orders": 6,
-     "revenue": "€409"
+     "orders": 8,
+     "revenue": "€620"
     },
     {
      "name": "Denmark",
@@ -1104,52 +1105,52 @@
     {
      "name": "/lp/blackbeard-us",
      "path": "/lp/blackbeard-us",
-     "sessions": 554,
-     "conv_pct": 1.62
+     "sessions": 601,
+     "conv_pct": 1.66
     },
     {
      "name": "Homepage",
      "path": "/",
-     "sessions": 354,
-     "conv_pct": 1.41
+     "sessions": 404,
+     "conv_pct": 1.49
     },
     {
      "name": "CoG Big Box LP (B)",
      "path": "/lp/lying-pirates-cities-of-greed-big-box-b",
-     "sessions": 274,
-     "conv_pct": 1.09
+     "sessions": 281,
+     "conv_pct": 1.07
     },
     {
      "name": "CoG Big Box LP (A)",
      "path": "/lp/lying-pirates-cities-of-greed-big-box",
-     "sessions": 229,
+     "sessions": 234,
      "conv_pct": 0.0,
      "alert": true
     },
     {
      "name": "/lp/blackbeard-uk",
      "path": "/lp/blackbeard-uk",
-     "sessions": 200,
-     "conv_pct": 0.5,
+     "sessions": 210,
+     "conv_pct": 0.95,
      "alert": true
     },
     {
      "name": "/lp/blackbeard-eu",
      "path": "/lp/blackbeard-eu",
-     "sessions": 189,
-     "conv_pct": 0.53
+     "sessions": 192,
+     "conv_pct": 0.52
     },
     {
      "name": "/lp/blackbeard-it",
      "path": "/lp/blackbeard-it",
-     "sessions": 129,
-     "conv_pct": 1.55
+     "sessions": 143,
+     "conv_pct": 1.4
     },
     {
      "name": "/lp/blackbeard-es",
      "path": "/lp/blackbeard-es",
-     "sessions": 111,
-     "conv_pct": 0.9
+     "sessions": 127,
+     "conv_pct": 1.57
     }
    ],
    "flags": [
@@ -1167,44 +1168,44 @@
     }
    ],
    "conversion": {
-    "orders": 80,
-    "sessions_ga4": 3297,
-    "sessions_shopify": 1147,
-    "sessions_landing_pages": 2227,
-    "sessions_store": 1070,
-    "shopify_pct": 6.97,
-    "blended_pct": 2.43,
-    "landing_pages_pct": 1.34,
-    "store_pct": 4.69,
-    "ga4_purchases_seen": 51,
+    "orders": 92,
+    "sessions_ga4": 3563,
+    "sessions_shopify": 1313,
+    "sessions_landing_pages": 2347,
+    "sessions_store": 1216,
+    "shopify_pct": 7.01,
+    "blended_pct": 2.58,
+    "landing_pages_pct": 1.51,
+    "store_pct": 4.65,
+    "ga4_purchases_seen": 57,
     "split_is_estimated": true
    }
   },
   {
    "id": "90d",
    "label": "Last 90 days",
-   "range_start": "2026-08-11",
-   "range_end": "2026-11-08",
+   "range_start": "2026-08-12",
+   "range_end": "2026-11-09",
    "days": 90,
    "kpis": {
-    "sessions": 34444,
-    "conversion_label": "2,23%",
-    "sales_label": "€65 794",
-    "orders": 769,
-    "shopify_sales_eur": 65794.08,
-    "amazon_sales_eur": 11117.5,
-    "amazon_sales_usd": 12412.66,
-    "amazon_days_covered": 40,
-    "amazon_label": "€11 118",
-    "total_sales_eur": 76911.58,
-    "total_label": "€76 912"
+    "sessions": 34326,
+    "conversion_label": "2,26%",
+    "sales_label": "€66 281",
+    "orders": 776,
+    "shopify_sales_eur": 66281.1,
+    "amazon_sales_eur": 11781.19,
+    "amazon_sales_usd": 13186.66,
+    "amazon_days_covered": 44,
+    "amazon_label": "€11 781",
+    "total_sales_eur": 78062.29,
+    "total_label": "€78 062"
    },
    "meta": {
-    "spend_label": "426 439 kr",
-    "spend_window": "11 aug-8 nov (Meta, hämtad 9 nov)",
-    "meta_roas": 0.89,
+    "spend_label": "428 553 kr",
+    "spend_window": "12 aug-9 nov (Meta, hämtad 10 nov)",
+    "meta_roas": 0.9,
     "blended_mer": null,
-    "_note": "Meta 2026-08-11 till 2026-11-08, hämtat 9 november. 379 089 kr tillbaka på 426 439 kr satsat, 362 köp enligt kontot. Google Ads gick inte att hämta, så blandad avkastning räknas inte: utan Googles kostnad saknas en del av nämnaren, och en siffra på bara Meta skulle se bättre ut än den är.",
+    "_note": "Meta 2026-08-12 till 2026-11-09, hämtat 10 november. 385 180 kr tillbaka på 428 553 kr satsat, 369 köp enligt kontot. Google Ads gick inte att hämta, så blandad avkastning räknas inte: utan Googles kostnad saknas en del av nämnaren, och en siffra på bara Meta skulle se bättre ut än den är.",
     "blended_mer_total": null
    },
    "gads": {
@@ -1212,21 +1213,21 @@
     "gads_roas": null,
     "conv": null,
     "value_label": null,
-    "_note": "Google Ads gick inte att hämta 9 november. Rutorna står tomma, inte på noll, och inga äldre siffror återanvänds.",
+    "_note": "Google Ads gick inte att hämta 10 november. Rutorna står tomma, inte på noll, och inga äldre siffror återanvänds.",
     "campaigns": []
    },
    "orders_by_country": [
     {
      "name": "USA",
      "flag": "🇺🇸",
-     "orders": 236,
-     "revenue": "€22 600"
+     "orders": 235,
+     "revenue": "€22 499"
     },
     {
      "name": "UK",
      "flag": "🇬🇧",
-     "orders": 168,
-     "revenue": "€15 902"
+     "orders": 169,
+     "revenue": "€15 952"
     },
     {
      "name": "Unknown",
@@ -1243,8 +1244,8 @@
     {
      "name": "Belgium",
      "flag": "🇧🇪",
-     "orders": 25,
-     "revenue": "€2 160"
+     "orders": 27,
+     "revenue": "€2 371"
     },
     {
      "name": "Australia",
@@ -1267,14 +1268,14 @@
     {
      "name": "Italy",
      "flag": "🇮🇹",
-     "orders": 26,
-     "revenue": "€1 113"
+     "orders": 28,
+     "revenue": "€1 213"
     },
     {
      "name": "Spain",
      "flag": "🇪🇸",
-     "orders": 12,
-     "revenue": "€958"
+     "orders": 15,
+     "revenue": "€1 184"
     },
     {
      "name": "Netherlands",
@@ -1347,47 +1348,47 @@
     {
      "name": "CoG Big Box LP (B)",
      "path": "/lp/lying-pirates-cities-of-greed-big-box-b",
-     "sessions": 7196,
-     "conv_pct": 0.75,
+     "sessions": 7130,
+     "conv_pct": 0.76,
      "alert": true
     },
     {
      "name": "CoG Big Box LP (A)",
      "path": "/lp/lying-pirates-cities-of-greed-big-box",
-     "sessions": 6529,
-     "conv_pct": 0.58,
+     "sessions": 6456,
+     "conv_pct": 0.56,
      "alert": true
     },
     {
      "name": "Homepage",
      "path": "/",
-     "sessions": 4072,
+     "sessions": 4079,
      "conv_pct": 1.77
     },
     {
      "name": "Base Game (product)",
      "path": "/products/lying-pirates-base-game",
-     "sessions": 2621,
-     "conv_pct": 0.76,
+     "sessions": 2537,
+     "conv_pct": 0.75,
      "alert": true
     },
     {
      "name": "Big Box (product)",
      "path": "/products/lying-pirates-big-box",
-     "sessions": 2421,
-     "conv_pct": 1.53
+     "sessions": 2388,
+     "conv_pct": 1.55
     },
     {
      "name": "Light checkout",
      "path": "/lp/Q4",
-     "sessions": 1083,
+     "sessions": 1085,
      "conv_pct": 0.92,
      "alert": true
     },
     {
      "name": "Light cart",
      "path": "/lp/Q4v2",
-     "sessions": 1032,
+     "sessions": 1035,
      "conv_pct": 0.58,
      "alert": true
     },
@@ -1469,31 +1470,31 @@
     }
    ],
    "conversion": {
-    "orders": 769,
-    "sessions_ga4": 34444,
-    "sessions_shopify": 15697,
-    "sessions_landing_pages": 19894,
-    "sessions_store": 14550,
-    "shopify_pct": 4.9,
-    "blended_pct": 2.23,
-    "landing_pages_pct": 1.34,
-    "store_pct": 3.45,
-    "ga4_purchases_seen": 432,
+    "orders": 776,
+    "sessions_ga4": 34326,
+    "sessions_shopify": 15635,
+    "sessions_landing_pages": 19857,
+    "sessions_store": 14469,
+    "shopify_pct": 4.96,
+    "blended_pct": 2.26,
+    "landing_pages_pct": 1.36,
+    "store_pct": 3.49,
+    "ga4_purchases_seen": 433,
     "split_is_estimated": true
    }
   },
   {
    "id": "yesterday",
-   "label": "Yesterday (Nov 8)",
-   "range_start": "2026-11-08",
-   "range_end": "2026-11-08",
+   "label": "Yesterday (Nov 9)",
+   "range_start": "2026-11-09",
+   "range_end": "2026-11-09",
    "days": 1,
    "kpis": {
-    "sessions": 338,
-    "conversion_label": "2,96%",
-    "sales_label": "€633",
-    "orders": 10,
-    "shopify_sales_eur": 632.91,
+    "sessions": 267,
+    "conversion_label": "4,49%",
+    "sales_label": "€869",
+    "orders": 12,
+    "shopify_sales_eur": 869.45,
     "amazon_sales_eur": null,
     "amazon_sales_usd": null,
     "amazon_days_covered": 0,
@@ -1502,12 +1503,12 @@
     "total_label": null
    },
    "meta": {
-    "spend_label": "6 742 kr",
-    "meta_roas": 0.94,
+    "spend_label": "4 737 kr",
+    "meta_roas": 1.73,
     "blended_mer": null,
     "blended_mer_total": null,
-    "_note": "Allt hämtat 9 november, läst 6 timmar efter dygnets slut. 8 november: Meta drog 6 742 kr och bokför 8 köp värda 6 324 kr, alltså 0,94 tillbaka enligt kontot. Butiken tog in 632,91 EUR på 10 ordrar, cirka 7 215 kr från ALLA kanaler. Metas anspråk är därmed 88 procent av hela kassan. Google Ads gick inte att hämta, så den blandade siffran räknas inte.",
-    "spend_window": "8 nov (Meta, hämtad 9 nov)"
+    "_note": "Allt hämtat 10 november, läst 6 timmar efter dygnets slut. 9 november: Meta drog 4 737 kr och bokför 10 köp värda 8 196 kr, alltså 1,73 tillbaka enligt kontot. Butiken tog in 869,45 EUR på 12 ordrar, cirka 9 912 kr från ALLA kanaler. Metas anspråk är därmed 83 procent av hela kassan. Google Ads gick inte att hämta, så den blandade siffran räknas inte.",
+    "spend_window": "9 nov (Meta, hämtad 10 nov)"
    },
    "gads": {
     "spend_label": "Unavailable",
@@ -1515,114 +1516,108 @@
     "gads_roas": null,
     "conv": null,
     "campaigns": [],
-    "_note": "Google Ads gick inte att hämta 9 november. Rutorna står tomma, inte på noll, och inga äldre siffror återanvänds."
+    "_note": "Google Ads gick inte att hämta 10 november. Rutorna står tomma, inte på noll, och inga äldre siffror återanvänds."
    },
    "orders_by_country": [
     {
-     "name": "UK",
-     "flag": "🇬🇧",
-     "orders": 2,
-     "revenue": "€176"
+     "name": "USA",
+     "flag": "🇺🇸",
+     "orders": 4,
+     "revenue": "€274"
     },
     {
      "name": "Spain",
      "flag": "🇪🇸",
+     "orders": 3,
+     "revenue": "€226"
+    },
+    {
+     "name": "Belgium",
+     "flag": "🇧🇪",
      "orders": 2,
-     "revenue": "€166"
+     "revenue": "€211"
     },
     {
      "name": "Italy",
      "flag": "🇮🇹",
      "orders": 2,
-     "revenue": "€155"
+     "revenue": "€108"
     },
     {
-     "name": "Germany",
-     "flag": "🇩🇪",
+     "name": "UK",
+     "flag": "🇬🇧",
      "orders": 1,
-     "revenue": "€80"
-    },
-    {
-     "name": "USA",
-     "flag": "🇺🇸",
-     "orders": 2,
-     "revenue": "€31"
-    },
-    {
-     "name": "France",
-     "flag": "🇫🇷",
-     "orders": 1,
-     "revenue": "€25"
+     "revenue": "€50"
     }
    ],
    "landing_pages": [
     {
-     "name": "/lp/blackbeard-us",
-     "path": "/lp/blackbeard-us",
-     "sessions": 98,
-     "conv_pct": 0.0
-    },
-    {
      "name": "Homepage",
      "path": "/",
-     "sessions": 39,
-     "conv_pct": 2.56
+     "sessions": 49,
+     "conv_pct": 2.04
+    },
+    {
+     "name": "/lp/blackbeard-us",
+     "path": "/lp/blackbeard-us",
+     "sessions": 48,
+     "conv_pct": 2.08
     },
     {
      "name": "Cart",
      "path": "/cart",
-     "sessions": 25,
-     "conv_pct": 12.0
+     "sessions": 19,
+     "conv_pct": 5.26
     },
     {
      "name": "/lp/blackbeard-es",
      "path": "/lp/blackbeard-es",
-     "sessions": 20,
-     "conv_pct": 5.0
+     "sessions": 16,
+     "conv_pct": 6.25
     },
     {
-     "name": "Big Box (product)",
-     "path": "/products/lying-pirates-big-box",
-     "sessions": 16,
+     "name": "/lp/blackbeard-it",
+     "path": "/lp/blackbeard-it",
+     "sessions": 14,
      "conv_pct": 0.0
     },
     {
      "name": "/lp/blackbeard-uk",
      "path": "/lp/blackbeard-uk",
-     "sessions": 13,
-     "conv_pct": 7.69
+     "sessions": 10,
+     "conv_pct": 10.0
     },
     {
-     "name": "Base Game (product)",
-     "path": "/products/lying-pirates-base-game",
-     "sessions": 11,
+     "name": "Big Box (product)",
+     "path": "/products/lying-pirates-big-box",
+     "sessions": 9,
      "conv_pct": 0.0
     },
     {
-     "name": "CoG Big Box LP (A)",
-     "path": "/lp/lying-pirates-cities-of-greed-big-box",
-     "sessions": 10,
+     "name": "/products/8-player-components",
+     "path": "/products/8-player-components",
+     "sessions": 8,
      "conv_pct": 0.0
     }
    ],
    "flags": [],
    "conversion": {
-    "orders": 10,
-    "sessions_ga4": 338,
-    "sessions_shopify": 175,
-    "sessions_landing_pages": 182,
-    "sessions_store": 156,
-    "shopify_pct": 5.71,
-    "blended_pct": 2.96,
-    "landing_pages_pct": 1.81,
-    "store_pct": 4.29,
+    "orders": 12,
+    "sessions_ga4": 267,
+    "sessions_shopify": 165,
+    "sessions_landing_pages": 121,
+    "sessions_store": 146,
+    "shopify_pct": 7.27,
+    "blended_pct": 4.49,
+    "landing_pages_pct": 4.96,
+    "store_pct": 4.11,
     "ga4_purchases_seen": 6,
     "split_is_estimated": true
    }
   }
  ],
  "inventory_data": {
-  "updated_at": "2026-11-09",
+  "updated_at": "2026-11-10",
   "velocity_window_days": 30,
   "filter_note": "Add-On Box + Upgrade Box exkluderade per Lucas 2026-07-24 (irrelevanta produkter)",
   "warehouses": [
@@ -1728,7 +1723,7 @@
     "title": "BIG BOX",
     "variant": "Spanish",
     "sku": "NPGLPGFBB01ES",
-    "velocity": 0.27,
+    "velocity": 0.37,
     "stock": {
      "bridge": 0,
      "armarlo": 0,
@@ -1736,7 +1731,7 @@
      "zatu": 0,
      "total": 1
     },
-    "days": 4,
+    "days": 3,
     "status": "critical",
     "warehouse_scope": [
      "meeples"
@@ -1746,7 +1741,7 @@
     "title": "Base Game",
     "variant": "English",
     "sku": "NPGLPGFRT02EN",
-    "velocity": 2.53,
+    "velocity": 2.6,
     "stock": {
      "bridge": 0,
      "armarlo": 0,
@@ -1767,7 +1762,7 @@
     "title": "Base Game",
     "variant": "Italian",
     "sku": "NPGLPGFRT02IT",
-    "velocity": 0.37,
+    "velocity": 0.43,
     "stock": {
      "bridge": 0,
      "armarlo": 0,
@@ -1839,15 +1834,15 @@
     "title": "Kraken Mini-Expansion",
     "variant": "Default",
     "sku": "NPGKMP01",
-    "velocity": 4.23,
+    "velocity": 4.4,
     "stock": {
-     "bridge": 72,
+     "bridge": 71,
      "armarlo": 44,
      "meeples": 4,
-     "zatu": 89,
-     "total": 209
+     "zatu": 88,
+     "total": 207
     },
-    "days": 49,
+    "days": 47,
     "status": "watch",
     "warehouse_scope": [
      "bridge",
@@ -1860,15 +1855,15 @@
     "title": "Cities of Greed",
     "variant": "Default",
     "sku": "NPGLPGFCOG01",
-    "velocity": 0.57,
+    "velocity": 0.7,
     "stock": {
-     "bridge": 93,
+     "bridge": 90,
      "armarlo": 147,
      "meeples": 0,
-     "zatu": 0,
-     "total": 240
+     "zatu": 19,
+     "total": 256
     },
-    "days": 421,
+    "days": 366,
     "status": "ok",
     "warehouse_scope": [
      "bridge",
@@ -1881,7 +1876,7 @@
     "title": "Custom Insert",
     "variant": "Default",
     "sku": "NPGCI",
-    "velocity": 1.73,
+    "velocity": 1.8,
     "stock": {
      "bridge": 43,
      "armarlo": 0,
@@ -1889,7 +1884,7 @@
      "zatu": 100,
      "total": 150
     },
-    "days": 87,
+    "days": 83,
     "status": "ok",
     "warehouse_scope": [
      "bridge",
@@ -1902,15 +1897,15 @@
     "title": "8-Player Components",
     "variant": "Default",
     "sku": "NPG8PCP01",
-    "velocity": 2.57,
+    "velocity": 2.6,
     "stock": {
      "bridge": 128,
      "armarlo": 48,
      "meeples": 11,
-     "zatu": 105,
-     "total": 292
+     "zatu": 104,
+     "total": 291
     },
-    "days": 114,
+    "days": 112,
     "status": "ok",
     "warehouse_scope": [
      "bridge",
@@ -1983,9 +1978,9 @@
  },
  "_n": 5,
  "fx": {
-  "usd_per_eur": 1.1165,
-  "sek_per_eur": 11.026,
-  "date": "2026-11-06",
+  "usd_per_eur": 1.1193,
+  "sek_per_eur": 10.996,
+  "date": "2026-11-09",
   "source": "ECB eurofxref-daily"
  },
  "amazon": {
@@ -1996,317 +1991,345 @@
     "orders": 4,
     "sales_usd": 144.8,
     "source": "sheet",
-    "sales_eur": 129.69
+    "sales_eur": 129.37
    },
    {
     "date": "2026-09-26",
     "orders": 7,
     "sales_usd": 379.65,
     "source": "sheet",
-    "sales_eur": 340.04
+    "sales_eur": 339.19
    },
    {
     "date": "2026-09-27",
     "orders": 2,
     "sales_usd": 189.9,
     "source": "sheet",
-    "sales_eur": 170.09
+    "sales_eur": 169.66
    },
    {
     "date": "2026-09-28",
     "orders": 3,
     "sales_usd": 234.85,
     "source": "sheet",
-    "sales_eur": 210.34
+    "sales_eur": 209.82
    },
    {
     "date": "2026-09-29",
     "orders": 7,
     "sales_usd": 314.65,
     "source": "sheet",
-    "sales_eur": 281.82
+    "sales_eur": 281.11
    },
    {
     "date": "2026-09-30",
     "orders": 5,
     "sales_usd": 289.75,
     "source": "sheet",
-    "sales_eur": 259.52
+    "sales_eur": 258.87
    },
    {
     "date": "2026-10-01",
     "orders": 5,
     "sales_usd": 324.75,
     "source": "sheet",
-    "sales_eur": 290.86
+    "sales_eur": 290.14
    },
    {
     "date": "2026-10-02",
     "orders": 3,
     "sales_usd": 132.39,
     "source": "sheet",
-    "sales_eur": 118.58
+    "sales_eur": 118.28
    },
    {
     "date": "2026-10-03",
     "orders": 7,
     "sales_usd": 404.75,
     "source": "sheet",
-    "sales_eur": 362.52
+    "sales_eur": 361.61
    },
    {
     "date": "2026-10-04",
     "orders": 3,
     "sales_usd": 334.85,
     "source": "sheet",
-    "sales_eur": 299.91
+    "sales_eur": 299.16
    },
    {
     "date": "2026-10-05",
     "orders": 3,
     "sales_usd": 134.85,
     "source": "sheet",
-    "sales_eur": 120.78
+    "sales_eur": 120.48
    },
    {
     "date": "2026-10-06",
     "orders": 19,
     "sales_usd": 1067.1,
     "source": "sheet",
-    "sales_eur": 955.75
+    "sales_eur": 953.36
    },
    {
     "date": "2026-10-07",
     "orders": 6,
     "sales_usd": 369.7,
     "source": "sheet",
-    "sales_eur": 331.12
+    "sales_eur": 330.3
    },
    {
     "date": "2026-10-08",
     "orders": 2,
     "sales_usd": 89.9,
     "source": "sheet",
-    "sales_eur": 80.52
+    "sales_eur": 80.32
    },
    {
     "date": "2026-10-10",
     "orders": 1,
     "sales_usd": 44.59,
     "source": "sheet",
-    "sales_eur": 39.94
+    "sales_eur": 39.84
    },
    {
     "date": "2026-10-11",
     "orders": 3,
     "sales_usd": 434.85,
     "source": "sheet",
-    "sales_eur": 389.48
+    "sales_eur": 388.5
    },
    {
     "date": "2026-10-12",
     "orders": 4,
     "sales_usd": 479.8,
     "source": "sheet",
-    "sales_eur": 429.74
+    "sales_eur": 428.66
    },
    {
     "date": "2026-10-13",
     "orders": 2,
     "sales_usd": 189.9,
     "source": "sheet",
-    "sales_eur": 170.09
+    "sales_eur": 169.66
    },
    {
     "date": "2026-10-14",
     "orders": 6,
     "sales_usd": 259.7,
     "source": "sheet",
-    "sales_eur": 232.6
+    "sales_eur": 232.02
    },
    {
     "date": "2026-10-15",
     "orders": 4,
     "sales_usd": 179.8,
     "source": "sheet",
-    "sales_eur": 161.04
+    "sales_eur": 160.64
    },
    {
     "date": "2026-10-16",
     "orders": 4,
     "sales_usd": 179.8,
     "source": "sheet",
-    "sales_eur": 161.04
+    "sales_eur": 160.64
    },
    {
     "date": "2026-10-17",
     "orders": 4,
     "sales_usd": 169.8,
     "source": "sheet",
-    "sales_eur": 152.08
+    "sales_eur": 151.7
    },
    {
     "date": "2026-10-18",
     "orders": 6,
     "sales_usd": 359.7,
     "source": "sheet",
-    "sales_eur": 322.17
+    "sales_eur": 321.36
    },
    {
     "date": "2026-10-19",
     "orders": 5,
     "sales_usd": 279.75,
     "source": "sheet",
-    "sales_eur": 250.56
+    "sales_eur": 249.93
    },
    {
     "date": "2026-10-20",
     "orders": 5,
     "sales_usd": 489.75,
     "source": "sheet",
-    "sales_eur": 438.65
+    "sales_eur": 437.55
    },
    {
     "date": "2026-10-21",
     "orders": 8,
     "sales_usd": 424.6,
     "source": "sheet",
-    "sales_eur": 380.3
+    "sales_eur": 379.34
    },
    {
     "date": "2026-10-22",
     "orders": 10,
     "sales_usd": 584.5,
     "source": "sheet",
-    "sales_eur": 523.51
+    "sales_eur": 522.2
    },
    {
     "date": "2026-10-23",
     "orders": 7,
     "sales_usd": 232.19,
     "source": "sheet",
-    "sales_eur": 207.96
+    "sales_eur": 207.44
    },
    {
     "date": "2026-10-24",
     "orders": 5,
     "sales_usd": 424.75,
     "source": "sheet",
-    "sales_eur": 380.43
+    "sales_eur": 379.48
    },
    {
     "date": "2026-10-25",
     "orders": 3,
     "sales_usd": 234.85,
     "source": "sheet",
-    "sales_eur": 210.34
+    "sales_eur": 209.82
    },
    {
     "date": "2026-10-26",
     "orders": 3,
     "sales_usd": 234.85,
     "source": "sheet",
-    "sales_eur": 210.34
+    "sales_eur": 209.82
    },
    {
     "date": "2026-10-27",
     "orders": 9,
     "sales_usd": 547.09,
     "source": "sheet",
-    "sales_eur": 490.0
+    "sales_eur": 488.78
    },
    {
     "date": "2026-10-28",
     "orders": 7,
     "sales_usd": 607.45,
     "source": "sheet",
-    "sales_eur": 544.07
+    "sales_eur": 542.71
    },
    {
     "date": "2026-10-29",
     "orders": 3,
     "sales_usd": 199.85,
     "source": "sheet",
-    "sales_eur": 179.0
+    "sales_eur": 178.55
    },
    {
     "date": "2026-10-30",
     "orders": 1,
     "sales_usd": 44.95,
     "source": "sheet",
-    "sales_eur": 40.26
+    "sales_eur": 40.16
    },
    {
     "date": "2026-10-31",
     "orders": 11,
     "sales_usd": 524.45,
     "source": "sheet",
-    "sales_eur": 469.73
+    "sales_eur": 468.55
    },
    {
     "date": "2026-11-01",
-    "orders": 6,
+    "orders": 5,
     "sales_usd": 189.7,
     "source": "sheet",
-    "sales_eur": 169.91
+    "sales_eur": 169.48
    },
    {
     "date": "2026-11-02",
-    "orders": 5,
+    "orders": 6,
     "sales_usd": 214.75,
     "source": "sheet",
-    "sales_eur": 192.34
+    "sales_eur": 191.86
    },
    {
     "date": "2026-11-03",
-    "orders": 6,
+    "orders": 5,
     "sales_usd": 234.7,
     "source": "sheet",
-    "sales_eur": 210.21
+    "sales_eur": 209.68
    },
    {
     "date": "2026-11-04",
+    "orders": 6,
+    "sales_usd": 234.65,
+    "source": "sheet",
+    "sales_eur": 209.64
+   },
+   {
+    "date": "2026-11-05",
     "orders": 7,
     "sales_usd": 234.65,
     "source": "sheet",
-    "sales_eur": 210.17
+    "sales_eur": 209.64
+   },
+   {
+    "date": "2026-11-06",
+    "orders": 7,
+    "sales_usd": 269.65,
+    "source": "sheet",
+    "sales_eur": 240.91
+   },
+   {
+    "date": "2026-11-07",
+    "orders": 1,
+    "sales_usd": 44.95,
+    "source": "sheet",
+    "sales_eur": 40.16
+   },
+   {
+    "date": "2026-11-08",
+    "orders": 5,
+    "sales_usd": 224.75,
+    "source": "sheet",
+    "sales_eur": 200.8
    }
   ],
-  "as_of": "2026-11-04",
+  "as_of": "2026-11-08",
   "pending": false,
   "fx_used": {
-   "usd_per_eur": 1.1165,
-   "date": "2026-11-06",
+   "usd_per_eur": 1.1193,
+   "date": "2026-11-09",
    "source": "ECB eurofxref-daily"
   },
   "note": "Amazon US gross sales per day in USD, typed into the sheet from Seller Central > Business Reports, converted at the ECB reference rate on the day the portal refreshed. No rows yet = no number shown; nothing is estimated.",
   "by_period": {
    "7d": {
-    "orders": 18,
-    "sales_usd": 684.1,
-    "sales_eur": 612.72,
-    "days_covered": 3,
+    "orders": 31,
+    "sales_usd": 1243.35,
+    "sales_eur": 1110.83,
+    "days_covered": 6,
     "days_total": 7
    },
    "30d": {
-    "orders": 135,
-    "sales_usd": 8000.77,
-    "sales_eur": 7165.96,
-    "days_covered": 26,
+    "orders": 152,
+    "sales_usd": 8730.18,
+    "sales_eur": 7799.68,
+    "days_covered": 29,
     "days_total": 30
    },
    "thismonth": {
-    "orders": 24,
-    "sales_usd": 873.8,
-    "sales_eur": 782.63,
-    "days_covered": 4,
-    "days_total": 8
+    "orders": 42,
+    "sales_usd": 1647.8,
+    "sales_eur": 1472.17,
+    "days_covered": 8,
+    "days_total": 9
    },
    "90d": {
-    "orders": 211,
-    "sales_usd": 12412.66,
-    "sales_eur": 11117.5,
-    "days_covered": 40,
+    "orders": 229,
+    "sales_usd": 13186.66,
+    "sales_eur": 11781.19,
+    "days_covered": 44,
     "days_total": 90
    },
    "yesterday": {
@@ -2320,26 +2343,15 @@
   "sheet_id": "1BhaN6Xq8_K41ufkE0ypeU6CA-HLKbpgVBmd_leEmwx0",
   "source_mix": {
    "spapi": 0,
-   "sheet": 40
+   "sheet": 44
   },
-  "sheet_read_at": "2026-11-09T05:15:24+00:00"
+  "sheet_read_at": "2026-11-10T05:15:22+00:00"
  },
  "roas_series": {
-  "as_of": "2026-11-08",
+  "as_of": "2026-11-09",
   "sek_per_eur": 11.4,
   "note": "Per day, Stockholm time. Meta ROAS is the account's own attributed purchase value over spend. Blended = the store's whole Shopify revenue (all channels) over Meta spend; Google Ads has been paused since 12 Sep. SEK per EUR 11.4. Amazon joins the blended figure the day the sheet has a row for that date.",
   "days": [
-   {
-    "date": "2026-10-10",
-    "meta_spend_sek": 5219.54,
-    "meta_roas": 0.3,
-    "meta_purchases": 1,
-    "shopify_orders": 1,
-    "shopify_rev_eur": 138.28,
-    "amazon_rev_eur": 39.94,
-    "blended_mer": 0.3,
-    "blended_mer_total": 0.39
-   },
    {
     "date": "2026-10-11",
     "meta_spend_sek": 6406.06,
@@ -2347,9 +2359,9 @@
     "meta_purchases": 4,
     "shopify_orders": 7,
     "shopify_rev_eur": 821.53,
-    "amazon_rev_eur": 389.48,
+    "amazon_rev_eur": 388.5,
     "blended_mer": 1.46,
-    "blended_mer_total": 2.16
+    "blended_mer_total": 2.15
    },
    {
     "date": "2026-10-12",
@@ -2358,7 +2370,7 @@
     "meta_purchases": 3,
     "shopify_orders": 7,
     "shopify_rev_eur": 556.94,
-    "amazon_rev_eur": 429.74,
+    "amazon_rev_eur": 428.66,
     "blended_mer": 1.17,
     "blended_mer_total": 2.07
    },
@@ -2369,7 +2381,7 @@
     "meta_purchases": 5,
     "shopify_orders": 8,
     "shopify_rev_eur": 498.33,
-    "amazon_rev_eur": 170.09,
+    "amazon_rev_eur": 169.66,
     "blended_mer": 0.95,
     "blended_mer_total": 1.28
    },
@@ -2380,7 +2392,7 @@
     "meta_purchases": 4,
     "shopify_orders": 4,
     "shopify_rev_eur": 303.23,
-    "amazon_rev_eur": 232.6,
+    "amazon_rev_eur": 232.02,
     "blended_mer": 0.55,
     "blended_mer_total": 0.96
    },
@@ -2391,7 +2403,7 @@
     "meta_purchases": 7,
     "shopify_orders": 9,
     "shopify_rev_eur": 924.31,
-    "amazon_rev_eur": 161.04,
+    "amazon_rev_eur": 160.64,
     "blended_mer": 1.26,
     "blended_mer_total": 1.48
    },
@@ -2402,7 +2414,7 @@
     "meta_purchases": 7,
     "shopify_orders": 15,
     "shopify_rev_eur": 1049.91,
-    "amazon_rev_eur": 161.04,
+    "amazon_rev_eur": 160.64,
     "blended_mer": 1.23,
     "blended_mer_total": 1.42
    },
@@ -2413,7 +2425,7 @@
     "meta_purchases": 9,
     "shopify_orders": 13,
     "shopify_rev_eur": 1419.52,
-    "amazon_rev_eur": 152.08,
+    "amazon_rev_eur": 151.7,
     "blended_mer": 1.78,
     "blended_mer_total": 1.97
    },
@@ -2424,7 +2436,7 @@
     "meta_purchases": 4,
     "shopify_orders": 12,
     "shopify_rev_eur": 1001.32,
-    "amazon_rev_eur": 322.17,
+    "amazon_rev_eur": 321.36,
     "blended_mer": 1.22,
     "blended_mer_total": 1.62
    },
@@ -2435,7 +2447,7 @@
     "meta_purchases": 4,
     "shopify_orders": 7,
     "shopify_rev_eur": 496.87,
-    "amazon_rev_eur": 250.56,
+    "amazon_rev_eur": 249.93,
     "blended_mer": 0.75,
     "blended_mer_total": 1.12
    },
@@ -2446,7 +2458,7 @@
     "meta_purchases": 4,
     "shopify_orders": 7,
     "shopify_rev_eur": 751.74,
-    "amazon_rev_eur": 438.65,
+    "amazon_rev_eur": 437.55,
     "blended_mer": 1.03,
     "blended_mer_total": 1.62
    },
@@ -2457,7 +2469,7 @@
     "meta_purchases": 6,
     "shopify_orders": 12,
     "shopify_rev_eur": 1360.36,
-    "amazon_rev_eur": 380.3,
+    "amazon_rev_eur": 379.34,
     "blended_mer": 1.85,
     "blended_mer_total": 2.37
    },
@@ -2468,7 +2480,7 @@
     "meta_purchases": 4,
     "shopify_orders": 53,
     "shopify_rev_eur": 4415.68,
-    "amazon_rev_eur": 523.51,
+    "amazon_rev_eur": 522.2,
     "blended_mer": 6.16,
     "blended_mer_total": 6.89
    },
@@ -2479,7 +2491,7 @@
     "meta_purchases": 3,
     "shopify_orders": 50,
     "shopify_rev_eur": 3283.99,
-    "amazon_rev_eur": 207.96,
+    "amazon_rev_eur": 207.44,
     "blended_mer": 5.39,
     "blended_mer_total": 5.73
    },
@@ -2490,9 +2502,9 @@
     "meta_purchases": 3,
     "shopify_orders": 46,
     "shopify_rev_eur": 3724.5,
-    "amazon_rev_eur": 380.43,
+    "amazon_rev_eur": 379.48,
     "blended_mer": 6.27,
-    "blended_mer_total": 6.91
+    "blended_mer_total": 6.9
    },
    {
     "date": "2026-10-25",
@@ -2501,7 +2513,7 @@
     "meta_purchases": 5,
     "shopify_orders": 50,
     "shopify_rev_eur": 4068.21,
-    "amazon_rev_eur": 210.34,
+    "amazon_rev_eur": 209.82,
     "blended_mer": 5.3,
     "blended_mer_total": 5.57
    },
@@ -2512,7 +2524,7 @@
     "meta_purchases": 4,
     "shopify_orders": 4,
     "shopify_rev_eur": 332.82,
-    "amazon_rev_eur": 210.34,
+    "amazon_rev_eur": 209.82,
     "blended_mer": 0.51,
     "blended_mer_total": 0.84
    },
@@ -2523,7 +2535,7 @@
     "meta_purchases": 0,
     "shopify_orders": 2,
     "shopify_rev_eur": 202.12,
-    "amazon_rev_eur": 490.0,
+    "amazon_rev_eur": 488.78,
     "blended_mer": 0.36,
     "blended_mer_total": 1.24
    },
@@ -2534,7 +2546,7 @@
     "meta_purchases": 4,
     "shopify_orders": 8,
     "shopify_rev_eur": 927.89,
-    "amazon_rev_eur": 544.07,
+    "amazon_rev_eur": 542.71,
     "blended_mer": 2.13,
     "blended_mer_total": 3.37
    },
@@ -2545,7 +2557,7 @@
     "meta_purchases": 1,
     "shopify_orders": 5,
     "shopify_rev_eur": 642.34,
-    "amazon_rev_eur": 179.0,
+    "amazon_rev_eur": 178.55,
     "blended_mer": 1.68,
     "blended_mer_total": 2.15
    },
@@ -2556,7 +2568,7 @@
     "meta_purchases": 0,
     "shopify_orders": 2,
     "shopify_rev_eur": 39.9,
-    "amazon_rev_eur": 40.26,
+    "amazon_rev_eur": 40.16,
     "blended_mer": 0.11,
     "blended_mer_total": 0.22
    },
@@ -2567,7 +2579,7 @@
     "meta_purchases": 1,
     "shopify_orders": 3,
     "shopify_rev_eur": 410.55,
-    "amazon_rev_eur": 469.73,
+    "amazon_rev_eur": 468.55,
     "blended_mer": 1.16,
     "blended_mer_total": 2.49
    },
@@ -2578,7 +2590,7 @@
     "meta_purchases": 3,
     "shopify_orders": 7,
     "shopify_rev_eur": 559.6,
-    "amazon_rev_eur": 169.91,
+    "amazon_rev_eur": 169.48,
     "blended_mer": 1.39,
     "blended_mer_total": 1.81
    },
@@ -2589,7 +2601,7 @@
     "meta_purchases": 1,
     "shopify_orders": 3,
     "shopify_rev_eur": 96.33,
-    "amazon_rev_eur": 192.34,
+    "amazon_rev_eur": 191.86,
     "blended_mer": 0.29,
     "blended_mer_total": 0.88
    },
@@ -2600,7 +2612,7 @@
     "meta_purchases": 16,
     "shopify_orders": 2,
     "shopify_rev_eur": 34.9,
-    "amazon_rev_eur": 210.21,
+    "amazon_rev_eur": 209.68,
     "blended_mer": 0.08,
     "blended_mer_total": 0.53
    },
@@ -2611,7 +2623,7 @@
     "meta_purchases": 15,
     "shopify_orders": 7,
     "shopify_rev_eur": 667.28,
-    "amazon_rev_eur": 210.17,
+    "amazon_rev_eur": 209.64,
     "blended_mer": 0.85,
     "blended_mer_total": 1.12
    },
@@ -2622,9 +2634,9 @@
     "meta_purchases": 9,
     "shopify_orders": 7,
     "shopify_rev_eur": 451.78,
-    "amazon_rev_eur": null,
+    "amazon_rev_eur": 209.64,
     "blended_mer": 0.65,
-    "blended_mer_total": null
+    "blended_mer_total": 0.95
    },
    {
     "date": "2026-11-06",
@@ -2633,30 +2645,41 @@
     "meta_purchases": 20,
     "shopify_orders": 25,
     "shopify_rev_eur": 1746.48,
-    "amazon_rev_eur": null,
+    "amazon_rev_eur": 240.91,
     "blended_mer": 2.26,
-    "blended_mer_total": null
+    "blended_mer_total": 2.57
    },
    {
     "date": "2026-11-07",
-    "meta_spend_sek": 7215.41,
+    "meta_spend_sek": 7215.48,
     "meta_roas": 1.83,
     "meta_purchases": 17,
     "shopify_orders": 19,
-    "shopify_rev_eur": 1342.07,
-    "amazon_rev_eur": null,
-    "blended_mer": 2.12,
-    "blended_mer_total": null
+    "shopify_rev_eur": 1334.12,
+    "amazon_rev_eur": 40.16,
+    "blended_mer": 2.11,
+    "blended_mer_total": 2.17
    },
    {
     "date": "2026-11-08",
-    "meta_spend_sek": 6742.48,
+    "meta_spend_sek": 6754.12,
     "meta_roas": 0.94,
     "meta_purchases": 8,
     "shopify_orders": 10,
     "shopify_rev_eur": 632.91,
-    "amazon_rev_eur": null,
+    "amazon_rev_eur": 200.8,
     "blended_mer": 1.07,
+    "blended_mer_total": 1.41
+   },
+   {
+    "date": "2026-11-09",
+    "meta_spend_sek": 4737.27,
+    "meta_roas": 1.73,
+    "meta_purchases": 10,
+    "shopify_orders": 12,
+    "shopify_rev_eur": 869.45,
+    "amazon_rev_eur": null,
+    "blended_mer": 2.09,
     "blended_mer_total": null
    }
   ]
@@ -2665,7 +2688,7 @@
   "windows": {
    "test": {
     "start": "2026-10-07",
-    "end": "2026-11-08",
+    "end": "2026-11-09",
     "arms": [
      {
       "arm": "dark_checkout",
@@ -2682,34 +2705,34 @@
       "arm": "dark_cart",
       "name": "Dark cart",
       "path": "/lp/v3",
-      "sessions": 934,
+      "sessions": 938,
       "ga_purchases": 13,
       "orders": 11,
       "revenue_eur": 1189.8,
-      "conv_pct": 1.18,
-      "eur_per_100": 127.39
+      "conv_pct": 1.17,
+      "eur_per_100": 126.84
      },
      {
       "arm": "light_checkout",
       "name": "Light checkout",
       "path": "/lp/Q4",
-      "sessions": 1070,
+      "sessions": 1072,
       "ga_purchases": 10,
       "orders": 21,
       "revenue_eur": 2376.84,
       "conv_pct": 1.96,
-      "eur_per_100": 222.13
+      "eur_per_100": 221.72
      },
      {
       "arm": "light_cart",
       "name": "Light cart",
       "path": "/lp/Q4v2",
-      "sessions": 1025,
+      "sessions": 1028,
       "ga_purchases": 6,
       "orders": 14,
       "revenue_eur": 1623.92,
-      "conv_pct": 1.37,
-      "eur_per_100": 158.43
+      "conv_pct": 1.36,
+      "eur_per_100": 157.97
      }
     ],
     "campaign": [
@@ -2719,14 +2742,14 @@
       "revenue_eur": 710.43
      },
      {
-      "arm": "campaign_bb_it_gift",
-      "orders": 6,
-      "revenue_eur": 418.95
+      "arm": "campaign_bb_eu_spanish",
+      "orders": 7,
+      "revenue_eur": 545.91
      },
      {
-      "arm": "campaign_bb_eu_spanish",
-      "orders": 5,
-      "revenue_eur": 395.05
+      "arm": "campaign_bb_it_gift",
+      "orders": 8,
+      "revenue_eur": 518.75
      },
      {
       "arm": "gift_offer",
@@ -2749,14 +2772,29 @@
       "revenue_eur": 250.56
      },
      {
+      "arm": "campaign_bb_uk_3for2",
+      "orders": 4,
+      "revenue_eur": 176.24
+     },
+     {
       "arm": "campaign_bb_uk",
       "orders": 1,
       "revenue_eur": 167.02
      },
      {
+      "arm": "campaign_bb_es",
+      "orders": 2,
+      "revenue_eur": 165.76
+     },
+     {
       "arm": "campaign_uk_gift",
       "orders": 2,
       "revenue_eur": 164.88
+     },
+     {
+      "arm": "campaign_bb_us_3for2",
+      "orders": 2,
+      "revenue_eur": 161.87
      },
      {
       "arm": "campaign_eu_3for2",
@@ -2769,14 +2807,9 @@
       "revenue_eur": 137.9
      },
      {
-      "arm": "campaign_bb_uk_3for2",
-      "orders": 3,
-      "revenue_eur": 126.01
-     },
-     {
       "arm": "campaign_bb_eu_3for2",
-      "orders": 3,
-      "revenue_eur": 108.83
+      "orders": 4,
+      "revenue_eur": 133.68
      },
      {
       "arm": "campaign_bb_us_gift",
@@ -2787,11 +2820,6 @@
       "arm": "campaign_us_gift",
       "orders": 2,
       "revenue_eur": 106.6
-     },
-     {
-      "arm": "campaign_bb_es",
-      "orders": 1,
-      "revenue_eur": 90.33
      },
      {
       "arm": "campaign_bb_it_3for2",
@@ -2826,14 +2854,14 @@
     ]
    },
    "7d": {
-    "start": "2026-11-02",
-    "end": "2026-11-08",
+    "start": "2026-11-03",
+    "end": "2026-11-09",
     "arms": [
      {
       "arm": "dark_checkout",
       "name": "Dark checkout",
       "path": "/lp/v2",
-      "sessions": 38,
+      "sessions": 35,
       "ga_purchases": 0,
       "orders": 0,
       "revenue_eur": 0.0,
@@ -2844,18 +2872,18 @@
       "arm": "dark_cart",
       "name": "Dark cart",
       "path": "/lp/v3",
-      "sessions": 39,
+      "sessions": 38,
       "ga_purchases": 1,
-      "orders": 1,
-      "revenue_eur": 49.9,
-      "conv_pct": 2.56,
-      "eur_per_100": 127.95
+      "orders": 0,
+      "revenue_eur": 0.0,
+      "conv_pct": 0.0,
+      "eur_per_100": 0.0
      },
      {
       "arm": "light_checkout",
       "name": "Light checkout",
       "path": "/lp/Q4",
-      "sessions": 21,
+      "sessions": 19,
       "ga_purchases": 0,
       "orders": 0,
       "revenue_eur": 0.0,
@@ -2866,7 +2894,7 @@
       "arm": "light_cart",
       "name": "Light cart",
       "path": "/lp/Q4v2",
-      "sessions": 28,
+      "sessions": 25,
       "ga_purchases": 0,
       "orders": 0,
       "revenue_eur": 0.0,
@@ -2881,14 +2909,14 @@
       "revenue_eur": 710.43
      },
      {
-      "arm": "campaign_bb_it_gift",
-      "orders": 6,
-      "revenue_eur": 418.95
+      "arm": "campaign_bb_eu_spanish",
+      "orders": 7,
+      "revenue_eur": 545.91
      },
      {
-      "arm": "campaign_bb_eu_spanish",
-      "orders": 5,
-      "revenue_eur": 395.05
+      "arm": "campaign_bb_it_gift",
+      "orders": 8,
+      "revenue_eur": 518.75
      },
      {
       "arm": "campaign_bb_uk_gift",
@@ -2906,29 +2934,34 @@
       "revenue_eur": 250.56
      },
      {
+      "arm": "campaign_bb_uk_3for2",
+      "orders": 4,
+      "revenue_eur": 176.24
+     },
+     {
       "arm": "campaign_bb_uk",
       "orders": 1,
       "revenue_eur": 167.02
      },
      {
-      "arm": "campaign_bb_uk_3for2",
-      "orders": 3,
-      "revenue_eur": 126.01
+      "arm": "campaign_bb_es",
+      "orders": 2,
+      "revenue_eur": 165.76
+     },
+     {
+      "arm": "campaign_bb_us_3for2",
+      "orders": 2,
+      "revenue_eur": 161.87
      },
      {
       "arm": "campaign_bb_eu_3for2",
-      "orders": 3,
-      "revenue_eur": 108.83
+      "orders": 4,
+      "revenue_eur": 133.68
      },
      {
       "arm": "campaign_bb_us_gift",
       "orders": 2,
       "revenue_eur": 107.01
-     },
-     {
-      "arm": "campaign_bb_es",
-      "orders": 1,
-      "revenue_eur": 90.33
      },
      {
       "arm": "campaign_bb_it_3for2",
