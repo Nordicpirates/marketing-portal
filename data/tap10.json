@@ -1,40 +1,68 @@
 {
- "generated_at": "2026-11-13",
+ "generated_at": "2026-11-14",
  "launch_date": "2026-10-06",
  "ks_launch_date": "2026-11-03",
  "ks_goal_sek": 10948,
  "sources": {
   "signups": {
-   "as_of": "2026-11-13",
-   "pulled": "2026-11-13"
+   "as_of": "2026-11-14",
+   "pulled": "2026-11-14"
   },
   "ga": {
-   "as_of": "2026-11-13",
-   "pulled": "2026-11-13"
+   "as_of": "2026-11-14",
+   "pulled": "2026-11-14"
   },
   "ads": {
    "as_of": "2026-11-03",
-   "pulled": "2026-11-13"
+   "pulled": "2026-11-14"
   },
   "ks_ads": {
-   "as_of": "2026-11-12",
-   "pulled": "2026-11-13"
+   "as_of": "2026-11-13",
+   "pulled": "2026-11-14"
   },
   "ks_followers": {
    "as_of": "2026-11-03",
-   "pulled": "2026-11-13",
+   "pulled": "2026-11-14",
    "note": "Kickstarter shows backers instead of followers since the launch on 2026-11-03"
   },
   "ks_campaign": {
-   "as_of": "2026-11-13",
-   "pulled": "2026-11-13"
+   "as_of": "2026-11-14",
+   "pulled": "2026-11-14"
   },
   "ks_pageviews": {
    "as_of": "2026-10-23",
-   "pulled": "2026-11-13"
+   "pulled": "2026-11-14"
   }
  },
  "days": [
+  {
+   "date": "2026-11-14",
+   "signups": 0,
+   "waitlist_total": 805,
+   "waitlist_blacklisted": 32,
+   "ks_followers": null,
+   "ks_pageviews": null,
+   "ks_ga_sessions": 16,
+   "ga_sessions": 1,
+   "ga_users": 1,
+   "avg_session_sec": 407,
+   "ad_spend_sek": null,
+   "ad_clicks": null,
+   "ks_backers": 224,
+   "ks_pledged_sek": 98499,
+   "ks_pct_funded": 900,
+   "ks_ad_spend_sek": null,
+   "ks_ad_clicks": null,
+   "film_starts": 0,
+   "film_completes": 0,
+   "reel_starts": 0,
+   "reel_completes": 0,
+   "demo_starts": 1,
+   "demo_completes": 1,
+   "demo_star_clicks": 0,
+   "provisional": true,
+   "partial": true
+  },
   {
    "date": "2026-11-13",
    "signups": 0,
@@ -42,26 +70,24 @@
    "waitlist_blacklisted": 32,
    "ks_followers": null,
    "ks_pageviews": null,
-   "ks_ga_sessions": 8,
-   "ga_sessions": 1,
-   "ga_users": 1,
-   "avg_session_sec": 0,
+   "ks_ga_sessions": 59,
+   "ga_sessions": 6,
+   "ga_users": 5,
+   "avg_session_sec": 8,
    "ad_spend_sek": null,
    "ad_clicks": null,
    "ks_backers": 220,
    "ks_pledged_sek": 97842,
    "ks_pct_funded": 894,
-   "ks_ad_spend_sek": null,
-   "ks_ad_clicks": null,
+   "ks_ad_spend_sek": 1106.08,
+   "ks_ad_clicks": 51,
    "film_starts": 0,
    "film_completes": 0,
    "reel_starts": 0,
    "reel_completes": 0,
    "demo_starts": 0,
    "demo_completes": 0,
-   "demo_star_clicks": 0,
-   "provisional": true,
-   "partial": true
+   "demo_star_clicks": 0
   },
   {
    "date": "2026-11-12",
@@ -1161,7 +1187,7 @@
   {
    "source": "(direct)",
    "medium": "(none)",
-   "sessions": 105
+   "sessions": 107
   },
   {
    "source": "ig",
@@ -1181,7 +1207,7 @@
   {
    "source": "google",
    "medium": "organic",
-   "sessions": 52
+   "sessions": 56
   },
   {
    "source": "backdrop",
@@ -1221,7 +1247,7 @@
   {
    "source": "newsletter",
    "medium": "email",
-   "sessions": 9
+   "sessions": 11
   },
   {
    "source": "m.facebook.com",
@@ -1234,11 +1260,6 @@
    "sessions": 5
   },
   {
-   "source": "(data not available)",
-   "medium": "(data not available)",
-   "sessions": 4
-  },
-  {
    "source": "bing",
    "medium": "organic",
    "sessions": 4
@@ -1247,6 +1268,11 @@
    "source": "kickstarter.com",
    "medium": "referral",
    "sessions": 4
+  },
+  {
+   "source": "(data not available)",
+   "medium": "(data not available)",
+   "sessions": 3
   },
   {
    "source": "fb",
