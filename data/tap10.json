@@ -1,56 +1,56 @@
 {
- "generated_at": "2026-11-16",
+ "generated_at": "2026-11-17",
  "launch_date": "2026-10-06",
  "ks_launch_date": "2026-11-03",
  "ks_goal_sek": 10948,
  "sources": {
   "signups": {
-   "as_of": "2026-11-16",
-   "pulled": "2026-11-16"
+   "as_of": "2026-11-17",
+   "pulled": "2026-11-17"
   },
   "ga": {
-   "as_of": "2026-11-16",
-   "pulled": "2026-11-16"
+   "as_of": "2026-11-17",
+   "pulled": "2026-11-17"
   },
   "ads": {
    "as_of": "2026-11-03",
-   "pulled": "2026-11-16"
+   "pulled": "2026-11-17"
   },
   "ks_ads": {
-   "as_of": "2026-11-15",
-   "pulled": "2026-11-16"
+   "as_of": "2026-11-16",
+   "pulled": "2026-11-17"
   },
   "ks_followers": {
    "as_of": "2026-11-03",
-   "pulled": "2026-11-16",
+   "pulled": "2026-11-17",
    "note": "Kickstarter shows backers instead of followers since the launch on 2026-11-03"
   },
   "ks_campaign": {
-   "as_of": "2026-11-16",
-   "pulled": "2026-11-16"
+   "as_of": "2026-11-17",
+   "pulled": "2026-11-17"
   },
   "ks_pageviews": {
    "as_of": "2026-10-23",
-   "pulled": "2026-11-16"
+   "pulled": "2026-11-17"
   }
  },
  "days": [
   {
-   "date": "2026-11-16",
+   "date": "2026-11-17",
    "signups": 0,
    "waitlist_total": 804,
    "waitlist_blacklisted": 33,
    "ks_followers": null,
    "ks_pageviews": null,
-   "ks_ga_sessions": 17,
+   "ks_ga_sessions": 10,
    "ga_sessions": 0,
    "ga_users": 0,
    "avg_session_sec": null,
    "ad_spend_sek": null,
    "ad_clicks": null,
-   "ks_backers": 234,
-   "ks_pledged_sek": 102298,
-   "ks_pct_funded": 934,
+   "ks_backers": 239,
+   "ks_pledged_sek": 104488,
+   "ks_pct_funded": 954,
    "ks_ad_spend_sek": null,
    "ks_ad_clicks": null,
    "film_starts": 0,
@@ -64,6 +64,32 @@
    "partial": true
   },
   {
+   "date": "2026-11-16",
+   "signups": 0,
+   "waitlist_total": 804,
+   "waitlist_blacklisted": 33,
+   "ks_followers": null,
+   "ks_pageviews": null,
+   "ks_ga_sessions": 53,
+   "ga_sessions": 10,
+   "ga_users": 10,
+   "avg_session_sec": 56,
+   "ad_spend_sek": null,
+   "ad_clicks": null,
+   "ks_backers": 234,
+   "ks_pledged_sek": 102298,
+   "ks_pct_funded": 934,
+   "ks_ad_spend_sek": 619.67,
+   "ks_ad_clicks": 27,
+   "film_starts": 0,
+   "film_completes": 0,
+   "reel_starts": 0,
+   "reel_completes": 0,
+   "demo_starts": 0,
+   "demo_completes": 0,
+   "demo_star_clicks": 0
+  },
+  {
    "date": "2026-11-15",
    "signups": 0,
    "waitlist_total": 804,
@@ -73,13 +99,13 @@
    "ks_ga_sessions": 59,
    "ga_sessions": 6,
    "ga_users": 4,
-   "avg_session_sec": 283,
+   "avg_session_sec": 391,
    "ad_spend_sek": null,
    "ad_clicks": null,
    "ks_backers": 229,
    "ks_pledged_sek": 100382,
    "ks_pct_funded": 917,
-   "ks_ad_spend_sek": 1470.0,
+   "ks_ad_spend_sek": 1470.13,
    "ks_ad_clicks": 65,
    "film_starts": 0,
    "film_completes": 0,
@@ -105,7 +131,7 @@
    "ks_backers": 224,
    "ks_pledged_sek": 98499,
    "ks_pct_funded": 900,
-   "ks_ad_spend_sek": 928.92,
+   "ks_ad_spend_sek": 928.98,
    "ks_ad_clicks": 66,
    "film_starts": 0,
    "film_completes": 0,
@@ -1239,7 +1265,7 @@
   {
    "source": "(direct)",
    "medium": "(none)",
-   "sessions": 106
+   "sessions": 109
   },
   {
    "source": "ig",
@@ -1259,22 +1285,22 @@
   {
    "source": "google",
    "medium": "organic",
-   "sessions": 62
+   "sessions": 66
   },
   {
    "source": "backdrop",
    "medium": "qr",
-   "sessions": 45
-  },
-  {
-   "source": "(not set)",
-   "medium": "(not set)",
-   "sessions": 40
+   "sessions": 46
   },
   {
    "source": "n5sq0.r.sp1-brevo.net",
    "medium": "referral",
    "sessions": 40
+  },
+  {
+   "source": "(not set)",
+   "medium": "(not set)",
+   "sessions": 37
   },
   {
    "source": "l.facebook.com",
@@ -1302,13 +1328,18 @@
    "sessions": 11
   },
   {
+   "source": "bing",
+   "medium": "organic",
+   "sessions": 6
+  },
+  {
    "source": "m.facebook.com",
    "medium": "referral",
    "sessions": 6
   },
   {
-   "source": "bing",
-   "medium": "organic",
+   "source": "ig",
+   "medium": "social",
    "sessions": 5
   },
   {
@@ -1320,11 +1351,6 @@
    "source": "n5sq0.r.bh.d.sendibt3.com",
    "medium": "referral",
    "sessions": 5
-  },
-  {
-   "source": "ig",
-   "medium": "social",
-   "sessions": 4
   },
   {
    "source": "fb",
