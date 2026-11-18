@@ -37,13 +37,13 @@ ALL = [w[0] for w in WAREHOUSES]
 # The assortment Lucas follows (Add-On Box and Upgrade Box left out on his word, 24 Jul 2026).
 CATALOGUE = [
     ("NPGLPGFBB01EN", "BIG BOX", "English", ALL),
-    ("NPGLPGFBB01IT", "BIG BOX", "Italian", ["meeples"]),
+    ("NPGLPGFBB012T", "BIG BOX", "Italian", ["meeples"]),
     ("NPGLPGFBB01DE", "BIG BOX", "German", ["meeples"]),
     ("NPGLPGFBB01FR", "BIG BOX", "French", ["meeples"]),
     ("NPGLPGFBB01ES", "BIG BOX", "Spanish", ["meeples"]),
     ("NPGLPGFRT02EN", "Base Game", "English", ALL),
     ("NPGLPGFRT02IT", "Base Game", "Italian", ["meeples"]),
-    ("NPGLPGFRT01DE", "Base Game", "German", ["meeples"]),
+    ("NPGLPGFRT02DE", "Base Game", "German", ["meeples"]),
     ("NPGLPGFRT01FR", "Base Game", "French", ["meeples"]),
     ("NPGLPGFRT01ES", "Base Game", "Spanish", ["meeples"]),
     ("NPGKMP01", "Kraken Mini-Expansion", "Default", ALL),
@@ -52,8 +52,9 @@ CATALOGUE = [
     ("NPG8PCP01", "8-Player Components", "Default", ALL),
 ]
 THRESHOLDS = {"critical": 14, "low": 30, "watch": 60}
-# Base Game English and Italian moved to the V2 numbers on 28 Oct 2026; older orders still carry V1
-SOLD_AS = {"NPGLPGFRT01EN": "NPGLPGFRT02EN", "NPGLPGFRT01IT": "NPGLPGFRT02IT"}
+# Base Game EN/IT moved to V2 on 28 Oct 2026, DE by 17 Nov; BIG BOX IT reads NPGLPGFBB012T in Shopify since 17 Nov
+SOLD_AS = {"NPGLPGFRT01EN": "NPGLPGFRT02EN", "NPGLPGFRT01IT": "NPGLPGFRT02IT", "NPGLPGFRT01DE": "NPGLPGFRT02DE",
+           "NPGLPGFBB01IT": "NPGLPGFBB012T"}
 
 # GA4's channel names as the dashboard shows them, with the dot colour per channel.
 CHANNELS = {
@@ -94,15 +95,17 @@ def stock_by_sku(token):
         quantities(names:["available"]){quantity} } } } } } }"""
     by_location = {w[2]: w[0] for w in WAREHOUSES}
     wanted = [c[0] for c in CATALOGUE]
+    # an older number still holding stock (V1 at Bridge and Armarlo) adds into the row it was replaced by
+    target = {s: s for s in wanted} | {old: new for old, new in SOLD_AS.items() if new in wanted}
     found, after = {}, None
     while True:
-        q = " OR ".join(f"sku:{s}" for s in wanted)
+        q = " OR ".join(f"sku:{s}" for s in target)
         data = gql(token, query, {"q": q, "after": after})["productVariants"]
         for v in data["nodes"]:
-            if v["sku"] not in wanted:
+            if v["sku"] not in target:
                 continue
             # one SKU can sit on two products (regular and pre-order), so their stock adds up
-            row = found.setdefault(v["sku"], {w: 0 for w in ALL})
+            row = found.setdefault(target[v["sku"]], {w: 0 for w in ALL})
             for lv in v["inventoryItem"]["inventoryLevels"]["nodes"]:
                 wid = by_location.get(lv["location"]["name"])
                 if wid:
