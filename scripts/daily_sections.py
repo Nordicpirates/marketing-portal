@@ -37,7 +37,7 @@ ALL = [w[0] for w in WAREHOUSES]
 # The assortment Lucas follows (Add-On Box and Upgrade Box left out on his word, 24 Jul 2026).
 CATALOGUE = [
     ("NPGLPGFBB01EN", "BIG BOX", "English", ALL),
-    ("NPGLPGFBB012T", "BIG BOX", "Italian", ["meeples"]),
+    ("NPGLPGFBB02IT", "BIG BOX", "Italian", ["meeples"]),
     ("NPGLPGFBB01DE", "BIG BOX", "German", ["meeples"]),
     ("NPGLPGFBB01FR", "BIG BOX", "French", ["meeples"]),
     ("NPGLPGFBB01ES", "BIG BOX", "Spanish", ["meeples"]),
@@ -52,9 +52,9 @@ CATALOGUE = [
     ("NPG8PCP01", "8-Player Components", "Default", ALL),
 ]
 THRESHOLDS = {"critical": 14, "low": 30, "watch": 60}
-# Base Game EN/IT moved to V2 on 28 Oct 2026, DE by 17 Nov; BIG BOX IT reads NPGLPGFBB012T in Shopify since 17 Nov
+# Base Game EN/IT moved to V2 on 28 Oct 2026, DE by 17 Nov; BIG BOX IT to V2 by 18 Nov (NPGLPGFBB012T for a day)
 SOLD_AS = {"NPGLPGFRT01EN": "NPGLPGFRT02EN", "NPGLPGFRT01IT": "NPGLPGFRT02IT", "NPGLPGFRT01DE": "NPGLPGFRT02DE",
-           "NPGLPGFBB01IT": "NPGLPGFBB012T"}
+           "NPGLPGFBB01IT": "NPGLPGFBB02IT", "NPGLPGFBB012T": "NPGLPGFBB02IT"}
 
 # GA4's channel names as the dashboard shows them, with the dot colour per channel.
 CHANNELS = {
