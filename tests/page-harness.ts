@@ -56,7 +56,7 @@ export const discountPath = (code: string) => `/discount/${encodeURIComponent(co
 /** Variant ids and codes, the same values the claim endpoint deals in. */
 export const BASE_EN = "51542813409627";
 export const BASE_DE = "51542813540699";
-export const BASE_PREORDER_EN = "54235343880539";
+export const BASE_PREORDER_EN = "54609161257307";
 export const BIGBOX_EN = "51542655959387";
 export const KRAKEN = "51542942318939";
 export const COINS = "51676501508443";
