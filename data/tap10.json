@@ -1,56 +1,56 @@
 {
- "generated_at": "2026-11-18",
+ "generated_at": "2026-11-19",
  "launch_date": "2026-10-06",
  "ks_launch_date": "2026-11-03",
  "ks_goal_sek": 10948,
  "sources": {
   "signups": {
-   "as_of": "2026-11-18",
-   "pulled": "2026-11-18"
+   "as_of": "2026-11-19",
+   "pulled": "2026-11-19"
   },
   "ga": {
-   "as_of": "2026-11-18",
-   "pulled": "2026-11-18"
+   "as_of": "2026-11-19",
+   "pulled": "2026-11-19"
   },
   "ads": {
    "as_of": "2026-11-03",
-   "pulled": "2026-11-18"
+   "pulled": "2026-11-19"
   },
   "ks_ads": {
-   "as_of": "2026-11-17",
-   "pulled": "2026-11-18"
+   "as_of": "2026-11-18",
+   "pulled": "2026-11-19"
   },
   "ks_followers": {
    "as_of": "2026-11-03",
-   "pulled": "2026-11-18",
+   "pulled": "2026-11-19",
    "note": "Kickstarter shows backers instead of followers since the launch on 2026-11-03"
   },
   "ks_campaign": {
-   "as_of": "2026-11-18",
-   "pulled": "2026-11-18"
+   "as_of": "2026-11-19",
+   "pulled": "2026-11-19"
   },
   "ks_pageviews": {
    "as_of": "2026-10-23",
-   "pulled": "2026-11-18"
+   "pulled": "2026-11-19"
   }
  },
  "days": [
   {
-   "date": "2026-11-18",
+   "date": "2026-11-19",
    "signups": 0,
    "waitlist_total": 804,
    "waitlist_blacklisted": 33,
    "ks_followers": null,
    "ks_pageviews": null,
-   "ks_ga_sessions": 12,
-   "ga_sessions": 2,
+   "ks_ga_sessions": 18,
+   "ga_sessions": 1,
    "ga_users": 1,
-   "avg_session_sec": 3,
+   "avg_session_sec": 0,
    "ad_spend_sek": null,
    "ad_clicks": null,
-   "ks_backers": 242,
-   "ks_pledged_sek": 105637,
-   "ks_pct_funded": 965,
+   "ks_backers": 246,
+   "ks_pledged_sek": 107203,
+   "ks_pct_funded": 979,
    "ks_ad_spend_sek": null,
    "ks_ad_clicks": null,
    "film_starts": 0,
@@ -62,6 +62,32 @@
    "demo_star_clicks": 0,
    "provisional": true,
    "partial": true
+  },
+  {
+   "date": "2026-11-18",
+   "signups": 0,
+   "waitlist_total": 804,
+   "waitlist_blacklisted": 33,
+   "ks_followers": null,
+   "ks_pageviews": null,
+   "ks_ga_sessions": 36,
+   "ga_sessions": 3,
+   "ga_users": 2,
+   "avg_session_sec": 2,
+   "ad_spend_sek": null,
+   "ad_clicks": null,
+   "ks_backers": 242,
+   "ks_pledged_sek": 105637,
+   "ks_pct_funded": 965,
+   "ks_ad_spend_sek": 266.52,
+   "ks_ad_clicks": 24,
+   "film_starts": 0,
+   "film_completes": 0,
+   "reel_starts": 0,
+   "reel_completes": 0,
+   "demo_starts": 0,
+   "demo_completes": 0,
+   "demo_star_clicks": 0
   },
   {
    "date": "2026-11-17",
@@ -79,7 +105,7 @@
    "ks_backers": 239,
    "ks_pledged_sek": 104488,
    "ks_pct_funded": 954,
-   "ks_ad_spend_sek": 476.9,
+   "ks_ad_spend_sek": 477.5,
    "ks_ad_clicks": 24,
    "film_starts": 0,
    "film_completes": 0,
@@ -1276,7 +1302,7 @@
   {
    "source": "fb",
    "medium": "Facebook_Mobile_Reels",
-   "sessions": 544
+   "sessions": 545
   },
   {
    "source": "fb",
@@ -1291,7 +1317,7 @@
   {
    "source": "(direct)",
    "medium": "(none)",
-   "sessions": 109
+   "sessions": 110
   },
   {
    "source": "ig",
@@ -1326,7 +1352,7 @@
   {
    "source": "(not set)",
    "medium": "(not set)",
-   "sessions": 38
+   "sessions": 37
   },
   {
    "source": "l.facebook.com",
