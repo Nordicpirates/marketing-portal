@@ -1,51 +1,51 @@
 {
- "generated_at": "2026-11-25",
+ "generated_at": "2026-11-26",
  "launch_date": "2026-10-06",
  "ks_launch_date": "2026-11-03",
  "ks_goal_sek": 10948,
  "sources": {
   "signups": {
-   "as_of": "2026-11-25",
-   "pulled": "2026-11-25"
+   "as_of": "2026-11-26",
+   "pulled": "2026-11-26"
   },
   "ga": {
-   "as_of": "2026-11-25",
-   "pulled": "2026-11-25"
+   "as_of": "2026-11-26",
+   "pulled": "2026-11-26"
   },
   "ads": {
    "as_of": "2026-11-03",
-   "pulled": "2026-11-25"
+   "pulled": "2026-11-26"
   },
   "ks_ads": {
    "as_of": "2026-11-20",
-   "pulled": "2026-11-25"
+   "pulled": "2026-11-26"
   },
   "ks_followers": {
    "as_of": "2026-11-03",
-   "pulled": "2026-11-25",
+   "pulled": "2026-11-26",
    "note": "Kickstarter shows backers instead of followers since the launch on 2026-11-03"
   },
   "ks_campaign": {
-   "as_of": "2026-11-25",
-   "pulled": "2026-11-25"
+   "as_of": "2026-11-26",
+   "pulled": "2026-11-26"
   },
   "ks_pageviews": {
    "as_of": "2026-10-23",
-   "pulled": "2026-11-25"
+   "pulled": "2026-11-26"
   }
  },
  "days": [
   {
-   "date": "2026-11-25",
+   "date": "2026-11-26",
    "signups": 0,
    "waitlist_total": 800,
    "waitlist_blacklisted": 40,
    "ks_followers": null,
    "ks_pageviews": null,
-   "ks_ga_sessions": 3,
-   "ga_sessions": 2,
-   "ga_users": 1,
-   "avg_session_sec": 13,
+   "ks_ga_sessions": 1,
+   "ga_sessions": 3,
+   "ga_users": 2,
+   "avg_session_sec": 4,
    "ad_spend_sek": null,
    "ad_clicks": null,
    "ks_backers": 254,
@@ -62,6 +62,32 @@
    "demo_star_clicks": 0,
    "provisional": true,
    "partial": true
+  },
+  {
+   "date": "2026-11-25",
+   "signups": 0,
+   "waitlist_total": 800,
+   "waitlist_blacklisted": 40,
+   "ks_followers": null,
+   "ks_pageviews": null,
+   "ks_ga_sessions": 50,
+   "ga_sessions": 6,
+   "ga_users": 4,
+   "avg_session_sec": 19,
+   "ad_spend_sek": null,
+   "ad_clicks": null,
+   "ks_backers": 254,
+   "ks_pledged_sek": 110148,
+   "ks_pct_funded": 1006,
+   "ks_ad_spend_sek": null,
+   "ks_ad_clicks": null,
+   "film_starts": 1,
+   "film_completes": 0,
+   "reel_starts": 0,
+   "reel_completes": 0,
+   "demo_starts": 0,
+   "demo_completes": 0,
+   "demo_star_clicks": 0
   },
   {
    "date": "2026-11-24",
@@ -1367,7 +1393,7 @@
  "videos": [
   {
    "title": "TAP 10 film",
-   "starts": 95,
+   "starts": 96,
    "completes": 37
   },
   {
@@ -1481,14 +1507,14 @@
    "sessions": 89
   },
   {
-   "source": "ig",
-   "medium": "Instagram_Feed",
+   "source": "google",
+   "medium": "organic",
    "sessions": 85
   },
   {
-   "source": "google",
-   "medium": "organic",
-   "sessions": 78
+   "source": "ig",
+   "medium": "Instagram_Feed",
+   "sessions": 85
   },
   {
    "source": "sendinblue",
