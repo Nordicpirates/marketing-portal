@@ -1724,6 +1724,10 @@
     "label": "Meeples (EU)"
    },
    {
+    "id": "pts",
+    "label": "PTS (EU)"
+   },
+   {
     "id": "zatu",
     "label": "Zatu (UK)"
    }
@@ -1743,15 +1747,17 @@
      "bridge": 0,
      "armarlo": 109,
      "meeples": 49,
+     "pts": 8,
      "zatu": 70,
-     "total": 228
+     "total": 236
     },
-    "days": 202,
+    "days": 209,
     "status": "ok",
     "warehouse_scope": [
      "bridge",
      "armarlo",
      "meeples",
+     "pts",
      "zatu"
     ]
    },
@@ -1764,13 +1770,15 @@
      "bridge": 0,
      "armarlo": 0,
      "meeples": 0,
+     "pts": -7,
      "zatu": 0,
-     "total": 0
+     "total": -7
     },
     "days": 0,
     "status": "critical",
     "warehouse_scope": [
-     "meeples"
+     "meeples",
+     "pts"
     ]
    },
    {
@@ -1782,13 +1790,15 @@
      "bridge": 0,
      "armarlo": 0,
      "meeples": 0,
+     "pts": 226,
      "zatu": 0,
-     "total": 0
+     "total": 226
     },
-    "days": 0,
-    "status": "critical",
+    "days": 983,
+    "status": "ok",
     "warehouse_scope": [
-     "meeples"
+     "meeples",
+     "pts"
     ]
    },
    {
@@ -1800,13 +1810,15 @@
      "bridge": 0,
      "armarlo": 0,
      "meeples": 0,
+     "pts": 77,
      "zatu": 0,
-     "total": 0
+     "total": 77
     },
-    "days": 0,
-    "status": "critical",
+    "days": 1100,
+    "status": "ok",
     "warehouse_scope": [
-     "meeples"
+     "meeples",
+     "pts"
     ]
    },
    {
@@ -1818,13 +1830,15 @@
      "bridge": 0,
      "armarlo": 0,
      "meeples": 0,
+     "pts": 0,
      "zatu": 0,
      "total": 0
     },
     "days": 0,
     "status": "critical",
     "warehouse_scope": [
-     "meeples"
+     "meeples",
+     "pts"
     ]
    },
    {
@@ -1833,18 +1847,20 @@
     "sku": "NPGLPGFRT02EN",
     "velocity": 3.03,
     "stock": {
-     "bridge": 658,
+     "bridge": 657,
      "armarlo": 153,
      "meeples": 0,
-     "zatu": -27,
-     "total": 784
+     "pts": 746,
+     "zatu": -29,
+     "total": 1527
     },
-    "days": 259,
+    "days": 504,
     "status": "ok",
     "warehouse_scope": [
      "bridge",
      "armarlo",
      "meeples",
+     "pts",
      "zatu"
     ]
    },
@@ -1857,13 +1873,15 @@
      "bridge": 0,
      "armarlo": 0,
      "meeples": 0,
+     "pts": 953,
      "zatu": 0,
-     "total": 0
+     "total": 953
     },
-    "days": 0,
-    "status": "critical",
+    "days": 502,
+    "status": "ok",
     "warehouse_scope": [
-     "meeples"
+     "meeples",
+     "pts"
     ]
    },
    {
@@ -1875,13 +1893,15 @@
      "bridge": 0,
      "armarlo": 0,
      "meeples": 0,
+     "pts": 803,
      "zatu": 0,
-     "total": 0
+     "total": 803
     },
-    "days": 0,
-    "status": "critical",
+    "days": 2008,
+    "status": "ok",
     "warehouse_scope": [
-     "meeples"
+     "meeples",
+     "pts"
     ]
    },
    {
@@ -1893,13 +1913,15 @@
      "bridge": 0,
      "armarlo": 0,
      "meeples": 10,
+     "pts": 252,
      "zatu": 0,
-     "total": 10
+     "total": 262
     },
-    "days": 77,
+    "days": 2015,
     "status": "ok",
     "warehouse_scope": [
-     "meeples"
+     "meeples",
+     "pts"
     ]
    },
    {
@@ -1911,13 +1933,15 @@
      "bridge": 11,
      "armarlo": 0,
      "meeples": 0,
+     "pts": 129,
      "zatu": 0,
-     "total": 11
+     "total": 140
     },
-    "days": 33,
-    "status": "watch",
+    "days": 424,
+    "status": "ok",
     "warehouse_scope": [
-     "meeples"
+     "meeples",
+     "pts"
     ]
    },
    {
@@ -1929,15 +1953,17 @@
      "bridge": 55,
      "armarlo": 42,
      "meeples": 4,
-     "zatu": 24,
-     "total": 125
+     "pts": 7,
+     "zatu": 23,
+     "total": 131
     },
-    "days": 46,
+    "days": 49,
     "status": "watch",
     "warehouse_scope": [
      "bridge",
      "armarlo",
      "meeples",
+     "pts",
      "zatu"
     ]
    },
@@ -1950,15 +1976,17 @@
      "bridge": 77,
      "armarlo": 146,
      "meeples": 0,
-     "zatu": 3,
-     "total": 226
+     "pts": 144,
+     "zatu": 1,
+     "total": 368
     },
-    "days": 148,
+    "days": 241,
     "status": "ok",
     "warehouse_scope": [
      "bridge",
      "armarlo",
      "meeples",
+     "pts",
      "zatu"
     ]
    },
@@ -1971,6 +1999,7 @@
      "bridge": 37,
      "armarlo": 0,
      "meeples": 7,
+     "pts": 0,
      "zatu": 93,
      "total": 137
     },
@@ -1980,6 +2009,7 @@
      "bridge",
      "armarlo",
      "meeples",
+     "pts",
      "zatu"
     ]
    },
@@ -1992,15 +2022,17 @@
      "bridge": 120,
      "armarlo": 44,
      "meeples": 11,
+     "pts": 54,
      "zatu": 97,
-     "total": 272
+     "total": 326
     },
-    "days": 141,
+    "days": 169,
     "status": "ok",
     "warehouse_scope": [
      "bridge",
      "armarlo",
      "meeples",
+     "pts",
      "zatu"
     ]
    }

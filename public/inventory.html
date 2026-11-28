@@ -172,8 +172,9 @@
     <button class="wh-tab" data-wh="bridge" onclick="selectWh('bridge',this)">Bridge (USA)</button>
     <button class="wh-tab" data-wh="armarlo" onclick="selectWh('armarlo',this)">Armarlo (AU)</button>
     <button class="wh-tab" data-wh="meeples" onclick="selectWh('meeples',this)">Meeples (EU)</button>
+    <button class="wh-tab" data-wh="pts" onclick="selectWh('pts',this)">PTS (EU)</button>
     <button class="wh-tab" data-wh="zatu" onclick="selectWh('zatu',this)">Zatu (UK)</button>
-    <span class="wh-note" id="whNote">Bridge/Armarlo/Zatu = Engelska produkter · Meeples = alla språk</span>
+    <span class="wh-note" id="whNote">Bridge/Armarlo/Zatu = Engelska produkter · Meeples och PTS = alla språk</span>
   </div>
 
   <!-- TABLE -->
@@ -190,6 +191,7 @@
           <th class="right col-hide">Bridge</th>
           <th class="right col-hide">Armarlo</th>
           <th class="right col-hide">Meeples</th>
+          <th class="right col-hide">PTS</th>
           <th class="right col-hide">Zatu</th>
           <th class="right">/ dag</th>
           <th class="right">Prognos</th>
@@ -202,7 +204,7 @@
 
   <div class="footer-note">
     <strong>Hur prognosen räknas:</strong> Dagar kvar = Lager ÷ Daglig säljtakt (snitt 30 dagar, alla lager sammantaget).
-    <strong>Lagerstruktur:</strong> Bridge (USA) och Armarlo (AU) säljer enbart engelska produkter. Zatu (UK) säljer enbart engelska produkter. Meeples (EU) säljer alla språkvarianter.
+    <strong>Lagerstruktur:</strong> Bridge (USA) och Armarlo (AU) säljer enbart engelska produkter. Zatu (UK) säljer enbart engelska produkter. Meeples (EU) och PTS (EU, Frankrike) säljer alla språkvarianter.
     Per-lager-vy filtrerar på relevant sortiment och använder global velocity — prognosen är indikativ.
     Lager uppdateras dagligen. <strong>Gränsvärden:</strong> 🔴 Kritisk &lt;14 dagar · ⚠️ Lågt 14–30 dagar · 👁 Bevaka 30–60 dagar · ✅ OK &gt;60 dagar.
   </div>
@@ -232,7 +234,7 @@ async function load() {
   DATA = d;
 
   if (!d.inventory_data) {
-    document.getElementById('prodRows').innerHTML='<tr><td colspan="9" style="padding:32px;text-align:center;color:#8a8073">Inventory data saknas — kontakta Bengt.</td></tr>';
+    document.getElementById('prodRows').innerHTML='<tr><td colspan="10" style="padding:32px;text-align:center;color:#8a8073">Inventory data saknas — kontakta Bengt.</td></tr>';
     document.getElementById('updBadge').textContent = 'Lager: ingen data';
     paintFreshness(d);
     return;
@@ -290,16 +292,9 @@ const statusOrder = { oversold: 0, critical: 1, low: 2, watch: 3, ok: 4 };
 
 function render(inv, wh) {
   // Filter products to only those sold from this warehouse
-  // Bridge/Armarlo/Zatu = English/Default only; Meeples = all variants; total = all
-  let prods;
-  if (wh === 'total' || wh === 'meeples') {
-    prods = [...inv.products];
-  } else {
-    // bridge, armarlo, zatu → English + Default only
-    prods = inv.products.filter(p =>
-      !p.warehouse_scope || p.warehouse_scope.includes(wh)
-    );
-  }
+  // each product's warehouse_scope (CATALOGUE in daily_sections.py) says which warehouses sell it
+  const prods = wh === 'total' ? [...inv.products]
+    : inv.products.filter(p => !p.warehouse_scope || p.warehouse_scope.includes(wh));
 
   // Sort by computed status for this wh
   prods.sort((a,b) => {
@@ -311,7 +306,7 @@ function render(inv, wh) {
   });
 
   // Table header update
-  const warehouseLabels = { total: 'Totalt lager', bridge: 'Bridge (USA)', armarlo: 'Armarlo (AU)', meeples: 'Meeples (EU)', zatu: 'Zatu (UK)' };
+  const warehouseLabels = { total: 'Totalt lager', bridge: 'Bridge (USA)', armarlo: 'Armarlo (AU)', meeples: 'Meeples (EU)', pts: 'PTS (EU)', zatu: 'Zatu (UK)' };
   document.getElementById('thStock').textContent = warehouseLabels[wh] || 'Lager';
 
   // Summary counts
@@ -363,6 +358,7 @@ function render(inv, wh) {
       <td class="right col-hide"><span class="stock-num ${stockClass(p.stock.bridge)}">${p.stock.bridge}</span></td>
       <td class="right col-hide"><span class="stock-num ${stockClass(p.stock.armarlo)}">${p.stock.armarlo}</span></td>
       <td class="right col-hide"><span class="stock-num ${stockClass(p.stock.meeples)}">${p.stock.meeples}</span></td>
+      <td class="right col-hide"><span class="stock-num ${stockClass(p.stock.pts || 0)}">${p.stock.pts || 0}</span></td>
       <td class="right col-hide"><span class="stock-num ${stockClass(p.stock.zatu)}">${p.stock.zatu}</span></td>
       <td class="right"><span class="vel">${p.velocity.toFixed(1)}</span></td>
       <td class="right"><span class="days-cell ${dClass}">${daysLabel(d,st)}</span></td>

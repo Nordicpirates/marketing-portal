@@ -25,27 +25,29 @@ SHOP = "2b988c-3.myshopify.com"
 API = f"https://{SHOP}/admin/api/2025-07/graphql.json"
 TZ = ZoneInfo("Europe/Stockholm")
 
-# The sellable warehouses the stock page shows. The showroom is the office, not stock.
+# The sellable warehouses the stock page shows, with every Shopify location name that adds into each.
+# The showroom is the office, not stock. PTS holds its stock on the fulfillment-service location.
 WAREHOUSES = [
-    ("bridge", "Bridge (USA)", "Bridge - Georgia USA"),
-    ("armarlo", "Armarlo (AU)", "Armarlo Distribution"),
-    ("meeples", "Meeples (EU)", "Meeples Distribution"),
-    ("zatu", "Zatu (UK)", "Zatu Games"),
+    ("bridge", "Bridge (USA)", ("Bridge - Georgia USA",)),
+    ("armarlo", "Armarlo (AU)", ("Armarlo Distribution",)),
+    ("meeples", "Meeples (EU)", ("Meeples Distribution",)),
+    ("pts", "PTS (EU)", ("PTS fulfillment service for Lying Pirates", "PTS-France")),
+    ("zatu", "Zatu (UK)", ("Zatu Games",)),
 ]
 ALL = [w[0] for w in WAREHOUSES]
 
 # The assortment Lucas follows (Add-On Box and Upgrade Box left out on his word, 24 Jul 2026).
 CATALOGUE = [
     ("NPGLPGFBB01EN", "BIG BOX", "English", ALL),
-    ("NPGLPGFBB02IT", "BIG BOX", "Italian", ["meeples"]),
-    ("NPGLPGFBB01DE", "BIG BOX", "German", ["meeples"]),
-    ("NPGLPGFBB01FR", "BIG BOX", "French", ["meeples"]),
-    ("NPGLPGFBB01ES", "BIG BOX", "Spanish", ["meeples"]),
+    ("NPGLPGFBB02IT", "BIG BOX", "Italian", ["meeples", "pts"]),
+    ("NPGLPGFBB01DE", "BIG BOX", "German", ["meeples", "pts"]),
+    ("NPGLPGFBB01FR", "BIG BOX", "French", ["meeples", "pts"]),
+    ("NPGLPGFBB01ES", "BIG BOX", "Spanish", ["meeples", "pts"]),
     ("NPGLPGFRT02EN", "Base Game", "English", ALL),
-    ("NPGLPGFRT02IT", "Base Game", "Italian", ["meeples"]),
-    ("NPGLPGFRT02DE", "Base Game", "German", ["meeples"]),
-    ("NPGLPGFRT01FR", "Base Game", "French", ["meeples"]),
-    ("NPGLPGFRT01ES", "Base Game", "Spanish", ["meeples"]),
+    ("NPGLPGFRT02IT", "Base Game", "Italian", ["meeples", "pts"]),
+    ("NPGLPGFRT02DE", "Base Game", "German", ["meeples", "pts"]),
+    ("NPGLPGFRT01FR", "Base Game", "French", ["meeples", "pts"]),
+    ("NPGLPGFRT01ES", "Base Game", "Spanish", ["meeples", "pts"]),
     ("NPGKMP01", "Kraken Mini-Expansion", "Default", ALL),
     ("NPGLPGFCOG01", "Cities of Greed", "Default", ALL),
     ("NPGCI", "Custom Insert", "Default", ALL),
@@ -93,7 +95,7 @@ def stock_by_sku(token):
       pageInfo{hasNextPage endCursor}
       nodes{ sku inventoryItem{ inventoryLevels(first:20){ nodes{ location{name}
         quantities(names:["available"]){quantity} } } } } } }"""
-    by_location = {w[2]: w[0] for w in WAREHOUSES}
+    by_location = {name: w[0] for w in WAREHOUSES for name in w[2]}
     wanted = [c[0] for c in CATALOGUE]
     # an older number still holding stock (V1 at Bridge and Armarlo) adds into the row it was replaced by
     target = {s: s for s in wanted} | {old: new for old, new in SOLD_AS.items() if new in wanted}

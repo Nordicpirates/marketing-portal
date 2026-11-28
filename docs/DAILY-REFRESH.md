@@ -191,7 +191,7 @@ Run it last. When `gate ga accounts` shows no delegation, add `--no-ga`: stock a
 orders chart are still written, channels and the sessions chart keep their last pull and
 their `as_of`. It writes, from that morning's pulls:
 
-- `inventory_data`: Shopify's `available` per SKU in Bridge, Armarlo, Meeples and Zatu (the
+- `inventory_data`: Shopify's `available` per SKU in Bridge, Armarlo, Meeples, PTS and Zatu (the
   showroom is the office, not stock), velocity as units sold per day over the last 30 closed
   days, cancelled orders skipped. The assortment and each variant's warehouses are the
   `CATALOGUE` in the script; a SKU Shopify no longer has stops the run.
