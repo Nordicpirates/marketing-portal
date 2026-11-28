@@ -1,48 +1,48 @@
 {
- "generated_at": "2026-11-27",
+ "generated_at": "2026-11-28",
  "launch_date": "2026-10-06",
  "ks_launch_date": "2026-11-03",
  "ks_goal_sek": 10948,
  "sources": {
   "signups": {
-   "as_of": "2026-11-27",
-   "pulled": "2026-11-27"
+   "as_of": "2026-11-28",
+   "pulled": "2026-11-28"
   },
   "ga": {
-   "as_of": "2026-11-27",
-   "pulled": "2026-11-27"
+   "as_of": "2026-11-28",
+   "pulled": "2026-11-28"
   },
   "ads": {
    "as_of": "2026-11-03",
-   "pulled": "2026-11-27"
+   "pulled": "2026-11-28"
   },
   "ks_ads": {
    "as_of": "2026-11-20",
-   "pulled": "2026-11-27"
+   "pulled": "2026-11-28"
   },
   "ks_followers": {
    "as_of": "2026-11-03",
-   "pulled": "2026-11-27",
+   "pulled": "2026-11-28",
    "note": "Kickstarter shows backers instead of followers since the launch on 2026-11-03"
   },
   "ks_campaign": {
-   "as_of": "2026-11-27",
-   "pulled": "2026-11-27"
+   "as_of": "2026-11-28",
+   "pulled": "2026-11-28"
   },
   "ks_pageviews": {
    "as_of": "2026-10-23",
-   "pulled": "2026-11-27"
+   "pulled": "2026-11-28"
   }
  },
  "days": [
   {
-   "date": "2026-11-27",
+   "date": "2026-11-28",
    "signups": 0,
-   "waitlist_total": 799,
-   "waitlist_blacklisted": 41,
+   "waitlist_total": 797,
+   "waitlist_blacklisted": 44,
    "ks_followers": null,
    "ks_pageviews": null,
-   "ks_ga_sessions": 2,
+   "ks_ga_sessions": 5,
    "ga_sessions": 0,
    "ga_users": 0,
    "avg_session_sec": null,
@@ -64,10 +64,36 @@
    "partial": true
   },
   {
+   "date": "2026-11-27",
+   "signups": 1,
+   "waitlist_total": 797,
+   "waitlist_blacklisted": 44,
+   "ks_followers": null,
+   "ks_pageviews": null,
+   "ks_ga_sessions": 13,
+   "ga_sessions": 1,
+   "ga_users": 1,
+   "avg_session_sec": 0,
+   "ad_spend_sek": null,
+   "ad_clicks": null,
+   "ks_backers": 254,
+   "ks_pledged_sek": 110148,
+   "ks_pct_funded": 1006,
+   "ks_ad_spend_sek": null,
+   "ks_ad_clicks": null,
+   "film_starts": 0,
+   "film_completes": 0,
+   "reel_starts": 0,
+   "reel_completes": 0,
+   "demo_starts": 0,
+   "demo_completes": 0,
+   "demo_star_clicks": 0
+  },
+  {
    "date": "2026-11-26",
    "signups": 0,
-   "waitlist_total": 799,
-   "waitlist_blacklisted": 41,
+   "waitlist_total": 796,
+   "waitlist_blacklisted": 44,
    "ks_followers": null,
    "ks_pageviews": null,
    "ks_ga_sessions": 16,
@@ -92,8 +118,8 @@
   {
    "date": "2026-11-25",
    "signups": 0,
-   "waitlist_total": 799,
-   "waitlist_blacklisted": 41,
+   "waitlist_total": 796,
+   "waitlist_blacklisted": 44,
    "ks_followers": null,
    "ks_pageviews": null,
    "ks_ga_sessions": 50,
@@ -118,8 +144,8 @@
   {
    "date": "2026-11-24",
    "signups": 3,
-   "waitlist_total": 799,
-   "waitlist_blacklisted": 41,
+   "waitlist_total": 796,
+   "waitlist_blacklisted": 44,
    "ks_followers": null,
    "ks_pageviews": null,
    "ks_ga_sessions": 6,
@@ -144,8 +170,8 @@
   {
    "date": "2026-11-23",
    "signups": 0,
-   "waitlist_total": 796,
-   "waitlist_blacklisted": 41,
+   "waitlist_total": 793,
+   "waitlist_blacklisted": 44,
    "ks_followers": null,
    "ks_pageviews": null,
    "ks_ga_sessions": 23,
@@ -170,8 +196,8 @@
   {
    "date": "2026-11-22",
    "signups": 0,
-   "waitlist_total": 796,
-   "waitlist_blacklisted": 41,
+   "waitlist_total": 793,
+   "waitlist_blacklisted": 44,
    "ks_followers": null,
    "ks_pageviews": null,
    "ks_ga_sessions": 16,
@@ -196,8 +222,8 @@
   {
    "date": "2026-11-21",
    "signups": 0,
-   "waitlist_total": 796,
-   "waitlist_blacklisted": 41,
+   "waitlist_total": 793,
+   "waitlist_blacklisted": 44,
    "ks_followers": null,
    "ks_pageviews": null,
    "ks_ga_sessions": 11,
@@ -222,8 +248,8 @@
   {
    "date": "2026-11-20",
    "signups": 0,
-   "waitlist_total": 796,
-   "waitlist_blacklisted": 41,
+   "waitlist_total": 793,
+   "waitlist_blacklisted": 44,
    "ks_followers": null,
    "ks_pageviews": null,
    "ks_ga_sessions": 78,
@@ -248,8 +274,8 @@
   {
    "date": "2026-11-19",
    "signups": 0,
-   "waitlist_total": 796,
-   "waitlist_blacklisted": 41,
+   "waitlist_total": 793,
+   "waitlist_blacklisted": 44,
    "ks_followers": null,
    "ks_pageviews": null,
    "ks_ga_sessions": 88,
@@ -274,8 +300,8 @@
   {
    "date": "2026-11-18",
    "signups": 0,
-   "waitlist_total": 796,
-   "waitlist_blacklisted": 41,
+   "waitlist_total": 793,
+   "waitlist_blacklisted": 44,
    "ks_followers": null,
    "ks_pageviews": null,
    "ks_ga_sessions": 36,
@@ -300,8 +326,8 @@
   {
    "date": "2026-11-17",
    "signups": 0,
-   "waitlist_total": 796,
-   "waitlist_blacklisted": 41,
+   "waitlist_total": 793,
+   "waitlist_blacklisted": 44,
    "ks_followers": null,
    "ks_pageviews": null,
    "ks_ga_sessions": 46,
@@ -326,8 +352,8 @@
   {
    "date": "2026-11-16",
    "signups": 0,
-   "waitlist_total": 796,
-   "waitlist_blacklisted": 41,
+   "waitlist_total": 793,
+   "waitlist_blacklisted": 44,
    "ks_followers": null,
    "ks_pageviews": null,
    "ks_ga_sessions": 53,
@@ -352,8 +378,8 @@
   {
    "date": "2026-11-15",
    "signups": 0,
-   "waitlist_total": 796,
-   "waitlist_blacklisted": 41,
+   "waitlist_total": 793,
+   "waitlist_blacklisted": 44,
    "ks_followers": null,
    "ks_pageviews": null,
    "ks_ga_sessions": 59,
@@ -378,8 +404,8 @@
   {
    "date": "2026-11-14",
    "signups": 0,
-   "waitlist_total": 796,
-   "waitlist_blacklisted": 41,
+   "waitlist_total": 793,
+   "waitlist_blacklisted": 44,
    "ks_followers": null,
    "ks_pageviews": null,
    "ks_ga_sessions": 66,
@@ -404,8 +430,8 @@
   {
    "date": "2026-11-13",
    "signups": 0,
-   "waitlist_total": 796,
-   "waitlist_blacklisted": 41,
+   "waitlist_total": 793,
+   "waitlist_blacklisted": 44,
    "ks_followers": null,
    "ks_pageviews": null,
    "ks_ga_sessions": 59,
@@ -430,8 +456,8 @@
   {
    "date": "2026-11-12",
    "signups": 0,
-   "waitlist_total": 796,
-   "waitlist_blacklisted": 41,
+   "waitlist_total": 793,
+   "waitlist_blacklisted": 44,
    "ks_followers": null,
    "ks_pageviews": null,
    "ks_ga_sessions": 61,
@@ -456,8 +482,8 @@
   {
    "date": "2026-11-11",
    "signups": 0,
-   "waitlist_total": 796,
-   "waitlist_blacklisted": 41,
+   "waitlist_total": 793,
+   "waitlist_blacklisted": 44,
    "ks_followers": null,
    "ks_pageviews": null,
    "ks_ga_sessions": 72,
@@ -482,8 +508,8 @@
   {
    "date": "2026-11-10",
    "signups": 0,
-   "waitlist_total": 796,
-   "waitlist_blacklisted": 41,
+   "waitlist_total": 793,
+   "waitlist_blacklisted": 44,
    "ks_followers": null,
    "ks_pageviews": null,
    "ks_ga_sessions": 71,
@@ -508,8 +534,8 @@
   {
    "date": "2026-11-09",
    "signups": 0,
-   "waitlist_total": 796,
-   "waitlist_blacklisted": 41,
+   "waitlist_total": 793,
+   "waitlist_blacklisted": 44,
    "ks_followers": null,
    "ks_pageviews": null,
    "ks_ga_sessions": 58,
@@ -534,8 +560,8 @@
   {
    "date": "2026-11-08",
    "signups": 0,
-   "waitlist_total": 796,
-   "waitlist_blacklisted": 41,
+   "waitlist_total": 793,
+   "waitlist_blacklisted": 44,
    "ks_followers": null,
    "ks_pageviews": null,
    "ks_ga_sessions": 52,
@@ -560,8 +586,8 @@
   {
    "date": "2026-11-07",
    "signups": 0,
-   "waitlist_total": 796,
-   "waitlist_blacklisted": 41,
+   "waitlist_total": 793,
+   "waitlist_blacklisted": 44,
    "ks_followers": null,
    "ks_pageviews": null,
    "ks_ga_sessions": 59,
@@ -586,8 +612,8 @@
   {
    "date": "2026-11-06",
    "signups": 0,
-   "waitlist_total": 796,
-   "waitlist_blacklisted": 41,
+   "waitlist_total": 793,
+   "waitlist_blacklisted": 44,
    "ks_followers": null,
    "ks_pageviews": null,
    "ks_ga_sessions": 81,
@@ -612,8 +638,8 @@
   {
    "date": "2026-11-05",
    "signups": 0,
-   "waitlist_total": 796,
-   "waitlist_blacklisted": 41,
+   "waitlist_total": 793,
+   "waitlist_blacklisted": 44,
    "ks_followers": null,
    "ks_pageviews": null,
    "ks_ga_sessions": 154,
@@ -638,8 +664,8 @@
   {
    "date": "2026-11-04",
    "signups": 0,
-   "waitlist_total": 796,
-   "waitlist_blacklisted": 41,
+   "waitlist_total": 793,
+   "waitlist_blacklisted": 44,
    "ks_followers": null,
    "ks_pageviews": null,
    "ks_ga_sessions": 313,
@@ -664,8 +690,8 @@
   {
    "date": "2026-11-03",
    "signups": 27,
-   "waitlist_total": 796,
-   "waitlist_blacklisted": 41,
+   "waitlist_total": 793,
+   "waitlist_blacklisted": 44,
    "ks_followers": 293,
    "ks_pageviews": null,
    "ks_ga_sessions": 303,
@@ -690,8 +716,8 @@
   {
    "date": "2026-11-02",
    "signups": 25,
-   "waitlist_total": 770,
-   "waitlist_blacklisted": 40,
+   "waitlist_total": 767,
+   "waitlist_blacklisted": 43,
    "ks_followers": 288,
    "ks_pageviews": null,
    "ks_ga_sessions": 12,
@@ -716,8 +742,8 @@
   {
    "date": "2026-11-01",
    "signups": 34,
-   "waitlist_total": 745,
-   "waitlist_blacklisted": 40,
+   "waitlist_total": 743,
+   "waitlist_blacklisted": 42,
    "ks_followers": 286,
    "ks_pageviews": null,
    "ks_ga_sessions": 7,
@@ -742,8 +768,8 @@
   {
    "date": "2026-10-31",
    "signups": 32,
-   "waitlist_total": 713,
-   "waitlist_blacklisted": 38,
+   "waitlist_total": 711,
+   "waitlist_blacklisted": 40,
    "ks_followers": 283,
    "ks_pageviews": null,
    "ks_ga_sessions": 5,
@@ -768,8 +794,8 @@
   {
    "date": "2026-10-30",
    "signups": 32,
-   "waitlist_total": 683,
-   "waitlist_blacklisted": 36,
+   "waitlist_total": 682,
+   "waitlist_blacklisted": 37,
    "ks_followers": 282,
    "ks_pageviews": null,
    "ks_ga_sessions": 4,
@@ -794,8 +820,8 @@
   {
    "date": "2026-10-29",
    "signups": 20,
-   "waitlist_total": 651,
-   "waitlist_blacklisted": 36,
+   "waitlist_total": 650,
+   "waitlist_blacklisted": 37,
    "ks_followers": 282,
    "ks_pageviews": null,
    "ks_ga_sessions": 8,
@@ -820,8 +846,8 @@
   {
    "date": "2026-10-28",
    "signups": 18,
-   "waitlist_total": 631,
-   "waitlist_blacklisted": 36,
+   "waitlist_total": 630,
+   "waitlist_blacklisted": 37,
    "ks_followers": 280,
    "ks_pageviews": null,
    "ks_ga_sessions": 10,
@@ -846,8 +872,8 @@
   {
    "date": "2026-10-27",
    "signups": 21,
-   "waitlist_total": 613,
-   "waitlist_blacklisted": 36,
+   "waitlist_total": 612,
+   "waitlist_blacklisted": 37,
    "ks_followers": 279,
    "ks_pageviews": null,
    "ks_ga_sessions": 11,
@@ -872,8 +898,8 @@
   {
    "date": "2026-10-26",
    "signups": 20,
-   "waitlist_total": 593,
-   "waitlist_blacklisted": 35,
+   "waitlist_total": 592,
+   "waitlist_blacklisted": 36,
    "ks_followers": 276,
    "ks_pageviews": null,
    "ks_ga_sessions": 7,
@@ -898,8 +924,8 @@
   {
    "date": "2026-10-25",
    "signups": 48,
-   "waitlist_total": 575,
-   "waitlist_blacklisted": 33,
+   "waitlist_total": 574,
+   "waitlist_blacklisted": 34,
    "ks_followers": 270,
    "ks_pageviews": null,
    "ks_ga_sessions": 9,
@@ -924,8 +950,8 @@
   {
    "date": "2026-10-24",
    "signups": 35,
-   "waitlist_total": 530,
-   "waitlist_blacklisted": 30,
+   "waitlist_total": 529,
+   "waitlist_blacklisted": 31,
    "ks_followers": 266,
    "ks_pageviews": null,
    "ks_ga_sessions": 5,
@@ -950,8 +976,8 @@
   {
    "date": "2026-10-23",
    "signups": 39,
-   "waitlist_total": 495,
-   "waitlist_blacklisted": 30,
+   "waitlist_total": 494,
+   "waitlist_blacklisted": 31,
    "ks_followers": 262,
    "ks_pageviews": 8,
    "ks_ga_sessions": 4,
@@ -976,8 +1002,8 @@
   {
    "date": "2026-10-22",
    "signups": 38,
-   "waitlist_total": 460,
-   "waitlist_blacklisted": 26,
+   "waitlist_total": 459,
+   "waitlist_blacklisted": 27,
    "ks_followers": 260,
    "ks_pageviews": 25,
    "ks_ga_sessions": 1,
@@ -1002,8 +1028,8 @@
   {
    "date": "2026-10-21",
    "signups": 24,
-   "waitlist_total": 422,
-   "waitlist_blacklisted": 26,
+   "waitlist_total": 421,
+   "waitlist_blacklisted": 27,
    "ks_followers": 259,
    "ks_pageviews": 22,
    "ks_ga_sessions": 5,
@@ -1028,8 +1054,8 @@
   {
    "date": "2026-10-20",
    "signups": 23,
-   "waitlist_total": 404,
-   "waitlist_blacklisted": 20,
+   "waitlist_total": 403,
+   "waitlist_blacklisted": 21,
    "ks_followers": 257,
    "ks_pageviews": 17,
    "ks_ga_sessions": 3,
@@ -1054,8 +1080,8 @@
   {
    "date": "2026-10-19",
    "signups": 28,
-   "waitlist_total": 381,
-   "waitlist_blacklisted": 20,
+   "waitlist_total": 380,
+   "waitlist_blacklisted": 21,
    "ks_followers": 256,
    "ks_pageviews": 43,
    "ks_ga_sessions": 7,
@@ -1080,8 +1106,8 @@
   {
    "date": "2026-10-18",
    "signups": 29,
-   "waitlist_total": 354,
-   "waitlist_blacklisted": 19,
+   "waitlist_total": 353,
+   "waitlist_blacklisted": 20,
    "ks_followers": 253,
    "ks_pageviews": 21,
    "ks_ga_sessions": 6,
@@ -1106,8 +1132,8 @@
   {
    "date": "2026-10-17",
    "signups": 30,
-   "waitlist_total": 327,
-   "waitlist_blacklisted": 17,
+   "waitlist_total": 326,
+   "waitlist_blacklisted": 18,
    "ks_followers": 249,
    "ks_pageviews": 38,
    "ks_ga_sessions": 10,
@@ -1132,8 +1158,8 @@
   {
    "date": "2026-10-16",
    "signups": 48,
-   "waitlist_total": 299,
-   "waitlist_blacklisted": 15,
+   "waitlist_total": 298,
+   "waitlist_blacklisted": 16,
    "ks_followers": 229,
    "ks_pageviews": 113,
    "ks_ga_sessions": 27,
@@ -1158,8 +1184,8 @@
   {
    "date": "2026-10-15",
    "signups": 30,
-   "waitlist_total": 252,
-   "waitlist_blacklisted": 14,
+   "waitlist_total": 251,
+   "waitlist_blacklisted": 15,
    "ks_followers": 226,
    "ks_pageviews": 19,
    "ks_ga_sessions": 7,
@@ -1184,8 +1210,8 @@
   {
    "date": "2026-10-14",
    "signups": 51,
-   "waitlist_total": 223,
-   "waitlist_blacklisted": 13,
+   "waitlist_total": 222,
+   "waitlist_blacklisted": 14,
    "ks_followers": 222,
    "ks_pageviews": 47,
    "ks_ga_sessions": 12,
@@ -1210,8 +1236,8 @@
   {
    "date": "2026-10-13",
    "signups": 13,
-   "waitlist_total": 175,
-   "waitlist_blacklisted": 10,
+   "waitlist_total": 174,
+   "waitlist_blacklisted": 11,
    "ks_followers": 219,
    "ks_pageviews": 46,
    "ks_ga_sessions": 7,
@@ -1236,8 +1262,8 @@
   {
    "date": "2026-10-12",
    "signups": 27,
-   "waitlist_total": 163,
-   "waitlist_blacklisted": 9,
+   "waitlist_total": 162,
+   "waitlist_blacklisted": 10,
    "ks_followers": 219,
    "ks_pageviews": 18,
    "ks_ga_sessions": 3,
@@ -1262,8 +1288,8 @@
   {
    "date": "2026-10-11",
    "signups": 26,
-   "waitlist_total": 137,
-   "waitlist_blacklisted": 8,
+   "waitlist_total": 136,
+   "waitlist_blacklisted": 9,
    "ks_followers": 217,
    "ks_pageviews": 13,
    "ks_ga_sessions": 2,
@@ -1449,7 +1475,7 @@
   },
   {
    "form": "offer",
-   "count": 119
+   "count": 120
   },
   {
    "form": "bar",
@@ -1502,6 +1528,10 @@
    "count": 2
   },
   {
+   "medium": "social",
+   "count": 1
+  },
+  {
    "medium": "{{placement}}",
    "count": 1
   }
@@ -1535,7 +1565,7 @@
   {
    "source": "google",
    "medium": "organic",
-   "sessions": 86
+   "sessions": 87
   },
   {
    "source": "ig",
